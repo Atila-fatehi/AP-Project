@@ -16,7 +16,7 @@ public class GameManager {
     private final GamePanel gamePanel;
     private final Epsilon epsilon;
     private boolean accU, accD, accR, accL;
-    private boolean decU, decD, decR, decL;
+    private boolean decU = true, decD = true, decR = true, decL = true;
     private static final int MAX_VELOCITY = 11;
     private static final int ACCELERATION = 1;
     private static final int expandRate = 15;
@@ -62,19 +62,23 @@ public class GameManager {
                 int trigorathCollisionNum = bullets.get(i).onTrigorathCollision(trigoraths.get(j).getX1(), trigoraths.get(j).getX2(), trigoraths.get(j).getX3(), trigoraths.get(j).getY1(), trigoraths.get(j).getY2(), trigoraths.get(j).getY3(), trigoraths.get(j).getInnerCircleRadius(), trigoraths.get(j).getInnerCircleX(), trigoraths.get(j).getInnerCircleY());
                 if (trigorathCollisionNum == 1) {
                     trigoraths.get(j).setHP(trigoraths.get(j).getHP() - 5);
-                    bullets.remove(i);i--;
+                    bullets.remove(i);
+                    i--;
                 }
                 if (trigorathCollisionNum == 2) {
                     trigoraths.get(j).setHP(trigoraths.get(j).getHP() - 5);
-                    bullets.remove(i);i--;
+                    bullets.remove(i);
+                    i--;
                 }
                 if (trigorathCollisionNum == 3) {
                     trigoraths.get(j).setHP(trigoraths.get(j).getHP() - 5);
-                    bullets.remove(i);i--;
+                    bullets.remove(i);
+                    i--;
                 }
                 if (trigorathCollisionNum == 4) {
                     trigoraths.get(j).setHP(trigoraths.get(j).getHP() - 5);
-                    bullets.remove(i);i--;
+                    bullets.remove(i);
+                    i--;
                 }
             }
         }
@@ -90,7 +94,8 @@ public class GameManager {
                 for (int j = 0; j < trigoraths.size(); j++) {
                     trigoraths.get(j).shiftX(expandRate);
                 }
-                bullets.remove(i);i--;
+                bullets.remove(i);
+                i--;
             } else if (wallCollisionNum == 2) {
                 gamePanel.setLocation(gamePanel.getLocationX(), gamePanel.getLocationY() - expandRate);
                 gamePanel.setSize(gamePanel.getScreenWidth(), gamePanel.getScreenHeight() + expandRate);
@@ -100,31 +105,40 @@ public class GameManager {
                 for (int j = 0; j < trigoraths.size(); j++) {
                     trigoraths.get(j).shiftY(expandRate);
                 }
-                bullets.remove(i);i--;
+                bullets.remove(i);
+                i--;
             } else if (wallCollisionNum == 3) {
                 gamePanel.setSize(gamePanel.getScreenWidth() + expandRate, gamePanel.getScreenHeight());
                 gamePanel.setScreenWidth(gamePanel.getScreenWidth() + expandRate);
-                bullets.remove(i);i--;
+                bullets.remove(i);
+                i--;
             } else if (wallCollisionNum == 4) {
                 gamePanel.setSize(gamePanel.getScreenWidth(), gamePanel.getScreenHeight() + expandRate);
                 gamePanel.setScreenHeight(gamePanel.getScreenHeight() + expandRate);
-                bullets.remove(i);i--;
+                bullets.remove(i);
+                i--;
             }
         }
+        //Tri stuff
         for (int i = 0; i < trigoraths.size(); i++) {
             trigoraths.get(i).calculateMovingDirection(epsilon.getX(), epsilon.getY());
             trigoraths.get(i).move();
-            int epsilonCollisionNum = trigoraths.get(i).onCollisionEpsilon(epsilon.getX(),epsilon.getY() , epsilon.getRadius());
-            if(epsilonCollisionNum == 1){
+            int epsilonCollisionNum = trigoraths.get(i).onCollisionEpsilon(epsilon.getX(), epsilon.getY(), epsilon.getRadius());
+            if (epsilonCollisionNum == 1) {
+                epsilon.setVx(-10);
+                epsilon.setVy(10);
                 epsilon.setHP(epsilon.getHP() - 10);
             }
-            if(epsilonCollisionNum == 2){
+            if (epsilonCollisionNum == 2) {
+                epsilon.setVx(10);
+                epsilon.setVy(10);
                 epsilon.setHP(epsilon.getHP() - 10);
             }
-            if(epsilonCollisionNum == 3){
+            if (epsilonCollisionNum == 3) {
+                epsilon.setVy(-14);
                 epsilon.setHP(epsilon.getHP() - 10);
             }
-            if(trigoraths.get(i).getHP() <= 0){
+            if (trigoraths.get(i).getHP() <= 0) {
                 trigoraths.remove(i);
                 i--;
             }
@@ -187,10 +201,6 @@ public class GameManager {
             epsilon.setY(gamePanel.getScreenHeight() - epsilon.getRadius());
             epsilon.setVy(0);
         }
-
-
-
-
 
 
     }

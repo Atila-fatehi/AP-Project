@@ -25,10 +25,10 @@ public class Trigorath implements movable {
     }
 
     public int onCollisionEpsilon(int x, int y, int radius) {
-        if (Math.sqrt(Math.pow(x1 - x, 2) + Math.pow(y1 - y, 2)) <= radius) {
+        if (Math.sqrt(Math.pow(x1 - x, 2) + Math.pow(y1 - y, 2)) <= radius / 2) {
             return 1;
         }
-        if (Math.sqrt(Math.pow(x2 - x, 2) + Math.pow(y2 - y, 2)) <= radius) {
+        if (Math.sqrt(Math.pow(x2 - x, 2) + Math.pow(y2 - y, 2)) <= radius / 2 - 7) {
             return 2;
         }
         if (Math.sqrt(Math.pow(x3 - x, 2) + Math.pow(y3 - y, 2)) <= radius) {
