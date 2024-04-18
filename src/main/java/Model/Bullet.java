@@ -1,6 +1,6 @@
 package Model;
 
-public class Bullet {
+public class Bullet implements movable{
     private final int Radius = 7;
     private int x;
     private int y;

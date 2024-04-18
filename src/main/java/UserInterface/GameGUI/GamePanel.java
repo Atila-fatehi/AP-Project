@@ -3,6 +3,7 @@ package UserInterface.GameGUI;
 import Controller.GameManager;
 import Model.Bullet;
 import Model.Epsilon;
+import Model.Trigorath;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,6 +21,7 @@ public class GamePanel extends JPanel {
     private int shrinkageCounter = 0;
     private final Epsilon epsilon;
     private ArrayList<Bullet> bullets = new ArrayList<>();
+    private ArrayList<Trigorath> trigoraths = new ArrayList<>();
     private final GameManager gameManager;
     private int elapsedTime ;
 
@@ -43,6 +45,14 @@ public class GamePanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        //draw Enemies
+        g.setColor(new Color(0xFFD900));
+        for (int i = 0; i < trigoraths.size(); i++) {
+            int[] xPoints = {trigoraths.get(i).getX1(), trigoraths.get(i).getX2(), trigoraths.get(i).getX3()};
+            int[] yPoints = {trigoraths.get(i).getY1(), trigoraths.get(i).getY2(), trigoraths.get(i).getY3()};
+            g.fillPolygon(xPoints,yPoints,3);
+        }
+
         //draw epsilon
         g.setColor(new Color(0x8A07DC));
         g.fillOval(epsilon.getX(), epsilon.getY(), epsilon.getRadius(), epsilon.getRadius());
@@ -51,6 +61,7 @@ public class GamePanel extends JPanel {
             g.fillOval(bullets.get(i).getX(), bullets.get(i).getY(), bullets.get(i).getRadius(), bullets.get(i).getRadius());
         }
         //draw Strings
+        g.setColor(new Color(0x8A26FF));
         g.setFont(new Font("HelveticaNeue-CondensedBlack" , Font.BOLD ,15));
         g.drawString("HP : " + String.valueOf(epsilon.getHP()) , 10, 20);
         g.drawString("XP : " + String.valueOf(epsilon.getXP()) , 100 , 20);
@@ -68,7 +79,7 @@ public class GamePanel extends JPanel {
 
             @Override
             public void mousePressed(MouseEvent e) {
-
+                gameManager.mouseClicked(e.getX(), e.getY());
             }
 
             @Override
@@ -201,5 +212,13 @@ public class GamePanel extends JPanel {
 
     public void setLocationY(int locationY) {
         this.locationY = locationY;
+    }
+
+    public ArrayList<Trigorath> getTrigoraths() {
+        return trigoraths;
+    }
+
+    public void setTrigoraths(ArrayList<Trigorath> trigoraths) {
+        this.trigoraths = trigoraths;
     }
 }

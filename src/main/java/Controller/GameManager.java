@@ -2,6 +2,7 @@ package Controller;
 
 import Model.Bullet;
 import Model.Epsilon;
+import Model.Trigorath;
 import UserInterface.GameGUI.GameFrame;
 import UserInterface.GameGUI.GamePanel;
 
@@ -20,10 +21,12 @@ public class GameManager {
     private static final int ACCELERATION = 1;
     private static final int expandRate = 15;
     private final ArrayList<Bullet> bullets = new ArrayList<>();
+    private final ArrayList<Trigorath> trigoraths = new ArrayList<>();
 
     public GameManager(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
         this.epsilon = gamePanel.getEpsilon();
+        trigoraths.add(new Trigorath(100,100 + 20,100 + 10,100,100,100 - 18,6,14,15));
         new Timer((int) (double) TimeUnit.SECONDS.toMillis(1) / 60/*GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0].getDisplayMode().getRefreshRate()*/, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -46,12 +49,49 @@ public class GameManager {
     public void updateView() {
         gamePanel.shrink();
         gamePanel.setBullets(bullets);
+        gamePanel.setTrigoraths(trigoraths);
         gamePanel.repaint();
     }
 
     public void updateModel() {
-        epsilon.setX(epsilon.getX() + epsilon.getVx());
-        epsilon.setY(epsilon.getY() + epsilon.getVy());
+        for (int i = 0; i < bullets.size(); i++) {
+            bullets.get(i).move();
+            if (bullets.get(i).onWallCollision(gamePanel.getScreenWidth(), gamePanel.getScreenHeight()) == 1) {
+                gamePanel.setLocation(gamePanel.getLocationX() - expandRate, gamePanel.getLocationY());
+                gamePanel.setSize(gamePanel.getScreenWidth() + expandRate, gamePanel.getScreenHeight());
+                gamePanel.setScreenWidth(gamePanel.getScreenWidth() + expandRate);
+                gamePanel.setLocationX(gamePanel.getLocationX() - expandRate);
+                epsilon.setX(epsilon.getX() + expandRate);
+                bullets.remove(i);
+                i--;
+            }else
+            if (bullets.get(i).onWallCollision(gamePanel.getScreenWidth(), gamePanel.getScreenHeight()) == 2) {
+                gamePanel.setLocation(gamePanel.getLocationX(), gamePanel.getLocationY() - expandRate);
+                gamePanel.setSize(gamePanel.getScreenWidth(), gamePanel.getScreenHeight() + expandRate);
+                gamePanel.setScreenHeight(gamePanel.getScreenHeight() + expandRate);
+                gamePanel.setLocationY(gamePanel.getLocationY() - expandRate);
+                epsilon.setY(epsilon.getY() + expandRate);
+                bullets.remove(i);
+                i--;
+            }else
+            if (bullets.get(i).onWallCollision(gamePanel.getScreenWidth(), gamePanel.getScreenHeight()) == 3) {
+                gamePanel.setSize(gamePanel.getScreenWidth() + expandRate, gamePanel.getScreenHeight());
+                gamePanel.setScreenWidth(gamePanel.getScreenWidth() + expandRate);
+                bullets.remove(i);
+                i--;
+            }else
+            if (bullets.get(i).onWallCollision(gamePanel.getScreenWidth(), gamePanel.getScreenHeight()) == 4) {
+                gamePanel.setSize(gamePanel.getScreenWidth(), gamePanel.getScreenHeight() + expandRate);
+                gamePanel.setScreenHeight(gamePanel.getScreenHeight() + expandRate);
+                bullets.remove(i);
+                i--;
+            }
+        }
+        epsilon.move();
+        for (int i = 0; i < trigoraths.size(); i++) {
+            trigoraths.get(i).calculateMovingDirection(epsilon.getX(),epsilon.getY());
+            trigoraths.get(i).move();
+        }
         if (accU) {
             if (epsilon.getVy() >= -MAX_VELOCITY) {
                 epsilon.setVy(epsilon.getVy() - ACCELERATION);
@@ -106,39 +146,6 @@ public class GameManager {
         } else if (epsilon.getY() + epsilon.getRadius() > gamePanel.getScreenHeight()) {
             epsilon.setY(gamePanel.getScreenHeight() - epsilon.getRadius());
             epsilon.setVy(0);
-        }
-        for (int i = 0; i < bullets.size(); i++) {
-            bullets.get(i).move();
-            if (bullets.get(i).onWallCollision(gamePanel.getScreenWidth(), gamePanel.getScreenHeight()) == 1) {
-                gamePanel.setLocation(gamePanel.getLocationX() - expandRate, gamePanel.getLocationY());
-                gamePanel.setSize(gamePanel.getScreenWidth() + expandRate, gamePanel.getScreenHeight());
-                gamePanel.setScreenWidth(gamePanel.getScreenWidth() + expandRate);
-                gamePanel.setLocationX(gamePanel.getLocationX() - expandRate);
-                epsilon.setX(epsilon.getX() + expandRate);
-                bullets.remove(i);
-                i--;
-            }else
-            if (bullets.get(i).onWallCollision(gamePanel.getScreenWidth(), gamePanel.getScreenHeight()) == 2) {
-                gamePanel.setLocation(gamePanel.getLocationX(), gamePanel.getLocationY() - expandRate);
-                gamePanel.setSize(gamePanel.getScreenWidth(), gamePanel.getScreenHeight() + expandRate);
-                gamePanel.setScreenHeight(gamePanel.getScreenHeight() + expandRate);
-                gamePanel.setLocationY(gamePanel.getLocationY() - expandRate);
-                epsilon.setY(epsilon.getY() + expandRate);
-                bullets.remove(i);
-                i--;
-            }else
-            if (bullets.get(i).onWallCollision(gamePanel.getScreenWidth(), gamePanel.getScreenHeight()) == 3) {
-                gamePanel.setSize(gamePanel.getScreenWidth() + expandRate, gamePanel.getScreenHeight());
-                gamePanel.setScreenWidth(gamePanel.getScreenWidth() + expandRate);
-                bullets.remove(i);
-                i--;
-            }else
-            if (bullets.get(i).onWallCollision(gamePanel.getScreenWidth(), gamePanel.getScreenHeight()) == 4) {
-                gamePanel.setSize(gamePanel.getScreenWidth(), gamePanel.getScreenHeight() + expandRate);
-                gamePanel.setScreenHeight(gamePanel.getScreenHeight() + expandRate);
-                bullets.remove(i);
-                i--;
-            }
         }
 
     }

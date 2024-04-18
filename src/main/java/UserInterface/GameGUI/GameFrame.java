@@ -1,6 +1,7 @@
 package UserInterface.GameGUI;
 import Controller.GameManager;
 import Model.Epsilon;
+import Model.Trigorath;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,6 +23,8 @@ public class GameFrame extends JFrame {
         setVisible(true);
         //Create Epsilon
         Epsilon epsilon = new Epsilon(350,350,20);
+        //New Trigorath
+
         //Adding Panel
         GamePanel gamePanel = new GamePanel(epsilon);
         gamePanel.setBackground(new Color(0x000000));

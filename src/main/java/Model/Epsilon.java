@@ -1,6 +1,6 @@
 package Model;
 
-public class Epsilon {
+public class Epsilon implements movable{
     private int HP;
     private int XP;
     private int x;
@@ -18,6 +18,10 @@ public class Epsilon {
         this.radius = radius;
         vx = 0;
         vy = 0;
+    }
+    public void move(){
+        x += vx;
+        y += vy;
     }
 
     public int getXP() {
