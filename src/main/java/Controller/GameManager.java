@@ -26,7 +26,7 @@ public class GameManager {
     public GameManager(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
         this.epsilon = gamePanel.getEpsilon();
-        trigoraths.add(new Trigorath(100,100 + 20,100 + 10,100,100,100 - 18,6,14,15));
+        trigoraths.add(new Trigorath(100,100 + 20,100 + 10,100,100,100 - 18,14,100 + 10 - 7,100 - 9 - 5));
         new Timer((int) (double) TimeUnit.SECONDS.toMillis(1) / 60/*GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0].getDisplayMode().getRefreshRate()*/, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -62,6 +62,9 @@ public class GameManager {
                 gamePanel.setScreenWidth(gamePanel.getScreenWidth() + expandRate);
                 gamePanel.setLocationX(gamePanel.getLocationX() - expandRate);
                 epsilon.setX(epsilon.getX() + expandRate);
+                for (int j = 0; j < trigoraths.size(); j++) {
+                    trigoraths.get(j).shiftX(expandRate);
+                }
                 bullets.remove(i);
                 i--;
             }else
@@ -71,6 +74,9 @@ public class GameManager {
                 gamePanel.setScreenHeight(gamePanel.getScreenHeight() + expandRate);
                 gamePanel.setLocationY(gamePanel.getLocationY() - expandRate);
                 epsilon.setY(epsilon.getY() + expandRate);
+                for (int j = 0; j < trigoraths.size(); j++) {
+                    trigoraths.get(j).shiftY(expandRate);
+                }
                 bullets.remove(i);
                 i--;
             }else

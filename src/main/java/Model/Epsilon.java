@@ -22,6 +22,7 @@ public class Epsilon implements movable{
     public void move(){
         x += vx;
         y += vy;
+
     }
 
     public int getXP() {

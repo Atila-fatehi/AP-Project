@@ -22,6 +22,18 @@ public class Trigorath implements movable{
         this.innerCircleY = innerCircleY;
     }
 
+    public void shiftX(int rate){
+        x1 += rate;
+        x2 += rate;
+        x3 += rate;
+        innerCircleX += rate;
+    }
+    public void shiftY(int rate){
+        y1 += rate;
+        y2 += rate;
+        y3 += rate;
+        innerCircleY += rate;
+    }
     public void calculateMovingDirection(int x , int y){
         double angle = Math.atan2(y - (y1+y3)/2, x - (x1+x2)/2);
         setVx(((int) Math.round(constantVelocity * Math.cos(angle))));
@@ -36,6 +48,8 @@ public class Trigorath implements movable{
         y1 += vy;
         y2 += vy;
         y3 += vy;
+        innerCircleX += vx;
+        innerCircleY += vy;
     }
 
     public int getX1() {
