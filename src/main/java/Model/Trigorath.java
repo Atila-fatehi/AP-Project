@@ -1,6 +1,7 @@
 package Model;
 
 public class Trigorath implements movable{
+    private int HP;
     private int x1,x2,x3;
     private int y1,y2,y3;
     private int innerCircleRadius;
@@ -20,6 +21,7 @@ public class Trigorath implements movable{
         this.innerCircleRadius = innerCircleRadius;
         this.innerCircleX = innerCircleX;
         this.innerCircleY = innerCircleY;
+        this.HP = 10;
     }
 
     public void shiftX(int rate){
@@ -38,7 +40,6 @@ public class Trigorath implements movable{
         double angle = Math.atan2(y - (y1+y3)/2, x - (x1+x2)/2);
         setVx(((int) Math.round(constantVelocity * Math.cos(angle))));
         setVy(((int) Math.round(constantVelocity * Math.sin(angle))));
-
     }
 
     public void move(){
@@ -140,4 +141,11 @@ public class Trigorath implements movable{
         this.vy = vy;
     }
 
+    public int getHP() {
+        return HP;
+    }
+
+    public void setHP(int HP) {
+        this.HP = HP;
+    }
 }

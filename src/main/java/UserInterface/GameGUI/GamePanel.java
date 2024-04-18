@@ -81,7 +81,7 @@ public class GamePanel extends JPanel {
 
             @Override
             public void mousePressed(MouseEvent e) {
-                gameManager.mouseClicked(e.getX(), e.getY());
+                //gameManager.mouseClicked(e.getX(), e.getY());
             }
 
             @Override
