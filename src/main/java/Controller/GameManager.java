@@ -55,9 +55,9 @@ public class GameManager {
 
     public void updateModel() {
         ArrayList<Integer> removedIndex = new ArrayList<>();
+        //On Trigorath Collision
         for (int i = 0; i < bullets.size(); i++) {
             bullets.get(i).move();
-            //On Trigorath Collision
             for (int j = 0; j < trigoraths.size(); j++) {
                 int trigorathCollisionNum = bullets.get(i).onTrigorathCollision(trigoraths.get(j).getX1(), trigoraths.get(j).getX2(), trigoraths.get(j).getX3(), trigoraths.get(j).getY1(), trigoraths.get(j).getY2(), trigoraths.get(j).getY3(), trigoraths.get(j).getInnerCircleRadius(), trigoraths.get(j).getInnerCircleX(), trigoraths.get(j).getInnerCircleY());
                 if (trigorathCollisionNum == 1) {
@@ -111,16 +111,27 @@ public class GameManager {
                 bullets.remove(i);i--;
             }
         }
-        //epsilon stuff
-        epsilon.move();
         for (int i = 0; i < trigoraths.size(); i++) {
             trigoraths.get(i).calculateMovingDirection(epsilon.getX(), epsilon.getY());
             trigoraths.get(i).move();
+            int epsilonCollisionNum = trigoraths.get(i).onCollisionEpsilon(epsilon.getX(),epsilon.getY() , epsilon.getRadius());
+            if(epsilonCollisionNum == 1){
+                epsilon.setHP(epsilon.getHP() - 10);
+            }
+            if(epsilonCollisionNum == 2){
+                epsilon.setHP(epsilon.getHP() - 10);
+            }
+            if(epsilonCollisionNum == 3){
+                epsilon.setHP(epsilon.getHP() - 10);
+            }
             if(trigoraths.get(i).getHP() <= 0){
                 trigoraths.remove(i);
                 i--;
             }
         }
+
+        //epsilon stuff
+        epsilon.move();
         if (accU) {
             if (epsilon.getVy() >= -MAX_VELOCITY) {
                 epsilon.setVy(epsilon.getVy() - ACCELERATION);

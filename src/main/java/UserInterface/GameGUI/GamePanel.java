@@ -51,8 +51,7 @@ public class GamePanel extends JPanel {
             int[] xPoints = {trigoraths.get(i).getX1(), trigoraths.get(i).getX2(), trigoraths.get(i).getX3()};
             int[] yPoints = {trigoraths.get(i).getY1(), trigoraths.get(i).getY2(), trigoraths.get(i).getY3()};
             g.fillPolygon(xPoints,yPoints,3);
-            g.setColor(Color.RED);
-            g.drawOval(trigoraths.get(i).getInnerCircleX() , trigoraths.get(i).getInnerCircleY() , trigoraths.get(i).getInnerCircleRadius(),trigoraths.get(i).getInnerCircleRadius());
+//            g.drawOval(trigoraths.get(i).getInnerCircleX() , trigoraths.get(i).getInnerCircleY() , trigoraths.get(i).getInnerCircleRadius(),trigoraths.get(i).getInnerCircleRadius());
         }
 
         //draw epsilon

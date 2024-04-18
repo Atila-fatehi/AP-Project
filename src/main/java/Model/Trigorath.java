@@ -1,9 +1,9 @@
 package Model;
 
-public class Trigorath implements movable{
+public class Trigorath implements movable {
     private int HP;
-    private int x1,x2,x3;
-    private int y1,y2,y3;
+    private int x1, x2, x3;
+    private int y1, y2, y3;
     private int innerCircleRadius;
     private static final int constantVelocity = 1;
     private int innerCircleX;
@@ -24,25 +24,40 @@ public class Trigorath implements movable{
         this.HP = 10;
     }
 
-    public void shiftX(int rate){
+    public int onCollisionEpsilon(int x, int y, int radius) {
+        if (Math.sqrt(Math.pow(x1 - x, 2) + Math.pow(y1 - y, 2)) <= radius) {
+            return 1;
+        }
+        if (Math.sqrt(Math.pow(x2 - x, 2) + Math.pow(y2 - y, 2)) <= radius) {
+            return 2;
+        }
+        if (Math.sqrt(Math.pow(x3 - x, 2) + Math.pow(y3 - y, 2)) <= radius) {
+            return 3;
+        }
+        return 0;
+    }
+
+    public void shiftX(int rate) {
         x1 += rate;
         x2 += rate;
         x3 += rate;
         innerCircleX += rate;
     }
-    public void shiftY(int rate){
+
+    public void shiftY(int rate) {
         y1 += rate;
         y2 += rate;
         y3 += rate;
         innerCircleY += rate;
     }
-    public void calculateMovingDirection(int x , int y){
-        double angle = Math.atan2(y - (y1+y3)/2, x - (x1+x2)/2);
+
+    public void calculateMovingDirection(int x, int y) {
+        double angle = Math.atan2(y - (y1 + y3) / 2, x - (x1 + x2) / 2);
         setVx(((int) Math.round(constantVelocity * Math.cos(angle))));
         setVy(((int) Math.round(constantVelocity * Math.sin(angle))));
     }
 
-    public void move(){
+    public void move() {
         x1 += vx;
         x2 += vx;
         x3 += vx;
