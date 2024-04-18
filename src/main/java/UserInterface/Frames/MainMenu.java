@@ -38,7 +38,6 @@ public class MainMenu extends JFrame {
         setLocationRelativeTo(null);
         setLayout(null);
         setResizable(false);
-
         wallpaper wallpaper = new wallpaper();
         wallpaper.setBounds(0, 0, WIDTH, HEIGHT);
 
@@ -71,7 +70,7 @@ public class MainMenu extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-//                new SettingFrame();
+                new Setting();
             }
         });
 
@@ -87,7 +86,7 @@ public class MainMenu extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-//                new TutorialFrame();
+                new Tutorial();
             }
         });
 
@@ -103,7 +102,7 @@ public class MainMenu extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-//                new SkillTreeFrame();
+                new SkillTree();
             }
         });
 
@@ -118,8 +117,7 @@ public class MainMenu extends JFrame {
         button5.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose();
-//                new CreditFrame();
+
             }
         });
 
