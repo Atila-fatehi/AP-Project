@@ -6,6 +6,7 @@ import Model.Epsilon;
 import Model.Trigorath;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class GamePanel extends JPanel {
     private ArrayList<Bullet> bullets = new ArrayList<>();
     private ArrayList<Trigorath> trigoraths = new ArrayList<>();
     private final GameManager gameManager;
-    private int elapsedTime ;
+    private int elapsedTime;
 
     public GamePanel(Epsilon epsilon) {
         this.epsilon = epsilon;
@@ -50,7 +51,7 @@ public class GamePanel extends JPanel {
         for (int i = 0; i < trigoraths.size(); i++) {
             int[] xPoints = {trigoraths.get(i).getX1(), trigoraths.get(i).getX2(), trigoraths.get(i).getX3()};
             int[] yPoints = {trigoraths.get(i).getY1(), trigoraths.get(i).getY2(), trigoraths.get(i).getY3()};
-            g.fillPolygon(xPoints,yPoints,3);
+            g.fillPolygon(xPoints, yPoints, 3);
 //            g.drawOval(trigoraths.get(i).getInnerCircleX() , trigoraths.get(i).getInnerCircleY() , trigoraths.get(i).getInnerCircleRadius(),trigoraths.get(i).getInnerCircleRadius());
         }
 
@@ -63,11 +64,11 @@ public class GamePanel extends JPanel {
         }
         //draw Strings
         g.setColor(new Color(0x8A26FF));
-        g.setFont(new Font("HelveticaNeue-CondensedBlack" , Font.BOLD ,15));
-        g.drawString("HP : " + String.valueOf(epsilon.getHP()) , 10, 20);
-        g.drawString("XP : " + String.valueOf(epsilon.getXP()) , 100 , 20);
-        g.drawString("WAVE : 1"  , 170 , 20);
-        g.drawString("ELAPSED TIME : " + String.valueOf(elapsedTime), 250 , 20);
+        g.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 15));
+        g.drawString("HP : " + String.valueOf(epsilon.getHP()), 10, 20);
+        g.drawString("XP : " + String.valueOf(epsilon.getXP()), 100, 20);
+        g.drawString("WAVE : 1", 170, 20);
+        g.drawString("ELAPSED TIME : " + String.valueOf(elapsedTime), 250, 20);
         g.dispose();
     }
 
@@ -123,6 +124,10 @@ public class GamePanel extends JPanel {
                         gameManager.setAccR(true);
                         gameManager.setDecR(false);
                         break;
+                    case KeyEvent.VK_SPACE:
+                        gameManager.setPaused(!gameManager.isPaused());
+                        openShop();
+                        break;
                 }
             }
 
@@ -149,6 +154,95 @@ public class GamePanel extends JPanel {
                 }
             }
         });
+    }
+
+    public void openShop() {
+        JFrame shopFrame = new JFrame();
+        shopFrame.getContentPane().setBackground(new Color(0x000000));
+        shopFrame.setTitle("SHOP");
+        Border border = BorderFactory.createLineBorder(Color.WHITE, 2);
+        shopFrame.getRootPane().setBorder(border);
+        shopFrame.setUndecorated(true);
+        shopFrame.setSize(700, 700);
+        shopFrame.setLocationRelativeTo(null);
+        shopFrame.setLayout(null);
+        shopFrame.setVisible(true);
+        shopFrame.setResizable(false);
+
+        JLabel label = new JLabel("XP : " + String.valueOf(epsilon.getXP()));
+        label.setHorizontalAlignment(JLabel.CENTER);
+        label.setBounds(200, 100, 300, 100);
+        label.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25));
+        label.setForeground(new Color(0xFB8B24));
+
+
+        JLabel label3 = new JLabel("O' Hephaestus، Banish");
+        label3.setHorizontalAlignment(JLabel.CENTER);
+        label3.setBounds(100, 200, 300, 100);
+        label3.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25));
+        label3.setForeground(new Color(0xFB8B24));
+        JButton button2 = new JButton("100 XP");
+        button2.setBounds(400, 225, 200, 50);
+        button2.setFocusable(false);
+        button2.setHorizontalAlignment(JButton.CENTER);
+        button2.setHorizontalTextPosition(JButton.CENTER);
+        button2.setBackground(new Color(0x9A1A03));
+        button2.setForeground(new Color(0xFB8B24));
+        button2.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25));
+
+        JLabel label1 = new JLabel("O’ Athena، Empower");
+        label1.setHorizontalAlignment(JLabel.CENTER);
+        label1.setBounds(100, 270, 300, 100);
+        label1.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25));
+        label1.setForeground(new Color(0xFB8B24));
+        JButton button3 = new JButton("75 XP");
+        button3.setBounds(400, 300, 200, 50);
+        button3.setFocusable(false);
+        button3.setHorizontalAlignment(JButton.CENTER);
+        button3.setHorizontalTextPosition(JButton.CENTER);
+        button3.setBackground(new Color(0x9A1A03));
+        button3.setForeground(new Color(0xFB8B24));
+        button3.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25));
+
+        JLabel label2 = new JLabel("O' Apollo Heal");
+        label2.setHorizontalAlignment(JLabel.CENTER);
+        label2.setBounds(100, 340, 300, 100);
+        label2.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25));
+        label2.setForeground(new Color(0xFB8B24));
+        JButton button4 = new JButton("50 XP");
+        button4.setBounds(400, 375, 200, 50);
+        button4.setFocusable(false);
+        button4.setHorizontalAlignment(JButton.CENTER);
+        button4.setHorizontalTextPosition(JButton.CENTER);
+        button4.setBackground(new Color(0x9A1A03));
+        button4.setForeground(new Color(0xFB8B24));
+        button4.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25));
+
+        JButton button1 = new JButton("Done");
+        button1.setBounds(200, 550, 300, 50);
+        button1.setFocusable(false);
+        button1.setHorizontalAlignment(JButton.CENTER);
+        button1.setHorizontalTextPosition(JButton.CENTER);
+        button1.setBackground(new Color(0x9A1A03));
+        button1.setForeground(new Color(0xFB8B24));
+        button1.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25));
+
+        button1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                gameManager.setPaused(!gameManager.isPaused());
+                shopFrame.dispose();
+            }
+        });
+        shopFrame.add(label);
+        shopFrame.add(label1);
+        shopFrame.add(label2);
+        shopFrame.add(label3);
+        shopFrame.add(button1);
+        shopFrame.add(button2);
+        shopFrame.add(button3);
+        shopFrame.add(button4);
+        shopFrame.setVisible(true);
     }
 
     public void shrink() {
@@ -195,7 +289,8 @@ public class GamePanel extends JPanel {
     public ArrayList<Bullet> getBullets() {
         return bullets;
     }
-    public void setBullets(ArrayList<Bullet> bullets){
+
+    public void setBullets(ArrayList<Bullet> bullets) {
         this.bullets = bullets;
     }
 

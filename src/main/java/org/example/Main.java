@@ -11,8 +11,8 @@ public class Main implements Runnable{
 
     @Override
     public void run() {
-        //new MainMenu();
-        new GameFrame();
+        new MainMenu();
+//        new GameFrame();
     }
 
 }

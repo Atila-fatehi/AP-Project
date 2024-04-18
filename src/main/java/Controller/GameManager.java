@@ -15,6 +15,7 @@ import java.util.concurrent.TimeUnit;
 public class GameManager {
     private final GamePanel gamePanel;
     private final Epsilon epsilon;
+    private boolean paused;
     private boolean accU, accD, accR, accL;
     private boolean decU = true, decD = true, decR = true, decL = true;
     private static final int MAX_VELOCITY = 11;
@@ -30,7 +31,9 @@ public class GameManager {
         new Timer((int) (double) TimeUnit.SECONDS.toMillis(1) / 60/*GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0].getDisplayMode().getRefreshRate()*/, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                updateView();
+                if(!paused) {
+                    updateView();
+                }
             }
         }) {{
             setCoalesce(true);
@@ -38,7 +41,9 @@ public class GameManager {
         new Timer((int) (double) TimeUnit.SECONDS.toMillis(1) / 100, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                updateModel();
+                if(!paused) {
+                    updateModel();
+                }
             }
         }) {{
             setCoalesce(true);
@@ -54,7 +59,6 @@ public class GameManager {
     }
 
     public void updateModel() {
-        ArrayList<Integer> removedIndex = new ArrayList<>();
         //On Trigorath Collision
         for (int i = 0; i < bullets.size(); i++) {
             bullets.get(i).move();
@@ -277,5 +281,13 @@ public class GameManager {
 
     public void setDecL(boolean decL) {
         this.decL = decL;
+    }
+
+    public boolean isPaused() {
+        return paused;
+    }
+
+    public void setPaused(boolean paused) {
+        this.paused = paused;
     }
 }
