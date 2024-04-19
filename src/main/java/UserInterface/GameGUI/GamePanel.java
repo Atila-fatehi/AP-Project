@@ -49,18 +49,18 @@ public class GamePanel extends JPanel {
         //draw Enemies
         g.setColor(new Color(0xFFD900));
         for (int i = 0; i < trigoraths.size(); i++) {
-            int[] xPoints = {trigoraths.get(i).getX1(), trigoraths.get(i).getX2(), trigoraths.get(i).getX3()};
-            int[] yPoints = {trigoraths.get(i).getY1(), trigoraths.get(i).getY2(), trigoraths.get(i).getY3()};
+            int[] xPoints = {(int) trigoraths.get(i).getX1(), (int) trigoraths.get(i).getX2(), (int) trigoraths.get(i).getX3()};
+            int[] yPoints = {(int) trigoraths.get(i).getY1(), (int) trigoraths.get(i).getY2(), (int) trigoraths.get(i).getY3()};
             g.fillPolygon(xPoints, yPoints, 3);
 //            g.drawOval(trigoraths.get(i).getInnerCircleX() , trigoraths.get(i).getInnerCircleY() , trigoraths.get(i).getInnerCircleRadius(),trigoraths.get(i).getInnerCircleRadius());
         }
 
         //draw epsilon
         g.setColor(new Color(0x8A07DC));
-        g.fillOval(epsilon.getX(), epsilon.getY(), epsilon.getRadius(), epsilon.getRadius());
+        g.fillOval((int) epsilon.getX(), (int) epsilon.getY(), (int) epsilon.getRadius(), (int) epsilon.getRadius());
         //draw bullets
         for (int i = 0; i < bullets.size(); i++) {
-            g.fillOval(bullets.get(i).getX(), bullets.get(i).getY(), bullets.get(i).getRadius(), bullets.get(i).getRadius());
+            g.fillOval((int) bullets.get(i).getX(), (int) bullets.get(i).getY(), (int) bullets.get(i).getRadius(), (int) bullets.get(i).getRadius());
         }
         //draw Strings
         g.setColor(new Color(0x8A26FF));

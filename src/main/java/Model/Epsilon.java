@@ -3,14 +3,14 @@ package Model;
 public class Epsilon implements movable{
     private int HP;
     private int XP;
-    private int x;
-    private int y;
-    private int radius;
-    private int vx;
-    private int vy;
+    private double x;
+    private double y;
+    private double radius;
+    private double vx;
+    private double vy;
 
 
-    public Epsilon(int x, int y, int radius) {
+    public Epsilon(double x, double y, double radius) {
         this.x = x;
         this.y = y;
         setHP(100);
@@ -33,43 +33,43 @@ public class Epsilon implements movable{
         this.XP = XP;
     }
 
-    public int getX() {
+    public double getX() {
         return x;
     }
 
-    public void setX(int x) {
+    public void setX(double x) {
         this.x = x;
     }
 
-    public int getY() {
+    public double getY() {
         return y;
     }
 
-    public void setY(int y) {
+    public void setY(double y) {
         this.y = y;
     }
 
-    public int getRadius() {
+    public double getRadius() {
         return radius;
     }
 
-    public void setRadius(int radius) {
+    public void setRadius(double radius) {
         this.radius = radius;
     }
 
-    public int getVx() {
+    public double getVx() {
         return vx;
     }
 
-    public void setVx(int vx) {
+    public void setVx(double vx) {
         this.vx = vx;
     }
 
-    public int getVy() {
+    public double getVy() {
         return vy;
     }
 
-    public void setVy(int vy) {
+    public void setVy(double vy) {
         this.vy = vy;
     }
 

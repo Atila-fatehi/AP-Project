@@ -50,7 +50,7 @@ public class SkillTree extends JFrame {
 
         JLabel label3 = new JLabel("XP : ");
         label3.setHorizontalAlignment(JLabel.CENTER);
-        label3.setBounds(400, 10, 300, 50);
+        label3.setBounds(350, 10, 300, 50);
         label3.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25));
         label3.setForeground(new Color(0xFB8B24));
         add(label3);

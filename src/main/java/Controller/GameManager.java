@@ -27,7 +27,7 @@ public class GameManager {
     public GameManager(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
         this.epsilon = gamePanel.getEpsilon();
-        trigoraths.add(new Trigorath(100, 100 + 20, 100 + 10, 100, 100, 100 - 18, 14, 100 + 10 - 7, 100 - 9 - 5));
+        trigoraths.add(new Trigorath(100, 100 + 20, 100 + 10, 100, 100, 100 - 18));
         new Timer((int) (double) TimeUnit.SECONDS.toMillis(1) / 60/*GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0].getDisplayMode().getRefreshRate()*/, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -63,7 +63,7 @@ public class GameManager {
         for (int i = 0; i < bullets.size(); i++) {
             bullets.get(i).move();
             for (int j = 0; j < trigoraths.size(); j++) {
-                int trigorathCollisionNum = bullets.get(i).onTrigorathCollision(trigoraths.get(j).getX1(), trigoraths.get(j).getX2(), trigoraths.get(j).getX3(), trigoraths.get(j).getY1(), trigoraths.get(j).getY2(), trigoraths.get(j).getY3(), trigoraths.get(j).getInnerCircleRadius(), trigoraths.get(j).getInnerCircleX(), trigoraths.get(j).getInnerCircleY());
+                int trigorathCollisionNum = bullets.get(i).onTrigorathCollision(trigoraths.get(j).getX1(), trigoraths.get(j).getX2(), trigoraths.get(j).getX3(), trigoraths.get(j).getY1(), trigoraths.get(j).getY2(), trigoraths.get(j).getY3());
                 if (trigorathCollisionNum == 1) {
                     trigoraths.get(j).setHP(trigoraths.get(j).getHP() - 5);
                     bullets.remove(i);
