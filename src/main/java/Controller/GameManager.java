@@ -31,7 +31,7 @@ public class GameManager {
         new Timer((int) (double) TimeUnit.SECONDS.toMillis(1) / 60/*GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0].getDisplayMode().getRefreshRate()*/, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(!paused) {
+                if (!paused) {
                     updateView();
                 }
             }
@@ -41,7 +41,7 @@ public class GameManager {
         new Timer((int) (double) TimeUnit.SECONDS.toMillis(1) / 100, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(!paused) {
+                if (!paused) {
                     updateModel();
                 }
             }
@@ -125,9 +125,9 @@ public class GameManager {
         }
         //Tri stuff
         for (int i = 0; i < trigoraths.size(); i++) {
-            trigoraths.get(i).calculateMovingDirection(epsilon.getX(), epsilon.getY());
+            trigoraths.get(i).calculateMovingDirection(epsilon.getX() + epsilon.getRadius() / 2, epsilon.getY() + epsilon.getRadius() / 2);
             trigoraths.get(i).move();
-            int epsilonCollisionNum = trigoraths.get(i).onCollisionEpsilon(epsilon.getX(), epsilon.getY(), epsilon.getRadius());
+            int epsilonCollisionNum = trigoraths.get(i).onCollisionEpsilon(epsilon.getX() + epsilon.getRadius() / 2, epsilon.getY() + epsilon.getRadius() / 2, epsilon.getRadius());
             if (epsilonCollisionNum == 1) {
                 epsilon.setVx(-10);
                 epsilon.setVy(10);

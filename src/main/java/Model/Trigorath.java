@@ -15,7 +15,6 @@ public class Trigorath implements movable {
         this.y1 = y1;
         this.y2 = y2;
         this.y3 = y3;
-
         this.HP = 10;
     }
 
@@ -23,10 +22,10 @@ public class Trigorath implements movable {
         if (Math.sqrt(Math.pow(x1 - x, 2) + Math.pow(y1 - y, 2)) <= radius / 2) {
             return 1;
         }
-        if (Math.sqrt(Math.pow(x2 - x, 2) + Math.pow(y2 - y, 2)) <= radius / 2 - 7) {
+        if (Math.sqrt(Math.pow(x2 - x, 2) + Math.pow(y2 - y, 2)) <= radius / 2) {
             return 2;
         }
-        if (Math.sqrt(Math.pow(x3 - x, 2) + Math.pow(y3 - y, 2)) <= radius) {
+        if (Math.sqrt(Math.pow(x3 - x, 2) + Math.pow(y3 - y, 2)) <= radius / 2) {
             return 3;
         }
         return 0;
@@ -37,19 +36,16 @@ public class Trigorath implements movable {
         x2 += rate;
         x3 += rate;
     }
-
     public void shiftY(double rate) {
         y1 += rate;
         y2 += rate;
         y3 += rate;
     }
-
     public void calculateMovingDirection(double x, double y) {
         double angle = Math.atan2(y - (y1 + y3) / 2, x - (x1 + x2) / 2);
         setVx((double) Math.round(constantVelocity * Math.cos(angle)));
         setVy((double)Math.round(constantVelocity * Math.sin(angle)));
     }
-
     public void move() {
         x1 += vx;
         x2 += vx;
@@ -58,7 +54,6 @@ public class Trigorath implements movable {
         y2 += vy;
         y3 += vy;
     }
-
     public double getX1() {
         return x1;
     }

@@ -34,13 +34,13 @@ public class GamePanel extends JPanel {
         addListeners();
         //Game Manager
         this.gameManager = new GameManager(this);
-        Timer time = new Timer(1000, new ActionListener() {
+        Timer timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 elapsedTime++;
             }
         });
-        time.start();
+        timer.start();
     }
 
     @Override
@@ -52,7 +52,6 @@ public class GamePanel extends JPanel {
             int[] xPoints = {(int) trigoraths.get(i).getX1(), (int) trigoraths.get(i).getX2(), (int) trigoraths.get(i).getX3()};
             int[] yPoints = {(int) trigoraths.get(i).getY1(), (int) trigoraths.get(i).getY2(), (int) trigoraths.get(i).getY3()};
             g.fillPolygon(xPoints, yPoints, 3);
-//            g.drawOval(trigoraths.get(i).getInnerCircleX() , trigoraths.get(i).getInnerCircleY() , trigoraths.get(i).getInnerCircleRadius(),trigoraths.get(i).getInnerCircleRadius());
         }
 
         //draw epsilon
@@ -102,6 +101,7 @@ public class GamePanel extends JPanel {
         addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
+
             }
 
             @Override
