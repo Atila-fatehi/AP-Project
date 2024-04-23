@@ -43,8 +43,8 @@ public class Trigorath implements movable {
     }
     public void calculateMovingDirection(double x, double y) {
         double angle = Math.atan2(y - (y1 + y3) / 2, x - (x1 + x2) / 2);
-        setVx((double) Math.round(constantVelocity * Math.cos(angle)));
-        setVy((double)Math.round(constantVelocity * Math.sin(angle)));
+        setVx(constantVelocity * Math.cos(angle));
+        setVy(constantVelocity * Math.sin(angle));
     }
     public void move() {
         x1 += vx;

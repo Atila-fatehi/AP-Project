@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 public class GameManager {
     private final GamePanel gamePanel;
-    private final Epsilon epsilon;
+    private Epsilon epsilon;
     private boolean paused;
     private boolean accU, accD, accR, accL;
     private boolean decU = true, decD = true, decR = true, decL = true;
@@ -26,8 +26,9 @@ public class GameManager {
 
     public GameManager(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
-        this.epsilon = gamePanel.getEpsilon();
         trigoraths.add(new Trigorath(100, 100 + 20, 100 + 10, 100, 100, 100 - 18));
+        epsilon = new Epsilon(350,350,26);
+        gamePanel.setEpsilon(epsilon);
         new Timer((int) (double) TimeUnit.SECONDS.toMillis(1) / 60/*GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0].getDisplayMode().getRefreshRate()*/, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

@@ -21,12 +21,8 @@ public class GameFrame extends JFrame {
         setBackground(new Color(0, 0, 0, 0));
         setResizable(false);
         setVisible(true);
-        //Create Epsilon
-        Epsilon epsilon = new Epsilon(350,350,20);
-        //New Trigorath
-
         //Adding Panel
-        GamePanel gamePanel = new GamePanel(epsilon);
+        GamePanel gamePanel = new GamePanel();
         gamePanel.setBackground(new Color(0x000000));
         gamePanel.setBounds(locationX, locationY, initialPanelWidth, initialPanelHeight);
         add(gamePanel);

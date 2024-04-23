@@ -20,14 +20,13 @@ public class GamePanel extends JPanel {
     private int screenHeight = 700;
     private static final int shrinkageRate = 2;
     private int shrinkageCounter = 0;
-    private final Epsilon epsilon;
+    private Epsilon epsilon;
     private ArrayList<Bullet> bullets = new ArrayList<>();
     private ArrayList<Trigorath> trigoraths = new ArrayList<>();
     private final GameManager gameManager;
     private int elapsedTime;
 
-    public GamePanel(Epsilon epsilon) {
-        this.epsilon = epsilon;
+    public GamePanel() {
         setFocusable(true);
         setLayout(null);
         //add Listeners
@@ -42,7 +41,9 @@ public class GamePanel extends JPanel {
         });
         timer.start();
     }
-
+    public void setEpsilon(Epsilon epsilon){
+        this.epsilon = epsilon;
+    }
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

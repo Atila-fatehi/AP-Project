@@ -1,8 +1,12 @@
 package Model;
 
+import java.awt.geom.Point2D;
+
 public class Epsilon implements movable{
     private int HP;
     private int XP;
+
+    private Point2D anchor;
     private double x;
     private double y;
     private double radius;
