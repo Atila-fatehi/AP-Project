@@ -14,12 +14,8 @@ import java.util.concurrent.TimeUnit;
 
 public class GameManager {
     private final GamePanel gamePanel;
-    private Epsilon epsilon;
+    private final Epsilon epsilon;
     private boolean paused;
-    private boolean accU, accD, accR, accL;
-    private boolean decU = true, decD = true, decR = true, decL = true;
-    private static final int MAX_VELOCITY = 11;
-    private static final int ACCELERATION = 1;
     private static final int expandRate = 15;
     private final ArrayList<Bullet> bullets = new ArrayList<>();
     private final ArrayList<Trigorath> trigoraths = new ArrayList<>();
@@ -27,7 +23,7 @@ public class GameManager {
     public GameManager(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
         trigoraths.add(new Trigorath(100, 100 + 20, 100 + 10, 100, 100, 100 - 18));
-        epsilon = new Epsilon(350,350,26);
+        epsilon = new Epsilon(350, 350, 13);
         gamePanel.setEpsilon(epsilon);
         new Timer((int) (double) TimeUnit.SECONDS.toMillis(1) / 60/*GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0].getDisplayMode().getRefreshRate()*/, new ActionListener() {
             @Override
@@ -126,9 +122,9 @@ public class GameManager {
         }
         //Tri stuff
         for (int i = 0; i < trigoraths.size(); i++) {
-            trigoraths.get(i).calculateMovingDirection(epsilon.getX() + epsilon.getRadius() / 2, epsilon.getY() + epsilon.getRadius() / 2);
+            trigoraths.get(i).calculateMovingDirection(epsilon.getX(), epsilon.getY());
             trigoraths.get(i).move();
-            int epsilonCollisionNum = trigoraths.get(i).onCollisionEpsilon(epsilon.getX() + epsilon.getRadius() / 2, epsilon.getY() + epsilon.getRadius() / 2, epsilon.getRadius());
+            int epsilonCollisionNum = trigoraths.get(i).onEpsilonCollision(epsilon.getX(), epsilon.getY(), epsilon.getRadius());
             if (epsilonCollisionNum == 1) {
                 epsilon.setVx(-10);
                 epsilon.setVy(10);
@@ -151,138 +147,35 @@ public class GameManager {
 
         //epsilon stuff
         epsilon.move();
-        if (accU) {
-            if (epsilon.getVy() >= -MAX_VELOCITY) {
-                epsilon.setVy(epsilon.getVy() - ACCELERATION);
-            }
-        }
-        if (accD) {
-            if (epsilon.getVy() <= MAX_VELOCITY) {
-                epsilon.setVy(epsilon.getVy() + ACCELERATION);
-            }
-        }
-        if (accL) {
-            if (epsilon.getVx() >= -MAX_VELOCITY) {
-                epsilon.setVx(epsilon.getVx() - ACCELERATION);
-            }
-        }
-        if (accR) {
-            if (epsilon.getVx() <= MAX_VELOCITY) {
-                epsilon.setVx(epsilon.getVx() + ACCELERATION);
-            }
-        }
-        if (decU) {
-            if (epsilon.getVy() < 0) {
-                epsilon.setVy(epsilon.getVy() + ACCELERATION);
-            }
-        }
-        if (decD) {
-            if (epsilon.getVy() > 0) {
-                epsilon.setVy(epsilon.getVy() - ACCELERATION);
-            }
-        }
-        if (decL) {
-            if (epsilon.getVx() < 0) {
-                epsilon.setVx(epsilon.getVx() + ACCELERATION);
-            }
-        }
-        if (decR) {
-            if (epsilon.getVx() > 0) {
-                epsilon.setVx(epsilon.getVx() - ACCELERATION);
-            }
-        }
-        if (epsilon.getX() < 0) {
-            epsilon.setX(0);
+
+        if (epsilon.getX() - epsilon.getRadius() < 0) {
+            epsilon.setX(epsilon.getRadius());
             epsilon.setVx(0);
         } else if (epsilon.getX() + epsilon.getRadius() > gamePanel.getScreenWidth()) {
             epsilon.setX(gamePanel.getScreenWidth() - epsilon.getRadius());
             epsilon.setVx(0);
         }
 
-        if (epsilon.getY() < 0) {
-            epsilon.setY(0);
+        if (epsilon.getY() - epsilon.getRadius() < 0) {
+            epsilon.setY(epsilon.getRadius());
             epsilon.setVy(0);
         } else if (epsilon.getY() + epsilon.getRadius() > gamePanel.getScreenHeight()) {
             epsilon.setY(gamePanel.getScreenHeight() - epsilon.getRadius());
             epsilon.setVy(0);
         }
 
-
     }
 
     public void mouseClicked(int x, int y) {
-        Bullet bullet = new Bullet(epsilon.getX() + epsilon.getRadius() / 2, epsilon.getY() + epsilon.getRadius() / 2);
-        double angle = Math.atan2(y - epsilon.getY() - epsilon.getRadius() / 2, x - epsilon.getX() - epsilon.getRadius() / 2);
-        bullet.setVx(((int) Math.round(bullet.getConstantVelocity() * Math.cos(angle))));
-        bullet.setVy(((int) Math.round(bullet.getConstantVelocity() * Math.sin(angle))));
+        Bullet bullet = new Bullet(epsilon.getX(), epsilon.getY());
+        double angle = Math.atan2(y - epsilon.getY(), x - epsilon.getX());
+        bullet.setVx(bullet.getConstantVelocity() * Math.cos(angle));
+        bullet.setVy(bullet.getConstantVelocity() * Math.sin(angle));
         bullets.add(bullet);
     }
 
 
     //GETTER SETTERS
-    public boolean isAccU() {
-        return accU;
-    }
-
-    public void setAccU(boolean accU) {
-        this.accU = accU;
-    }
-
-    public boolean isAccD() {
-        return accD;
-    }
-
-    public void setAccD(boolean accD) {
-        this.accD = accD;
-    }
-
-    public boolean isAccR() {
-        return accR;
-    }
-
-    public void setAccR(boolean accR) {
-        this.accR = accR;
-    }
-
-    public boolean isAccL() {
-        return accL;
-    }
-
-    public void setAccL(boolean accL) {
-        this.accL = accL;
-    }
-
-    public boolean isDecU() {
-        return decU;
-    }
-
-    public void setDecU(boolean decU) {
-        this.decU = decU;
-    }
-
-    public boolean isDecD() {
-        return decD;
-    }
-
-    public void setDecD(boolean decD) {
-        this.decD = decD;
-    }
-
-    public boolean isDecR() {
-        return decR;
-    }
-
-    public void setDecR(boolean decR) {
-        this.decR = decR;
-    }
-
-    public boolean isDecL() {
-        return decL;
-    }
-
-    public void setDecL(boolean decL) {
-        this.decL = decL;
-    }
 
     public boolean isPaused() {
         return paused;

@@ -18,14 +18,14 @@ public class Trigorath implements movable {
         this.HP = 10;
     }
 
-    public int onCollisionEpsilon(double x, double y, double radius) {
-        if (Math.sqrt(Math.pow(x1 - x, 2) + Math.pow(y1 - y, 2)) <= radius / 2) {
+    public int onEpsilonCollision(double x, double y, double radius) {
+        if (Math.sqrt(Math.pow(x1 - x, 2) + Math.pow(y1 - y, 2)) <= radius) {
             return 1;
         }
-        if (Math.sqrt(Math.pow(x2 - x, 2) + Math.pow(y2 - y, 2)) <= radius / 2) {
+        if (Math.sqrt(Math.pow(x2 - x, 2) + Math.pow(y2 - y, 2)) <= radius) {
             return 2;
         }
-        if (Math.sqrt(Math.pow(x3 - x, 2) + Math.pow(y3 - y, 2)) <= radius / 2) {
+        if (Math.sqrt(Math.pow(x3 - x, 2) + Math.pow(y3 - y, 2)) <= radius) {
             return 3;
         }
         return 0;

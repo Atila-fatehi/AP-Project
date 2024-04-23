@@ -41,9 +41,11 @@ public class GamePanel extends JPanel {
         });
         timer.start();
     }
-    public void setEpsilon(Epsilon epsilon){
+
+    public void setEpsilon(Epsilon epsilon) {
         this.epsilon = epsilon;
     }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -57,7 +59,7 @@ public class GamePanel extends JPanel {
 
         //draw epsilon
         g.setColor(new Color(0x8A07DC));
-        g.fillOval((int) epsilon.getX(), (int) epsilon.getY(), (int) epsilon.getRadius(), (int) epsilon.getRadius());
+        g.fillOval((int) (epsilon.getX() - epsilon.getRadius()), (int) (epsilon.getY() - epsilon.getRadius()), (int) epsilon.getRadius() * 2, (int) epsilon.getRadius() * 2);
         //draw bullets
         for (int i = 0; i < bullets.size(); i++) {
             g.fillOval((int) bullets.get(i).getX(), (int) bullets.get(i).getY(), (int) bullets.get(i).getRadius(), (int) bullets.get(i).getRadius());
@@ -81,7 +83,7 @@ public class GamePanel extends JPanel {
 
             @Override
             public void mousePressed(MouseEvent e) {
-                //gameManager.mouseClicked(e.getX(), e.getY());
+
             }
 
             @Override
@@ -110,20 +112,20 @@ public class GamePanel extends JPanel {
                 int keyCode = e.getKeyCode();
                 switch (keyCode) {
                     case KeyEvent.VK_W:
-                        gameManager.setAccU(true);
-                        gameManager.setDecU(false);
+                        epsilon.setAccU(true);
+                        epsilon.setDecU(false);
                         break;
                     case KeyEvent.VK_S:
-                        gameManager.setAccD(true);
-                        gameManager.setDecD(false);
+                        epsilon.setAccD(true);
+                        epsilon.setDecD(false);
                         break;
                     case KeyEvent.VK_A:
-                        gameManager.setAccL(true);
-                        gameManager.setDecL(false);
+                        epsilon.setAccL(true);
+                        epsilon.setDecL(false);
                         break;
                     case KeyEvent.VK_D:
-                        gameManager.setAccR(true);
-                        gameManager.setDecR(false);
+                        epsilon.setAccR(true);
+                        epsilon.setDecR(false);
                         break;
                     case KeyEvent.VK_SPACE:
                         gameManager.setPaused(!gameManager.isPaused());
@@ -137,20 +139,20 @@ public class GamePanel extends JPanel {
                 int keyCode = e.getKeyCode();
                 switch (keyCode) {
                     case KeyEvent.VK_W:
-                        gameManager.setAccU(false);
-                        gameManager.setDecU(true);
+                        epsilon.setAccU(false);
+                        epsilon.setDecU(true);
                         break;
                     case KeyEvent.VK_S:
-                        gameManager.setAccD(false);
-                        gameManager.setDecD(true);
+                        epsilon.setAccD(false);
+                        epsilon.setDecD(true);
                         break;
                     case KeyEvent.VK_A:
-                        gameManager.setAccL(false);
-                        gameManager.setDecL(true);
+                        epsilon.setAccL(false);
+                        epsilon.setDecL(true);
                         break;
                     case KeyEvent.VK_D:
-                        gameManager.setAccR(false);
-                        gameManager.setDecR(true);
+                        epsilon.setAccR(false);
+                        epsilon.setDecR(true);
                         break;
                 }
             }
