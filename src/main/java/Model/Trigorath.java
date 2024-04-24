@@ -2,13 +2,15 @@ package Model;
 
 public class Trigorath implements movable {
     private int HP;
+    private double posXHP;
+    private double posYHP;
     private double x1, x2, x3;
     private double y1, y2, y3;
-    private static final double constantVelocity = 1;
+    private static final double constantVelocity = 1.5;
     private double vx;
     private double vy;
 
-    public Trigorath(double x1, double x2, double x3, double y1, double y2, double y3) {
+    public Trigorath(double x1, double y1, double x2, double y2, double x3, double y3) {
         this.x1 = x1;
         this.x2 = x2;
         this.x3 = x3;
@@ -36,16 +38,19 @@ public class Trigorath implements movable {
         x2 += rate;
         x3 += rate;
     }
+
     public void shiftY(double rate) {
         y1 += rate;
         y2 += rate;
         y3 += rate;
     }
+
     public void calculateMovingDirection(double x, double y) {
         double angle = Math.atan2(y - (y1 + y3) / 2, x - (x1 + x2) / 2);
         setVx(constantVelocity * Math.cos(angle));
         setVy(constantVelocity * Math.sin(angle));
     }
+
     public void move() {
         x1 += vx;
         x2 += vx;
@@ -53,7 +58,16 @@ public class Trigorath implements movable {
         y1 += vy;
         y2 += vy;
         y3 += vy;
+        if (HP >= 10){
+            posXHP = x1 + 7;
+            posYHP = y1 - 4;
+        }else{
+            posXHP = x1 + 12;
+            posYHP = y1 - 4;
+        }
+
     }
+
     public double getX1() {
         return x1;
     }
@@ -124,5 +138,21 @@ public class Trigorath implements movable {
 
     public void setHP(int HP) {
         this.HP = HP;
+    }
+
+    public double getPosXHP() {
+        return posXHP;
+    }
+
+    public void setPosXHP(double posXHP) {
+        this.posXHP = posXHP;
+    }
+
+    public double getPosYHP() {
+        return posYHP;
+    }
+
+    public void setPosYHP(double posYHP) {
+        this.posYHP = posYHP;
     }
 }

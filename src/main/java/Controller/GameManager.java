@@ -7,6 +7,7 @@ import UserInterface.GameGUI.GameFrame;
 import UserInterface.GameGUI.GamePanel;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class GameManager {
 
     public GameManager(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
-        trigoraths.add(new Trigorath(100, 100 + 20, 100 + 10, 100, 100, 100 - 18));
+        trigoraths.add(new Trigorath(100, 100, 100 + 30, 100, 100 + 15, 100 - 25.5));
         epsilon = new Epsilon(350, 350, 13);
         gamePanel.setEpsilon(epsilon);
         new Timer((int) (double) TimeUnit.SECONDS.toMillis(1) / 60/*GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0].getDisplayMode().getRefreshRate()*/, new ActionListener() {
@@ -61,22 +62,7 @@ public class GameManager {
             bullets.get(i).move();
             for (int j = 0; j < trigoraths.size(); j++) {
                 int trigorathCollisionNum = bullets.get(i).onTrigorathCollision(trigoraths.get(j).getX1(), trigoraths.get(j).getX2(), trigoraths.get(j).getX3(), trigoraths.get(j).getY1(), trigoraths.get(j).getY2(), trigoraths.get(j).getY3());
-                if (trigorathCollisionNum == 1) {
-                    trigoraths.get(j).setHP(trigoraths.get(j).getHP() - 5);
-                    bullets.remove(i);
-                    i--;
-                }
-                if (trigorathCollisionNum == 2) {
-                    trigoraths.get(j).setHP(trigoraths.get(j).getHP() - 5);
-                    bullets.remove(i);
-                    i--;
-                }
-                if (trigorathCollisionNum == 3) {
-                    trigoraths.get(j).setHP(trigoraths.get(j).getHP() - 5);
-                    bullets.remove(i);
-                    i--;
-                }
-                if (trigorathCollisionNum == 4) {
+                if (trigorathCollisionNum != 0) {
                     trigoraths.get(j).setHP(trigoraths.get(j).getHP() - 5);
                     bullets.remove(i);
                     i--;
@@ -121,6 +107,9 @@ public class GameManager {
             }
         }
         //Tri stuff
+        if(trigoraths.isEmpty()){
+            trigoraths.add(new Trigorath(100, 100, 100 + 30, 100, 100 + 15, 100 - 25.5));
+        }
         for (int i = 0; i < trigoraths.size(); i++) {
             trigoraths.get(i).calculateMovingDirection(epsilon.getX(), epsilon.getY());
             trigoraths.get(i).move();
