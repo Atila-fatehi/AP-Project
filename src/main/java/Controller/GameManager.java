@@ -25,8 +25,8 @@ public class GameManager {
         this.gamePanel = gamePanel;
         trigoraths.add(new Trigorath(100, 100, 100 + 30, 100, 100 + 15, 100 - 25.5));
         trigoraths.add(new Trigorath(150, 150, 150 + 30, 150, 150 + 15, 150 - 25.5));
-        trigoraths.add(new Trigorath(500, 500, 500 + 30, 500, 500 + 15, 500 - 25.5));
-        trigoraths.add(new Trigorath(500, 300, 500 + 30, 300, 500 + 15, 300 - 25.5));
+//        trigoraths.add(new Trigorath(500, 500, 500 + 30, 500, 500 + 15, 500 - 25.5));
+//        trigoraths.add(new Trigorath(500, 300, 500 + 30, 300, 500 + 15, 300 - 25.5));
         epsilon = new Epsilon(350, 350, 13);
         gamePanel.setEpsilon(epsilon);
         new Timer((int) (double) TimeUnit.SECONDS.toMillis(1) / 60/*GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0].getDisplayMode().getRefreshRate()*/, new ActionListener() {
@@ -113,6 +113,13 @@ public class GameManager {
         for (int i = 0; i < trigoraths.size(); i++) {
             trigoraths.get(i).calculateMovingDirection(epsilon.getX(), epsilon.getY());
             trigoraths.get(i).move();
+            for (int j = 0; j < trigoraths.size(); j++) {
+                if(i != j){
+                    if(trigoraths.get(i).onTrigorathCollision(trigoraths.get(j).getX1() , trigoraths.get(j).getX2() ,trigoraths.get(j).getX3() , trigoraths.get(j).getY1() , trigoraths.get(j).getY2() , trigoraths.get(j).getY3()) != 0){
+
+                    }
+                }
+            }
 //            int epsilonCollisionNum = trigoraths.get(i).onEpsilonCollision(epsilon.getX(), epsilon.getY(), epsilon.getRadius());
 //            if (epsilonCollisionNum == 1) {
 //                epsilon.setVx(-10);

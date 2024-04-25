@@ -25,7 +25,22 @@ public class Trigorath implements movable {
         this.HP = 15;
         cal = new cal();
     }
+    public int onTrigorathCollision(double x1, double x2, double x3, double y1, double y2, double y3) {
+        int[] xPoints = {(int) x1, (int) x2, (int) x3};
+        int[] yPoints = {(int) y1, (int) y2, (int) y3};
 
+        Polygon trigorath = new Polygon(xPoints , yPoints , 3);
+        if(trigorath.contains(this.x1,this.y1)){
+            return 1;
+        }
+        if(trigorath.contains(this.x2,this.y2)){
+            return 2;
+        }
+        if(trigorath.contains(this.x3,this.y3)){
+            return 3;
+        }
+        return 0;
+    }
     public int onEpsilonCollision(double x, double y, double radius) {
         if (Math.sqrt(Math.pow(x1 - x, 2) + Math.pow(y1 - y, 2)) <= radius) {
             return 1;
