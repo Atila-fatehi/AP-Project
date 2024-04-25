@@ -66,6 +66,7 @@ public class GameManager {
 
     public void updateModel() {
         //Bullet stuff
+        //Tri collision
         for (int i = 0; i < bullets.size(); i++) {
             bullets.get(i).move();
             for (int j = 0; j < trigoraths.size(); j++) {
@@ -78,6 +79,7 @@ public class GameManager {
                 }
             }
         }
+        //Squ collision
         for (int i = 0; i < bullets.size(); i++) {
             for (int j = 0; j < squarantines.size(); j++) {
                 int squarantineCollisionNum = bullets.get(i).onSquarantineCollision(squarantines.get(j).getX1(), squarantines.get(j).getX2(), squarantines.get(j).getX3(), squarantines.get(j).getX4(), squarantines.get(j).getY1(), squarantines.get(j).getY2(), squarantines.get(j).getY3(), squarantines.get(j).getY4());
@@ -89,6 +91,7 @@ public class GameManager {
                 }
             }
         }
+        //wall collision
         for (int i = 0; i < bullets.size(); i++) {
             int wallCollisionNum = bullets.get(i).onWallCollision(gamePanel.getScreenWidth(), gamePanel.getScreenHeight());
             if (wallCollisionNum == 1) {
@@ -100,6 +103,9 @@ public class GameManager {
                 for (int j = 0; j < trigoraths.size(); j++) {
                     trigoraths.get(j).shiftX(expandRate);
                 }
+                for (int j = 0; j < squarantines.size(); j++) {
+                    squarantines.get(j).shiftX(expandRate);
+                }
                 bullets.remove(i);
                 i--;
             } else if (wallCollisionNum == 2) {
@@ -110,6 +116,9 @@ public class GameManager {
                 epsilon.setY(epsilon.getY() + expandRate);
                 for (int j = 0; j < trigoraths.size(); j++) {
                     trigoraths.get(j).shiftY(expandRate);
+                }
+                for (int j = 0; j < squarantines.size(); j++) {
+                    squarantines.get(j).shiftY(expandRate);
                 }
                 bullets.remove(i);
                 i--;
@@ -125,6 +134,7 @@ public class GameManager {
                 i--;
             }
         }
+
         //Tri stuff
         for (int i = 0; i < trigoraths.size(); i++) {
             trigoraths.get(i).calculateMovingDirection(epsilon.getX(), epsilon.getY());
@@ -136,33 +146,6 @@ public class GameManager {
                     }
                 }
             }
-//            int epsilonCollisionNum = trigoraths.get(i).onEpsilonCollision(epsilon.getX(), epsilon.getY(), epsilon.getRadius());
-//            if (epsilonCollisionNum == 1) {
-//                epsilon.setVx(-10);
-//                epsilon.setVy(10);
-//                epsilon.setHP(epsilon.getHP() - 10);
-//            }
-//            if (epsilonCollisionNum == 2) {
-//                epsilon.setVx(10);
-//                epsilon.setVy(10);
-//                epsilon.setHP(epsilon.getHP() - 10);
-//            }
-//            if (epsilonCollisionNum == 3) {
-//                epsilon.setVy(-14);
-//                epsilon.setHP(epsilon.getHP() - 10);
-//            }
-//            if (epsilonCollisionNum == 4) {
-//                epsilon.setVy(14);
-//            }
-//            if (epsilonCollisionNum == 5) {
-//                epsilon.setVx(10);
-//                epsilon.setVy(-10);
-//            }
-//
-//            if (epsilonCollisionNum == 6) {
-//                epsilon.setVx(-10);
-//                epsilon.setVy(-10);
-//            }
             if (trigoraths.get(i).getHP() <= 0) {
                 trigoraths.remove(i);
                 i--;
@@ -172,33 +155,19 @@ public class GameManager {
         for (int i = 0; i < squarantines.size(); i++) {
             squarantines.get(i).calculateMovingDirection(epsilon.getX(), epsilon.getY());
             squarantines.get(i).move();
-//            int epsilonCollisionNum = trigoraths.get(i).onEpsilonCollision(epsilon.getX(), epsilon.getY(), epsilon.getRadius());
-//            if (epsilonCollisionNum == 1) {
-//                epsilon.setVx(-10);
-//                epsilon.setVy(10);
-//                epsilon.setHP(epsilon.getHP() - 10);
-//            }
-//            if (epsilonCollisionNum == 2) {
-//                epsilon.setVx(10);
-//                epsilon.setVy(10);
-//                epsilon.setHP(epsilon.getHP() - 10);
-//            }
-//            if (epsilonCollisionNum == 3) {
-//                epsilon.setVy(-14);
-//                epsilon.setHP(epsilon.getHP() - 10);
-//            }
-//            if (epsilonCollisionNum == 4) {
-//                epsilon.setVy(14);
-//            }
-//            if (epsilonCollisionNum == 5) {
-//                epsilon.setVx(10);
-//                epsilon.setVy(-10);
-//            }
-//
-//            if (epsilonCollisionNum == 6) {
-//                epsilon.setVx(-10);
-//                epsilon.setVy(-10);
-//            }
+            for (int j = 0; j < squarantines.size(); j++) {
+                if (i != j) {
+                    if (squarantines.get(i).onSquarantineCollision(squarantines.get(j).getX1(), squarantines.get(j).getX2(), squarantines.get(j).getX3(), squarantines.get(j).getX4(), squarantines.get(j).getY1(), squarantines.get(j).getY2(), squarantines.get(j).getY3(), squarantines.get(j).getY4()) != 0) {
+                        System.out.println("s s");
+                    }
+                }
+            }
+            for (int j = 0; j < trigoraths.size(); j++) {
+                if (squarantines.get(i).onTrigorathCollision(trigoraths.get(j).getX1(), trigoraths.get(j).getX2(), trigoraths.get(j).getX3(), trigoraths.get(j).getY1(), trigoraths.get(j).getY2(), trigoraths.get(j).getY3()) != 0) {
+                    System.out.println("s t");
+                }
+            }
+            int epsilonCollisionNum = squarantines.get(i).onEpsilonCollision(epsilon.getX(), epsilon.getY(), epsilon.getRadius());
             if (squarantines.get(i).getHP() <= 0) {
                 squarantines.remove(i);
                 i--;
@@ -206,7 +175,6 @@ public class GameManager {
         }
         //epsilon stuff
         epsilon.move();
-
         if (epsilon.getX() - epsilon.getRadius() < 0) {
             epsilon.setX(epsilon.getRadius());
             epsilon.setVx(0);

@@ -173,8 +173,29 @@ public class GamePanel extends JPanel {
 
     public void openShop() {
         JFrame shopFrame = new JFrame();
+        shopFrame.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if(e.getKeyCode() == KeyEvent.VK_SPACE){
+                    gameManager.setPaused(!gameManager.isPaused());
+                    shopFrame.dispose();
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+
+            }
+        });
         shopFrame.getContentPane().setBackground(new Color(0x000000));
         shopFrame.setTitle("SHOP");
+        shopFrame.setFocusable(true);
+        shopFrame.requestFocus();
         Border border = BorderFactory.createLineBorder(Color.WHITE, 2);
         shopFrame.getRootPane().setBorder(border);
         shopFrame.setUndecorated(true);
