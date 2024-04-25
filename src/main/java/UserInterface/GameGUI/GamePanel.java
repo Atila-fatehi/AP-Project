@@ -3,6 +3,7 @@ package UserInterface.GameGUI;
 import Controller.GameManager;
 import Model.Bullet;
 import Model.Epsilon;
+import Model.Squarantine;
 import Model.Trigorath;
 
 import javax.swing.*;
@@ -23,6 +24,7 @@ public class GamePanel extends JPanel {
     private Epsilon epsilon;
     private ArrayList<Bullet> bullets = new ArrayList<>();
     private ArrayList<Trigorath> trigoraths = new ArrayList<>();
+    private ArrayList<Squarantine> squarantines = new ArrayList<>();
     private final GameManager gameManager;
     private int elapsedTime;
 
@@ -56,6 +58,13 @@ public class GamePanel extends JPanel {
             g.fillPolygon(trigoraths.get(i).getXPoints(), trigoraths.get(i).getYPoints(), 3);
             g.setColor(Color.BLACK);
             g.drawString(String.valueOf(trigoraths.get(i).getHP()), (int) trigoraths.get(i).getPosXHP(), (int) trigoraths.get(i).getPosYHP());
+        }
+
+        for (int i = 0; i < squarantines.size(); i++) {
+            g.setColor(new Color(0x22FF00));
+            g.fillPolygon(squarantines.get(i).getXPoints(), squarantines.get(i).getYPoints(), 4);
+            g.setColor(Color.BLACK);
+            g.drawString(String.valueOf(squarantines.get(i).getHP()), (int) squarantines.get(i).getPosXHP(), (int) squarantines.get(i).getPosYHP());
         }
 
         //draw epsilon
@@ -315,12 +324,10 @@ public class GamePanel extends JPanel {
     public void setLocationY(int locationY) {
         this.locationY = locationY;
     }
-
-    public ArrayList<Trigorath> getTrigoraths() {
-        return trigoraths;
-    }
-
     public void setTrigoraths(ArrayList<Trigorath> trigoraths) {
         this.trigoraths = trigoraths;
+    }
+    public void setSquarantines(ArrayList<Squarantine> squarantines) {
+        this.squarantines = squarantines;
     }
 }

@@ -95,7 +95,6 @@ public class Trigorath implements movable {
             posXHP = x1 + 12;
             posYHP = y1 - 4;
         }
-
     }
 
 
