@@ -1,5 +1,9 @@
 package Model;
 
+import util.cal;
+
+import java.awt.*;
+
 public class Trigorath implements movable {
     private int HP;
     private double posXHP;
@@ -9,6 +13,7 @@ public class Trigorath implements movable {
     private static final double constantVelocity = 1.5;
     private double vx;
     private double vy;
+    cal cal;
 
     public Trigorath(double x1, double y1, double x2, double y2, double x3, double y3) {
         this.x1 = x1;
@@ -17,7 +22,8 @@ public class Trigorath implements movable {
         this.y1 = y1;
         this.y2 = y2;
         this.y3 = y3;
-        this.HP = 10;
+        this.HP = 15;
+        cal = new cal();
     }
 
     public int onEpsilonCollision(double x, double y, double radius) {
@@ -29,6 +35,15 @@ public class Trigorath implements movable {
         }
         if (Math.sqrt(Math.pow(x3 - x, 2) + Math.pow(y3 - y, 2)) <= radius) {
             return 3;
+        }
+        if (cal.circleLineCollision(x, y, radius, x1, y1, x2, y2)) {
+            return 4;
+        }
+        if (cal.circleLineCollision(x, y, radius, x2, y2, x3, y3)) {
+            return 5;
+        }
+        if (cal.circleLineCollision(x, y, radius, x3, y3, x1, y1)) {
+            return 6;
         }
         return 0;
     }
@@ -58,16 +73,23 @@ public class Trigorath implements movable {
         y1 += vy;
         y2 += vy;
         y3 += vy;
-        if (HP >= 10){
+        if (HP >= 10) {
             posXHP = x1 + 7;
             posYHP = y1 - 4;
-        }else{
+        } else {
             posXHP = x1 + 12;
             posYHP = y1 - 4;
         }
 
     }
 
+
+    public int[] getXPoints(){
+        return new int[]{(int) x1,(int) x2,(int) x3};
+    }
+    public int[] getYPoints(){
+        return new int[]{(int) y1,(int) y2,(int) y3};
+    }
     public double getX1() {
         return x1;
     }

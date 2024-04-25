@@ -52,18 +52,19 @@ public class GamePanel extends JPanel {
         //draw Enemies
         g.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 15));
         for (int i = 0; i < trigoraths.size(); i++) {
-            int[] xPoints = {(int) trigoraths.get(i).getX1(), (int) trigoraths.get(i).getX2(), (int) trigoraths.get(i).getX3()};
-            int[] yPoints = {(int) trigoraths.get(i).getY1(), (int) trigoraths.get(i).getY2(), (int) trigoraths.get(i).getY3()};
             g.setColor(new Color(0xFFD900));
-            g.fillPolygon(xPoints, yPoints, 3);
+            g.fillPolygon(trigoraths.get(i).getXPoints(), trigoraths.get(i).getYPoints(), 3);
             g.setColor(Color.BLACK);
             g.drawString(String.valueOf(trigoraths.get(i).getHP()), (int) trigoraths.get(i).getPosXHP(), (int) trigoraths.get(i).getPosYHP());
         }
 
         //draw epsilon
-        g.setColor(new Color(0x8A07DC));
+        g.setColor(new Color(0x38C1F1));
         g.fillOval((int) (epsilon.getX() - epsilon.getRadius()), (int) (epsilon.getY() - epsilon.getRadius()), (int) epsilon.getRadius() * 2, (int) epsilon.getRadius() * 2);
+        g.setColor(new Color(0x000000));
+        g.fillOval((int) (epsilon.getX() - epsilon.getRadius()) + 4, (int) (epsilon.getY() - epsilon.getRadius()) + 4, (int) epsilon.getRadius() * 2 -8, (int) epsilon.getRadius() * 2 -8);
         //draw bullets
+        g.setColor(new Color(0x38C1F1));
         for (int i = 0; i < bullets.size(); i++) {
             g.fillOval((int) (bullets.get(i).getX() - bullets.get(i).getRadius()), (int) (bullets.get(i).getY() - bullets.get(i).getRadius()), (int) bullets.get(i).getRadius() * 2, (int) bullets.get(i).getRadius() * 2);
         }
