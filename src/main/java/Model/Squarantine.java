@@ -80,18 +80,18 @@ public class Squarantine implements movable {
         if (Math.sqrt(Math.pow(x4 - x, 2) + Math.pow(y4 - y, 2)) <= radius) {
             return 4;
         }
-        if (cal.circleLineCollision(x, y, radius, x1, y1, x2, y2)) {
-            return 5;
-        }
-        if (cal.circleLineCollision(x, y, radius, x2, y2, x3, y3)) {
-            return 6;
-        }
-        if (cal.circleLineCollision(x, y, radius, x3, y3, x4, y4)) {
-            return 7;
-        }
-        if (cal.circleLineCollision(x, y, radius, x4, y4, x1, y1)) {
-            return 8;
-        }
+//        if (cal.circleLineCollision(x, y, radius, x1, y1, x2, y2)) {
+//            return 5;
+//        }
+//        if (cal.circleLineCollision(x, y, radius, x2, y2, x3, y3)) {
+//            return 6;
+//        }
+//        if (cal.circleLineCollision(x, y, radius, x3, y3, x4, y4)) {
+//            return 7;
+//        }
+//        if (cal.circleLineCollision(x, y, radius, x4, y4, x1, y1)) {
+//            return 8;
+//        }
         return 0;
     }
     public void shiftX(double rate) {

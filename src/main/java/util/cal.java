@@ -1,7 +1,9 @@
 package util;
 
+import java.awt.geom.Point2D;
+
 public class cal {
-    public boolean circleLineCollision(double circleX, double circleY, double radius, double lineStartX, double lineStartY, double lineEndX, double lineEndY) {
+    public Point2D circleLineCollision(double circleX, double circleY, double radius, double lineStartX, double lineStartY, double lineEndX, double lineEndY) {
         double deltaX = lineEndX - lineStartX;
         double deltaY = lineEndY - lineStartY;
         double lengthSquared = deltaX * deltaX + deltaY * deltaY;
@@ -17,7 +19,12 @@ public class cal {
             closestX = lineStartX + u * deltaX;
             closestY = lineStartY + u * deltaY;
         }
-        return distance(circleX, circleY, closestX, closestY) <= radius;
+        if (distance(circleX, circleY, closestX, closestY) <= radius) {
+            return new Point2D.Double(closestX, closestY);
+        } else {
+            return null;
+        }
+
     }
 
     public double distance(double x1, double y1, double x2, double y2) {

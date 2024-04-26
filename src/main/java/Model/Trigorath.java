@@ -3,6 +3,7 @@ package Model;
 import util.cal;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 
 public class Trigorath implements movable {
     private int HP;
@@ -10,9 +11,13 @@ public class Trigorath implements movable {
     private double posYHP;
     private double x1, x2, x3;
     private double y1, y2, y3;
-    private static final double constantVelocity = 1.5;
+    private static final double constantVelocity = 1d;
+    private double maxVelocityX;
+    private double maxVelocityY;
     private double vx;
     private double vy;
+    private double accX;
+    private double accY;
     cal cal;
 
     public Trigorath(double x1, double y1, double x2, double y2, double x3, double y3) {
@@ -25,42 +30,47 @@ public class Trigorath implements movable {
         this.HP = 15;
         cal = new cal();
     }
-    public int onTrigorathCollision(double x1, double x2, double x3, double y1, double y2, double y3) {
+
+    public Point2D onTrigorathCollision(double x1, double x2, double x3, double y1, double y2, double y3) {
         int[] xPoints = {(int) x1, (int) x2, (int) x3};
         int[] yPoints = {(int) y1, (int) y2, (int) y3};
 
-        Polygon trigorath = new Polygon(xPoints , yPoints , 3);
-        if(trigorath.contains(this.x1,this.y1)){
-            return 1;
+        Polygon trigorath = new Polygon(xPoints, yPoints, 3);
+        if (trigorath.contains(this.x1, this.y1)) {
+            return new Point2D.Double(this.x1, this.y1);
         }
-        if(trigorath.contains(this.x2,this.y2)){
-            return 2;
+        if (trigorath.contains(this.x2, this.y2)) {
+            return new Point2D.Double(this.x2, this.y2);
         }
-        if(trigorath.contains(this.x3,this.y3)){
-            return 3;
+        if (trigorath.contains(this.x3, this.y3)) {
+            return new Point2D.Double(this.x3, this.y3);
         }
-        return 0;
+        return null;
     }
-    public int onEpsilonCollision(double x, double y, double radius) {
-        if (Math.sqrt(Math.pow(x1 - x, 2) + Math.pow(y1 - y, 2)) <= radius) {
-            return 1;
+
+    public Point2D onEpsilonCollision(double x, double y, double radius) {
+        if (cal.distance(x, y, x1, y1) <= radius) {
+            return new Point2D.Double(x1, y1);
         }
-        if (Math.sqrt(Math.pow(x2 - x, 2) + Math.pow(y2 - y, 2)) <= radius) {
-            return 2;
+        if (cal.distance(x, y, x2, y2) <= radius) {
+            return new Point2D.Double(x2, y2);
         }
-        if (Math.sqrt(Math.pow(x3 - x, 2) + Math.pow(y3 - y, 2)) <= radius) {
-            return 3;
+        if (cal.distance(x, y, x3, y3) <= radius) {
+            return new Point2D.Double(x3, y3);
         }
-        if (cal.circleLineCollision(x, y, radius, x1, y1, x2, y2)) {
-            return 4;
+        Point2D point1 = cal.circleLineCollision(x, y, radius, x1, y1, x2, y2);
+        if (point1 != null) {
+            return point1;
         }
-        if (cal.circleLineCollision(x, y, radius, x2, y2, x3, y3)) {
-            return 5;
+        Point2D point2 = cal.circleLineCollision(x, y, radius, x2, y2, x3, y3);
+        if (point2 != null) {
+            return point2;
         }
-        if (cal.circleLineCollision(x, y, radius, x3, y3, x1, y1)) {
-            return 6;
+        Point2D point3 = cal.circleLineCollision(x, y, radius, x3, y3, x1, y1);
+        if (point3 != null) {
+            return point3;
         }
-        return 0;
+        return null;
     }
 
     public void shiftX(double rate) {
@@ -77,8 +87,13 @@ public class Trigorath implements movable {
 
     public void calculateMovingDirection(double x, double y) {
         double angle = Math.atan2(y - (y1 + y3) / 2, x - (x1 + x2) / 2);
-        setVx(constantVelocity * Math.cos(angle));
-        setVy(constantVelocity * Math.sin(angle));
+//        setVx(constantVelocity * Math.cos(angle));
+//        setVy(constantVelocity * Math.sin(angle));
+
+        maxVelocityX = constantVelocity * Math.cos(angle);
+        maxVelocityY = constantVelocity * Math.sin(angle);
+        accX = Math.cos(angle);
+        accY = Math.sin(angle);
     }
 
     public void move() {
@@ -88,22 +103,48 @@ public class Trigorath implements movable {
         y1 += vy;
         y2 += vy;
         y3 += vy;
+
+        if (maxVelocityX > 0) {
+            if (vx < maxVelocityX) {
+                vx += accX;
+            }
+        } else {
+            if (vx > maxVelocityX) {
+                vx += accX;
+            }
+        }
+
+        if (maxVelocityY > 0) {
+            if (vy < maxVelocityY) {
+                vy += accY;
+            }
+        } else {
+            if (vy > maxVelocityY) {
+                vy += accY;
+            }
+        }
+
         if (HP >= 10) {
             posXHP = x1 + 7;
-            posYHP = y1 - 4;
         } else {
             posXHP = x1 + 12;
-            posYHP = y1 - 4;
         }
+        posYHP = y1 - 4;
     }
 
 
-    public int[] getXPoints(){
-        return new int[]{(int) x1,(int) x2,(int) x3};
+    public Point2D getCenterOfGravity() {
+        return new Point2D.Double((x1 + x2) / 2, (y1 + y3) / 2);
     }
-    public int[] getYPoints(){
-        return new int[]{(int) y1,(int) y2,(int) y3};
+
+    public int[] getXPoints() {
+        return new int[]{(int) x1, (int) x2, (int) x3};
     }
+
+    public int[] getYPoints() {
+        return new int[]{(int) y1, (int) y2, (int) y3};
+    }
+
     public double getX1() {
         return x1;
     }

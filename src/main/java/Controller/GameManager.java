@@ -6,11 +6,13 @@ import Model.Squarantine;
 import Model.Trigorath;
 import UserInterface.GameGUI.GameFrame;
 import UserInterface.GameGUI.GamePanel;
+import util.cal;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -22,6 +24,7 @@ public class GameManager {
     private final ArrayList<Bullet> bullets = new ArrayList<>();
     private final ArrayList<Trigorath> trigoraths = new ArrayList<>();
     private final ArrayList<Squarantine> squarantines = new ArrayList<>();
+    private cal cal;
 
     public GameManager(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
@@ -29,10 +32,10 @@ public class GameManager {
         gamePanel.setEpsilon(epsilon);
         trigoraths.add(new Trigorath(100, 100, 100 + 30, 100, 100 + 15, 100 - 25));
         trigoraths.add(new Trigorath(150, 150, 150 + 30, 150, 150 + 15, 150 - 25));
-//        trigoraths.add(new Trigorath(500, 500, 500 + 30, 500, 500 + 15, 500 - 25.5));
-//        trigoraths.add(new Trigorath(500, 300, 500 + 30, 300, 500 + 15, 300 - 25.5));
-        squarantines.add(new Squarantine(500, 500, 500 + 25, 500, 500 + 25, 500 + 25, 500, 500 + 25));
-
+        trigoraths.add(new Trigorath(500, 500, 500 + 30, 500, 500 + 15, 500 - 25));
+        trigoraths.add(new Trigorath(500, 300, 500 + 30, 300, 500 + 15, 300 - 25));
+        // squarantines.add(new Squarantine(500, 500, 500 + 25, 500, 500 + 25, 500 + 25, 500, 500 + 25));
+        cal = new cal();
         new Timer((int) (double) TimeUnit.SECONDS.toMillis(1) / 60/*GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0].getDisplayMode().getRefreshRate()*/, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -139,10 +142,15 @@ public class GameManager {
         for (int i = 0; i < trigoraths.size(); i++) {
             trigoraths.get(i).calculateMovingDirection(epsilon.getX(), epsilon.getY());
             trigoraths.get(i).move();
+            Point2D epsilonCollisionPoint = trigoraths.get(i).onEpsilonCollision(epsilon.getX(), epsilon.getY(), epsilon.getRadius());
+            if (epsilonCollisionPoint != null) {
+                impactOnPoint(epsilonCollisionPoint);
+            }
             for (int j = 0; j < trigoraths.size(); j++) {
                 if (i != j) {
-                    if (trigoraths.get(i).onTrigorathCollision(trigoraths.get(j).getX1(), trigoraths.get(j).getX2(), trigoraths.get(j).getX3(), trigoraths.get(j).getY1(), trigoraths.get(j).getY2(), trigoraths.get(j).getY3()) != 0) {
-
+                    Point2D trigorathCollisionPoint = trigoraths.get(i).onTrigorathCollision(trigoraths.get(j).getX1(), trigoraths.get(j).getX2(), trigoraths.get(j).getX3(), trigoraths.get(j).getY1(), trigoraths.get(j).getY2(), trigoraths.get(j).getY3());
+                    if (trigorathCollisionPoint != null) {
+                        impactOnPoint(trigorathCollisionPoint);
                     }
                 }
             }
@@ -189,6 +197,52 @@ public class GameManager {
         } else if (epsilon.getY() + epsilon.getRadius() > gamePanel.getScreenHeight()) {
             epsilon.setY(gamePanel.getScreenHeight() - epsilon.getRadius());
             epsilon.setVy(0);
+        }
+
+    }
+
+    public void impactOnPoint(Point2D collisionPoint) {
+        double rate = 12;
+        for (int i = 0; i < trigoraths.size(); i++) {
+            if (cal.distance(trigoraths.get(i).getCenterOfGravity().getX(), trigoraths.get(i).getCenterOfGravity().getY(), collisionPoint.getX(), collisionPoint.getY()) <= 100) {
+                double angle = Math.atan2(collisionPoint.getY() - trigoraths.get(i).getCenterOfGravity().getY(), collisionPoint.getX() - trigoraths.get(i).getCenterOfGravity().getX());
+                trigoraths.get(i).setVx(-(rate - 5) * Math.cos(angle));
+                trigoraths.get(i).setVy(-(rate - 5) * Math.sin(angle));
+            }
+        }
+        if (cal.distance(epsilon.getX(), epsilon.getY(), collisionPoint.getX(), collisionPoint.getY()) <= 100) {
+            if (collisionPoint.getX() >= epsilon.getX() && collisionPoint.getY() >= epsilon.getY()) {
+                epsilon.setVx(-rate);
+                epsilon.setVy(-rate);
+                epsilon.setDecU(true);
+                epsilon.setDecL(true);
+                epsilon.setDecD(true);
+                epsilon.setDecR(true);
+            }
+            if (collisionPoint.getX() <= epsilon.getX() && collisionPoint.getY() <= epsilon.getY()) {
+                epsilon.setVx(rate);
+                epsilon.setVy(rate);
+                epsilon.setDecU(true);
+                epsilon.setDecL(true);
+                epsilon.setDecD(true);
+                epsilon.setDecR(true);
+            }
+            if (collisionPoint.getX() <= epsilon.getX() && collisionPoint.getY() >= epsilon.getY()) {
+                epsilon.setVx(rate);
+                epsilon.setVy(-rate);
+                epsilon.setDecU(true);
+                epsilon.setDecL(true);
+                epsilon.setDecD(true);
+                epsilon.setDecR(true);
+            }
+            if (collisionPoint.getX() >= epsilon.getX() && collisionPoint.getY() <= epsilon.getY()) {
+                epsilon.setVx(-rate);
+                epsilon.setVy(rate);
+                epsilon.setDecU(true);
+                epsilon.setDecL(true);
+                epsilon.setDecD(true);
+                epsilon.setDecR(true);
+            }
         }
 
     }

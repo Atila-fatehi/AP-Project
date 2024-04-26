@@ -32,15 +32,15 @@ public class Bullet implements movable {
         if (trigorath.contains(x, y)) {
             return 1;
         }
-        if (cal.circleLineCollision(x, y, radius, x1, y1, x2, y2)) {
-            return 2;
-        }
-        if (cal.circleLineCollision(x, y, radius, x2, y2, x3, y3)) {
-            return 3;
-        }
-        if (cal.circleLineCollision(x, y, radius, x1, y1, x3, y3)) {
-            return 4;
-        }
+//        if (cal.circleLineCollision(x, y, radius, x1, y1, x2, y2) != null) {
+//            return 2;
+//        }
+//        if (cal.circleLineCollision(x, y, radius, x2, y2, x3, y3) != null) {
+//            return 3;
+//        }
+//        if (cal.circleLineCollision(x, y, radius, x1, y1, x3, y3) != null) {
+//            return 4;
+//        }
         return 0;
     }
 
@@ -52,18 +52,18 @@ public class Bullet implements movable {
         if (squarantine.contains(x, y)) {
             return 1;
         }
-        if (cal.circleLineCollision(x, y, radius, x1, y1, x2, y2)) {
-            return 2;
-        }
-        if (cal.circleLineCollision(x, y, radius, x2, y2, x3, y3)) {
-            return 3;
-        }
-        if (cal.circleLineCollision(x, y, radius, x3, y3, x4, y4)) {
-            return 4;
-        }
-        if (cal.circleLineCollision(x, y, radius, x4, y4, x1, y1)) {
-            return 5;
-        }
+//        if (cal.circleLineCollision(x, y, radius, x1, y1, x2, y2)) {
+//            return 2;
+//        }
+//        if (cal.circleLineCollision(x, y, radius, x2, y2, x3, y3)) {
+//            return 3;
+//        }
+//        if (cal.circleLineCollision(x, y, radius, x3, y3, x4, y4)) {
+//            return 4;
+//        }
+//        if (cal.circleLineCollision(x, y, radius, x4, y4, x1, y1)) {
+//            return 5;
+//        }
         return 0;
     }
 
