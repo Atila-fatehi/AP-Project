@@ -1,6 +1,5 @@
 package Model;
 
-import java.awt.geom.Point2D;
 
 public class Epsilon implements movable {
     private int HP;

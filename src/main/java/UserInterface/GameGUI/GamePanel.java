@@ -71,7 +71,7 @@ public class GamePanel extends JPanel {
         //draw epsilon
         g.setColor(new Color(0x38C1F1));
         g.fillOval((int) (epsilon.getX() - epsilon.getRadius()), (int) (epsilon.getY() - epsilon.getRadius()), (int) epsilon.getRadius() * 2, (int) epsilon.getRadius() * 2);
-        g.setColor(new Color(0x000000));
+        g.setColor(new Color(0x011022));
         g.fillOval((int) (epsilon.getX() - epsilon.getRadius()) + 4, (int) (epsilon.getY() - epsilon.getRadius()) + 4, (int) epsilon.getRadius() * 2 - 8, (int) epsilon.getRadius() * 2 - 8);
         //draw bullets
         g.setColor(new Color(0x38C1F1));
@@ -82,7 +82,7 @@ public class GamePanel extends JPanel {
         g.setColor(new Color(0x8A26FF));
         g.drawString("HP : " + String.valueOf(epsilon.getHP()), 10, 20);
         g.drawString("XP : " + String.valueOf(epsilon.getXP()), 100, 20);
-        g.drawString("WAVE : 1", 170, 20);
+        g.drawString("WAVE : " + gameManager.getCurrentWave(), 170, 20);
         g.drawString("ELAPSED TIME : " + String.valueOf(elapsedTime), 250, 20);
         g.dispose();
     }
@@ -193,7 +193,7 @@ public class GamePanel extends JPanel {
 
             }
         });
-        shopFrame.getContentPane().setBackground(new Color(0x000000));
+        shopFrame.getContentPane().setBackground(new Color(0x011022));
         shopFrame.setTitle("SHOP");
         shopFrame.setFocusable(true);
         shopFrame.requestFocus();

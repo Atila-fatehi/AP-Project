@@ -5,6 +5,9 @@ import Model.Trigorath;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 public class GameFrame extends JFrame {
     private static final int HEIGHT = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
     private static final int WIDTH = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
@@ -23,9 +26,8 @@ public class GameFrame extends JFrame {
         setVisible(true);
         //Adding Panel
         GamePanel gamePanel = new GamePanel();
-        gamePanel.setBackground(new Color(0x000000));
+        gamePanel.setBackground(new Color(0x011022));
         gamePanel.setBounds(locationX, locationY, initialPanelWidth, initialPanelHeight);
         add(gamePanel);
-
     }
 }

@@ -12,7 +12,7 @@ public class Collectable {
     public Collectable(double x, double y, Color color) {
         this.x = x;
         this.y = y;
-        this.radius = 4;
+        this.radius = 6;
         this.xp = 5;
         this.color = color;
     }

@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class GameManager {
@@ -22,17 +23,20 @@ public class GameManager {
     private final ArrayList<Squarantine> squarantines = new ArrayList<>();
     private final ArrayList<Collectable> collectables = new ArrayList<>();
     private final cal cal;
+    private int wave;
+    private int difficulty;
 
     public GameManager(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
         epsilon = new Epsilon(350, 350, 13);
         gamePanel.setEpsilon(epsilon);
-        trigoraths.add(new Trigorath(100, 100, 100 + 30, 100, 100 + 15, 100 - 25));
-        trigoraths.add(new Trigorath(150, 150, 150 + 30, 150, 150 + 15, 150 - 25));
-        trigoraths.add(new Trigorath(500, 500, 500 + 30, 500, 500 + 15, 500 - 25));
-        trigoraths.add(new Trigorath(500, 300, 500 + 30, 300, 500 + 15, 300 - 25));
-        squarantines.add(new Squarantine(500, 500, 500 + 25, 500, 500 + 25, 500 + 25, 500, 500 + 25));
-        squarantines.add(new Squarantine(500, 300, 500 + 25, 300, 500 + 25, 300 + 25, 500, 300 + 25));
+        wave = 0;
+//        trigoraths.add(new Trigorath(100, 100, 100 + 30, 100, 100 + 15, 100 - 25));
+//        trigoraths.add(new Trigorath(150, 150, 150 + 30, 150, 150 + 15, 150 - 25));
+//        trigoraths.add(new Trigorath(500, 500, 500 + 30, 500, 500 + 15, 500 - 25));
+//        trigoraths.add(new Trigorath(500, 300, 500 + 30, 300, 500 + 15, 300 - 25));
+//        squarantines.add(new Squarantine(500, 500, 500 + 25, 500, 500 + 25, 500 + 25, 500, 500 + 25));
+//        squarantines.add(new Squarantine(500, 300, 500 + 25, 300, 500 + 25, 300 + 25, 500, 300 + 25));
         cal = new cal();
         new Timer((int) (double) TimeUnit.SECONDS.toMillis(1) / 60/*GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0].getDisplayMode().getRefreshRate()*/, new ActionListener() {
             @Override
@@ -67,6 +71,16 @@ public class GameManager {
     }
 
     public void updateModel() {
+        //generate enemies
+        if(trigoraths.isEmpty() && squarantines.isEmpty()){
+            wave++;
+            if(wave != 4) {
+                generateWave(wave);
+            }
+        }
+
+
+
         //Bullet stuff
         //Tri collision
         for (int i = 0; i < bullets.size(); i++) {
@@ -173,6 +187,7 @@ public class GameManager {
                 i--;
             }
         }
+
         //squarantine stuff
         for (int i = 0; i < squarantines.size(); i++) {
             squarantines.get(i).calculateMovingDirection(epsilon.getX(), epsilon.getY());
@@ -197,21 +212,21 @@ public class GameManager {
             }
             if (squarantines.get(i).getHP() <= 0) {
                 collectables.add(new Collectable(squarantines.get(i).getCenterOfGravity().getX(), squarantines.get(i).getCenterOfGravity().getY(), new Color(0x22FF00)));
-                collectables.add(new Collectable(squarantines.get(i).getCenterOfGravity().getX() + 8, squarantines.get(i).getCenterOfGravity().getY() + 8, new Color(0x22FF00)));
+                collectables.add(new Collectable(squarantines.get(i).getCenterOfGravity().getX() + 10, squarantines.get(i).getCenterOfGravity().getY() + 10, new Color(0x22FF00)));
                 squarantines.remove(i);
                 i--;
             }
         }
+
         //epsilon stuff
         epsilon.move();
         for (int i = 0; i < collectables.size(); i++) {
-            if (cal.distance(epsilon.getX(), epsilon.getY(), collectables.get(i).getX(), collectables.get(i).getY()) <= collectables.get(i).getRadius() + epsilon.getRadius()) {
+            if (cal.distance(epsilon.getX(), epsilon.getY(), collectables.get(i).getX(), collectables.get(i).getY()) <= collectables.get(i).getRadius() + epsilon.getRadius() + 10) {
                 epsilon.setXP(epsilon.getXP() + collectables.get(i).getXp());
                 collectables.remove(i);
                 i--;
             }
         }
-
         if (epsilon.getX() - epsilon.getRadius() < 0) {
             epsilon.setX(epsilon.getRadius());
             epsilon.setVx(0);
@@ -227,7 +242,6 @@ public class GameManager {
             epsilon.setY(gamePanel.getScreenHeight() - epsilon.getRadius());
             epsilon.setVy(0);
         }
-
     }
 
     public void impactOnPoint(Point2D collisionPoint) {
@@ -287,6 +301,23 @@ public class GameManager {
         makeNewBullet(x, y);
     }
 
+    public void generateWave(int wave) {
+        Random random = new Random();
+
+            for (int i = 0; i < wave * 2; i++) {
+                int initialPositionX = random.nextInt(gamePanel.getScreenWidth());
+                int initialPositionY = random.nextInt(gamePanel.getScreenHeight());
+                trigoraths.add(new Trigorath(initialPositionX, initialPositionY, initialPositionX + 30, initialPositionY, initialPositionX + 15, initialPositionY - 25));
+            }
+            for (int i = 0; i < wave * 2; i++) {
+                int initialPositionX = random.nextInt(gamePanel.getScreenWidth());
+                int initialPositionY = random.nextInt(gamePanel.getScreenHeight());
+                squarantines.add(new Squarantine(initialPositionX, initialPositionY, initialPositionX + 25, initialPositionY, initialPositionX + 25, initialPositionY + 25, initialPositionX, initialPositionY + 25));
+            }
+
+
+    }
+
     public void makeNewBullet(int x, int y) {
         Bullet bullet = new Bullet(epsilon.getX(), epsilon.getY());
         double angle = Math.atan2(y - epsilon.getY(), x - epsilon.getX());
@@ -297,6 +328,11 @@ public class GameManager {
 
 
     //GETTER SETTERS
+
+
+    public int getCurrentWave() {
+        return wave;
+    }
 
     public boolean isPaused() {
         return paused;
