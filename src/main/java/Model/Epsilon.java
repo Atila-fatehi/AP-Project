@@ -9,8 +9,8 @@ public class Epsilon implements movable {
     private double radius;
     private double vx;
     private double vy;
-    private static final double MAX_VELOCITY = 11;
-    private static final double ACCELERATION = 1;
+    private double MAX_VELOCITY;
+    private double ACCELERATION;
 
     private boolean accU, accD, accR, accL;
     private boolean decU = true, decD = true, decR = true, decL = true;
@@ -125,6 +125,7 @@ public class Epsilon implements movable {
     public void setHP(int HP) {
         this.HP = HP;
     }
+
     public boolean isAccU() {
         return accU;
     }
@@ -187,6 +188,14 @@ public class Epsilon implements movable {
 
     public void setDecL(boolean decL) {
         this.decL = decL;
+    }
+
+    public void setMAX_VELOCITY(double MAX_VELOCITY) {
+        this.MAX_VELOCITY = MAX_VELOCITY;
+    }
+
+    public void setACCELERATION(double ACCELERATION) {
+        this.ACCELERATION = ACCELERATION;
     }
 }
 

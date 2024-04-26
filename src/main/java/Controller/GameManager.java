@@ -9,8 +9,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
+import java.io.File;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class GameManager {
@@ -25,19 +28,32 @@ public class GameManager {
     private final cal cal;
     private int wave;
     private int difficulty;
+    private int sensitivity;
 
     public GameManager(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
         epsilon = new Epsilon(350, 350, 13);
         gamePanel.setEpsilon(epsilon);
         wave = 0;
-//        trigoraths.add(new Trigorath(100, 100, 100 + 30, 100, 100 + 15, 100 - 25));
-//        trigoraths.add(new Trigorath(150, 150, 150 + 30, 150, 150 + 15, 150 - 25));
-//        trigoraths.add(new Trigorath(500, 500, 500 + 30, 500, 500 + 15, 500 - 25));
-//        trigoraths.add(new Trigorath(500, 300, 500 + 30, 300, 500 + 15, 300 - 25));
-//        squarantines.add(new Squarantine(500, 500, 500 + 25, 500, 500 + 25, 500 + 25, 500, 500 + 25));
-//        squarantines.add(new Squarantine(500, 300, 500 + 25, 300, 500 + 25, 300 + 25, 500, 300 + 25));
         cal = new cal();
+        File file = new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\dataBase\\settings.txt");
+        try {
+            Scanner scanner = new Scanner(file);
+            sensitivity = Integer.parseInt(scanner.nextLine());
+            difficulty = Integer.parseInt(scanner.nextLine());
+        } catch (Exception e) {
+
+        }
+        if(sensitivity < 30){
+            epsilon.setMAX_VELOCITY(7);
+            epsilon.setACCELERATION(0.5);
+        }else if(sensitivity > 60){
+            epsilon.setMAX_VELOCITY(15);
+            epsilon.setACCELERATION(2);
+        }else{
+            epsilon.setMAX_VELOCITY(11);
+            epsilon.setACCELERATION(1);
+        }
         new Timer((int) (double) TimeUnit.SECONDS.toMillis(1) / 60/*GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0].getDisplayMode().getRefreshRate()*/, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -72,13 +88,12 @@ public class GameManager {
 
     public void updateModel() {
         //generate enemies
-        if(trigoraths.isEmpty() && squarantines.isEmpty()){
+        if (trigoraths.isEmpty() && squarantines.isEmpty()) {
             wave++;
-            if(wave != 4) {
+            if (wave != 4) {
                 generateWave(wave);
             }
         }
-
 
 
         //Bullet stuff
@@ -304,16 +319,18 @@ public class GameManager {
     public void generateWave(int wave) {
         Random random = new Random();
 
-            for (int i = 0; i < wave * 2; i++) {
+        for (int i = 0; i < wave * difficulty; i++) {
+            int initialPositionX = random.nextInt(gamePanel.getScreenWidth());
+            int initialPositionY = random.nextInt(gamePanel.getScreenHeight());
+            squarantines.add(new Squarantine(initialPositionX, initialPositionY, initialPositionX + 25, initialPositionY, initialPositionX + 25, initialPositionY + 25, initialPositionX, initialPositionY + 25));
+        }
+        if(random.nextBoolean()) {
+            for (int i = 0; i < wave * difficulty; i++) {
                 int initialPositionX = random.nextInt(gamePanel.getScreenWidth());
                 int initialPositionY = random.nextInt(gamePanel.getScreenHeight());
                 trigoraths.add(new Trigorath(initialPositionX, initialPositionY, initialPositionX + 30, initialPositionY, initialPositionX + 15, initialPositionY - 25));
             }
-            for (int i = 0; i < wave * 2; i++) {
-                int initialPositionX = random.nextInt(gamePanel.getScreenWidth());
-                int initialPositionY = random.nextInt(gamePanel.getScreenHeight());
-                squarantines.add(new Squarantine(initialPositionX, initialPositionY, initialPositionX + 25, initialPositionY, initialPositionX + 25, initialPositionY + 25, initialPositionX, initialPositionY + 25));
-            }
+        }
 
 
     }

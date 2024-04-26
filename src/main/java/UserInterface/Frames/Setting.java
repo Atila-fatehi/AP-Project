@@ -17,7 +17,7 @@ public class Setting extends JFrame {
     private static final Color fore = new Color(0xFB8B24);
 
     public Setting() {
-        getContentPane().setBackground(new Color(0x000000));
+        getContentPane().setBackground(new Color(0x011022));
         setTitle("Setting");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(500, 700);
@@ -38,7 +38,7 @@ public class Setting extends JFrame {
         slider.setPaintTicks(true);
         slider.setPaintLabels(true);
         slider.setBounds(100,100,300,50);
-        slider.setBackground(new Color(0x000000));
+        slider.setBackground(new Color(0x011022));
         add(slider);
 
         JLabel label1 = new JLabel("Volume");
@@ -53,7 +53,7 @@ public class Setting extends JFrame {
         slider1.setPaintTicks(true);
         slider1.setPaintLabels(true);
         slider1.setBounds(100,200,300,50);
-        slider1.setBackground(new Color(0x000000));
+        slider1.setBackground(new Color(0x011022));
         add(slider1);
 
         JLabel label2 = new JLabel("Difficulty");
@@ -68,7 +68,7 @@ public class Setting extends JFrame {
         slider2.setPaintTicks(true);
         slider2.setPaintLabels(true);
         slider2.setBounds(100,300,300,50);
-        slider2.setBackground(new Color(0x000000));
+        slider2.setBackground(new Color(0x011022));
         add(slider2);
 
         JButton button1 = new JButton("Back");
@@ -84,9 +84,24 @@ public class Setting extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
+                writeToFile(slider.getValue(), slider2.getValue());
                 new MainMenu();
             }
         });
     }
 
+    public void writeToFile(int val1 , int val2){
+        File file = new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\dataBase\\settings.txt");
+        try {
+            PrintWriter printWriter = new PrintWriter(file);
+            printWriter.println(String.valueOf(val1));
+            printWriter.println(String.valueOf(val2));
+            printWriter.flush();
+            printWriter.close();
+        }catch (Exception e){
+
+        }
+
+
+    }
 }
