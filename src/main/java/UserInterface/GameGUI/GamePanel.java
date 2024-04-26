@@ -1,10 +1,7 @@
 package UserInterface.GameGUI;
 
 import Controller.GameManager;
-import Model.Bullet;
-import Model.Epsilon;
-import Model.Squarantine;
-import Model.Trigorath;
+import Model.*;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -25,6 +22,7 @@ public class GamePanel extends JPanel {
     private ArrayList<Bullet> bullets = new ArrayList<>();
     private ArrayList<Trigorath> trigoraths = new ArrayList<>();
     private ArrayList<Squarantine> squarantines = new ArrayList<>();
+    private ArrayList<Collectable> collectables = new ArrayList<>();
     private final GameManager gameManager;
     private int elapsedTime;
 
@@ -53,25 +51,28 @@ public class GamePanel extends JPanel {
         super.paintComponent(g);
         //draw Enemies
         g.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 15));
-        for (int i = 0; i < trigoraths.size(); i++) {
+        for (Trigorath trigorath : trigoraths) {
             g.setColor(new Color(0xFFD900));
-            g.fillPolygon(trigoraths.get(i).getXPoints(), trigoraths.get(i).getYPoints(), 3);
+            g.fillPolygon(trigorath.getXPoints(), trigorath.getYPoints(), 3);
             g.setColor(Color.BLACK);
-            g.drawString(String.valueOf(trigoraths.get(i).getHP()), (int) trigoraths.get(i).getPosXHP(), (int) trigoraths.get(i).getPosYHP());
+            g.drawString(String.valueOf(trigorath.getHP()), (int) trigorath.getPosXHP(), (int) trigorath.getPosYHP());
         }
-
-        for (int i = 0; i < squarantines.size(); i++) {
+        for (Squarantine squarantine : squarantines) {
             g.setColor(new Color(0x22FF00));
-            g.fillPolygon(squarantines.get(i).getXPoints(), squarantines.get(i).getYPoints(), 4);
+            g.fillPolygon(squarantine.getXPoints(), squarantine.getYPoints(), 4);
             g.setColor(Color.BLACK);
-            g.drawString(String.valueOf(squarantines.get(i).getHP()), (int) squarantines.get(i).getPosXHP(), (int) squarantines.get(i).getPosYHP());
+            g.drawString(String.valueOf(squarantine.getHP()), (int) squarantine.getPosXHP(), (int) squarantine.getPosYHP());
         }
-
+        //draw collectable
+        for (Collectable collectable : collectables) {
+            g.setColor(collectable.getColor());
+            g.fillOval((int) collectable.getX(), (int) collectable.getY(), (int) collectable.getRadius() * 2, (int) collectable.getRadius() * 2);
+        }
         //draw epsilon
         g.setColor(new Color(0x38C1F1));
         g.fillOval((int) (epsilon.getX() - epsilon.getRadius()), (int) (epsilon.getY() - epsilon.getRadius()), (int) epsilon.getRadius() * 2, (int) epsilon.getRadius() * 2);
         g.setColor(new Color(0x000000));
-        g.fillOval((int) (epsilon.getX() - epsilon.getRadius()) + 4, (int) (epsilon.getY() - epsilon.getRadius()) + 4, (int) epsilon.getRadius() * 2 -8, (int) epsilon.getRadius() * 2 -8);
+        g.fillOval((int) (epsilon.getX() - epsilon.getRadius()) + 4, (int) (epsilon.getY() - epsilon.getRadius()) + 4, (int) epsilon.getRadius() * 2 - 8, (int) epsilon.getRadius() * 2 - 8);
         //draw bullets
         g.setColor(new Color(0x38C1F1));
         for (int i = 0; i < bullets.size(); i++) {
@@ -181,7 +182,7 @@ public class GamePanel extends JPanel {
 
             @Override
             public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode() == KeyEvent.VK_SPACE){
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                     gameManager.setPaused(!gameManager.isPaused());
                     shopFrame.dispose();
                 }
@@ -345,10 +346,16 @@ public class GamePanel extends JPanel {
     public void setLocationY(int locationY) {
         this.locationY = locationY;
     }
+
     public void setTrigoraths(ArrayList<Trigorath> trigoraths) {
         this.trigoraths = trigoraths;
     }
+
     public void setSquarantines(ArrayList<Squarantine> squarantines) {
         this.squarantines = squarantines;
+    }
+
+    public void setCollectables(ArrayList<Collectable> collectables) {
+        this.collectables = collectables;
     }
 }

@@ -1,13 +1,11 @@
 package Controller;
 
-import Model.Bullet;
-import Model.Epsilon;
-import Model.Squarantine;
-import Model.Trigorath;
+import Model.*;
 import UserInterface.GameGUI.GamePanel;
 import util.cal;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
@@ -22,6 +20,7 @@ public class GameManager {
     private final ArrayList<Bullet> bullets = new ArrayList<>();
     private final ArrayList<Trigorath> trigoraths = new ArrayList<>();
     private final ArrayList<Squarantine> squarantines = new ArrayList<>();
+    private final ArrayList<Collectable> collectables = new ArrayList<>();
     private final cal cal;
 
     public GameManager(GamePanel gamePanel) {
@@ -31,7 +30,7 @@ public class GameManager {
         trigoraths.add(new Trigorath(100, 100, 100 + 30, 100, 100 + 15, 100 - 25));
         trigoraths.add(new Trigorath(150, 150, 150 + 30, 150, 150 + 15, 150 - 25));
         trigoraths.add(new Trigorath(500, 500, 500 + 30, 500, 500 + 15, 500 - 25));
-        //trigoraths.add(new Trigorath(500, 300, 500 + 30, 300, 500 + 15, 300 - 25));
+        trigoraths.add(new Trigorath(500, 300, 500 + 30, 300, 500 + 15, 300 - 25));
         squarantines.add(new Squarantine(500, 500, 500 + 25, 500, 500 + 25, 500 + 25, 500, 500 + 25));
         squarantines.add(new Squarantine(500, 300, 500 + 25, 300, 500 + 25, 300 + 25, 500, 300 + 25));
         cal = new cal();
@@ -63,6 +62,7 @@ public class GameManager {
         gamePanel.setBullets(bullets);
         gamePanel.setTrigoraths(trigoraths);
         gamePanel.setSquarantines(squarantines);
+        gamePanel.setCollectables(collectables);
         gamePanel.repaint();
     }
 
@@ -75,7 +75,7 @@ public class GameManager {
                 Point2D trigorathCollisionPoint = bullets.get(i).onTrigorathCollision(trigorath.getX1(), trigorath.getX2(), trigorath.getX3(), trigorath.getY1(), trigorath.getY2(), trigorath.getY3());
                 if (trigorathCollisionPoint != null) {
                     trigorath.setHP(trigorath.getHP() - 5);
-//                    impactOnPoint(trigorathCollisionPoint);
+                    impactOnPoint(trigorathCollisionPoint);
                     bullets.remove(i);
                     i--;
                     break;
@@ -88,7 +88,7 @@ public class GameManager {
                 Point2D squarantineCollisionPoint = bullets.get(i).onSquarantineCollision(squarantine.getX1(), squarantine.getX2(), squarantine.getX3(), squarantine.getX4(), squarantine.getY1(), squarantine.getY2(), squarantine.getY3(), squarantine.getY4());
                 if (squarantineCollisionPoint != null) {
                     squarantine.setHP(squarantine.getHP() - 5);
-//                    impactOnPoint(squarantineCollisionPoint);
+                    impactOnPoint(squarantineCollisionPoint);
                     bullets.remove(i);
                     i--;
                     break;
@@ -110,6 +110,9 @@ public class GameManager {
                 for (Squarantine squarantine : squarantines) {
                     squarantine.shiftX(expandRate);
                 }
+                for (Collectable collectable : collectables) {
+                    collectable.shiftX(expandRate);
+                }
                 bullets.remove(i);
                 i--;
             } else if (wallCollisionNum == 2) {
@@ -123,6 +126,9 @@ public class GameManager {
                 }
                 for (Squarantine squarantine : squarantines) {
                     squarantine.shiftY(expandRate);
+                }
+                for (Collectable collectable : collectables) {
+                    collectable.shiftY(expandRate);
                 }
                 bullets.remove(i);
                 i--;
@@ -155,13 +161,14 @@ public class GameManager {
                     }
                 }
             }
-            for (int j = 0; j < squarantines.size(); j++) {
-                Point2D squarantineCollisionPoint = trigoraths.get(i).onSquarantineCollision(squarantines.get(j).getX1(), squarantines.get(j).getX2(), squarantines.get(j).getX3(), squarantines.get(j).getX4(), squarantines.get(j).getY1(), squarantines.get(j).getY2(), squarantines.get(j).getY3(), squarantines.get(j).getY4());
+            for (Squarantine squarantine : squarantines) {
+                Point2D squarantineCollisionPoint = trigoraths.get(i).onSquarantineCollision(squarantine.getX1(), squarantine.getX2(), squarantine.getX3(), squarantine.getX4(), squarantine.getY1(), squarantine.getY2(), squarantine.getY3(), squarantine.getY4());
                 if (squarantineCollisionPoint != null) {
                     impactOnPoint(squarantineCollisionPoint);
                 }
             }
             if (trigoraths.get(i).getHP() <= 0) {
+                collectables.add(new Collectable(trigoraths.get(i).getCenterOfGravity().getX(), trigoraths.get(i).getCenterOfGravity().getY(), new Color(0xFFD900)));
                 trigoraths.remove(i);
                 i--;
             }
@@ -189,12 +196,22 @@ public class GameManager {
                 }
             }
             if (squarantines.get(i).getHP() <= 0) {
+                collectables.add(new Collectable(squarantines.get(i).getCenterOfGravity().getX(), squarantines.get(i).getCenterOfGravity().getY(), new Color(0x22FF00)));
+                collectables.add(new Collectable(squarantines.get(i).getCenterOfGravity().getX() + 8, squarantines.get(i).getCenterOfGravity().getY() + 8, new Color(0x22FF00)));
                 squarantines.remove(i);
                 i--;
             }
         }
         //epsilon stuff
         epsilon.move();
+        for (int i = 0; i < collectables.size(); i++) {
+            if (cal.distance(epsilon.getX(), epsilon.getY(), collectables.get(i).getX(), collectables.get(i).getY()) <= collectables.get(i).getRadius() + epsilon.getRadius()) {
+                epsilon.setXP(epsilon.getXP() + collectables.get(i).getXp());
+                collectables.remove(i);
+                i--;
+            }
+        }
+
         if (epsilon.getX() - epsilon.getRadius() < 0) {
             epsilon.setX(epsilon.getRadius());
             epsilon.setVx(0);
@@ -218,15 +235,15 @@ public class GameManager {
         for (Trigorath trigorath : trigoraths) {
             if (cal.distance(trigorath.getCenterOfGravity().getX(), trigorath.getCenterOfGravity().getY(), collisionPoint.getX(), collisionPoint.getY()) <= 70) {
                 double angle = Math.atan2(collisionPoint.getY() - trigorath.getCenterOfGravity().getY(), collisionPoint.getX() - trigorath.getCenterOfGravity().getX());
-                trigorath.setVx(-(rate - 5) * Math.cos(angle));
-                trigorath.setVy(-(rate - 5) * Math.sin(angle));
+                trigorath.setVx(-(rate - 3) * Math.cos(angle));
+                trigorath.setVy(-(rate - 3) * Math.sin(angle));
             }
         }
         for (Squarantine squarantine : squarantines) {
             if (cal.distance(squarantine.getCenterOfGravity().getX(), squarantine.getCenterOfGravity().getY(), collisionPoint.getX(), collisionPoint.getY()) <= 70) {
                 double angle = Math.atan2(collisionPoint.getY() - squarantine.getCenterOfGravity().getY(), collisionPoint.getX() - squarantine.getCenterOfGravity().getX());
-                squarantine.setVx(-(rate - 5) * Math.cos(angle));
-                squarantine.setVy(-(rate - 5) * Math.sin(angle));
+                squarantine.setVx(-(rate - 3) * Math.cos(angle));
+                squarantine.setVy(-(rate - 3) * Math.sin(angle));
             }
         }
         if (cal.distance(epsilon.getX(), epsilon.getY(), collisionPoint.getX(), collisionPoint.getY()) <= 70) {
