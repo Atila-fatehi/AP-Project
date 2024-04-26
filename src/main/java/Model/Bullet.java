@@ -3,6 +3,7 @@ package Model;
 import util.cal;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 
 public class Bullet implements movable {
     private final double radius = 4;
@@ -24,47 +25,54 @@ public class Bullet implements movable {
         cal = new cal();
     }
 
-    public int onTrigorathCollision(double x1, double x2, double x3, double y1, double y2, double y3) {
+    public Point2D onTrigorathCollision(double x1, double x2, double x3, double y1, double y2, double y3) {
         int[] xPoints = {(int) x1, (int) x2, (int) x3};
         int[] yPoints = {(int) y1, (int) y2, (int) y3};
 
         Polygon trigorath = new Polygon(xPoints, yPoints, 3);
         if (trigorath.contains(x, y)) {
-            return 1;
+            return new Point2D.Double(x, y);
         }
-//        if (cal.circleLineCollision(x, y, radius, x1, y1, x2, y2) != null) {
-//            return 2;
-//        }
-//        if (cal.circleLineCollision(x, y, radius, x2, y2, x3, y3) != null) {
-//            return 3;
-//        }
-//        if (cal.circleLineCollision(x, y, radius, x1, y1, x3, y3) != null) {
-//            return 4;
-//        }
-        return 0;
+        Point2D point1 = cal.circleLineCollision(x, y, radius, x1, y1, x2, y2);
+        if (point1 != null) {
+            return point1;
+        }
+        Point2D point2 = cal.circleLineCollision(x, y, radius, x2, y2, x3, y3);
+        if (point2 != null) {
+            return point2;
+        }
+        Point2D point3 = cal.circleLineCollision(x, y, radius, x1, y1, x3, y3);
+        if (point3 != null) {
+            return point3;
+        }
+        return null;
     }
 
-    public int onSquarantineCollision(double x1, double x2, double x3, double x4, double y1, double y2, double y3, double y4) {
+    public Point2D onSquarantineCollision(double x1, double x2, double x3, double x4, double y1, double y2, double y3, double y4) {
         int[] xPoints = {(int) x1, (int) x2, (int) x3, (int) x4};
         int[] yPoints = {(int) y1, (int) y2, (int) y3, (int) y4};
 
         Polygon squarantine = new Polygon(xPoints, yPoints, 4);
         if (squarantine.contains(x, y)) {
-            return 1;
+            return new Point2D.Double(x, y);
         }
-//        if (cal.circleLineCollision(x, y, radius, x1, y1, x2, y2)) {
-//            return 2;
-//        }
-//        if (cal.circleLineCollision(x, y, radius, x2, y2, x3, y3)) {
-//            return 3;
-//        }
-//        if (cal.circleLineCollision(x, y, radius, x3, y3, x4, y4)) {
-//            return 4;
-//        }
-//        if (cal.circleLineCollision(x, y, radius, x4, y4, x1, y1)) {
-//            return 5;
-//        }
-        return 0;
+        Point2D point1 = cal.circleLineCollision(x, y, radius, x1, y1, x2, y2);
+        if (point1 != null) {
+            return point1;
+        }
+        Point2D point2 = cal.circleLineCollision(x, y, radius, x2, y2, x3, y3);
+        if (point2 != null) {
+            return point2;
+        }
+        Point2D point3 = cal.circleLineCollision(x, y, radius, x3, y3, x4, y4);
+        if (point3 != null) {
+            return point3;
+        }
+        Point2D point4 = cal.circleLineCollision(x, y, radius, x4, y4, x1, y1);
+        if (point4 != null) {
+            return point4;
+        }
+        return null;
     }
 
     public int onWallCollision(double w, double h) {
