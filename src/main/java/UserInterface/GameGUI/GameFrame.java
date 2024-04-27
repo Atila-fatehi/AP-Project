@@ -25,7 +25,7 @@ public class GameFrame extends JFrame {
         setResizable(false);
         setVisible(true);
         //Adding Panel
-        GamePanel gamePanel = new GamePanel();
+        GamePanel gamePanel = new GamePanel(this);
         gamePanel.setBackground(new Color(0x011022));
         gamePanel.setBounds(locationX, locationY, initialPanelWidth, initialPanelHeight);
         add(gamePanel);

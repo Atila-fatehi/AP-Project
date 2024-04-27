@@ -1,6 +1,8 @@
 package Controller;
 
 import Model.*;
+import UserInterface.Frames.MainMenu;
+import UserInterface.GameGUI.GameFrame;
 import UserInterface.GameGUI.GamePanel;
 import util.cal;
 
@@ -14,10 +16,13 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 public class GameManager {
     private final GamePanel gamePanel;
+    private final GameFrame gameFrame;
     private final Epsilon epsilon;
     private boolean paused;
     private static final int expandRate = 15;
@@ -29,8 +34,14 @@ public class GameManager {
     private int wave;
     private int difficulty;
     private int sensitivity;
+    private final java.util.Timer modelTimer;
+    private final java.util.Timer viewTimer;
+    private boolean gameOver;
+    private boolean gameWon;
+    private boolean empower;
 
-    public GameManager(GamePanel gamePanel) {
+    public GameManager(GameFrame gameFrame ,GamePanel gamePanel) {
+        this.gameFrame = gameFrame;
         this.gamePanel = gamePanel;
         epsilon = new Epsilon(350, 350, 13);
         gamePanel.setEpsilon(epsilon);
@@ -44,37 +55,40 @@ public class GameManager {
         } catch (Exception e) {
 
         }
-        if(sensitivity < 30){
+        if (sensitivity < 30) {
             epsilon.setMAX_VELOCITY(7);
             epsilon.setACCELERATION(0.5);
-        }else if(sensitivity > 60){
+        } else if (sensitivity > 60) {
             epsilon.setMAX_VELOCITY(15);
             epsilon.setACCELERATION(2);
-        }else{
+        } else {
             epsilon.setMAX_VELOCITY(11);
             epsilon.setACCELERATION(1);
         }
-        new Timer((int) (double) TimeUnit.SECONDS.toMillis(1) / 60/*GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0].getDisplayMode().getRefreshRate()*/, new ActionListener() {
+        viewTimer = new java.util.Timer();
+        viewTimer.schedule(new TimerTask() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void run() {
                 if (!paused) {
                     updateView();
                 }
+                if (gameOver) {
+                    viewTimer.cancel();
+                }
             }
-        }) {{
-            setCoalesce(true);
-        }}.start();
-        new Timer((int) (double) TimeUnit.SECONDS.toMillis(1) / 100, new ActionListener() {
+        }, 0, (int) (double) TimeUnit.SECONDS.toMillis(1) / 60/*GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0].getDisplayMode().getRefreshRate()*/);
+        modelTimer = new java.util.Timer();
+        modelTimer.schedule(new TimerTask() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void run() {
                 if (!paused) {
                     updateModel();
                 }
+                if (gameOver) {
+                    modelTimer.cancel();
+                }
             }
-        }) {{
-            setCoalesce(true);
-        }}.start();
-
+        }, 0, (int) (double) TimeUnit.SECONDS.toMillis(1) / 100);
     }
 
     public void updateView() {
@@ -92,10 +106,11 @@ public class GameManager {
             wave++;
             if (wave != 4) {
                 generateWave(wave);
+            }else{
+                paused = true;
+                gameWon = true;
             }
         }
-
-
         //Bullet stuff
         //Tri collision
         for (int i = 0; i < bullets.size(); i++) {
@@ -181,6 +196,7 @@ public class GameManager {
             Point2D epsilonCollisionPoint = trigoraths.get(i).onEpsilonCollision(epsilon.getX(), epsilon.getY(), epsilon.getRadius());
             if (epsilonCollisionPoint != null) {
                 impactOnPoint(epsilonCollisionPoint);
+                epsilon.setHP(epsilon.getHP() - 10);
             }
             for (int j = 0; j < trigoraths.size(); j++) {
                 if (i != j) {
@@ -210,6 +226,7 @@ public class GameManager {
             Point2D epsilonCollisionPoint = squarantines.get(i).onEpsilonCollision(epsilon.getX(), epsilon.getY(), epsilon.getRadius());
             if (epsilonCollisionPoint != null) {
                 impactOnPoint(epsilonCollisionPoint);
+                epsilon.setHP(epsilon.getHP() - 10);
             }
             for (int j = 0; j < trigoraths.size(); j++) {
                 Point2D trigorathCollisionPoint = squarantines.get(i).onTrigorathCollision(trigoraths.get(j).getX1(), trigoraths.get(j).getX2(), trigoraths.get(j).getX3(), trigoraths.get(j).getY1(), trigoraths.get(j).getY2(), trigoraths.get(j).getY3());
@@ -235,6 +252,10 @@ public class GameManager {
 
         //epsilon stuff
         epsilon.move();
+        if (epsilon.getHP() <= 0) {
+            gameOver();
+            paused = true;
+        }
         for (int i = 0; i < collectables.size(); i++) {
             if (cal.distance(epsilon.getX(), epsilon.getY(), collectables.get(i).getX(), collectables.get(i).getY()) <= collectables.get(i).getRadius() + epsilon.getRadius() + 10) {
                 epsilon.setXP(epsilon.getXP() + collectables.get(i).getXp());
@@ -256,6 +277,18 @@ public class GameManager {
         } else if (epsilon.getY() + epsilon.getRadius() > gamePanel.getScreenHeight()) {
             epsilon.setY(gamePanel.getScreenHeight() - epsilon.getRadius());
             epsilon.setVy(0);
+        }
+    }
+
+    public void gameOver() {
+        gameOver = true;
+        epsilon.setHP(0);
+        String[] responses = {"Main Menu"};
+        if(JOptionPane.showOptionDialog(null, "Your XP = " + epsilon.getXP(), "Game Over", JOptionPane.INFORMATION_MESSAGE, JOptionPane.INFORMATION_MESSAGE, null, responses, 0) != -2){
+            gameFrame.dispose();
+            epsilon.setXP(0);
+            epsilon.setHP(100);
+            new MainMenu();
         }
     }
 
@@ -312,20 +345,65 @@ public class GameManager {
 
     }
 
+    public void impactOnPointWithoutEpsilon(Point2D collisionPoint) {
+        double rate = 20;
+        for (Trigorath trigorath : trigoraths) {
+            if (cal.distance(trigorath.getCenterOfGravity().getX(), trigorath.getCenterOfGravity().getY(), collisionPoint.getX(), collisionPoint.getY()) <= 170) {
+                double angle = Math.atan2(collisionPoint.getY() - trigorath.getCenterOfGravity().getY(), collisionPoint.getX() - trigorath.getCenterOfGravity().getX());
+                trigorath.setVx(-(rate - 3) * Math.cos(angle));
+                trigorath.setVy(-(rate - 3) * Math.sin(angle));
+            }
+        }
+        for (Squarantine squarantine : squarantines) {
+            if (cal.distance(squarantine.getCenterOfGravity().getX(), squarantine.getCenterOfGravity().getY(), collisionPoint.getX(), collisionPoint.getY()) <= 170) {
+                double angle = Math.atan2(collisionPoint.getY() - squarantine.getCenterOfGravity().getY(), collisionPoint.getX() - squarantine.getCenterOfGravity().getX());
+                squarantine.setVx(-(rate - 3) * Math.cos(angle));
+                squarantine.setVy(-(rate - 3) * Math.sin(angle));
+            }
+        }
+    }
+
+
     public void mouseClicked(int x, int y) {
-        makeNewBullet(x, y);
+        if (empower) {
+            makeNewBullet(x, y);
+
+            java.util.Timer timer = new java.util.Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    makeNewBullet(x, y);
+                    timer.cancel();
+                }
+            }, 100, 1000);
+            java.util.Timer timer2 = new java.util.Timer();
+            timer2.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    makeNewBullet(x, y);
+                    timer2.cancel();
+                }
+            }, 200, 1000);
+
+        } else {
+            makeNewBullet(x, y);
+        }
+
     }
 
     public void generateWave(int wave) {
         Random random = new Random();
 
         for (int i = 0; i < wave * difficulty; i++) {
-            int initialPositionX = random.nextInt(gamePanel.getScreenWidth());
-            int initialPositionY = random.nextInt(gamePanel.getScreenHeight());
-            squarantines.add(new Squarantine(initialPositionX, initialPositionY, initialPositionX + 25, initialPositionY, initialPositionX + 25, initialPositionY + 25, initialPositionX, initialPositionY + 25));
+            if (random.nextBoolean()) {
+                int initialPositionX = random.nextInt(gamePanel.getScreenWidth());
+                int initialPositionY = random.nextInt(gamePanel.getScreenHeight());
+                squarantines.add(new Squarantine(initialPositionX, initialPositionY, initialPositionX + 25, initialPositionY, initialPositionX + 25, initialPositionY + 25, initialPositionX, initialPositionY + 25));
+            }
         }
-        if(random.nextBoolean()) {
-            for (int i = 0; i < wave * difficulty; i++) {
+
+        for (int i = 0; i < wave * difficulty; i++) {
+            if (random.nextBoolean()) {
                 int initialPositionX = random.nextInt(gamePanel.getScreenWidth());
                 int initialPositionY = random.nextInt(gamePanel.getScreenHeight());
                 trigoraths.add(new Trigorath(initialPositionX, initialPositionY, initialPositionX + 30, initialPositionY, initialPositionX + 15, initialPositionY - 25));
@@ -357,5 +435,9 @@ public class GameManager {
 
     public void setPaused(boolean paused) {
         this.paused = paused;
+    }
+
+    public void setEmpower(boolean empower) {
+        this.empower = empower;
     }
 }

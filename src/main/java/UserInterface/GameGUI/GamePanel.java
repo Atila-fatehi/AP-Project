@@ -2,12 +2,15 @@ package UserInterface.GameGUI;
 
 import Controller.GameManager;
 import Model.*;
+import UserInterface.Frames.MainMenu;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.TimerTask;
 
 public class GamePanel extends JPanel {
     private int locationX = 600;
@@ -25,14 +28,16 @@ public class GamePanel extends JPanel {
     private ArrayList<Collectable> collectables = new ArrayList<>();
     private final GameManager gameManager;
     private int elapsedTime;
+    private final GameFrame gameFrame;
 
-    public GamePanel() {
+    public GamePanel(GameFrame frame) {
+        this.gameFrame = frame;
         setFocusable(true);
         setLayout(null);
         //add Listeners
         addListeners();
         //Game Manager
-        this.gameManager = new GameManager(this);
+        this.gameManager = new GameManager(frame ,this );
         Timer timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -144,6 +149,10 @@ public class GamePanel extends JPanel {
                         gameManager.setPaused(!gameManager.isPaused());
                         openShop();
                         break;
+                    case KeyEvent.VK_ESCAPE:
+                        gameFrame.dispose();
+                        new MainMenu();
+                        break;
                 }
             }
 
@@ -226,6 +235,17 @@ public class GamePanel extends JPanel {
         button2.setBackground(new Color(0x9A1A03));
         button2.setForeground(new Color(0xFB8B24));
         button2.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25));
+        button2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (epsilon.getXP() >= 100) {
+                    epsilon.setXP(epsilon.getXP() - 100);
+                    gameManager.setPaused(!gameManager.isPaused());
+                    shopFrame.dispose();
+                    gameManager.impactOnPointWithoutEpsilon(new Point2D.Double(epsilon.getX(), epsilon.getY()));
+                }
+            }
+        });
 
         JLabel label1 = new JLabel("O’ Athena، Empower");
         label1.setHorizontalAlignment(JLabel.CENTER);
@@ -240,6 +260,27 @@ public class GamePanel extends JPanel {
         button3.setBackground(new Color(0x9A1A03));
         button3.setForeground(new Color(0xFB8B24));
         button3.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25));
+        button3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (epsilon.getXP() >= 75) {
+                    epsilon.setXP(epsilon.getXP() - 75);
+                    gameManager.setPaused(!gameManager.isPaused());
+                    shopFrame.dispose();
+                    gameManager.setEmpower(true);
+                    java.util.Timer timer = new java.util.Timer();
+                    timer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            gameManager.setEmpower(false);
+                            timer.cancel();
+                        }
+                    }, 10000, 100);
+                } else {
+
+                }
+            }
+        });
 
         JLabel label2 = new JLabel("O' Apollo Heal");
         label2.setHorizontalAlignment(JLabel.CENTER);
@@ -254,6 +295,19 @@ public class GamePanel extends JPanel {
         button4.setBackground(new Color(0x9A1A03));
         button4.setForeground(new Color(0xFB8B24));
         button4.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25));
+        button4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(epsilon.getXP() >= 50){
+                    epsilon.setXP(epsilon.getXP() - 50);
+                    epsilon.setHP(epsilon.getHP() + 10);
+                    gameManager.setPaused(!gameManager.isPaused());
+                    shopFrame.dispose();
+                }else{
+
+                }
+            }
+        });
 
         JButton button1 = new JButton("Done");
         button1.setBounds(200, 550, 300, 50);
