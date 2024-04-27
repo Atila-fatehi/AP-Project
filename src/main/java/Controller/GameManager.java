@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
 import java.io.File;
+import java.io.PrintWriter;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Random;
@@ -40,7 +41,7 @@ public class GameManager {
     private boolean gameWon;
     private boolean empower;
 
-    public GameManager(GameFrame gameFrame ,GamePanel gamePanel) {
+    public GameManager(GameFrame gameFrame, GamePanel gamePanel) {
         this.gameFrame = gameFrame;
         this.gamePanel = gamePanel;
         epsilon = new Epsilon(350, 350, 13);
@@ -92,7 +93,7 @@ public class GameManager {
     }
 
     public void updateView() {
-        if(!gameWon) {
+        if (!gameWon) {
             gamePanel.shrink();
             gamePanel.setBullets(bullets);
             gamePanel.setTrigoraths(trigoraths);
@@ -106,10 +107,10 @@ public class GameManager {
         //generate enemies
         if (trigoraths.isEmpty() && squarantines.isEmpty()) {
             wave++;
-            if(wave == 4){
+            if (wave == 4) {
                 gameWon = true;
                 gameWon();
-            }else{
+            } else {
                 generateWave(wave);
             }
         }
@@ -283,26 +284,35 @@ public class GameManager {
         }
     }
 
-    public void gameWon(){
+    public void gameWon() {
+        File file = new File(Paths.get("").toAbsolutePath() + "/src/main/java/dataBase/XP.txt");
+        try {
+            PrintWriter printWriter = new PrintWriter(file);
+            printWriter.println(String.valueOf(epsilon.getXP()));
+            printWriter.flush();
+            printWriter.close();
+        }catch (Exception e){
+
+        }
         java.util.Timer timer = new java.util.Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 epsilon.setRadius(epsilon.getRadius() + 5);
-                if (epsilon.getRadius() == 800){
+                if (epsilon.getRadius() == 800) {
                     timer.cancel();
                 }
             }
-        },200,40);
+        }, 200, 40);
         java.util.Timer timer2 = new java.util.Timer();
         timer2.schedule(new TimerTask() {
             @Override
             public void run() {
                 gamePanel.shrinkToZero();
-                if(gamePanel.getScreenHeight() <= 0 && gamePanel.getScreenWidth() <= 0){
+                if (gamePanel.getScreenHeight() <= 0 && gamePanel.getScreenWidth() <= 0) {
                     timer2.cancel();
                     String[] responses = {"Main Menu"};
-                    if(JOptionPane.showOptionDialog(null, "Your XP = " + epsilon.getXP(), "Game Over", JOptionPane.INFORMATION_MESSAGE, JOptionPane.INFORMATION_MESSAGE, null, responses, 0) != -2){
+                    if (JOptionPane.showOptionDialog(null, "Your XP = " + epsilon.getXP(), "Game Over", JOptionPane.INFORMATION_MESSAGE, JOptionPane.INFORMATION_MESSAGE, null, responses, 0) != -2) {
                         gameFrame.dispose();
                         epsilon.setXP(0);
                         epsilon.setHP(100);
@@ -310,18 +320,14 @@ public class GameManager {
                     }
                 }
             }
-        },5000,50);
+        }, 5000, 50);
     }
+
     public void gameOver() {
         gameOver = true;
         epsilon.setHP(0);
         String[] responses = {"Main Menu"};
-        if(JOptionPane.showOptionDialog(null, "Your XP = " + epsilon.getXP(), "Game Over", JOptionPane.INFORMATION_MESSAGE, JOptionPane.INFORMATION_MESSAGE, null, responses, 0) != -2){
-            gameFrame.dispose();
-            epsilon.setXP(0);
-            epsilon.setHP(100);
-            new MainMenu();
-        }
+        if (JOptionPane.showOptionDialog(null, "Your XP = " + epsilon.getXP(), "Game Over", JOptionPane.INFORMATION_MESSAGE, JOptionPane.INFORMATION_MESSAGE, null, responses, 0) != -2);
     }
 
     public void impactOnPoint(Point2D collisionPoint) {
@@ -376,6 +382,7 @@ public class GameManager {
         }
 
     }
+
     public void impactOnPointWithoutEpsilon(Point2D collisionPoint) {
         double rate = 20;
         for (Trigorath trigorath : trigoraths) {
@@ -424,30 +431,18 @@ public class GameManager {
 
     public void generateWave(int wave) {
         Random random = new Random();
-        int initialPositionX = random.nextInt(gamePanel.getScreenWidth());
-        int initialPositionY = random.nextInt(gamePanel.getScreenHeight());
-        squarantines.add(new Squarantine(initialPositionX, initialPositionY, initialPositionX + 25, initialPositionY, initialPositionX + 25, initialPositionY + 25, initialPositionX, initialPositionY + 25));
-
-//        initialPositionX = random.nextInt(gamePanel.getScreenWidth());
-//        initialPositionY = random.nextInt(gamePanel.getScreenHeight());
-//        trigoraths.add(new Trigorath(initialPositionX, initialPositionY, initialPositionX + 30, initialPositionY, initialPositionX + 15, initialPositionY - 25));
+        makeNewSquarantine();
+        makeNewTrigorath();
         for (int i = 0; i < wave * difficulty; i++) {
             if (random.nextBoolean()) {
-                initialPositionX = random.nextInt(gamePanel.getScreenWidth());
-                initialPositionY = random.nextInt(gamePanel.getScreenHeight());
-                squarantines.add(new Squarantine(initialPositionX, initialPositionY, initialPositionX + 25, initialPositionY, initialPositionX + 25, initialPositionY + 25, initialPositionX, initialPositionY + 25));
+                makeNewSquarantine();
             }
         }
-
-//        for (int i = 0; i < wave * difficulty; i++) {
-//            if (random.nextBoolean()) {
-//                initialPositionX = random.nextInt(gamePanel.getScreenWidth());
-//                initialPositionY = random.nextInt(gamePanel.getScreenHeight());
-//                trigoraths.add(new Trigorath(initialPositionX, initialPositionY, initialPositionX + 30, initialPositionY, initialPositionX + 15, initialPositionY - 25));
-//            }
-//        }
-
-
+        for (int i = 0; i < wave * difficulty; i++) {
+            if (random.nextBoolean()) {
+                makeNewTrigorath();
+            }
+        }
     }
 
     public void makeNewBullet(int x, int y) {
@@ -456,6 +451,41 @@ public class GameManager {
         bullet.setVx(bullet.getConstantVelocity() * Math.cos(angle));
         bullet.setVy(bullet.getConstantVelocity() * Math.sin(angle));
         bullets.add(bullet);
+    }
+
+    public void makeNewTrigorath() {
+        Random random = new Random();
+        int initialPositionX = random.nextInt(gamePanel.getScreenWidth());
+        int initialPositionY = random.nextInt(gamePanel.getScreenHeight());
+        if (random.nextBoolean()) {
+            initialPositionX += gamePanel.getScreenWidth();
+        } else {
+            initialPositionX -= gamePanel.getScreenWidth();
+        }
+        if (random.nextBoolean()) {
+            initialPositionY += gamePanel.getScreenHeight();
+        } else {
+            initialPositionY -= gamePanel.getScreenHeight();
+        }
+        trigoraths.add(new Trigorath(initialPositionX, initialPositionY, initialPositionX + 30, initialPositionY, initialPositionX + 15, initialPositionY - 25));
+    }
+
+    public void makeNewSquarantine() {
+        Random random = new Random();
+        int initialPositionX = random.nextInt(gamePanel.getScreenWidth());
+        int initialPositionY = random.nextInt(gamePanel.getScreenHeight());
+        if (random.nextBoolean()) {
+            initialPositionX += gamePanel.getScreenWidth();
+        } else {
+            initialPositionX -= gamePanel.getScreenWidth();
+        }
+        if (random.nextBoolean()) {
+            initialPositionY += gamePanel.getScreenHeight();
+        } else {
+            initialPositionY -= gamePanel.getScreenHeight();
+        }
+        squarantines.add(new Squarantine(initialPositionX, initialPositionY, initialPositionX + 25, initialPositionY, initialPositionX + 25, initialPositionY + 25, initialPositionX, initialPositionY + 25));
+
     }
 
 

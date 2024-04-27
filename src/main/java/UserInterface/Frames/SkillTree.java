@@ -27,30 +27,55 @@ public class SkillTree extends JFrame {
         setVisible(true);
         setResizable(false);
 
-        JLabel label = new JLabel("Attack");JLabel labell = new JLabel("Writ of Ares");
-        label.setHorizontalAlignment(JLabel.CENTER);labell.setHorizontalAlignment(JLabel.CENTER);
-        label.setBounds(100, 110, 300, 100);labell.setBounds(100, 140, 300, 100);
-        label.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25));labell.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25));
-        label.setForeground(anotherFore);labell.setForeground(new Color(0xFB8B24));
-        add(label);add(labell);
+        JLabel label = new JLabel("Attack");
+        JLabel labell = new JLabel("Writ of Ares");
+        label.setHorizontalAlignment(JLabel.CENTER);
+        labell.setHorizontalAlignment(JLabel.CENTER);
+        label.setBounds(100, 110, 300, 100);
+        labell.setBounds(100, 140, 300, 100);
+        label.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25));
+        labell.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25));
+        label.setForeground(anotherFore);
+        labell.setForeground(new Color(0xFB8B24));
+        add(label);
+        add(labell);
 
-        JLabel label1 = new JLabel("Defence");JLabel labell1 = new JLabel("Writ of Aceso");
-        label1.setHorizontalAlignment(JLabel.CENTER);labell1.setHorizontalAlignment(JLabel.CENTER);
-        label1.setBounds(400, 110, 300, 100);labell1.setBounds(400, 140, 300, 100);
-        label1.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25));labell1.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25));
-        label1.setForeground(anotherFore);labell1.setForeground(fore);
-        add(label1);add(labell1);
+        JLabel label1 = new JLabel("Defence");
+        JLabel labell1 = new JLabel("Writ of Aceso");
+        label1.setHorizontalAlignment(JLabel.CENTER);
+        labell1.setHorizontalAlignment(JLabel.CENTER);
+        label1.setBounds(400, 110, 300, 100);
+        labell1.setBounds(400, 140, 300, 100);
+        label1.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25));
+        labell1.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25));
+        label1.setForeground(anotherFore);
+        labell1.setForeground(fore);
+        add(label1);
+        add(labell1);
 
-        JLabel label2 = new JLabel("Shape Shift");JLabel labell2 = new JLabel("Writ of Proteus");
-        label2.setHorizontalAlignment(JLabel.CENTER);labell2.setHorizontalAlignment(JLabel.CENTER);
-        label2.setBounds(700, 110, 300, 100);labell2.setBounds(700, 140, 300, 100);
-        label2.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25));labell2.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25));
-        label2.setForeground(anotherFore);labell2.setForeground(fore);
-        add(label2);add(labell2);
+        JLabel label2 = new JLabel("Shape Shift");
+        JLabel labell2 = new JLabel("Writ of Proteus");
+        label2.setHorizontalAlignment(JLabel.CENTER);
+        labell2.setHorizontalAlignment(JLabel.CENTER);
+        label2.setBounds(700, 110, 300, 100);
+        labell2.setBounds(700, 140, 300, 100);
+        label2.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25));
+        labell2.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25));
+        label2.setForeground(anotherFore);
+        labell2.setForeground(fore);
+        add(label2);
+        add(labell2);
+        String XP = "";
+        File file = new File(Paths.get("").toAbsolutePath() + "/src/main/java/dataBase/XP.txt");
+        try {
+            Scanner scanner = new Scanner(file);
+            XP = scanner.nextLine();
+        } catch (Exception e) {
 
-        JLabel label3 = new JLabel("XP : ");
+        }
+        JLabel label3 = new JLabel("XP : " + XP);
         label3.setHorizontalAlignment(JLabel.CENTER);
-        label3.setBounds(350, 10, 300, 50);
+        label3.setBounds(400, 10, 300, 50);
         label3.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25));
         label3.setForeground(new Color(0xFB8B24));
         add(label3);
