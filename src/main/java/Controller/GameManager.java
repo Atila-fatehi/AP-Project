@@ -81,7 +81,7 @@ public class GameManager {
         modelTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                if (!paused) {
+                if (!paused && !gameWon) {
                     updateModel();
                 }
                 if (gameOver) {
@@ -92,11 +92,13 @@ public class GameManager {
     }
 
     public void updateView() {
-        gamePanel.shrink();
-        gamePanel.setBullets(bullets);
-        gamePanel.setTrigoraths(trigoraths);
-        gamePanel.setSquarantines(squarantines);
-        gamePanel.setCollectables(collectables);
+        if(!gameWon) {
+            gamePanel.shrink();
+            gamePanel.setBullets(bullets);
+            gamePanel.setTrigoraths(trigoraths);
+            gamePanel.setSquarantines(squarantines);
+            gamePanel.setCollectables(collectables);
+        }
         gamePanel.repaint();
     }
 
@@ -104,11 +106,11 @@ public class GameManager {
         //generate enemies
         if (trigoraths.isEmpty() && squarantines.isEmpty()) {
             wave++;
-            if (wave != 4) {
-                generateWave(wave);
-            }else{
-                paused = true;
+            if(wave == 4){
                 gameWon = true;
+                gameWon();
+            }else{
+                generateWave(wave);
             }
         }
         //Bullet stuff
@@ -257,7 +259,7 @@ public class GameManager {
             paused = true;
         }
         for (int i = 0; i < collectables.size(); i++) {
-            if (cal.distance(epsilon.getX(), epsilon.getY(), collectables.get(i).getX(), collectables.get(i).getY()) <= collectables.get(i).getRadius() + epsilon.getRadius() + 10) {
+            if (cal.distance(epsilon.getX(), epsilon.getY(), collectables.get(i).getX(), collectables.get(i).getY()) <= collectables.get(i).getRadius() + epsilon.getRadius() + 20) {
                 epsilon.setXP(epsilon.getXP() + collectables.get(i).getXp());
                 collectables.remove(i);
                 i--;
@@ -280,6 +282,35 @@ public class GameManager {
         }
     }
 
+    public void gameWon(){
+        java.util.Timer timer = new java.util.Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                epsilon.setRadius(epsilon.getRadius() + 5);
+                if (epsilon.getRadius() == 800){
+                    timer.cancel();
+                }
+            }
+        },200,40);
+        java.util.Timer timer2 = new java.util.Timer();
+        timer2.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                gamePanel.shrinkToZero();
+                if(gamePanel.getScreenHeight() <= 0 && gamePanel.getScreenWidth() <= 0){
+                    timer2.cancel();
+                    String[] responses = {"Main Menu"};
+                    if(JOptionPane.showOptionDialog(null, "Your XP = " + epsilon.getXP(), "Game Over", JOptionPane.INFORMATION_MESSAGE, JOptionPane.INFORMATION_MESSAGE, null, responses, 0) != -2){
+                        gameFrame.dispose();
+                        epsilon.setXP(0);
+                        epsilon.setHP(100);
+                        new MainMenu();
+                    }
+                }
+            }
+        },5000,50);
+    }
     public void gameOver() {
         gameOver = true;
         epsilon.setHP(0);
@@ -344,7 +375,6 @@ public class GameManager {
         }
 
     }
-
     public void impactOnPointWithoutEpsilon(Point2D collisionPoint) {
         double rate = 20;
         for (Trigorath trigorath : trigoraths) {
@@ -393,22 +423,24 @@ public class GameManager {
 
     public void generateWave(int wave) {
         Random random = new Random();
-
+        int initialPositionX = random.nextInt(gamePanel.getScreenWidth());
+        int initialPositionY = random.nextInt(gamePanel.getScreenHeight());
+        squarantines.add(new Squarantine(initialPositionX, initialPositionY, initialPositionX + 25, initialPositionY, initialPositionX + 25, initialPositionY + 25, initialPositionX, initialPositionY + 25));
         for (int i = 0; i < wave * difficulty; i++) {
             if (random.nextBoolean()) {
-                int initialPositionX = random.nextInt(gamePanel.getScreenWidth());
-                int initialPositionY = random.nextInt(gamePanel.getScreenHeight());
+                initialPositionX = random.nextInt(gamePanel.getScreenWidth());
+                initialPositionY = random.nextInt(gamePanel.getScreenHeight());
                 squarantines.add(new Squarantine(initialPositionX, initialPositionY, initialPositionX + 25, initialPositionY, initialPositionX + 25, initialPositionY + 25, initialPositionX, initialPositionY + 25));
             }
         }
-
-        for (int i = 0; i < wave * difficulty; i++) {
-            if (random.nextBoolean()) {
-                int initialPositionX = random.nextInt(gamePanel.getScreenWidth());
-                int initialPositionY = random.nextInt(gamePanel.getScreenHeight());
-                trigoraths.add(new Trigorath(initialPositionX, initialPositionY, initialPositionX + 30, initialPositionY, initialPositionX + 15, initialPositionY - 25));
-            }
-        }
+//
+//        for (int i = 0; i < wave * difficulty; i++) {
+//            if (random.nextBoolean()) {
+//                int initialPositionX = random.nextInt(gamePanel.getScreenWidth());
+//                int initialPositionY = random.nextInt(gamePanel.getScreenHeight());
+//                trigoraths.add(new Trigorath(initialPositionX, initialPositionY, initialPositionX + 30, initialPositionY, initialPositionX + 15, initialPositionY - 25));
+//            }
+//        }
 
 
     }

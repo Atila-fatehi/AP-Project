@@ -37,7 +37,7 @@ public class GamePanel extends JPanel {
         //add Listeners
         addListeners();
         //Game Manager
-        this.gameManager = new GameManager(frame ,this );
+        this.gameManager = new GameManager(frame, this);
         Timer timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -90,6 +90,10 @@ public class GamePanel extends JPanel {
         g.drawString("WAVE : " + gameManager.getCurrentWave(), 170, 20);
         g.drawString("ELAPSED TIME : " + String.valueOf(elapsedTime), 250, 20);
         g.dispose();
+    }
+
+    public void gameWonAnimation() {
+
     }
 
     public void addListeners() {
@@ -298,12 +302,12 @@ public class GamePanel extends JPanel {
         button4.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(epsilon.getXP() >= 50){
+                if (epsilon.getXP() >= 50) {
                     epsilon.setXP(epsilon.getXP() - 50);
                     epsilon.setHP(epsilon.getHP() + 10);
                     gameManager.setPaused(!gameManager.isPaused());
                     shopFrame.dispose();
-                }else{
+                } else {
 
                 }
             }
@@ -355,6 +359,14 @@ public class GamePanel extends JPanel {
         shrinkageCounter++;
     }
 
+    public void shrinkToZero() {
+        setLocation(locationX, locationY);
+        setSize(screenWidth, screenHeight);
+        screenWidth -= 6;
+        locationX += 3;
+        screenHeight -= 6;
+        locationY += 3;
+    }
 
     //GETTERS AND SETTERS
     public Epsilon getEpsilon() {
