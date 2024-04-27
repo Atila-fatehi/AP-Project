@@ -247,6 +247,7 @@ public class GameManager {
             if (squarantines.get(i).getHP() <= 0) {
                 collectables.add(new Collectable(squarantines.get(i).getCenterOfGravity().getX(), squarantines.get(i).getCenterOfGravity().getY(), new Color(0x22FF00)));
                 collectables.add(new Collectable(squarantines.get(i).getCenterOfGravity().getX() + 10, squarantines.get(i).getCenterOfGravity().getY() + 10, new Color(0x22FF00)));
+                squarantines.get(i).getTimer().cancel();
                 squarantines.remove(i);
                 i--;
             }
@@ -255,8 +256,8 @@ public class GameManager {
         //epsilon stuff
         epsilon.move();
         if (epsilon.getHP() <= 0) {
-            gameOver();
-            paused = true;
+//            gameOver();
+//            paused = true;
         }
         for (int i = 0; i < collectables.size(); i++) {
             if (cal.distance(epsilon.getX(), epsilon.getY(), collectables.get(i).getX(), collectables.get(i).getY()) <= collectables.get(i).getRadius() + epsilon.getRadius() + 20) {
@@ -426,6 +427,10 @@ public class GameManager {
         int initialPositionX = random.nextInt(gamePanel.getScreenWidth());
         int initialPositionY = random.nextInt(gamePanel.getScreenHeight());
         squarantines.add(new Squarantine(initialPositionX, initialPositionY, initialPositionX + 25, initialPositionY, initialPositionX + 25, initialPositionY + 25, initialPositionX, initialPositionY + 25));
+
+//        initialPositionX = random.nextInt(gamePanel.getScreenWidth());
+//        initialPositionY = random.nextInt(gamePanel.getScreenHeight());
+//        trigoraths.add(new Trigorath(initialPositionX, initialPositionY, initialPositionX + 30, initialPositionY, initialPositionX + 15, initialPositionY - 25));
         for (int i = 0; i < wave * difficulty; i++) {
             if (random.nextBoolean()) {
                 initialPositionX = random.nextInt(gamePanel.getScreenWidth());
@@ -433,11 +438,11 @@ public class GameManager {
                 squarantines.add(new Squarantine(initialPositionX, initialPositionY, initialPositionX + 25, initialPositionY, initialPositionX + 25, initialPositionY + 25, initialPositionX, initialPositionY + 25));
             }
         }
-//
+
 //        for (int i = 0; i < wave * difficulty; i++) {
 //            if (random.nextBoolean()) {
-//                int initialPositionX = random.nextInt(gamePanel.getScreenWidth());
-//                int initialPositionY = random.nextInt(gamePanel.getScreenHeight());
+//                initialPositionX = random.nextInt(gamePanel.getScreenWidth());
+//                initialPositionY = random.nextInt(gamePanel.getScreenHeight());
 //                trigoraths.add(new Trigorath(initialPositionX, initialPositionY, initialPositionX + 30, initialPositionY, initialPositionX + 15, initialPositionY - 25));
 //            }
 //        }

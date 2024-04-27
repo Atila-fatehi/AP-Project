@@ -4,6 +4,10 @@ import util.cal;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 public class Squarantine implements movable {
 
@@ -12,16 +16,15 @@ public class Squarantine implements movable {
     private double posYHP;
     private double x1, x2, x3, x4;
     private double y1, y2, y3, y4;
-    private static final double constantVelocity = 1d;
+    private double constantVelocity;
     private double maxVelocityX;
     private double maxVelocityY;
     private double vx;
     private double vy;
     private double accX;
     private double accY;
-
-    util.cal cal;
-
+    private final util.cal cal;
+    private final java.util.Timer timer;
     public Squarantine(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
         this.x1 = x1;
         this.x2 = x2;
@@ -32,7 +35,24 @@ public class Squarantine implements movable {
         this.y3 = y3;
         this.y4 = y4;
         this.HP = 10;
+        constantVelocity = 1d;
         cal = new cal();
+        Random random = new Random();
+        timer = new java.util.Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if(random.nextBoolean()){
+                    constantVelocity = 5d;
+                    try {
+                        TimeUnit.SECONDS.sleep(1);
+                    }catch (Exception e){
+
+                    }
+                    constantVelocity = 1d;
+                }
+            }
+        },5000,3000);
     }
 
     public Point2D onTrigorathCollision(double x1, double x2, double x3, double y1, double y2, double y3) {
@@ -121,6 +141,9 @@ public class Squarantine implements movable {
         y4 += rate;
     }
 
+    public void randomAggression(){
+
+    }
     public void calculateMovingDirection(double x, double y) {
         double angle = Math.atan2(y - (y1 + y3) / 2, x - (x1 + x2) / 2);
 //        setVx(constantVelocity * Math.cos(angle));
@@ -285,5 +308,9 @@ public class Squarantine implements movable {
 
     public void setVy(double vy) {
         this.vy = vy;
+    }
+
+    public Timer getTimer() {
+        return timer;
     }
 }

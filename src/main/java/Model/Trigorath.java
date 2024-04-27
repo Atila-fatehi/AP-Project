@@ -11,7 +11,7 @@ public class Trigorath implements movable {
     private double posYHP;
     private double x1, x2, x3;
     private double y1, y2, y3;
-    private static final double constantVelocity = 1d;
+    private double constantVelocity;
     private double maxVelocityX;
     private double maxVelocityY;
     private double vx;
@@ -47,6 +47,7 @@ public class Trigorath implements movable {
         }
         return null;
     }
+
     public Point2D onSquarantineCollision(double x1, double x2, double x3, double x4, double y1, double y2, double y3, double y4) {
         int[] xPoints = {(int) x1, (int) x2, (int) x3, (int) x4};
         int[] yPoints = {(int) y1, (int) y2, (int) y3, (int) y4};
@@ -63,6 +64,7 @@ public class Trigorath implements movable {
         }
         return null;
     }
+
     public Point2D onEpsilonCollision(double x, double y, double radius) {
         if (cal.distance(x, y, x1, y1) <= radius) {
             return new Point2D.Double(x1, y1);
@@ -104,7 +106,11 @@ public class Trigorath implements movable {
         double angle = Math.atan2(y - (y1 + y3) / 2, x - (x1 + x2) / 2);
 //        setVx(constantVelocity * Math.cos(angle));
 //        setVy(constantVelocity * Math.sin(angle));
-
+        if (cal.distance(getCenterOfGravity().getX(), getCenterOfGravity().getY(), x, y) >= 400){
+            constantVelocity = 3d;
+        }else{
+            constantVelocity = 1d;
+        }
         maxVelocityX = constantVelocity * Math.cos(angle);
         maxVelocityY = constantVelocity * Math.sin(angle);
         accX = Math.cos(angle);

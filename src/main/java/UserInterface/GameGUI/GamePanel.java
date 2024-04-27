@@ -267,7 +267,8 @@ public class GamePanel extends JPanel {
         button3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (epsilon.getXP() >= 75) {
+               // if (epsilon.getXP() >= 75) {
+                 if(true){
                     epsilon.setXP(epsilon.getXP() - 75);
                     gameManager.setPaused(!gameManager.isPaused());
                     shopFrame.dispose();
