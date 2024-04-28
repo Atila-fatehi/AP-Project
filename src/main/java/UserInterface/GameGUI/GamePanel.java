@@ -41,8 +41,13 @@ public class GamePanel extends JPanel {
         Timer timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if(epsilon.getAbility().isAceso()){
+                    epsilon.setHP(epsilon.getHP() + 1);
+                }
                 elapsedTime++;
+
             }
+
         });
         timer.start();
     }
@@ -155,6 +160,9 @@ public class GamePanel extends JPanel {
                         break;
                     case KeyEvent.VK_ESCAPE:
                         gameFrame.dispose();
+                        gameManager.setPaused(true);
+                        gameManager.getModelTimer().cancel();
+                        gameManager.getViewTimer().cancel();
                         new MainMenu();
                         break;
                 }

@@ -89,6 +89,12 @@ public class SkillTree extends JFrame {
         button1.setForeground(fore);
         button1.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25));
         add(button1);
+        button1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                writeToFile(21);
+            }
+        });
 
         JButton button2 = new JButton("750 XP");
         button2.setBounds(150, 220, 200, 200);
@@ -99,6 +105,12 @@ public class SkillTree extends JFrame {
         button2.setForeground(fore);
         button2.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25));
         add(button2);
+        button2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                writeToFile(11);
+            }
+        });
 
         JButton button3 = new JButton("1000 XP");
         button3.setBounds(750, 220, 200, 200);
@@ -109,6 +121,12 @@ public class SkillTree extends JFrame {
         button3.setForeground(fore);
         button3.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25));
         add(button3);
+        button3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                writeToFile(31);
+            }
+        });
 
         JButton button4 = new JButton("Back");
         button4.setBounds(400, 550, 300, 50);
@@ -126,5 +144,18 @@ public class SkillTree extends JFrame {
                 new MainMenu();
             }
         });
+    }
+    public void writeToFile(int val1){
+        File file = new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\dataBase\\abilityCode.txt");
+        try {
+            PrintWriter printWriter = new PrintWriter(file);
+            printWriter.println(String.valueOf(val1));
+            printWriter.flush();
+            printWriter.close();
+        }catch (Exception e){
+
+        }
+
+
     }
 }

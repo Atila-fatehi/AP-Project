@@ -11,7 +11,7 @@ public class Epsilon implements movable {
     private double vy;
     private double MAX_VELOCITY;
     private double ACCELERATION;
-
+    private SpecialAbility ability;
     private boolean accU, accD, accR, accL;
     private boolean decU = true, decD = true, decR = true, decL = true;
 
@@ -23,6 +23,10 @@ public class Epsilon implements movable {
         this.radius = radius;
         vx = 0;
         vy = 0;
+        ability = new SpecialAbility();
+    }
+    public void addVertex(){
+
     }
 
     public void move() {
@@ -196,6 +200,14 @@ public class Epsilon implements movable {
 
     public void setACCELERATION(double ACCELERATION) {
         this.ACCELERATION = ACCELERATION;
+    }
+
+    public SpecialAbility getAbility() {
+        return ability;
+    }
+
+    public void setAbility(SpecialAbility ability) {
+        this.ability = ability;
     }
 }
 
