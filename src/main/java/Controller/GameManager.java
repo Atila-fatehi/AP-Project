@@ -326,7 +326,7 @@ public class GameManager {
             @Override
             public void run() {
                 gamePanel.shrinkToZero();
-                if (gamePanel.getScreenHeight() <= 0 && gamePanel.getScreenWidth() <= 0) {
+                if (gamePanel.getScreenHeight() <= -10 || gamePanel.getScreenWidth() <= -10) {
                     timer2.cancel();
                     String[] responses = {"Main Menu"};
                     if (JOptionPane.showOptionDialog(null, "Your XP = " + epsilon.getXP(), "Game Over", JOptionPane.INFORMATION_MESSAGE, JOptionPane.INFORMATION_MESSAGE, null, responses, 0) != -2) {
