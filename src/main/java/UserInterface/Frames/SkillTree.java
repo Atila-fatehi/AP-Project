@@ -118,6 +118,15 @@ public class SkillTree extends JFrame {
                 if(XP >= 500) {
                     writeToFile(21);
                     XP -= 500;
+                    File file = new File(Paths.get("").toAbsolutePath() + "/src/main/java/dataBase/XP.txt");
+                    try {
+                        PrintWriter printWriter = new PrintWriter(file);
+                        printWriter.println(String.valueOf(XP));
+                        printWriter.flush();
+                        printWriter.close();
+                    } catch (Exception eee) {
+
+                    }
                     button1.setEnabled(false);
                     button2.setEnabled(true);
                     button3.setEnabled(true);
@@ -135,6 +144,15 @@ public class SkillTree extends JFrame {
                     button1.setEnabled(true);
                     button3.setEnabled(true);
                     label3.setText("XP : " + XP);
+                    File file = new File(Paths.get("").toAbsolutePath() + "/src/main/java/dataBase/XP.txt");
+                    try {
+                        PrintWriter printWriter = new PrintWriter(file);
+                        printWriter.println(String.valueOf(XP));
+                        printWriter.flush();
+                        printWriter.close();
+                    } catch (Exception eee) {
+
+                    }
                 }
             }
         });
@@ -148,6 +166,15 @@ public class SkillTree extends JFrame {
                     button2.setEnabled(true);
                     button1.setEnabled(true);
                     label3.setText("XP : " + XP);
+                    File file = new File(Paths.get("").toAbsolutePath() + "/src/main/java/dataBase/XP.txt");
+                    try {
+                        PrintWriter printWriter = new PrintWriter(file);
+                        printWriter.println(String.valueOf(XP));
+                        printWriter.flush();
+                        printWriter.close();
+                    } catch (Exception eee) {
+
+                    }
                 }
             }
         });

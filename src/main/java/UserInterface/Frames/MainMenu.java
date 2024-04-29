@@ -198,7 +198,7 @@ public class MainMenu extends JFrame {
         if(!file.exists()) {
             try {
                 PrintWriter printWriter = new PrintWriter(file);
-                printWriter.println(10000);
+                printWriter.println(0);
                 printWriter.flush();
                 printWriter.close();
             } catch (Exception e) {

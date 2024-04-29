@@ -252,6 +252,7 @@ public class GameManager {
             if (trigoraths.get(i).getHP() <= 0) {
                 audioPlayer.play(new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\audio\\melonImpact.wav"));
                 collectables.add(new Collectable(trigoraths.get(i).getCenterOfGravity().getX(), trigoraths.get(i).getCenterOfGravity().getY(), new Color(0xFFD900)));
+                collectables.add(new Collectable(trigoraths.get(i).getCenterOfGravity().getX() + 10, trigoraths.get(i).getCenterOfGravity().getY() + 10, new Color(0xFFD900)));
                 trigoraths.remove(i);
                 i--;
             }
@@ -295,7 +296,6 @@ public class GameManager {
             }
             if (squarantines.get(i).getHP() <= 0) {
                 collectables.add(new Collectable(squarantines.get(i).getCenterOfGravity().getX(), squarantines.get(i).getCenterOfGravity().getY(), new Color(0x22FF00)));
-                collectables.add(new Collectable(squarantines.get(i).getCenterOfGravity().getX() + 10, squarantines.get(i).getCenterOfGravity().getY() + 10, new Color(0x22FF00)));
                 squarantines.get(i).getTimer().cancel();
                 squarantines.remove(i);
                 i--;
@@ -375,6 +375,15 @@ public class GameManager {
 
     public void gameOver() {
         gameOver = true;
+        File file = new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\dataBase\\XP.txt");
+        try {
+            PrintWriter printWriter = new PrintWriter(file);
+            printWriter.println(String.valueOf(epsilon.getXP()));
+            printWriter.flush();
+            printWriter.close();
+        }catch (Exception e){
+
+        }
         epsilon.setHP(0);
         audioPlayer.play(new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\audio\\loseMusic.wav"));
         audioPlayer.play(new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\audio\\scream.wav"));

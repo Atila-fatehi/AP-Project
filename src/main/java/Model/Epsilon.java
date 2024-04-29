@@ -1,7 +1,10 @@
 package Model;
 
 
+import java.io.File;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Epsilon implements movable {
     private int HP;
@@ -21,7 +24,14 @@ public class Epsilon implements movable {
         this.x = x;
         this.y = y;
         setHP(100);
-        setXP(1000);
+        File file = new File(Paths.get("").toAbsolutePath() + "/src/main/java/dataBase/XP.txt");
+        try {
+            Scanner scanner = new Scanner(file);
+            XP = Integer.parseInt(scanner.nextLine());
+        } catch (Exception e) {
+
+        }
+        setXP(XP);
         this.radius = radius;
         vx = 0;
         vy = 0;
