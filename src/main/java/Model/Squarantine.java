@@ -25,6 +25,7 @@ public class Squarantine implements movable {
     private double accY;
     private final util.cal cal;
     private final java.util.Timer timer;
+    private boolean played;
     public Squarantine(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
         this.x1 = x1;
         this.x2 = x2;
@@ -321,5 +322,13 @@ public class Squarantine implements movable {
 
     public Timer getTimer() {
         return timer;
+    }
+
+    public boolean isPlayed() {
+        return played;
+    }
+
+    public void setPlayed(boolean played) {
+        this.played = played;
     }
 }

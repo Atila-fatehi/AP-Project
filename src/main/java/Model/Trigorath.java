@@ -18,6 +18,7 @@ public class Trigorath implements movable {
     private double vy;
     private double accX;
     private double accY;
+    private boolean played;
     cal cal;
 
     public Trigorath(double x1, double y1, double x2, double y2, double x3, double y3) {
@@ -257,6 +258,14 @@ public class Trigorath implements movable {
 
     public double getPosYHP() {
         return posYHP;
+    }
+
+    public boolean isPlayed() {
+        return played;
+    }
+
+    public void setPlayed(boolean played) {
+        this.played = played;
     }
 
     public void setPosYHP(double posYHP) {
