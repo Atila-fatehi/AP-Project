@@ -4,6 +4,7 @@ import Model.*;
 import UserInterface.Frames.MainMenu;
 import UserInterface.GameGUI.GameFrame;
 import UserInterface.GameGUI.GamePanel;
+import audio.AudioPlayer;
 import util.cal;
 
 import javax.swing.*;
@@ -39,10 +40,12 @@ public class GameManager {
     private boolean gameOver;
     private boolean gameWon;
     private boolean empower;
+    private final AudioPlayer audioPlayer;
 
     public GameManager(GameFrame gameFrame, GamePanel gamePanel) {
         this.gameFrame = gameFrame;
         this.gamePanel = gamePanel;
+        audioPlayer = new AudioPlayer();
         epsilon = new Epsilon(350, 350, 13);
         gamePanel.setEpsilon(epsilon);
         damageRate = 5;
@@ -106,15 +109,17 @@ public class GameManager {
         }
         gamePanel.repaint();
     }
-
     public void updateModel() {
         //generate enemies
         if (trigoraths.isEmpty() && squarantines.isEmpty()) {
+            audioPlayer.play(new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\audio\\hugeWave.wav"));
             wave++;
             if (wave == 4) {
                 gameWon = true;
                 gameWon();
             } else {
+                //TODO in between stuff
+                audioPlayer.play(new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\audio\\awooga.wav"));
                 generateWave(wave);
             }
         }
@@ -125,6 +130,7 @@ public class GameManager {
             for (Trigorath trigorath : trigoraths) {
                 Point2D trigorathCollisionPoint = bullets.get(i).onTrigorathCollision(trigorath.getX1(), trigorath.getX2(), trigorath.getX3(), trigorath.getY1(), trigorath.getY2(), trigorath.getY3());
                 if (trigorathCollisionPoint != null) {
+                    audioPlayer.play(new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\audio\\splat.wav"));
                     trigorath.setHP(trigorath.getHP() - damageRate);
                     impactOnPoint(trigorathCollisionPoint);
                     bullets.remove(i);
@@ -138,6 +144,7 @@ public class GameManager {
             for (Squarantine squarantine : squarantines) {
                 Point2D squarantineCollisionPoint = bullets.get(i).onSquarantineCollision(squarantine.getX1(), squarantine.getX2(), squarantine.getX3(), squarantine.getX4(), squarantine.getY1(), squarantine.getY2(), squarantine.getY3(), squarantine.getY4());
                 if (squarantineCollisionPoint != null) {
+                    audioPlayer.play(new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\audio\\splat.wav"));
                     squarantine.setHP(squarantine.getHP() - damageRate);
                     impactOnPoint(squarantineCollisionPoint);
                     bullets.remove(i);
@@ -200,10 +207,14 @@ public class GameManager {
         for (int i = 0; i < trigoraths.size(); i++) {
             trigoraths.get(i).calculateMovingDirection(epsilon.getX(), epsilon.getY());
             trigoraths.get(i).move();
-            if(epsilon.hasVertex()){
-                if(trigoraths.get(i).onPointCollision(epsilon.getXPoints().getFirst() , epsilon.getYPoints().getFirst()) != null){
+            if (trigoraths.get(i).getX1() >= 0 && trigoraths.get(i).getX1() <= gamePanel.getScreenWidth() && trigoraths.get(i).getY1() >= 0 && trigoraths.get(i).getX1() <= gamePanel.getScreenHeight()) {
+                //TODO do once
+                //audioPlayer.play(new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\audio\\groan.wav"));
+            }
+            if (epsilon.hasVertex()) {
+                if (trigoraths.get(i).onPointCollision(epsilon.getXPoints().getFirst(), epsilon.getYPoints().getFirst()) != null) {
                     trigoraths.get(i).setHP(trigoraths.get(i).getHP() - 10);
-                    impactOnPoint(new Point2D.Double(epsilon.getXPoints().getFirst() , epsilon.getYPoints().getFirst()));
+                    impactOnPoint(new Point2D.Double(epsilon.getXPoints().getFirst(), epsilon.getYPoints().getFirst()));
                 }
             }
             Point2D epsilonCollisionPoint = trigoraths.get(i).onEpsilonCollision(epsilon.getX(), epsilon.getY(), epsilon.getRadius());
@@ -226,6 +237,7 @@ public class GameManager {
                 }
             }
             if (trigoraths.get(i).getHP() <= 0) {
+                audioPlayer.play(new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\audio\\melonImpact.wav"));
                 collectables.add(new Collectable(trigoraths.get(i).getCenterOfGravity().getX(), trigoraths.get(i).getCenterOfGravity().getY(), new Color(0xFFD900)));
                 trigoraths.remove(i);
                 i--;
@@ -236,10 +248,14 @@ public class GameManager {
         for (int i = 0; i < squarantines.size(); i++) {
             squarantines.get(i).calculateMovingDirection(epsilon.getX(), epsilon.getY());
             squarantines.get(i).move();
-            if(epsilon.hasVertex()){
-                if(squarantines.get(i).onPointCollision(epsilon.getXPoints().getFirst() , epsilon.getYPoints().getFirst()) != null){
+            if (squarantines.get(i).getX1() >= 0 && squarantines.get(i).getX1() <= gamePanel.getScreenWidth() && squarantines.get(i).getY1() >= 0 && squarantines.get(i).getX1() <= gamePanel.getScreenHeight()) {
+                //TODO do once
+                //audioPlayer.play(new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\audio\\groan.wav"));
+            }
+            if (epsilon.hasVertex()) {
+                if (squarantines.get(i).onPointCollision(epsilon.getXPoints().getFirst(), epsilon.getYPoints().getFirst()) != null) {
                     squarantines.get(i).setHP(squarantines.get(i).getHP() - 10);
-                    impactOnPoint(new Point2D.Double(epsilon.getXPoints().getFirst() , epsilon.getYPoints().getFirst()));
+                    impactOnPoint(new Point2D.Double(epsilon.getXPoints().getFirst(), epsilon.getYPoints().getFirst()));
                 }
             }
             Point2D epsilonCollisionPoint = squarantines.get(i).onEpsilonCollision(epsilon.getX(), epsilon.getY(), epsilon.getRadius());
@@ -280,6 +296,7 @@ public class GameManager {
         for (int i = 0; i < collectables.size(); i++) {
             if (cal.distance(epsilon.getX(), epsilon.getY(), collectables.get(i).getX(), collectables.get(i).getY()) <= collectables.get(i).getRadius() + epsilon.getRadius() + 20) {
                 epsilon.setXP(epsilon.getXP() + collectables.get(i).getXp());
+                audioPlayer.play(new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\audio\\coin.wav"));
                 collectables.remove(i);
                 i--;
             }
@@ -302,6 +319,7 @@ public class GameManager {
     }
 
     public void gameWon() {
+        audioPlayer.play(new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\audio\\winMusic.wav"));
         File file = new File(Paths.get("").toAbsolutePath() + "/src/main/java/dataBase/XP.txt");
         try {
             PrintWriter printWriter = new PrintWriter(file);
@@ -343,6 +361,8 @@ public class GameManager {
     public void gameOver() {
         gameOver = true;
         epsilon.setHP(0);
+        audioPlayer.play(new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\audio\\loseMusic.wav"));
+        audioPlayer.play(new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\audio\\scream.wav"));
         String[] responses = {"Main Menu"};
         if (JOptionPane.showOptionDialog(null, "Your XP = " + epsilon.getXP(), "Game Over", JOptionPane.INFORMATION_MESSAGE, JOptionPane.INFORMATION_MESSAGE, null, responses, 0) != -2) {
             gameFrame.dispose();
@@ -422,7 +442,6 @@ public class GameManager {
             }
         }
     }
-
 
     public void mouseClicked(int x, int y) {
         if (empower) {

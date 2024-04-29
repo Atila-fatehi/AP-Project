@@ -3,6 +3,7 @@ package UserInterface.GameGUI;
 import Controller.GameManager;
 import Model.*;
 import UserInterface.Frames.MainMenu;
+import audio.AudioPlayer;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -32,15 +33,18 @@ public class GamePanel extends JPanel {
     private final GameManager gameManager;
     private int elapsedTime;
     private final GameFrame gameFrame;
+    private final AudioPlayer audioPlayer;
 
     public GamePanel(GameFrame frame) {
         this.gameFrame = frame;
+        audioPlayer = new AudioPlayer();
         setFocusable(true);
         setLayout(null);
         //add Listeners
         addListeners();
         //Game Manager
         this.gameManager = new GameManager(frame, this);
+        //Timers
         Timer timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -168,6 +172,7 @@ public class GamePanel extends JPanel {
                         break;
                     case KeyEvent.VK_SPACE:
                         gameManager.setPaused(!gameManager.isPaused());
+                        audioPlayer.play(new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\audio\\pause.wav"));
                         openShop();
                         break;
                     case KeyEvent.VK_ESCAPE:
