@@ -19,7 +19,7 @@ public class Epsilon implements movable {
         this.x = x;
         this.y = y;
         setHP(100);
-        setXP(10000000);
+        setXP(1000);
         this.radius = radius;
         vx = 0;
         vy = 0;
@@ -29,6 +29,11 @@ public class Epsilon implements movable {
 
     }
 
+    public void activateAbility(){
+        if(ability.proteus){
+            addVertex();
+        }
+    }
     public void move() {
         x += vx;
         y += vy;

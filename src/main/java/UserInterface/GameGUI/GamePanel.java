@@ -9,7 +9,10 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Point2D;
+import java.io.File;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.TimerTask;
 
 public class GamePanel extends JPanel {
@@ -41,11 +44,13 @@ public class GamePanel extends JPanel {
         Timer timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(epsilon.getAbility().isAceso()){
+                if (epsilon.getAbility().isAceso()) {
                     epsilon.setHP(epsilon.getHP() + 1);
                 }
                 elapsedTime++;
-
+                if (elapsedTime == 10) {
+                    gameManager.setPastTen(true);
+                }
             }
 
         });
@@ -90,10 +95,13 @@ public class GamePanel extends JPanel {
         }
         //draw Strings
         g.setColor(new Color(0x8A26FF));
-        g.drawString("HP : " + String.valueOf(epsilon.getHP()), 10, 20);
-        g.drawString("XP : " + String.valueOf(epsilon.getXP()), 100, 20);
-        g.drawString("WAVE : " + gameManager.getCurrentWave(), 170, 20);
-        g.drawString("ELAPSED TIME : " + String.valueOf(elapsedTime), 250, 20);
+        g.drawString("HP : " + String.valueOf(epsilon.getHP()) +
+                "       XP : " + String.valueOf(epsilon.getXP()) +
+                "       WAVE : " + gameManager.getCurrentWave() +
+                "       ELAPSED TIME : " + String.valueOf(elapsedTime), 10, 20);
+//        g.drawString(, 100, 20);
+//        g.drawString(, 170, 20);
+//        g.drawString(, 250, 20);
         g.dispose();
     }
 
@@ -165,6 +173,10 @@ public class GamePanel extends JPanel {
                         gameManager.getViewTimer().cancel();
                         new MainMenu();
                         break;
+                    case KeyEvent.VK_R:
+                        abilityStuff();
+                        epsilon.activateAbility();
+                        break;
                 }
             }
 
@@ -191,6 +203,39 @@ public class GamePanel extends JPanel {
                 }
             }
         });
+    }
+
+    public void abilityStuff() {
+        File file = new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\dataBase\\abilityCode.txt");
+        try {
+            Scanner scanner = new Scanner(file);
+            int num = Integer.parseInt(scanner.nextLine());
+            if (num == 11) {
+                epsilon.getAbility().setAres(true);
+                epsilon.setXP(epsilon.getXP() - 100);
+                gameManager.setDamageRate(7);
+            }
+            if (num == 21) {
+                epsilon.setXP(epsilon.getXP() - 100);
+                epsilon.getAbility().setAceso(true);
+            }
+            if (num == 31) {
+                epsilon.setXP(epsilon.getXP() - 100);
+                epsilon.getAbility().setProteus(true);
+            }
+        } catch (Exception e) {
+
+        }
+        java.util.Timer timer = new java.util.Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                epsilon.getAbility().setAres(false);
+                epsilon.getAbility().setAceso(false);
+                epsilon.getAbility().setProteus(false);
+                timer.cancel();
+            }
+        }, 5 * 60 * 1000, 1111);
     }
 
     public void openShop() {

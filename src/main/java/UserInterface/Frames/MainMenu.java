@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 
@@ -40,6 +41,7 @@ public class MainMenu extends JFrame {
         setResizable(false);
         wallpaper wallpaper = new wallpaper();
         wallpaper.setBounds(0, 0, WIDTH, HEIGHT);
+        file();
 
         JButton button1 = new JButton("New Game");
         button1.setBounds(150, 300, 300, 50);
@@ -166,6 +168,42 @@ public class MainMenu extends JFrame {
             robot.keyRelease(KeyEvent.VK_WINDOWS);
         } catch (AWTException e) {
             e.printStackTrace();
+        }
+    }
+    public void file(){
+        File file = new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\dataBase\\settings.txt");
+        if(!file.exists()) {
+            try {
+                PrintWriter printWriter = new PrintWriter(file);
+                printWriter.println(50);
+                printWriter.println(1);
+                printWriter.flush();
+                printWriter.close();
+            } catch (Exception e) {
+
+            }
+        }
+        file = new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\dataBase\\abilityCode.txt");
+        if(!file.exists()) {
+            try {
+                PrintWriter printWriter = new PrintWriter(file);
+                printWriter.println(0);
+                printWriter.flush();
+                printWriter.close();
+            } catch (Exception e) {
+
+            }
+        }
+        file = new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\dataBase\\XP.txt");
+        if(!file.exists()) {
+            try {
+                PrintWriter printWriter = new PrintWriter(file);
+                printWriter.println(10000);
+                printWriter.flush();
+                printWriter.close();
+            } catch (Exception e) {
+
+            }
         }
     }
 }

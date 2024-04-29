@@ -45,15 +45,7 @@ public class GameManager {
         this.gamePanel = gamePanel;
         epsilon = new Epsilon(350, 350, 13);
         gamePanel.setEpsilon(epsilon);
-        abilityStuff();
-        if(epsilon.getAbility().isAres()){
-            damageRate = 7;
-        }else{
-            damageRate = 5;
-        }
-        if(epsilon.getAbility().isProteus()){
-            epsilon.addVertex();
-        }
+        damageRate = 5;
         wave = 0;
         cal = new cal();
         File file = new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\dataBase\\settings.txt");
@@ -100,9 +92,13 @@ public class GameManager {
         }, 0, (int) (double) TimeUnit.SECONDS.toMillis(1) / 100);
     }
 
+    private boolean pastTen;
+
     public void updateView() {
         if (!gameWon) {
-            gamePanel.shrink();
+            if (pastTen) {
+                gamePanel.shrink();
+            }
             gamePanel.setBullets(bullets);
             gamePanel.setTrigoraths(trigoraths);
             gamePanel.setSquarantines(squarantines);
@@ -237,7 +233,7 @@ public class GameManager {
             Point2D epsilonCollisionPoint = squarantines.get(i).onEpsilonCollision(epsilon.getX(), epsilon.getY(), epsilon.getRadius());
             if (epsilonCollisionPoint != null) {
                 impactOnPoint(epsilonCollisionPoint);
-                epsilon.setHP(epsilon.getHP() - 10);
+                epsilon.setHP(epsilon.getHP() - 6);
             }
             for (int j = 0; j < trigoraths.size(); j++) {
                 Point2D trigorathCollisionPoint = squarantines.get(i).onTrigorathCollision(trigoraths.get(j).getX1(), trigoraths.get(j).getX2(), trigoraths.get(j).getX3(), trigoraths.get(j).getY1(), trigoraths.get(j).getY2(), trigoraths.get(j).getY3());
@@ -299,7 +295,7 @@ public class GameManager {
             printWriter.println(epsilon.getXP());
             printWriter.flush();
             printWriter.close();
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
         java.util.Timer timer = new java.util.Timer();
@@ -335,7 +331,7 @@ public class GameManager {
         gameOver = true;
         epsilon.setHP(0);
         String[] responses = {"Main Menu"};
-        if (JOptionPane.showOptionDialog(null, "Your XP = " + epsilon.getXP(), "Game Over", JOptionPane.INFORMATION_MESSAGE, JOptionPane.INFORMATION_MESSAGE, null, responses, 0) != -2){
+        if (JOptionPane.showOptionDialog(null, "Your XP = " + epsilon.getXP(), "Game Over", JOptionPane.INFORMATION_MESSAGE, JOptionPane.INFORMATION_MESSAGE, null, responses, 0) != -2) {
             gameFrame.dispose();
             epsilon.setXP(0);
             epsilon.setHP(100);
@@ -501,35 +497,20 @@ public class GameManager {
 
     }
 
-    public void abilityStuff(){
-        File file = new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\dataBase\\abilityCode.txt");
-        try {
-            Scanner scanner = new Scanner(file);
-            int num = Integer.parseInt(scanner.nextLine());
-            if(num == 11){
-                epsilon.getAbility().setAres(true);
-            }
-            if(num == 21){
-                epsilon.getAbility().setAceso(true);
-            }
-            if(num == 31){
-                epsilon.getAbility().setProteus(true);
-            }
-        } catch (Exception e) {
-
-        }
-    }
 
     //GETTER SETTERS
     public int getCurrentWave() {
         return wave;
     }
+
     public boolean isPaused() {
         return paused;
     }
+
     public void setPaused(boolean paused) {
         this.paused = paused;
     }
+
     public void setEmpower(boolean empower) {
         this.empower = empower;
     }
@@ -540,5 +521,17 @@ public class GameManager {
 
     public Timer getViewTimer() {
         return viewTimer;
+    }
+
+    public boolean isPastTen() {
+        return pastTen;
+    }
+
+    public void setPastTen(boolean pastTen) {
+        this.pastTen = pastTen;
+    }
+
+    public void setDamageRate(int damageRate) {
+        this.damageRate = damageRate;
     }
 }

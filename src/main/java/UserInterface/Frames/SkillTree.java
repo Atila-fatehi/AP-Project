@@ -16,6 +16,7 @@ public class SkillTree extends JFrame {
     private static final Color back = new Color(0x9A1A03);
     private static final Color fore = new Color(0xFB8B24);
     private static final Color anotherFore = new Color(0x074E9C);
+    private int XP = 0;
 
     public SkillTree() {
         getContentPane().setBackground(new Color(0x000000));
@@ -65,11 +66,11 @@ public class SkillTree extends JFrame {
         labell2.setForeground(fore);
         add(label2);
         add(labell2);
-        String XP = "";
+
         File file = new File(Paths.get("").toAbsolutePath() + "/src/main/java/dataBase/XP.txt");
         try {
             Scanner scanner = new Scanner(file);
-            XP = scanner.nextLine();
+            XP = Integer.parseInt(scanner.nextLine());
         } catch (Exception e) {
 
         }
@@ -89,12 +90,7 @@ public class SkillTree extends JFrame {
         button1.setForeground(fore);
         button1.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25));
         add(button1);
-        button1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                writeToFile(21);
-            }
-        });
+
 
         JButton button2 = new JButton("750 XP");
         button2.setBounds(150, 220, 200, 200);
@@ -105,12 +101,7 @@ public class SkillTree extends JFrame {
         button2.setForeground(fore);
         button2.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25));
         add(button2);
-        button2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                writeToFile(11);
-            }
-        });
+
 
         JButton button3 = new JButton("1000 XP");
         button3.setBounds(750, 220, 200, 200);
@@ -121,13 +112,45 @@ public class SkillTree extends JFrame {
         button3.setForeground(fore);
         button3.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25));
         add(button3);
+        button1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(XP >= 500) {
+                    writeToFile(21);
+                    XP -= 500;
+                    button1.setEnabled(false);
+                    button2.setEnabled(true);
+                    button3.setEnabled(true);
+                    label3.setText("XP : " + XP);
+                }
+            }
+        });
+        button2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(XP >= 750) {
+                    writeToFile(11);
+                    XP -= 750;
+                    button2.setEnabled(false);
+                    button1.setEnabled(true);
+                    button3.setEnabled(true);
+                    label3.setText("XP : " + XP);
+                }
+            }
+        });
         button3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                writeToFile(31);
+                if(XP >= 1000) {
+                    writeToFile(31);
+                    XP -= 1000;
+                    button3.setEnabled(false);
+                    button2.setEnabled(true);
+                    button1.setEnabled(true);
+                    label3.setText("XP : " + XP);
+                }
             }
         });
-
         JButton button4 = new JButton("Back");
         button4.setBounds(400, 550, 300, 50);
         button4.setFocusable(false);
@@ -145,11 +168,11 @@ public class SkillTree extends JFrame {
             }
         });
     }
-    public void writeToFile(int val1){
+    public void writeToFile(int val){
         File file = new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\dataBase\\abilityCode.txt");
         try {
             PrintWriter printWriter = new PrintWriter(file);
-            printWriter.println(String.valueOf(val1));
+            printWriter.println(val);
             printWriter.flush();
             printWriter.close();
         }catch (Exception e){
