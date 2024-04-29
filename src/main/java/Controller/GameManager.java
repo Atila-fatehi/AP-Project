@@ -202,8 +202,8 @@ public class GameManager {
             trigoraths.get(i).move();
             if(epsilon.hasVertex()){
                 if(trigoraths.get(i).onPointCollision(epsilon.getXPoints().getFirst() , epsilon.getYPoints().getFirst()) != null){
-                    impactOnPoint(new Point2D.Double(epsilon.getXPoints().getFirst() , epsilon.getYPoints().getFirst()));
                     trigoraths.get(i).setHP(trigoraths.get(i).getHP() - 10);
+                    impactOnPoint(new Point2D.Double(epsilon.getXPoints().getFirst() , epsilon.getYPoints().getFirst()));
                 }
             }
             Point2D epsilonCollisionPoint = trigoraths.get(i).onEpsilonCollision(epsilon.getX(), epsilon.getY(), epsilon.getRadius());
@@ -238,8 +238,8 @@ public class GameManager {
             squarantines.get(i).move();
             if(epsilon.hasVertex()){
                 if(squarantines.get(i).onPointCollision(epsilon.getXPoints().getFirst() , epsilon.getYPoints().getFirst()) != null){
-                    impactOnPoint(new Point2D.Double(epsilon.getXPoints().getFirst() , epsilon.getYPoints().getFirst()));
                     squarantines.get(i).setHP(squarantines.get(i).getHP() - 10);
+                    impactOnPoint(new Point2D.Double(epsilon.getXPoints().getFirst() , epsilon.getYPoints().getFirst()));
                 }
             }
             Point2D epsilonCollisionPoint = squarantines.get(i).onEpsilonCollision(epsilon.getX(), epsilon.getY(), epsilon.getRadius());
@@ -273,7 +273,7 @@ public class GameManager {
 
         //epsilon stuff
         epsilon.move();
-        if (epsilon.getHP() <= 0) {
+        if (epsilon.getHP() <= -1111110) {
             gameOver();
             paused = true;
         }

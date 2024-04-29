@@ -29,13 +29,19 @@ public class Epsilon implements movable {
     }
 
     private boolean vertex;
-    private final ArrayList<Integer> xPoints = new ArrayList<>();
-    private final ArrayList<Integer> yPoints = new ArrayList<>();
+    private final ArrayList<Double> xPoints = new ArrayList<>();
+    private final ArrayList<Double> yPoints = new ArrayList<>();
 
     public void addVertex() {
         vertex = true;
-        xPoints.add((int) x);
-        yPoints.add((int) (y - radius - 7));
+        xPoints.add(x);
+        yPoints.add(y - radius - 7);
+    }
+    public void updateVertexPosition(){
+        xPoints.remove(0);
+        yPoints.remove(0);
+        xPoints.add(x);
+        yPoints.add(y - radius - 7);
     }
 
     public void activateAbility() {
@@ -86,6 +92,9 @@ public class Epsilon implements movable {
             if (vx > 0) {
                 vx -= ACCELERATION;
             }
+        }
+        if(vertex) {
+            updateVertexPosition();
         }
     }
 
@@ -229,11 +238,11 @@ public class Epsilon implements movable {
         this.vertex = vertex;
     }
 
-    public ArrayList<Integer> getXPoints() {
+    public ArrayList<Double> getXPoints() {
         return xPoints;
     }
 
-    public ArrayList<Integer> getYPoints() {
+    public ArrayList<Double> getYPoints() {
         return yPoints;
     }
 
