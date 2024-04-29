@@ -86,6 +86,10 @@ public class GamePanel extends JPanel {
         //draw epsilon
         g.setColor(new Color(0x38C1F1));
         g.fillOval((int) (epsilon.getX() - epsilon.getRadius()), (int) (epsilon.getY() - epsilon.getRadius()), (int) epsilon.getRadius() * 2, (int) epsilon.getRadius() * 2);
+        if (epsilon.hasVertex()) {
+            g.drawLine((int) (epsilon.getX() - epsilon.getRadius()), (int) epsilon.getY(), (int) epsilon.getX(), (int) (epsilon.getY() - epsilon.getRadius()) - 7);
+            g.drawLine((int) (epsilon.getX() + epsilon.getRadius()), (int) epsilon.getY(), (int) epsilon.getX(), (int) (epsilon.getY() - epsilon.getRadius()) - 7);
+        }
         g.setColor(new Color(0x011022));
         g.fillOval((int) (epsilon.getX() - epsilon.getRadius()) + 4, (int) (epsilon.getY() - epsilon.getRadius()) + 4, (int) epsilon.getRadius() * 2 - 8, (int) epsilon.getRadius() * 2 - 8);
         //draw bullets

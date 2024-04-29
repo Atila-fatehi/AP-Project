@@ -94,7 +94,16 @@ public class Squarantine implements movable {
         }
         return null;
     }
+    public Point2D onPointCollision(double x , double y){
+        int[] xPoints = {(int) x1, (int) x2, (int) x3 , (int) x4};
+        int[] yPoints = {(int) y1, (int) y2, (int) y3, (int) y4};
 
+        Polygon squarantine = new Polygon(xPoints, yPoints, 4);
+        if (squarantine.contains(x, y)) {
+            return new Point2D.Double(x, y);
+        }
+        return null;
+    }
     public Point2D onEpsilonCollision(double x, double y, double radius) {
         if (cal.distance(x, y, x1, y1) <= radius) {
             return new Point2D.Double(x1, y1);

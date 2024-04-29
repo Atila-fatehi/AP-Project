@@ -64,7 +64,16 @@ public class Trigorath implements movable {
         }
         return null;
     }
+    public Point2D onPointCollision(double x , double y){
+        int[] xPoints = {(int) x1, (int) x2, (int) x3};
+        int[] yPoints = {(int) y1, (int) y2, (int) y3};
 
+        Polygon trigorath = new Polygon(xPoints, yPoints, 3);
+        if (trigorath.contains(x, y)) {
+            return new Point2D.Double(x, y);
+        }
+        return null;
+    }
     public Point2D onEpsilonCollision(double x, double y, double radius) {
         if (cal.distance(x, y, x1, y1) <= radius) {
             return new Point2D.Double(x1, y1);

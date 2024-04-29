@@ -200,6 +200,12 @@ public class GameManager {
         for (int i = 0; i < trigoraths.size(); i++) {
             trigoraths.get(i).calculateMovingDirection(epsilon.getX(), epsilon.getY());
             trigoraths.get(i).move();
+            if(epsilon.hasVertex()){
+                if(trigoraths.get(i).onPointCollision(epsilon.getXPoints().getFirst() , epsilon.getYPoints().getFirst()) != null){
+                    impactOnPoint(new Point2D.Double(epsilon.getXPoints().getFirst() , epsilon.getYPoints().getFirst()));
+                    trigoraths.get(i).setHP(trigoraths.get(i).getHP() - 10);
+                }
+            }
             Point2D epsilonCollisionPoint = trigoraths.get(i).onEpsilonCollision(epsilon.getX(), epsilon.getY(), epsilon.getRadius());
             if (epsilonCollisionPoint != null) {
                 impactOnPoint(epsilonCollisionPoint);
@@ -230,11 +236,18 @@ public class GameManager {
         for (int i = 0; i < squarantines.size(); i++) {
             squarantines.get(i).calculateMovingDirection(epsilon.getX(), epsilon.getY());
             squarantines.get(i).move();
+            if(epsilon.hasVertex()){
+                if(squarantines.get(i).onPointCollision(epsilon.getXPoints().getFirst() , epsilon.getYPoints().getFirst()) != null){
+                    impactOnPoint(new Point2D.Double(epsilon.getXPoints().getFirst() , epsilon.getYPoints().getFirst()));
+                    squarantines.get(i).setHP(squarantines.get(i).getHP() - 10);
+                }
+            }
             Point2D epsilonCollisionPoint = squarantines.get(i).onEpsilonCollision(epsilon.getX(), epsilon.getY(), epsilon.getRadius());
             if (epsilonCollisionPoint != null) {
                 impactOnPoint(epsilonCollisionPoint);
                 epsilon.setHP(epsilon.getHP() - 6);
             }
+
             for (int j = 0; j < trigoraths.size(); j++) {
                 Point2D trigorathCollisionPoint = squarantines.get(i).onTrigorathCollision(trigoraths.get(j).getX1(), trigoraths.get(j).getX2(), trigoraths.get(j).getX3(), trigoraths.get(j).getY1(), trigoraths.get(j).getY2(), trigoraths.get(j).getY3());
                 if (trigorathCollisionPoint != null) {

@@ -1,6 +1,8 @@
 package Model;
 
 
+import java.util.ArrayList;
+
 public class Epsilon implements movable {
     private int HP;
     private int XP;
@@ -25,15 +27,23 @@ public class Epsilon implements movable {
         vy = 0;
         ability = new SpecialAbility();
     }
-    public void addVertex(){
 
+    private boolean vertex;
+    private final ArrayList<Integer> xPoints = new ArrayList<>();
+    private final ArrayList<Integer> yPoints = new ArrayList<>();
+
+    public void addVertex() {
+        vertex = true;
+        xPoints.add((int) x);
+        yPoints.add((int) (y - radius - 7));
     }
 
-    public void activateAbility(){
-        if(ability.proteus){
+    public void activateAbility() {
+        if (ability.proteus) {
             addVertex();
         }
     }
+
     public void move() {
         x += vx;
         y += vy;
@@ -209,6 +219,22 @@ public class Epsilon implements movable {
 
     public SpecialAbility getAbility() {
         return ability;
+    }
+
+    public boolean hasVertex() {
+        return vertex;
+    }
+
+    public void setVertex(boolean vertex) {
+        this.vertex = vertex;
+    }
+
+    public ArrayList<Integer> getXPoints() {
+        return xPoints;
+    }
+
+    public ArrayList<Integer> getYPoints() {
+        return yPoints;
     }
 
     public void setAbility(SpecialAbility ability) {
