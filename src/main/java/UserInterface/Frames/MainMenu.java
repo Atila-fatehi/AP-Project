@@ -1,8 +1,11 @@
 package UserInterface.Frames;
 
 import UserInterface.GameGUI.GameFrame;
+import audio.MusicPlayer;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -42,6 +45,11 @@ public class MainMenu extends JFrame {
         wallpaper wallpaper = new wallpaper();
         wallpaper.setBounds(0, 0, WIDTH, HEIGHT);
         file();
+
+        MusicPlayer musicPlayer = MusicPlayer.getInstance();
+        if(!musicPlayer.isPlaying()) {
+            musicPlayer.play();
+        }
 
         JButton button1 = new JButton("New Game");
         button1.setBounds(150, 300, 300, 50);

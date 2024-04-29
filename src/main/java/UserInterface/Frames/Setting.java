@@ -1,6 +1,11 @@
 package UserInterface.Frames;
 
+import audio.MusicPlayer;
+
+import javax.sound.sampled.FloatControl;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -41,6 +46,7 @@ public class Setting extends JFrame {
         slider.setBackground(new Color(0x011022));
         add(slider);
 
+
         JLabel label1 = new JLabel("Volume");
         label1.setHorizontalAlignment(JLabel.CENTER);
         label1.setBounds(100, 120, 300, 100);
@@ -55,6 +61,16 @@ public class Setting extends JFrame {
         slider1.setBounds(100,200,300,50);
         slider1.setBackground(new Color(0x011022));
         add(slider1);
+        slider1.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                float volume = (float) slider1.getValue() / 100;
+                if (MusicPlayer.getInstance().getClip() != null) {
+                    FloatControl control = (FloatControl) MusicPlayer.getInstance().getClip().getControl(FloatControl.Type.MASTER_GAIN);
+                    control.setValue(20f * (float) Math.log10(volume == 0 ? 0.0001 : volume));
+                }
+            }
+        });
 
         JLabel label2 = new JLabel("Difficulty");
         label2.setHorizontalAlignment(JLabel.CENTER);
