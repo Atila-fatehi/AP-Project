@@ -20,7 +20,7 @@ public class Tutorial extends JFrame {
         setVisible(true);
         setResizable(false);
 
-        JLabel label1 = new JLabel("PEACE WAS NEVER AN OPTION");
+        JLabel label1 = new JLabel("ONLY REAL GAMERS CAN PLAY THIS");
         label1.setHorizontalAlignment(JLabel.CENTER);
         label1.setBounds(300, 110, 500, 100);
         label1.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25));

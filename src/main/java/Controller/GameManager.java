@@ -175,13 +175,13 @@ public class GameManager {
                 gamePanel.setLocationX(gamePanel.getLocationX() - expandRate);
                 epsilon.setX(epsilon.getX() + expandRate);
                 for (int j = 0; j < trigoraths.size(); j++) {
-                    trigoraths.get(i).shiftX(expandRate);
+                    trigoraths.get(j).shiftX(expandRate);
                 }
                 for (int j = 0; j < squarantines.size(); j++) {
-                    squarantines.get(i).shiftX(expandRate);
+                    squarantines.get(j).shiftX(expandRate);
                 }
                 for (int j = 0; j < collectables.size(); j++) {
-                    collectables.get(i).shiftX(expandRate);
+                    collectables.get(j).shiftX(expandRate);
                 }
                 bullets.remove(i);
                 i--;
@@ -193,13 +193,13 @@ public class GameManager {
                 epsilon.setY(epsilon.getY() + expandRate);
 
                 for (int j = 0; j < trigoraths.size(); j++) {
-                    trigoraths.get(i).shiftY(expandRate);
+                    trigoraths.get(j).shiftY(expandRate);
                 }
                 for (int j = 0; j < squarantines.size(); j++) {
-                    squarantines.get(i).shiftY(expandRate);
+                    squarantines.get(j).shiftY(expandRate);
                 }
                 for (int j = 0; j < collectables.size(); j++) {
-                    collectables.get(i).shiftY(expandRate);
+                    collectables.get(j).shiftY(expandRate);
                 }
                 bullets.remove(i);
                 i--;
@@ -229,22 +229,26 @@ public class GameManager {
             if (epsilon.hasVertex()) {
                 if (trigoraths.get(i).onPointCollision(epsilon.getVertexX(), epsilon.getVertexY()) != null) {
                     trigoraths.get(i).setHP(trigoraths.get(i).getHP() - 10);
+                    audioPlayer.play(new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\audio\\splat.wav"));
                     impactOnPoint(new Point2D.Double(epsilon.getVertexX(), epsilon.getVertexY()));
                 }
                 if (epsilon.getVertexesNum() >= 2) {
                     if (trigoraths.get(i).onPointCollision(epsilon.getVertexX(), epsilon.getVertexY() + epsilon.getRadius() * 2 + 14) != null) {
                         trigoraths.get(i).setHP(trigoraths.get(i).getHP() - 10);
+                        audioPlayer.play(new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\audio\\splat.wav"));
                         impactOnPoint(new Point2D.Double(epsilon.getVertexX(), epsilon.getVertexY()));
                     }
                 }
                 if (epsilon.getVertexesNum() >= 3) {
                     if (trigoraths.get(i).onPointCollision(epsilon.getX() + epsilon.getRadius() + 7, epsilon.getY()) != null) {
+                        audioPlayer.play(new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\audio\\splat.wav"));
                         trigoraths.get(i).setHP(trigoraths.get(i).getHP() - 10);
                         impactOnPoint(new Point2D.Double(epsilon.getX() + epsilon.getRadius() + 7, epsilon.getY()));
                     }
                 }
                 if (epsilon.getVertexesNum() >= 4) {
                     if (trigoraths.get(i).onPointCollision(epsilon.getX() - epsilon.getRadius() - 7, epsilon.getY()) != null) {
+                        audioPlayer.play(new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\audio\\splat.wav"));
                         trigoraths.get(i).setHP(trigoraths.get(i).getHP() - 10);
                         impactOnPoint(new Point2D.Double(epsilon.getX() - epsilon.getRadius() - 7, epsilon.getY()));
                     }
@@ -289,26 +293,29 @@ public class GameManager {
                 }
             }
             if (epsilon.hasVertex()) {
-
                 if (squarantines.get(i).onPointCollision(epsilon.getVertexX(), epsilon.getVertexY()) != null) {
                     squarantines.get(i).setHP(squarantines.get(i).getHP() - 10);
+                    audioPlayer.play(new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\audio\\splat.wav"));
                     impactOnPoint(new Point2D.Double(epsilon.getVertexX(), epsilon.getVertexY()));
                 }
                 if (epsilon.getVertexesNum() >= 2) {
                     if (squarantines.get(i).onPointCollision(epsilon.getVertexX(), epsilon.getVertexY() + epsilon.getRadius() * 2 + 14) != null) {
                         squarantines.get(i).setHP(squarantines.get(i).getHP() - 10);
+                        audioPlayer.play(new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\audio\\splat.wav"));
                         impactOnPoint(new Point2D.Double(epsilon.getVertexX(), epsilon.getVertexY()));
                     }
                 }
                 if (epsilon.getVertexesNum() >= 3) {
                     if (squarantines.get(i).onPointCollision(epsilon.getX() + epsilon.getRadius() + 7, epsilon.getY()) != null) {
                         squarantines.get(i).setHP(squarantines.get(i).getHP() - 10);
+                        audioPlayer.play(new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\audio\\splat.wav"));
                         impactOnPoint(new Point2D.Double(epsilon.getX() + epsilon.getRadius() + 7, epsilon.getY()));
                     }
                 }
                 if (epsilon.getVertexesNum() >= 4) {
                     if (squarantines.get(i).onPointCollision(epsilon.getX() - epsilon.getRadius() - 7, epsilon.getY()) != null) {
                         squarantines.get(i).setHP(squarantines.get(i).getHP() - 10);
+                        audioPlayer.play(new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\audio\\splat.wav"));
                         impactOnPoint(new Point2D.Double(epsilon.getX() - epsilon.getRadius() - 7, epsilon.getY()));
                     }
                 }

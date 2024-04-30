@@ -1,6 +1,7 @@
 package UserInterface.Frames;
 
 import audio.MusicPlayer;
+import audio.MusicPlayer2;
 
 import javax.sound.sampled.FloatControl;
 import javax.swing.*;
@@ -67,6 +68,10 @@ public class Setting extends JFrame {
                 float volume = (float) slider1.getValue() / 100;
                 if (MusicPlayer.getInstance().getClip() != null) {
                     FloatControl control = (FloatControl) MusicPlayer.getInstance().getClip().getControl(FloatControl.Type.MASTER_GAIN);
+                    control.setValue(20f * (float) Math.log10(volume == 0 ? 0.0001 : volume));
+                }
+                if (MusicPlayer2.getInstance().getClip() != null) {
+                    FloatControl control = (FloatControl) MusicPlayer2.getInstance().getClip().getControl(FloatControl.Type.MASTER_GAIN);
                     control.setValue(20f * (float) Math.log10(volume == 0 ? 0.0001 : volume));
                 }
             }
