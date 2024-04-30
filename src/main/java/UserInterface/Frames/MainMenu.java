@@ -2,6 +2,7 @@ package UserInterface.Frames;
 
 import UserInterface.GameGUI.GameFrame;
 import audio.MusicPlayer;
+import audio.MusicPlayer2;
 
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
@@ -46,9 +47,9 @@ public class MainMenu extends JFrame {
         wallpaper.setBounds(0, 0, WIDTH, HEIGHT);
         file();
 
-        MusicPlayer musicPlayer = MusicPlayer.getInstance();
-        if(!musicPlayer.isPlaying()) {
-            musicPlayer.play();
+        MusicPlayer2 musicPlayer2 = MusicPlayer2.getInstance();
+        if(!musicPlayer2.isPlaying()) {
+            musicPlayer2.play();
         }
 
         JButton button1 = new JButton("New Game");
@@ -63,6 +64,12 @@ public class MainMenu extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
+                MusicPlayer2.getInstance().getClip().stop();
+                MusicPlayer2.getInstance().setPlaying(false);
+                MusicPlayer musicPlayer = MusicPlayer.getInstance();
+                if(!musicPlayer.isPlaying()) {
+                    musicPlayer.play();
+                }
                 minimizeAllWindows();
                 new GameFrame();
             }

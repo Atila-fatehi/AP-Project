@@ -4,6 +4,7 @@ import Controller.GameManager;
 import Model.*;
 import UserInterface.Frames.MainMenu;
 import audio.AudioPlayer;
+import audio.MusicPlayer;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -197,6 +198,8 @@ public class GamePanel extends JPanel {
                     epsilon.activateAbility();
                 }
                 if (keyCode == KeyEvent.VK_ESCAPE) {
+                    MusicPlayer.getInstance().getClip().stop();
+                    MusicPlayer.getInstance().setPlaying(false);
                     gameFrame.dispose();
                     gameManager.setPaused(true);
                     gameManager.getModelTimer().cancel();
