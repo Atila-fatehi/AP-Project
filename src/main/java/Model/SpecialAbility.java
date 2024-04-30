@@ -4,6 +4,15 @@ public class SpecialAbility {
     boolean ares;
     boolean aceso;
     boolean proteus;
+    boolean isActive;
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
 
     public boolean isAres() {
         return ares;

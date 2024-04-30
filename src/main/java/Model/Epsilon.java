@@ -38,6 +38,7 @@ public class Epsilon implements movable {
         vx = 0;
         vy = 0;
         ability = new SpecialAbility();
+        ability.setActive(false);
     }
 
     private boolean vertex;
@@ -47,28 +48,19 @@ public class Epsilon implements movable {
 
     public void addVertex() {
         vertex = true;
-        if(vertexesNum != 4) {
+        if (vertexesNum != 4) {
             vertexesNum++;
         }
     }
-    public void updateVertexPosition(){
+
+    public void updateVertexPosition() {
         vertexX = x;
         vertexY = y - radius - 7;
     }
-    private boolean coolDownFinish = true;
-    public void activateAbility() {
-        java.util.Timer timer = new java.util.Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                coolDownFinish = true;
-                timer.cancel();
-            }
-        } , 5 * 60 * 1000 , 1111);
-        if (ability.proteus && coolDownFinish) {
-            addVertex();
-        }
-        coolDownFinish = false;
+
+    public void updateVertexPosition(double cos, double sin) {
+        vertexX = x * sin;
+        vertexY = (y - radius - 7) * cos;
     }
 
     public void move() {
@@ -114,7 +106,7 @@ public class Epsilon implements movable {
                 vx -= ACCELERATION;
             }
         }
-        if(vertex) {
+        if (vertex) {
             updateVertexPosition();
         }
     }
@@ -287,13 +279,7 @@ public class Epsilon implements movable {
         this.ability = ability;
     }
 
-    public boolean isCoolDownFinish() {
-        return coolDownFinish;
-    }
 
-    public void setCoolDownFinish(boolean coolDownFinish) {
-        this.coolDownFinish = coolDownFinish;
-    }
 }
 
 

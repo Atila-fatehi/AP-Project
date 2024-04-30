@@ -47,11 +47,12 @@ public class GamePanel extends JPanel {
         addListeners();
         //Game Manager
         this.gameManager = new GameManager(frame, this);
+        abilityStuff();
         //Timers
         Timer timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (epsilon.getAbility().isAceso()) {
+                if (epsilon.getAbility().isAceso() && epsilon.getAbility().isActive()) {
                     epsilon.setHP(epsilon.getHP() + 1);
                 }
                 elapsedTime++;
@@ -100,7 +101,14 @@ public class GamePanel extends JPanel {
                 g.drawLine((int) (epsilon.getX() - epsilon.getRadius()), (int) epsilon.getY(), (int) epsilon.getVertexX(), (int) (epsilon.getVertexY() + 2 * epsilon.getRadius() + 14));
                 g.drawLine((int) (epsilon.getX() + epsilon.getRadius()), (int) epsilon.getY(), (int) epsilon.getVertexX(), (int) (epsilon.getVertexY() + 2 * epsilon.getRadius() + 14));
             }
-
+            if (epsilon.getVertexesNum() >= 3) {
+                g.drawLine((int) epsilon.getX(), (int) (epsilon.getY() - epsilon.getRadius()), (int) (epsilon.getX() + epsilon.getRadius() + 7), (int) epsilon.getY());
+                g.drawLine((int) epsilon.getX(), (int) (epsilon.getY() + epsilon.getRadius()), (int) (epsilon.getX() + epsilon.getRadius() + 7), (int) epsilon.getY());
+            }
+            if (epsilon.getVertexesNum() >= 4) {
+                g.drawLine((int) epsilon.getX(), (int) (epsilon.getY() - epsilon.getRadius()), (int) (epsilon.getX() - epsilon.getRadius() - 7), (int) epsilon.getY());
+                g.drawLine((int) epsilon.getX(), (int) (epsilon.getY() + epsilon.getRadius()), (int) (epsilon.getX() - epsilon.getRadius() - 7), (int) epsilon.getY());
+            }
         }
         g.setColor(new Color(0x011022));
         g.fillOval((int) (epsilon.getX() - epsilon.getRadius()) + 4, (int) (epsilon.getY() - epsilon.getRadius()) + 4, (int) epsilon.getRadius() * 2 - 8, (int) epsilon.getRadius() * 2 - 8);
@@ -111,17 +119,12 @@ public class GamePanel extends JPanel {
         }
         //draw Strings
         g.setColor(new Color(0x8A26FF));
-        g.drawString("HP : " + String.valueOf(epsilon.getHP()) +
-                "       XP : " + String.valueOf(epsilon.getXP()) +
-                "       WAVE : " + gameManager.getCurrentWave() +
-                "       ELAPSED TIME : " + String.valueOf(elapsedTime), 10, 20);
+        g.drawString("HP : " + epsilon.getHP() +
+                  "       XP : " + epsilon.getXP() +
+                  "       WAVE : " + gameManager.getCurrentWave() +
+                  "       ELAPSED TIME : " + String.valueOf(elapsedTime), 10, 20);
         g.dispose();
     }
-
-    public void gameWonAnimation() {
-
-    }
-
     public void addListeners() {
         addMouseMotionListener(new MouseMotionListener() {
             @Override
@@ -131,10 +134,10 @@ public class GamePanel extends JPanel {
 
             @Override
             public void mouseMoved(MouseEvent e) {
-//                double angle = Math.atan2(epsilon.getY() - e.getY(), epsilon.getX() - e.getX());
-//                if(epsilon.hasVertex()) {
-//                    epsilon.updateVertexPosition(Math.cos(angle), Math.sin(angle));
-//                }
+                double angle = Math.atan2(epsilon.getY() - e.getY(), epsilon.getX() - e.getX());
+                if(epsilon.hasVertex()) {
+                    //epsilon.updateVertexPosition(Math.cos(angle), Math.sin(angle));
+                }
             }
         });
         addMouseListener(new MouseListener() {
@@ -194,8 +197,7 @@ public class GamePanel extends JPanel {
                     openShop();
                 }
                 if (keyCode == ability) {
-                    abilityStuff();
-                    epsilon.activateAbility();
+                    gameManager.activateAbility();
                 }
                 if (keyCode == KeyEvent.VK_ESCAPE) {
                     MusicPlayer.getInstance().getClip().stop();
@@ -238,30 +240,29 @@ public class GamePanel extends JPanel {
             int num = Integer.parseInt(scanner.nextLine());
             if (num == 11) {
                 epsilon.getAbility().setAres(true);
-                epsilon.setXP(epsilon.getXP() - 100);
-                gameManager.setDamageRate(7);
+//                epsilon.setXP(epsilon.getXP() - 100);
+//                gameManager.setDamageRate(7);
             }
             if (num == 21) {
-                epsilon.setXP(epsilon.getXP() - 100);
+//                epsilon.setXP(epsilon.getXP() - 100);
                 epsilon.getAbility().setAceso(true);
             }
             if (num == 31) {
-                epsilon.setXP(epsilon.getXP() - 100);
                 epsilon.getAbility().setProteus(true);
             }
         } catch (Exception e) {
 
         }
-        java.util.Timer timer = new java.util.Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                epsilon.getAbility().setAres(false);
-                epsilon.getAbility().setAceso(false);
-                epsilon.getAbility().setProteus(false);
-                timer.cancel();
-            }
-        }, 5 * 60 * 1000, 1111);
+//        java.util.Timer timer = new java.util.Timer();
+//        timer.schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//                epsilon.getAbility().setAres(false);
+//                epsilon.getAbility().setAceso(false);
+//                epsilon.getAbility().setProteus(false);
+//                timer.cancel();
+//            }
+//        }, 5 * 60 * 1000, 1111);
     }
 
     public void openShop() {

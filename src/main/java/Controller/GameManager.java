@@ -237,6 +237,18 @@ public class GameManager {
                         impactOnPoint(new Point2D.Double(epsilon.getVertexX(), epsilon.getVertexY()));
                     }
                 }
+                if (epsilon.getVertexesNum() >= 3) {
+                    if (trigoraths.get(i).onPointCollision(epsilon.getX() + epsilon.getRadius() + 7, epsilon.getY()) != null) {
+                        trigoraths.get(i).setHP(trigoraths.get(i).getHP() - 10);
+                        impactOnPoint(new Point2D.Double(epsilon.getX() + epsilon.getRadius() + 7, epsilon.getY()));
+                    }
+                }
+                if (epsilon.getVertexesNum() >= 4) {
+                    if (trigoraths.get(i).onPointCollision(epsilon.getX() - epsilon.getRadius() - 7, epsilon.getY()) != null) {
+                        trigoraths.get(i).setHP(trigoraths.get(i).getHP() - 10);
+                        impactOnPoint(new Point2D.Double(epsilon.getX() - epsilon.getRadius() - 7, epsilon.getY()));
+                    }
+                }
             }
             Point2D epsilonCollisionPoint = trigoraths.get(i).onEpsilonCollision(epsilon.getX(), epsilon.getY(), epsilon.getRadius());
             if (epsilonCollisionPoint != null) {
@@ -277,6 +289,7 @@ public class GameManager {
                 }
             }
             if (epsilon.hasVertex()) {
+
                 if (squarantines.get(i).onPointCollision(epsilon.getVertexX(), epsilon.getVertexY()) != null) {
                     squarantines.get(i).setHP(squarantines.get(i).getHP() - 10);
                     impactOnPoint(new Point2D.Double(epsilon.getVertexX(), epsilon.getVertexY()));
@@ -285,6 +298,18 @@ public class GameManager {
                     if (squarantines.get(i).onPointCollision(epsilon.getVertexX(), epsilon.getVertexY() + epsilon.getRadius() * 2 + 14) != null) {
                         squarantines.get(i).setHP(squarantines.get(i).getHP() - 10);
                         impactOnPoint(new Point2D.Double(epsilon.getVertexX(), epsilon.getVertexY()));
+                    }
+                }
+                if (epsilon.getVertexesNum() >= 3) {
+                    if (squarantines.get(i).onPointCollision(epsilon.getX() + epsilon.getRadius() + 7, epsilon.getY()) != null) {
+                        squarantines.get(i).setHP(squarantines.get(i).getHP() - 10);
+                        impactOnPoint(new Point2D.Double(epsilon.getX() + epsilon.getRadius() + 7, epsilon.getY()));
+                    }
+                }
+                if (epsilon.getVertexesNum() >= 4) {
+                    if (squarantines.get(i).onPointCollision(epsilon.getX() - epsilon.getRadius() - 7, epsilon.getY()) != null) {
+                        squarantines.get(i).setHP(squarantines.get(i).getHP() - 10);
+                        impactOnPoint(new Point2D.Double(epsilon.getX() - epsilon.getRadius() - 7, epsilon.getY()));
                     }
                 }
             }
@@ -570,7 +595,31 @@ public class GameManager {
         squarantines.add(new Squarantine(initialPositionX, initialPositionY, initialPositionX + 25, initialPositionY, initialPositionX + 25, initialPositionY + 25, initialPositionX, initialPositionY + 25));
 
     }
-
+    public void activateAbility(){
+        if(!epsilon.getAbility().isActive()) {
+            epsilon.getAbility().setActive(true);
+            java.util.Timer timer = new java.util.Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    epsilon.getAbility().setActive(false);
+                    timer.cancel();
+                }
+            }, 5 * 1000, 1111);
+            if (epsilon.getAbility().isProteus()) {
+                epsilon.addVertex();
+                epsilon.setXP(epsilon.getXP() - 100);
+            }
+            if (epsilon.getAbility().isAceso()) {
+                epsilon.setXP(epsilon.getXP() - 100);
+            }
+            if (epsilon.getAbility().isAres()) {
+                setDamageRate(7);
+                epsilon.setXP(epsilon.getXP() - 100);
+            }
+        }
+    }
+    private boolean coolDownFinish = true;
 
     //GETTER SETTERS
     public int getCurrentWave() {
