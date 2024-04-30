@@ -208,23 +208,21 @@ public class GamePanel extends JPanel {
             @Override
             public void keyReleased(KeyEvent e) {
                 int keyCode = e.getKeyCode();
-                switch (keyCode) {
-                    case KeyEvent.VK_W:
-                        epsilon.setAccU(false);
-                        epsilon.setDecU(true);
-                        break;
-                    case KeyEvent.VK_S:
-                        epsilon.setAccD(false);
-                        epsilon.setDecD(true);
-                        break;
-                    case KeyEvent.VK_A:
-                        epsilon.setAccL(false);
-                        epsilon.setDecL(true);
-                        break;
-                    case KeyEvent.VK_D:
-                        epsilon.setAccR(false);
-                        epsilon.setDecR(true);
-                        break;
+                if (keyCode == w) {
+                    epsilon.setAccU(false);
+                    epsilon.setDecU(true);
+                }
+                if (keyCode == s) {
+                    epsilon.setAccD(false);
+                    epsilon.setDecD(true);
+                }
+                if (keyCode == a) {
+                    epsilon.setAccL(false);
+                    epsilon.setDecL(true);
+                }
+                if (keyCode == d) {
+                    epsilon.setAccR(false);
+                    epsilon.setDecR(true);
                 }
             }
         });
@@ -273,7 +271,7 @@ public class GamePanel extends JPanel {
 
             @Override
             public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                if (e.getKeyCode() == shop) {
                     gameManager.setPaused(!gameManager.isPaused());
                     shopFrame.dispose();
                 }

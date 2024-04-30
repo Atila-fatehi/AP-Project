@@ -465,14 +465,14 @@ public class GameManager {
     public void impactOnPointWithoutEpsilon(Point2D collisionPoint) {
         double rate = 20;
         for (int i = 0; i < trigoraths.size(); i++) {
-            if (cal.distance(trigoraths.get(i).getCenterOfGravity().getX(), trigoraths.get(i).getCenterOfGravity().getY(), collisionPoint.getX(), collisionPoint.getY()) <= 70) {
+            if (cal.distance(trigoraths.get(i).getCenterOfGravity().getX(), trigoraths.get(i).getCenterOfGravity().getY(), collisionPoint.getX(), collisionPoint.getY()) <= 150) {
                 double angle = Math.atan2(collisionPoint.getY() - trigoraths.get(i).getCenterOfGravity().getY(), collisionPoint.getX() - trigoraths.get(i).getCenterOfGravity().getX());
                 trigoraths.get(i).setVx(-(rate - 3) * Math.cos(angle));
                 trigoraths.get(i).setVy(-(rate - 3) * Math.sin(angle));
             }
         }
         for (int i = 0; i < squarantines.size(); i++) {
-            if (cal.distance(squarantines.get(i).getCenterOfGravity().getX(), squarantines.get(i).getCenterOfGravity().getY(), collisionPoint.getX(), collisionPoint.getY()) <= 70) {
+            if (cal.distance(squarantines.get(i).getCenterOfGravity().getX(), squarantines.get(i).getCenterOfGravity().getY(), collisionPoint.getX(), collisionPoint.getY()) <= 150) {
                 double angle = Math.atan2(collisionPoint.getY() - squarantines.get(i).getCenterOfGravity().getY(), collisionPoint.getX() - squarantines.get(i).getCenterOfGravity().getX());
                 squarantines.get(i).setVx(-(rate - 3) * Math.cos(angle));
                 squarantines.get(i).setVy(-(rate - 3) * Math.sin(angle));

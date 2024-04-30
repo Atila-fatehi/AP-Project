@@ -17,8 +17,9 @@ import java.util.Scanner;
 public class KeyBinding extends JFrame {
     private static final Color back = new Color(0x9A1A03);
     private static final Color fore = new Color(0xFB8B24);
+    private boolean LFU, LFD, LFR, LFL, LFS, LFA;
+    private int w = -1, a = -1, s = -1, d = -1, shop = -1, ability = -1;
 
-    private boolean LFU , LFD ,LFR , LFL , LFS , LFA;
     public KeyBinding() {
         getContentPane().setBackground(new Color(0x011022));
         setTitle("Setting");
@@ -37,17 +38,6 @@ public class KeyBinding extends JFrame {
         buttonU.setForeground(fore);
         buttonU.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 20));
         add(buttonU);
-        buttonU.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                LFU = true;
-                LFD = false;
-                LFR = false;
-                LFL = false;
-                LFS = false;
-                LFA = false;
-            }
-        });
         JButton buttonD = new JButton("DOWN");
         buttonD.setBounds(200, 220, 110, 110);
         buttonD.setFocusable(false);
@@ -57,18 +47,6 @@ public class KeyBinding extends JFrame {
         buttonD.setForeground(fore);
         buttonD.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 20));
         add(buttonD);
-
-        buttonD.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                LFD = true;
-                LFU = false;
-                LFR = false;
-                LFL = false;
-                LFS = false;
-                LFA = false;
-            }
-        });
         JButton buttonR = new JButton("RIGHT");
         buttonR.setBounds(320, 220, 110, 110);
         buttonR.setFocusable(false);
@@ -78,18 +56,6 @@ public class KeyBinding extends JFrame {
         buttonR.setForeground(fore);
         buttonR.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 20));
         add(buttonR);
-
-        buttonR.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                LFR = true;
-                LFD = false;
-                LFU = false;
-                LFL = false;
-                LFS = false;
-                LFA = false;
-            }
-        });
         JButton buttonL = new JButton("LEFT");
         buttonL.setBounds(80, 220, 110, 110);
         buttonL.setFocusable(false);
@@ -100,17 +66,7 @@ public class KeyBinding extends JFrame {
         buttonL.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 20));
         add(buttonL);
 
-        buttonL.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                LFL = true;
-                LFD = false;
-                LFR = false;
-                LFU = false;
-                LFS = false;
-                LFA = false;
-            }
-        });
+
         JButton buttonShop = new JButton("SHOP");
         buttonShop.setBounds(520, 220, 110, 110);
         buttonShop.setFocusable(false);
@@ -121,17 +77,6 @@ public class KeyBinding extends JFrame {
         buttonShop.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 20));
         add(buttonShop);
 
-        buttonShop.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                LFS = true;
-                LFD = false;
-                LFR = false;
-                LFL = false;
-                LFU = false;
-                LFA = false;
-            }
-        });
         JButton buttonAbility = new JButton("ABILITY");
         buttonAbility.setBounds(660, 220, 110, 110);
         buttonAbility.setFocusable(false);
@@ -142,6 +87,54 @@ public class KeyBinding extends JFrame {
         buttonAbility.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 20));
         add(buttonAbility);
 
+        addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    buttonAbility.setEnabled(true);
+                    buttonShop.setEnabled(true);
+                    buttonL.setEnabled(true);
+                    buttonR.setEnabled(true);
+                    buttonU.setEnabled(true);
+                    buttonD.setEnabled(true);
+                } else {
+                    if (LFA) {
+                        ability = e.getKeyCode();
+                    }
+                    if (LFS) {
+                        shop = e.getKeyCode();
+                    }
+                    if (LFD) {
+                        s = e.getKeyCode();
+                    }
+                    if (LFU) {
+                        w = e.getKeyCode();
+                    }
+                    if (LFL) {
+                        a = e.getKeyCode();
+                    }
+                    if (LFR) {
+                        d = e.getKeyCode();
+                    }
+                    buttonAbility.setEnabled(true);
+                    buttonShop.setEnabled(true);
+                    buttonL.setEnabled(true);
+                    buttonR.setEnabled(true);
+                    buttonU.setEnabled(true);
+                    buttonD.setEnabled(true);
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+
+            }
+        });
         buttonAbility.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -151,27 +144,99 @@ public class KeyBinding extends JFrame {
                 LFL = false;
                 LFS = false;
                 LFU = false;
+                buttonAbility.setEnabled(false);
+                buttonShop.setEnabled(true);
+                buttonL.setEnabled(true);
+                buttonR.setEnabled(true);
+                buttonU.setEnabled(true);
+                buttonD.setEnabled(true);
             }
         });
-        addKeyListener(new KeyListener() {
+        buttonShop.addActionListener(new ActionListener() {
             @Override
-            public void keyTyped(KeyEvent e) {
-
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-
+            public void actionPerformed(ActionEvent e) {
+                LFS = true;
+                LFD = false;
+                LFR = false;
+                LFL = false;
+                LFU = false;
+                LFA = false;
+                buttonAbility.setEnabled(true);
+                buttonShop.setEnabled(false);
+                buttonL.setEnabled(true);
+                buttonR.setEnabled(true);
+                buttonU.setEnabled(true);
+                buttonD.setEnabled(true);
             }
         });
-
-
-
+        buttonL.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                LFL = true;
+                LFD = false;
+                LFR = false;
+                LFU = false;
+                LFS = false;
+                LFA = false;
+                buttonAbility.setEnabled(true);
+                buttonShop.setEnabled(true);
+                buttonL.setEnabled(false);
+                buttonR.setEnabled(true);
+                buttonU.setEnabled(true);
+                buttonD.setEnabled(true);
+            }
+        });
+        buttonD.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                LFD = true;
+                LFU = false;
+                LFR = false;
+                LFL = false;
+                LFS = false;
+                LFA = false;
+                buttonAbility.setEnabled(true);
+                buttonShop.setEnabled(true);
+                buttonL.setEnabled(true);
+                buttonR.setEnabled(true);
+                buttonU.setEnabled(true);
+                buttonD.setEnabled(false);
+            }
+        });
+        buttonR.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                LFR = true;
+                LFD = false;
+                LFU = false;
+                LFL = false;
+                LFS = false;
+                LFA = false;
+                buttonAbility.setEnabled(true);
+                buttonShop.setEnabled(true);
+                buttonL.setEnabled(true);
+                buttonR.setEnabled(false);
+                buttonU.setEnabled(true);
+                buttonD.setEnabled(true);
+            }
+        });
+        buttonU.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                LFU = true;
+                LFD = false;
+                LFR = false;
+                LFL = false;
+                LFS = false;
+                LFA = false;
+                buttonAbility.setEnabled(true);
+                buttonShop.setEnabled(true);
+                buttonL.setEnabled(true);
+                buttonR.setEnabled(true);
+                buttonU.setEnabled(false);
+                buttonD.setEnabled(true);
+            }
+        });
         JButton button1 = new JButton("Back");
         button1.setBounds(300, 550, 300, 50);
         button1.setFocusable(false);
@@ -181,25 +246,54 @@ public class KeyBinding extends JFrame {
         button1.setForeground(fore);
         button1.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25));
         add(button1);
+
         button1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-               // writeToFile(slider.getValue(), slider2.getValue());
+                writeToFile();
                 new MainMenu();
             }
         });
     }
 
-    public void writeToFile(int val1 , int val2){
-        File file = new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\dataBase\\settings.txt");
+    public void writeToFile() {
+        File file = new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\dataBase\\Keys.txt");
         try {
             PrintWriter printWriter = new PrintWriter(file);
-            printWriter.println(String.valueOf(val1));
-            printWriter.println(String.valueOf(val2));
+            if (w != -1) {
+                printWriter.println(w);
+            }else{
+                printWriter.println(KeyEvent.VK_W);
+            }
+            if (a != -1) {
+                printWriter.println(a);
+            }else{
+                printWriter.println(KeyEvent.VK_A);
+            }
+            if (s != -1) {
+                printWriter.println(s);
+            }else{
+                printWriter.println(KeyEvent.VK_S);
+            }
+            if (d != -1) {
+                printWriter.println(d);
+            }else{
+                printWriter.println(KeyEvent.VK_D);
+            }
+            if (shop != -1) {
+                printWriter.println(shop);
+            }else{
+                printWriter.println(KeyEvent.VK_SPACE);
+            }
+            if (ability != -1) {
+                printWriter.println(ability);
+            }else{
+                printWriter.println(KeyEvent.VK_R);
+            }
             printWriter.flush();
             printWriter.close();
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
     }
