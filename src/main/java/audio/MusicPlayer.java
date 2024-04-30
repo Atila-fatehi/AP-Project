@@ -29,14 +29,14 @@ public class MusicPlayer {
     public void play(){
         isPlaying = true;
         try {
-            File file = new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\audio\\CrazyDave.wav");
+            File file = new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\audio\\WateryGraves.wav");
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file);
             clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.loop(Clip.LOOP_CONTINUOUSLY);
             clip.start();
         } catch (Exception e) {
-            e.printStackTrace();
+
         }
     }
 

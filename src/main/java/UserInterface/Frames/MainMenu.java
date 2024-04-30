@@ -213,5 +213,21 @@ public class MainMenu extends JFrame {
 
             }
         }
+        file = new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\dataBase\\Keys.txt");
+        if(!file.exists()) {
+            try {
+                PrintWriter printWriter = new PrintWriter(file);
+                printWriter.println(KeyEvent.VK_W);
+                printWriter.println(KeyEvent.VK_A);
+                printWriter.println(KeyEvent.VK_S);
+                printWriter.println(KeyEvent.VK_D);
+                printWriter.println(KeyEvent.VK_SPACE);
+                printWriter.println(KeyEvent.VK_R);
+                printWriter.flush();
+                printWriter.close();
+            } catch (Exception e) {
+
+            }
+        }
     }
 }

@@ -19,7 +19,7 @@ public class SkillTree extends JFrame {
     private int XP = 0;
 
     public SkillTree() {
-        getContentPane().setBackground(new Color(0x000000));
+        getContentPane().setBackground(new Color(0x011022));
         setTitle("Skill Tree");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1100, 700);

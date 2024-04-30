@@ -5,6 +5,8 @@ import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Epsilon implements movable {
     private int HP;
@@ -39,25 +41,34 @@ public class Epsilon implements movable {
     }
 
     private boolean vertex;
-    private final ArrayList<Double> xPoints = new ArrayList<>();
-    private final ArrayList<Double> yPoints = new ArrayList<>();
+    private int vertexesNum;
+    private double vertexX;
+    private double vertexY;
 
     public void addVertex() {
         vertex = true;
-        xPoints.add(x);
-        yPoints.add(y - radius - 7);
+        if(vertexesNum != 4) {
+            vertexesNum++;
+        }
     }
     public void updateVertexPosition(){
-        xPoints.remove(0);
-        yPoints.remove(0);
-        xPoints.add(x);
-        yPoints.add(y - radius - 7);
+        vertexX = x;
+        vertexY = y - radius - 7;
     }
-
+    private boolean coolDownFinish = true;
     public void activateAbility() {
-        if (ability.proteus) {
+        java.util.Timer timer = new java.util.Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                coolDownFinish = true;
+                timer.cancel();
+            }
+        } , 5 * 60 * 1000 , 1111);
+        if (ability.proteus && coolDownFinish) {
             addVertex();
         }
+        coolDownFinish = false;
     }
 
     public void move() {
@@ -248,16 +259,40 @@ public class Epsilon implements movable {
         this.vertex = vertex;
     }
 
-    public ArrayList<Double> getXPoints() {
-        return xPoints;
+    public int getVertexesNum() {
+        return vertexesNum;
     }
 
-    public ArrayList<Double> getYPoints() {
-        return yPoints;
+    public void setVertexesNum(int vertexesNum) {
+        this.vertexesNum = vertexesNum;
+    }
+
+    public double getVertexX() {
+        return vertexX;
+    }
+
+    public void setVertexX(double vertexX) {
+        this.vertexX = vertexX;
+    }
+
+    public double getVertexY() {
+        return vertexY;
+    }
+
+    public void setVertexY(double vertexY) {
+        this.vertexY = vertexY;
     }
 
     public void setAbility(SpecialAbility ability) {
         this.ability = ability;
+    }
+
+    public boolean isCoolDownFinish() {
+        return coolDownFinish;
+    }
+
+    public void setCoolDownFinish(boolean coolDownFinish) {
+        this.coolDownFinish = coolDownFinish;
     }
 }
 

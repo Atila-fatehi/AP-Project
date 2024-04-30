@@ -34,8 +34,10 @@ public class GamePanel extends JPanel {
     private int elapsedTime;
     private final GameFrame gameFrame;
     private final AudioPlayer audioPlayer;
+    private int w, a, s, d, shop, ability;
 
     public GamePanel(GameFrame frame) {
+        file();
         this.gameFrame = frame;
         audioPlayer = new AudioPlayer();
         setFocusable(true);
@@ -91,8 +93,13 @@ public class GamePanel extends JPanel {
         g.setColor(new Color(0x38C1F1));
         g.fillOval((int) (epsilon.getX() - epsilon.getRadius()), (int) (epsilon.getY() - epsilon.getRadius()), (int) epsilon.getRadius() * 2, (int) epsilon.getRadius() * 2);
         if (epsilon.hasVertex()) {
-            g.drawLine((int) (epsilon.getX() - epsilon.getRadius()), (int) epsilon.getY(), (int) epsilon.getX(), (int) (epsilon.getY() - epsilon.getRadius()) - 7);
-            g.drawLine((int) (epsilon.getX() + epsilon.getRadius()), (int) epsilon.getY(), (int) epsilon.getX(), (int) (epsilon.getY() - epsilon.getRadius()) - 7);
+            g.drawLine((int) (epsilon.getX() - epsilon.getRadius()), (int) epsilon.getY(), (int) epsilon.getVertexX(), (int) epsilon.getVertexY());
+            g.drawLine((int) (epsilon.getX() + epsilon.getRadius()), (int) epsilon.getY(), (int) epsilon.getVertexX(), (int) epsilon.getVertexY());
+            if (epsilon.getVertexesNum() >= 2) {
+                g.drawLine((int) (epsilon.getX() - epsilon.getRadius()), (int) epsilon.getY(), (int) epsilon.getVertexX(), (int) (epsilon.getVertexY() + 2 * epsilon.getRadius() + 14));
+                g.drawLine((int) (epsilon.getX() + epsilon.getRadius()), (int) epsilon.getY(), (int) epsilon.getVertexX(), (int) (epsilon.getVertexY() + 2 * epsilon.getRadius() + 14));
+            }
+
         }
         g.setColor(new Color(0x011022));
         g.fillOval((int) (epsilon.getX() - epsilon.getRadius()) + 4, (int) (epsilon.getY() - epsilon.getRadius()) + 4, (int) epsilon.getRadius() * 2 - 8, (int) epsilon.getRadius() * 2 - 8);
@@ -107,9 +114,6 @@ public class GamePanel extends JPanel {
                 "       XP : " + String.valueOf(epsilon.getXP()) +
                 "       WAVE : " + gameManager.getCurrentWave() +
                 "       ELAPSED TIME : " + String.valueOf(elapsedTime), 10, 20);
-//        g.drawString(, 100, 20);
-//        g.drawString(, 170, 20);
-//        g.drawString(, 250, 20);
         g.dispose();
     }
 
@@ -118,6 +122,20 @@ public class GamePanel extends JPanel {
     }
 
     public void addListeners() {
+        addMouseMotionListener(new MouseMotionListener() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+//                double angle = Math.atan2(epsilon.getY() - e.getY(), epsilon.getX() - e.getX());
+//                if(epsilon.hasVertex()) {
+//                    epsilon.updateVertexPosition(Math.cos(angle), Math.sin(angle));
+//                }
+            }
+        });
         addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -153,39 +171,37 @@ public class GamePanel extends JPanel {
             @Override
             public void keyPressed(KeyEvent e) {
                 int keyCode = e.getKeyCode();
-                switch (keyCode) {
-                    case KeyEvent.VK_W:
-                        epsilon.setAccU(true);
-                        epsilon.setDecU(false);
-                        break;
-                    case KeyEvent.VK_S:
-                        epsilon.setAccD(true);
-                        epsilon.setDecD(false);
-                        break;
-                    case KeyEvent.VK_A:
-                        epsilon.setAccL(true);
-                        epsilon.setDecL(false);
-                        break;
-                    case KeyEvent.VK_D:
-                        epsilon.setAccR(true);
-                        epsilon.setDecR(false);
-                        break;
-                    case KeyEvent.VK_SPACE:
-                        gameManager.setPaused(!gameManager.isPaused());
-                        audioPlayer.play(new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\audio\\pause.wav"));
-                        openShop();
-                        break;
-                    case KeyEvent.VK_ESCAPE:
-                        gameFrame.dispose();
-                        gameManager.setPaused(true);
-                        gameManager.getModelTimer().cancel();
-                        gameManager.getViewTimer().cancel();
-                        new MainMenu();
-                        break;
-                    case KeyEvent.VK_R:
-                        abilityStuff();
-                        epsilon.activateAbility();
-                        break;
+                if (keyCode == w) {
+                    epsilon.setAccU(true);
+                    epsilon.setDecU(false);
+                }
+                if (keyCode == s) {
+                    epsilon.setAccD(true);
+                    epsilon.setDecD(false);
+                }
+                if (keyCode == a) {
+                    epsilon.setAccL(true);
+                    epsilon.setDecL(false);
+                }
+                if (keyCode == d) {
+                    epsilon.setAccR(true);
+                    epsilon.setDecR(false);
+                }
+                if (keyCode == shop) {
+                    gameManager.setPaused(!gameManager.isPaused());
+                    audioPlayer.play(new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\audio\\pause.wav"));
+                    openShop();
+                }
+                if (keyCode == ability) {
+                    abilityStuff();
+                    epsilon.activateAbility();
+                }
+                if (keyCode == KeyEvent.VK_ESCAPE) {
+                    gameFrame.dispose();
+                    gameManager.setPaused(true);
+                    gameManager.getModelTimer().cancel();
+                    gameManager.getViewTimer().cancel();
+                    new MainMenu();
                 }
             }
 
@@ -428,6 +444,21 @@ public class GamePanel extends JPanel {
         locationX += 3;
         screenHeight -= 6;
         locationY += 3;
+    }
+
+    public void file() {
+        File file = new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\dataBase\\Keys.txt");
+        try {
+            Scanner scanner = new Scanner(file);
+            w = Integer.parseInt(scanner.nextLine());
+            a = Integer.parseInt(scanner.nextLine());
+            s = Integer.parseInt(scanner.nextLine());
+            d = Integer.parseInt(scanner.nextLine());
+            shop = Integer.parseInt(scanner.nextLine());
+            ability = Integer.parseInt(scanner.nextLine());
+        } catch (Exception e) {
+
+        }
     }
 
     //GETTERS AND SETTERS

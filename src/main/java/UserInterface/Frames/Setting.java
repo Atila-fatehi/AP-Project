@@ -86,7 +86,23 @@ public class Setting extends JFrame {
         slider2.setBounds(100,300,300,50);
         slider2.setBackground(new Color(0x011022));
         add(slider2);
-
+        JButton button2 = new JButton("Key Binding");
+        button2.setBounds(100, 480, 300, 50);
+        button2.setFocusable(false);
+        button2.setHorizontalAlignment(JButton.CENTER);
+        button2.setHorizontalTextPosition(JButton.CENTER);
+        button2.setBackground(back);
+        button2.setForeground(fore);
+        button2.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25));
+        add(button2);
+        button2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                writeToFile(slider.getValue(), slider2.getValue());
+                new KeyBinding();
+            }
+        });
         JButton button1 = new JButton("Back");
         button1.setBounds(100, 550, 300, 50);
         button1.setFocusable(false);
