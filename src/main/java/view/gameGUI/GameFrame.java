@@ -1,12 +1,7 @@
-package UserInterface.GameGUI;
-import Controller.GameManager;
-import Model.Epsilon;
-import Model.Trigorath;
+package view.gameGUI;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 public class GameFrame extends JFrame {
     private static final int HEIGHT = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();

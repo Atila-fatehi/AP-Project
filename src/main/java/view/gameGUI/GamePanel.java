@@ -1,8 +1,8 @@
-package UserInterface.GameGUI;
+package view.gameGUI;
 
 import Controller.GameManager;
 import Model.*;
-import UserInterface.Frames.MainMenu;
+import view.frames.MainMenu;
 import audio.AudioPlayer;
 import audio.MusicPlayer;
 

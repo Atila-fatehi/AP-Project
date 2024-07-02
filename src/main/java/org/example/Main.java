@@ -1,7 +1,6 @@
 package org.example;
 
-import UserInterface.Frames.MainMenu;
-import UserInterface.GameGUI.GameFrame;
+import view.frames.MainMenu;
 
 import javax.swing.*;
 public class Main implements Runnable{

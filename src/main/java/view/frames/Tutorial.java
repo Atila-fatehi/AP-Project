@@ -1,4 +1,4 @@
-package UserInterface.Frames;
+package view.frames;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,9 +1,9 @@
 package Controller;
 
 import Model.*;
-import UserInterface.Frames.MainMenu;
-import UserInterface.GameGUI.GameFrame;
-import UserInterface.GameGUI.GamePanel;
+import view.frames.MainMenu;
+import view.gameGUI.GameFrame;
+import view.gameGUI.GamePanel;
 import audio.AudioPlayer;
 import audio.MusicPlayer;
 import util.cal;

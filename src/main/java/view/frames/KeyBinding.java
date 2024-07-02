@@ -1,18 +1,11 @@
-package UserInterface.Frames;
+package view.frames;
 
-import audio.MusicPlayer;
-
-import javax.sound.sampled.FloatControl;
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.nio.file.Paths;
-import java.util.Scanner;
 
 public class KeyBinding extends JFrame {
     private static final Color back = new Color(0x9A1A03);
