@@ -34,6 +34,8 @@ public class Setting extends JFrame {
         MyLabel vol = new MyLabel("Volume", 100, 120, Constants.LABEL_WIDTH, Constants.LABEL_HEIGHT);
         MyLabel dif = new MyLabel("Difficulty", 100, 220, Constants.LABEL_WIDTH, Constants.LABEL_HEIGHT);
         add(sense);
+        add(dif);
+        add(vol);
 
         JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, 100, 50);
         slider.setMajorTickSpacing(10);

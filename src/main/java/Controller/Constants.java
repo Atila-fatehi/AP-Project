@@ -5,6 +5,7 @@ import java.awt.*;
 public class Constants {
     public static final Color BACK_COLOR = new Color(0x9A1A03);
     public static final Color FORE_COLOR = new Color(0xFB8B24);
+    public static final Color ANOTHER_FORE_COLOR = new Color(0x074E9C);
     public static final Color DARK_BLUE = new Color(0x011022);
     public static final Color TRI_YELLOW = new Color(0xFFD900);
     public static final Color SQUA_GREEN = new Color(0x22FF00);
@@ -26,6 +27,10 @@ public class Constants {
 
     public static final int FRAMES_WIDTH = 500;
     public static final int FRAMES_HEIGHT = 700;
+
+
+    public static final int SKILL_TREE_FRAME_WIDTH = 1100;
+    public static final int SKILL_TREE_FRAME_HEIGHT = 700;
 
     public static final Font BOLD_15 = new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 15);
     public static final Font BOLD_25 = new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25);
