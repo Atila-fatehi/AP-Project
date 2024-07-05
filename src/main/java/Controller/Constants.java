@@ -34,7 +34,7 @@ public class Constants {
     public static final int SKILL_TREE_FRAME_HEIGHT = 700;
 
     public static final Font BOLD_15 = new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 15);
-    public static final Font BOLD_25 = new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25);
+    public static final Font BOLD_25 = new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 20);
     public static final Font BOLD_35 = new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 35);
 
     public static final String path = "";

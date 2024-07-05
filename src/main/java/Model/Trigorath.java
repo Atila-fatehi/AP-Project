@@ -1,6 +1,6 @@
 package Model;
 
-import util.cal;
+import Controller.Calculator;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -19,7 +19,7 @@ public class Trigorath implements movable {
     private double accX;
     private double accY;
     private boolean played;
-    cal cal;
+    Calculator Calculator;
 
     public Trigorath(double x1, double y1, double x2, double y2, double x3, double y3) {
         this.x1 = x1;
@@ -29,7 +29,7 @@ public class Trigorath implements movable {
         this.y2 = y2;
         this.y3 = y3;
         this.HP = 15;
-        cal = new cal();
+        Calculator = new Calculator();
     }
 
     public Point2D onTrigorathCollision(double x1, double x2, double x3, double y1, double y2, double y3) {
@@ -76,24 +76,24 @@ public class Trigorath implements movable {
         return null;
     }
     public Point2D onEpsilonCollision(double x, double y, double radius) {
-        if (cal.distance(x, y, x1, y1) <= radius) {
+        if (Calculator.distance(x, y, x1, y1) <= radius) {
             return new Point2D.Double(x1, y1);
         }
-        if (cal.distance(x, y, x2, y2) <= radius) {
+        if (Calculator.distance(x, y, x2, y2) <= radius) {
             return new Point2D.Double(x2, y2);
         }
-        if (cal.distance(x, y, x3, y3) <= radius) {
+        if (Calculator.distance(x, y, x3, y3) <= radius) {
             return new Point2D.Double(x3, y3);
         }
-        Point2D point1 = cal.circleLineCollision(x, y, radius, x1, y1, x2, y2);
+        Point2D point1 = Calculator.circleLineCollision(x, y, radius, x1, y1, x2, y2);
         if (point1 != null) {
             return point1;
         }
-        Point2D point2 = cal.circleLineCollision(x, y, radius, x2, y2, x3, y3);
+        Point2D point2 = Calculator.circleLineCollision(x, y, radius, x2, y2, x3, y3);
         if (point2 != null) {
             return point2;
         }
-        Point2D point3 = cal.circleLineCollision(x, y, radius, x3, y3, x1, y1);
+        Point2D point3 = Calculator.circleLineCollision(x, y, radius, x3, y3, x1, y1);
         if (point3 != null) {
             return point3;
         }
@@ -116,7 +116,7 @@ public class Trigorath implements movable {
         double angle = Math.atan2(y - (y1 + y3) / 2, x - (x1 + x2) / 2);
 //        setVx(constantVelocity * Math.cos(angle));
 //        setVy(constantVelocity * Math.sin(angle));
-        if (cal.distance(getCenterOfGravity().getX(), getCenterOfGravity().getY(), x, y) >= 400){
+        if (Calculator.distance(getCenterOfGravity().getX(), getCenterOfGravity().getY(), x, y) >= 400){
             constantVelocity = 3d;
         }else{
             constantVelocity = 1d;

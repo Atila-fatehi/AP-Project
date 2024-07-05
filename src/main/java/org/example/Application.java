@@ -3,9 +3,9 @@ package org.example;
 import view.frames.MainMenu;
 
 import javax.swing.*;
-public class Main implements Runnable{
+public class Application implements Runnable{
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Main());
+        SwingUtilities.invokeLater(new Application());
     }
 
     @Override

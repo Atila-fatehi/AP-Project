@@ -1,8 +1,8 @@
-package util;
+package Controller;
 
 import java.awt.geom.Point2D;
 
-public class cal {
+public class Calculator {
     public Point2D circleLineCollision(double circleX, double circleY, double radius, double lineStartX, double lineStartY, double lineEndX, double lineEndY) {
         double deltaX = lineEndX - lineStartX;
         double deltaY = lineEndY - lineStartY;

@@ -4,8 +4,8 @@ import Controller.Constants;
 import Controller.GameManager;
 import Model.*;
 import view.frames.MainMenu;
-import audio.AudioPlayer;
-import audio.GameMusicPlayer;
+import audio.players.AudioPlayer;
+import audio.players.GameMusicPlayer;
 
 import javax.swing.*;
 import javax.swing.border.Border;

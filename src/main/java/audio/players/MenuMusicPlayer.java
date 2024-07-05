@@ -1,4 +1,4 @@
-package audio;
+package audio.players;
 
 import Controller.Constants;
 
@@ -6,37 +6,39 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import java.io.File;
-import java.nio.file.Paths;
 
-public class GameMusicPlayer {
-    private static GameMusicPlayer instance;
+public class MenuMusicPlayer {
+    private static MenuMusicPlayer instance;
     private Clip clip;
     private boolean isPlaying;
 
-    GameMusicPlayer() {
-
-    }
-
-    public static GameMusicPlayer getInstance() {
+    public static MenuMusicPlayer getInstance() {
         if (instance == null) {
-            synchronized (GameMusicPlayer.class) {
+            synchronized (MenuMusicPlayer.class) {
                 if (instance == null) {
-                    instance = new GameMusicPlayer();
+                    instance = new MenuMusicPlayer();
                 }
             }
         }
         return instance;
     }
 
-    public void start(){
+    public void start() {
         if (!isPlaying) {
             play();
         }
     }
-    public void play(){
+
+    public void stop() {
+        MenuMusicPlayer.getInstance().getClip().stop();
+        MenuMusicPlayer.getInstance().setPlaying(false);
+    }
+
+
+    public void play() {
         isPlaying = true;
         try {
-            File file = new File(Constants.WATERY_GRAVES_PATH);
+            File file = new File(Constants.DAVE_PATH);
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file);
             clip = AudioSystem.getClip();
             clip.open(audioInputStream);

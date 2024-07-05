@@ -183,18 +183,15 @@ public class KeyBinding extends JFrame {
                 down.setEnabled(true);
             }
         });
-        up.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                makeAllFalse();
-                LFU = true;
-                ability.setEnabled(true);
-                shop.setEnabled(true);
-                left.setEnabled(true);
-                right.setEnabled(true);
-                up.setEnabled(false);
-                down.setEnabled(true);
-            }
+        up.addActionListener(e -> {
+            makeAllFalse();
+            LFU = true;
+            ability.setEnabled(true);
+            shop.setEnabled(true);
+            left.setEnabled(true);
+            right.setEnabled(true);
+            up.setEnabled(false);
+            down.setEnabled(true);
         });
 
         MyButton back = new MyButton("Back", 300, 550, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT, new ActionListener() {
@@ -205,6 +202,7 @@ public class KeyBinding extends JFrame {
                 new MainMenu();
             }
         });
+        add(back);
     }
 
     void makeAllFalse(){

@@ -1,6 +1,6 @@
 package Model;
 
-import util.cal;
+import Controller.Calculator;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -12,7 +12,7 @@ public class Bullet implements movable {
     private final double constantVelocity = 15;
     private double vx;
     private double vy;
-    cal cal;
+    Calculator Calculator;
 
     public void move() {
         x = x + vx;
@@ -22,7 +22,7 @@ public class Bullet implements movable {
     public Bullet(double x, double y) {
         this.x = x;
         this.y = y;
-        cal = new cal();
+        Calculator = new Calculator();
     }
 
     public Point2D onTrigorathCollision(double x1, double x2, double x3, double y1, double y2, double y3) {
@@ -33,15 +33,15 @@ public class Bullet implements movable {
         if (trigorath.contains(x, y)) {
             return new Point2D.Double(x, y);
         }
-        Point2D point1 = cal.circleLineCollision(x, y, radius, x1, y1, x2, y2);
+        Point2D point1 = Calculator.circleLineCollision(x, y, radius, x1, y1, x2, y2);
         if (point1 != null) {
             return point1;
         }
-        Point2D point2 = cal.circleLineCollision(x, y, radius, x2, y2, x3, y3);
+        Point2D point2 = Calculator.circleLineCollision(x, y, radius, x2, y2, x3, y3);
         if (point2 != null) {
             return point2;
         }
-        Point2D point3 = cal.circleLineCollision(x, y, radius, x1, y1, x3, y3);
+        Point2D point3 = Calculator.circleLineCollision(x, y, radius, x1, y1, x3, y3);
         if (point3 != null) {
             return point3;
         }
@@ -56,19 +56,19 @@ public class Bullet implements movable {
         if (squarantine.contains(x, y)) {
             return new Point2D.Double(x, y);
         }
-        Point2D point1 = cal.circleLineCollision(x, y, radius, x1, y1, x2, y2);
+        Point2D point1 = Calculator.circleLineCollision(x, y, radius, x1, y1, x2, y2);
         if (point1 != null) {
             return point1;
         }
-        Point2D point2 = cal.circleLineCollision(x, y, radius, x2, y2, x3, y3);
+        Point2D point2 = Calculator.circleLineCollision(x, y, radius, x2, y2, x3, y3);
         if (point2 != null) {
             return point2;
         }
-        Point2D point3 = cal.circleLineCollision(x, y, radius, x3, y3, x4, y4);
+        Point2D point3 = Calculator.circleLineCollision(x, y, radius, x3, y3, x4, y4);
         if (point3 != null) {
             return point3;
         }
-        Point2D point4 = cal.circleLineCollision(x, y, radius, x4, y4, x1, y1);
+        Point2D point4 = Calculator.circleLineCollision(x, y, radius, x4, y4, x1, y1);
         if (point4 != null) {
             return point4;
         }

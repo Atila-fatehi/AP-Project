@@ -2,8 +2,8 @@ package view.frames;
 
 import Controller.Constants;
 import Controller.FileController;
-import audio.GameMusicPlayer;
-import audio.MenuMusicPlayer;
+import audio.players.GameMusicPlayer;
+import audio.players.MenuMusicPlayer;
 import view.Jcomponents.MyButton;
 import view.Jcomponents.MyLabel;
 
@@ -11,12 +11,8 @@ import javax.sound.sampled.FloatControl;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.PrintWriter;
-import java.nio.file.Paths;
 
 public class Setting extends JFrame {
 
