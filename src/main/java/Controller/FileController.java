@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class FileController {
     public static void createFiles() {
-        File file = new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\dataBase\\settings.txt");
+        File file = new File(Constants.SETTING_PATH);
         if (!file.exists()) {
             try {
                 PrintWriter printWriter = new PrintWriter(file);
@@ -20,7 +20,7 @@ public class FileController {
 
             }
         }
-        file = new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\dataBase\\abilityCode.txt");
+        file = new File(Constants.ABILITY_PATH);
         if (!file.exists()) {
             try {
                 PrintWriter printWriter = new PrintWriter(file);
@@ -31,7 +31,7 @@ public class FileController {
 
             }
         }
-        file = new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\dataBase\\XP.txt");
+        file = new File(Constants.XP_PATH);
         if (!file.exists()) {
             try {
                 PrintWriter printWriter = new PrintWriter(file);
@@ -42,7 +42,7 @@ public class FileController {
 
             }
         }
-        file = new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\dataBase\\keys.txt");
+        file = new File(Constants.KEYS_PATH);
         if (!file.exists()) {
             try {
                 PrintWriter printWriter = new PrintWriter(file);
@@ -61,7 +61,7 @@ public class FileController {
     }
 
     public static void writeSettings(String val1, String val2) {
-        File file = new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\dataBase\\settings.txt");
+        File file = new File(Constants.SETTING_PATH);
         try {
             PrintWriter printWriter = new PrintWriter(file);
             printWriter.println(val1);
@@ -74,7 +74,7 @@ public class FileController {
     }
 
     public static void writeKeys(int w, int s, int d, int a, int sh, int ab) {
-        File file = new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\dataBase\\keys.txt");
+        File file = new File(Constants.KEYS_PATH);
         try {
             PrintWriter printWriter = new PrintWriter(file);
             if (w != -1) {

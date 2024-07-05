@@ -1,6 +1,7 @@
 package Controller;
 
 import java.awt.*;
+import java.nio.file.Paths;
 
 public class Constants {
     public static final Color BACK_COLOR = new Color(0x9A1A03);
@@ -42,4 +43,13 @@ public class Constants {
     public static final int INITIAL_PANEL_LOCATION_Y = 200;
     public static final int INITIAL_PANEL_WIDTH = 700;
     public static final int INITIAL_PANEL_HEIGHT = 700;
+
+    //Paths
+    public static final String SETTING_PATH = Paths.get("").toAbsolutePath() + "/src/main/java/dataBase/settings.txt";
+    public static final String ABILITY_PATH = Paths.get("").toAbsolutePath() + "/src/main/java/dataBase/abilityCode.txt";
+    public static final String XP_PATH = Paths.get("").toAbsolutePath() + "/src/main/java/dataBase/XP.txt";
+    public static final String KEYS_PATH = Paths.get("").toAbsolutePath() + "/src/main/java/dataBase/keys.txt";
+    public static final String DAVE_PATH = Paths.get("").toAbsolutePath() + "/src/main/java/audio/CrazyDave.wav";
+    public static final String WATERY_GRAVES_PATH = Paths.get("").toAbsolutePath() + "/src/main/java/audio/WateryGraves.wav";
+
 }

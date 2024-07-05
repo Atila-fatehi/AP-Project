@@ -1,5 +1,7 @@
 package audio;
 
+import Controller.Constants;
+
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -34,7 +36,7 @@ public class GameMusicPlayer {
     public void play(){
         isPlaying = true;
         try {
-            File file = new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\audio\\WateryGraves.wav");
+            File file = new File(Constants.WATERY_GRAVES_PATH);
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file);
             clip = AudioSystem.getClip();
             clip.open(audioInputStream);
