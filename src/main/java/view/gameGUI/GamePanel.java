@@ -1,10 +1,11 @@
 package view.gameGUI;
 
+import Controller.Constants;
 import Controller.GameManager;
 import Model.*;
 import view.frames.MainMenu;
 import audio.AudioPlayer;
-import audio.MusicPlayer;
+import audio.GameMusicPlayer;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -20,8 +21,6 @@ import java.util.TimerTask;
 public class GamePanel extends JPanel {
     private int locationX = 600;
     private int locationY = 200;
-    private static final int initialPanelWidth = 700;
-    private static final int initialPanelHeight = 700;
     private int screenWidth = 700;
     private int screenHeight = 700;
     private static final int shrinkageRate = 2;
@@ -73,15 +72,15 @@ public class GamePanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         //draw Enemies
-        g.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 15));
+        g.setFont(Constants.BOLD_15);
         for (Trigorath trigorath : trigoraths) {
-            g.setColor(new Color(0xFFD900));
+            g.setColor(Constants.TRI_YELLOW);
             g.fillPolygon(trigorath.getXPoints(), trigorath.getYPoints(), 3);
             g.setColor(Color.BLACK);
             g.drawString(String.valueOf(trigorath.getHP()), (int) trigorath.getPosXHP(), (int) trigorath.getPosYHP());
         }
         for (Squarantine squarantine : squarantines) {
-            g.setColor(new Color(0x22FF00));
+            g.setColor(Constants.SQUA_GREEN);
             g.fillPolygon(squarantine.getXPoints(), squarantine.getYPoints(), 4);
             g.setColor(Color.BLACK);
             g.drawString(String.valueOf(squarantine.getHP()), (int) squarantine.getPosXHP(), (int) squarantine.getPosYHP());
@@ -92,7 +91,7 @@ public class GamePanel extends JPanel {
             g.fillOval((int) collectable.getX(), (int) collectable.getY(), (int) collectable.getRadius() * 2, (int) collectable.getRadius() * 2);
         }
         //draw epsilon
-        g.setColor(new Color(0x38C1F1));
+        g.setColor(Constants.EPSILON_COLOR);
         g.fillOval((int) (epsilon.getX() - epsilon.getRadius()), (int) (epsilon.getY() - epsilon.getRadius()), (int) epsilon.getRadius() * 2, (int) epsilon.getRadius() * 2);
         if (epsilon.hasVertex()) {
             g.drawLine((int) (epsilon.getX() - epsilon.getRadius()), (int) epsilon.getY(), (int) epsilon.getVertexX(), (int) epsilon.getVertexY());
@@ -110,15 +109,15 @@ public class GamePanel extends JPanel {
                 g.drawLine((int) epsilon.getX(), (int) (epsilon.getY() + epsilon.getRadius()), (int) (epsilon.getX() - epsilon.getRadius() - 7), (int) epsilon.getY());
             }
         }
-        g.setColor(new Color(0x011022));
+        g.setColor(Constants.DARK_BLUE);
         g.fillOval((int) (epsilon.getX() - epsilon.getRadius()) + 4, (int) (epsilon.getY() - epsilon.getRadius()) + 4, (int) epsilon.getRadius() * 2 - 8, (int) epsilon.getRadius() * 2 - 8);
         //draw bullets
-        g.setColor(new Color(0x38C1F1));
+        g.setColor(Constants.EPSILON_COLOR);
         for (int i = 0; i < bullets.size(); i++) {
             g.fillOval((int) (bullets.get(i).getX() - bullets.get(i).getRadius()), (int) (bullets.get(i).getY() - bullets.get(i).getRadius()), (int) bullets.get(i).getRadius() * 2, (int) bullets.get(i).getRadius() * 2);
         }
         //draw Strings
-        g.setColor(new Color(0x8A26FF));
+        g.setColor(Constants.STRING_COLOR);
         g.drawString("HP : " + epsilon.getHP() +
                   "       XP : " + epsilon.getXP() +
                   "       WAVE : " + gameManager.getCurrentWave() +
@@ -200,8 +199,8 @@ public class GamePanel extends JPanel {
                     gameManager.activateAbility();
                 }
                 if (keyCode == KeyEvent.VK_ESCAPE) {
-                    MusicPlayer.getInstance().getClip().stop();
-                    MusicPlayer.getInstance().setPlaying(false);
+                    GameMusicPlayer.getInstance().getClip().stop();
+                    GameMusicPlayer.getInstance().setPlaying(false);
                     gameFrame.dispose();
                     gameManager.setPaused(true);
                     gameManager.getModelTimer().cancel();

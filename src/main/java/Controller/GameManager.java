@@ -5,7 +5,7 @@ import view.frames.MainMenu;
 import view.gameGUI.GameFrame;
 import view.gameGUI.GamePanel;
 import audio.AudioPlayer;
-import audio.MusicPlayer;
+import audio.GameMusicPlayer;
 import util.cal;
 
 import javax.swing.*;
@@ -380,8 +380,8 @@ public class GameManager {
     }
 
     public void gameWon() {
-        MusicPlayer.getInstance().getClip().stop();
-        MusicPlayer.getInstance().setPlaying(false);
+        GameMusicPlayer.getInstance().getClip().stop();
+        GameMusicPlayer.getInstance().setPlaying(false);
         audioPlayer.play(new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\audio\\winMusic.wav"));
         File file = new File(Paths.get("").toAbsolutePath() + "/src/main/java/dataBase/XP.txt");
         try {
@@ -422,8 +422,8 @@ public class GameManager {
     }
 
     public void gameOver() {
-        MusicPlayer.getInstance().getClip().stop();
-        MusicPlayer.getInstance().setPlaying(false);
+        GameMusicPlayer.getInstance().getClip().stop();
+        GameMusicPlayer.getInstance().setPlaying(false);
         gameOver = true;
         File file = new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\dataBase\\XP.txt");
         try {

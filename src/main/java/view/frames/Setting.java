@@ -1,7 +1,11 @@
 package view.frames;
 
-import audio.MusicPlayer;
-import audio.MusicPlayer2;
+import Controller.Constants;
+import Controller.FileController;
+import audio.GameMusicPlayer;
+import audio.MenuMusicPlayer;
+import view.Jcomponents.MyButton;
+import view.Jcomponents.MyLabel;
 
 import javax.sound.sampled.FloatControl;
 import javax.swing.*;
@@ -15,126 +19,81 @@ import java.io.PrintWriter;
 import java.nio.file.Paths;
 
 public class Setting extends JFrame {
-    private static final Color back = new Color(0x9A1A03);
-    private static final Color fore = new Color(0xFB8B24);
 
     public Setting() {
-        getContentPane().setBackground(new Color(0x011022));
+        getContentPane().setBackground(Constants.DARK_BLUE);
         setTitle("Setting");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(500, 700);
+        setSize(Constants.FRAMES_WIDTH, Constants.FRAMES_HEIGHT);
         setLocationRelativeTo(null);
         setLayout(null);
-        setVisible(true);
         setResizable(false);
+        setVisible(true);
 
-        JLabel label = new JLabel("Sensitivity");
-        label.setHorizontalAlignment(JLabel.CENTER);
-        label.setBounds(100, 10, 300, 100);
-        label.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25));
-        label.setForeground(new Color(0xFB8B24));
-        add(label);
+        MyLabel sense = new MyLabel("Sensitivity", 100, 10, Constants.LABEL_WIDTH, Constants.LABEL_HEIGHT);
+        MyLabel vol = new MyLabel("Volume", 100, 120, Constants.LABEL_WIDTH, Constants.LABEL_HEIGHT);
+        MyLabel dif = new MyLabel("Difficulty", 100, 220, Constants.LABEL_WIDTH, Constants.LABEL_HEIGHT);
+        add(sense);
+
         JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, 100, 50);
         slider.setMajorTickSpacing(10);
         slider.setMinorTickSpacing(1);
         slider.setPaintTicks(true);
         slider.setPaintLabels(true);
-        slider.setBounds(100,100,300,50);
-        slider.setBackground(new Color(0x011022));
+        slider.setBounds(100, 100, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT);
+        slider.setBackground(Constants.DARK_BLUE);
         add(slider);
 
-
-        JLabel label1 = new JLabel("Volume");
-        label1.setHorizontalAlignment(JLabel.CENTER);
-        label1.setBounds(100, 120, 300, 100);
-        label1.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25));
-        label1.setForeground(new Color(0xFB8B24));
-        add(label1);
         JSlider slider1 = new JSlider(JSlider.HORIZONTAL, 0, 100, 50);
         slider1.setMajorTickSpacing(10);
         slider1.setMinorTickSpacing(1);
         slider1.setPaintTicks(true);
         slider1.setPaintLabels(true);
-        slider1.setBounds(100,200,300,50);
-        slider1.setBackground(new Color(0x011022));
+        slider1.setBounds(100, 200, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT);
+        slider1.setBackground(Constants.DARK_BLUE);
         add(slider1);
         slider1.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
                 float volume = (float) slider1.getValue() / 100;
-                if (MusicPlayer.getInstance().getClip() != null) {
-                    FloatControl control = (FloatControl) MusicPlayer.getInstance().getClip().getControl(FloatControl.Type.MASTER_GAIN);
+                if (GameMusicPlayer.getInstance().getClip() != null) {
+                    FloatControl control = (FloatControl) GameMusicPlayer.getInstance().getClip().getControl(FloatControl.Type.MASTER_GAIN);
                     control.setValue(20f * (float) Math.log10(volume == 0 ? 0.0001 : volume));
                 }
-                if (MusicPlayer2.getInstance().getClip() != null) {
-                    FloatControl control = (FloatControl) MusicPlayer2.getInstance().getClip().getControl(FloatControl.Type.MASTER_GAIN);
+                if (MenuMusicPlayer.getInstance().getClip() != null) {
+                    FloatControl control = (FloatControl) MenuMusicPlayer.getInstance().getClip().getControl(FloatControl.Type.MASTER_GAIN);
                     control.setValue(20f * (float) Math.log10(volume == 0 ? 0.0001 : volume));
                 }
             }
         });
 
-        JLabel label2 = new JLabel("Difficulty");
-        label2.setHorizontalAlignment(JLabel.CENTER);
-        label2.setBounds(100, 220, 300, 100);
-        label2.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25));
-        label2.setForeground(new Color(0xFB8B24));
-        add(label2);
         JSlider slider2 = new JSlider(JSlider.HORIZONTAL, 1, 3, 2);
         slider2.setMajorTickSpacing(1);
         slider2.setMinorTickSpacing(1);
         slider2.setPaintTicks(true);
         slider2.setPaintLabels(true);
-        slider2.setBounds(100,300,300,50);
-        slider2.setBackground(new Color(0x011022));
+        slider2.setBounds(100, 300, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT);
+        slider2.setBackground(Constants.DARK_BLUE);
         add(slider2);
-        JButton button2 = new JButton("Key Binding");
-        button2.setBounds(100, 480, 300, 50);
-        button2.setFocusable(false);
-        button2.setHorizontalAlignment(JButton.CENTER);
-        button2.setHorizontalTextPosition(JButton.CENTER);
-        button2.setBackground(back);
-        button2.setForeground(fore);
-        button2.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25));
-        add(button2);
-        button2.addActionListener(new ActionListener() {
+
+        MyButton keyBinding = new MyButton("Key Binding", 100, 480, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                writeToFile(slider.getValue(), slider2.getValue());
+                FileController.writeSettings(String.valueOf(slider.getValue()), String.valueOf(slider2.getValue()));
                 new KeyBinding();
             }
         });
-        JButton button1 = new JButton("Back");
-        button1.setBounds(100, 550, 300, 50);
-        button1.setFocusable(false);
-        button1.setHorizontalAlignment(JButton.CENTER);
-        button1.setHorizontalTextPosition(JButton.CENTER);
-        button1.setBackground(back);
-        button1.setForeground(fore);
-        button1.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25));
-        add(button1);
-        button1.addActionListener(new ActionListener() {
+
+        MyButton back = new MyButton("Back", 100, 550, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                writeToFile(slider.getValue(), slider2.getValue());
+                FileController.writeSettings(String.valueOf(slider.getValue()), String.valueOf(slider2.getValue()));
                 new MainMenu();
             }
         });
-    }
-
-    public void writeToFile(int val1 , int val2){
-        File file = new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\dataBase\\settings.txt");
-        try {
-            PrintWriter printWriter = new PrintWriter(file);
-            printWriter.println(String.valueOf(val1));
-            printWriter.println(String.valueOf(val2));
-            printWriter.flush();
-            printWriter.close();
-        }catch (Exception e){
-
-        }
-
-
+        add(keyBinding);
+        add(back);
     }
 }

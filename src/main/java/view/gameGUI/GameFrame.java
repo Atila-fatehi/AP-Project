@@ -1,5 +1,7 @@
 package view.gameGUI;
 
+import Controller.Constants;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -12,11 +14,11 @@ public class GameFrame extends JFrame {
     private static final int initialPanelHeight = 700;
     public GameFrame() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(WIDTH, HEIGHT);
+        setSize(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
         setLocationRelativeTo(null);
         setLayout(null);
         setUndecorated(true);
-        setBackground(new Color(0, 0, 0, 0));
+        setBackground(Constants.TRANSPARENT);
         setResizable(false);
         setVisible(true);
         //Adding Panel
