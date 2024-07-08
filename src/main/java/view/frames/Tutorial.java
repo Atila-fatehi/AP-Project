@@ -1,11 +1,10 @@
 package view.frames;
 
-import Controller.Constants;
+import controller.Constants;
 import view.Jcomponents.MyButton;
 import view.Jcomponents.MyLabel;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 

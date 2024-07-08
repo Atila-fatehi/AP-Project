@@ -1,11 +1,11 @@
-package Controller;
+package controller;
 
-import Model.*;
+import model.*;
 import view.frames.MainMenu;
 import view.gameGUI.GameFrame;
 import view.gameGUI.GamePanel;
-import audio.players.AudioPlayer;
-import audio.players.GameMusicPlayer;
+import controller.audio.players.AudioPlayer;
+import controller.audio.players.GameMusicPlayer;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,11 +1,11 @@
 package view.gameGUI;
 
-import Controller.Constants;
-import Controller.GameManager;
-import Model.*;
+import controller.Constants;
+import controller.GameManager;
+import model.*;
 import view.frames.MainMenu;
-import audio.players.AudioPlayer;
-import audio.players.GameMusicPlayer;
+import controller.audio.players.AudioPlayer;
+import controller.audio.players.GameMusicPlayer;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -32,20 +32,18 @@ public class GamePanel extends JPanel {
     private ArrayList<Collectable> collectables = new ArrayList<>();
     private final GameManager gameManager;
     private int elapsedTime;
-    private final GameFrame gameFrame;
     private final AudioPlayer audioPlayer;
     private int w, a, s, d, shop, ability;
 
-    public GamePanel(GameFrame frame) {
+    public GamePanel() {
         file();
-        this.gameFrame = frame;
         audioPlayer = new AudioPlayer();
         setFocusable(true);
         setLayout(null);
         //add Listeners
         addListeners();
         //Game Manager
-        this.gameManager = new GameManager(frame, this);
+        this.gameManager = new GameManager(GameFrame.getInstance(), this);
         abilityStuff();
         //Timers
         Timer timer = new Timer(1000, new ActionListener() {
@@ -201,7 +199,7 @@ public class GamePanel extends JPanel {
                 if (keyCode == KeyEvent.VK_ESCAPE) {
                     GameMusicPlayer.getInstance().getClip().stop();
                     GameMusicPlayer.getInstance().setPlaying(false);
-                    gameFrame.dispose();
+                    GameFrame.getInstance().dispose();
                     gameManager.setPaused(true);
                     gameManager.getModelTimer().cancel();
                     gameManager.getViewTimer().cancel();

@@ -1,9 +1,8 @@
 package view.Jcomponents;
 
-import Controller.Constants;
+import controller.Constants;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class MyLabel extends JLabel {
 
@@ -12,7 +11,7 @@ public class MyLabel extends JLabel {
         setText(text);
         setHorizontalAlignment(JLabel.CENTER);
         setBounds(x, y, width, height);
-        setFont(Constants.BOLD_25);
+        setFont(Constants.BOLD_20);
         setForeground(Constants.FORE_COLOR);
     }
 }

@@ -1,10 +1,9 @@
 package view.frames;
 
-import Controller.Constants;
-import Controller.FileController;
-import Controller.FrameController;
-import audio.players.GameMusicPlayer;
-import audio.players.MenuMusicPlayer;
+import controller.Constants;
+import controller.FileController;
+import controller.audio.players.GameMusicPlayer;
+import controller.audio.players.MenuMusicPlayer;
 import view.Jcomponents.MyButton;
 import view.gameGUI.GameFrame;
 import view.images.WallpaperPainter;
@@ -36,8 +35,8 @@ public class MainMenu extends JFrame {
                 dispose();
                 MenuMusicPlayer.getInstance().stop();
                 GameMusicPlayer.getInstance().start();
-                FrameController.minimizeAllWindows();
-                new GameFrame();
+               // FrameController.minimizeAllWindows();
+                GameFrame.generateNewFrame();
             }
         });
 

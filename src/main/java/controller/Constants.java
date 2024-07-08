@@ -1,4 +1,4 @@
-package Controller;
+package controller;
 
 import java.awt.*;
 import java.nio.file.Paths;
@@ -34,7 +34,8 @@ public class Constants {
     public static final int SKILL_TREE_FRAME_HEIGHT = 700;
 
     public static final Font BOLD_15 = new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 15);
-    public static final Font BOLD_25 = new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 20);
+    public static final Font BOLD_20 = new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 20);
+    public static final Font BOLD_25 = new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25);
     public static final Font BOLD_35 = new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 35);
 
     public static final String path = "";
@@ -45,11 +46,11 @@ public class Constants {
     public static final int INITIAL_PANEL_HEIGHT = 700;
 
     //Paths
-    public static final String SETTING_PATH = Paths.get("").toAbsolutePath() + "/src/main/java/dataBase/settings.txt";
-    public static final String ABILITY_PATH = Paths.get("").toAbsolutePath() + "/src/main/java/dataBase/abilityCode.txt";
-    public static final String XP_PATH = Paths.get("").toAbsolutePath() + "/src/main/java/dataBase/XP.txt";
-    public static final String KEYS_PATH = Paths.get("").toAbsolutePath() + "/src/main/java/dataBase/keys.txt";
-    public static final String DAVE_PATH = Paths.get("").toAbsolutePath() + "/src/main/java/audio/CrazyDave.wav";
-    public static final String WATERY_GRAVES_PATH = Paths.get("").toAbsolutePath() + "/src/main/java/audio/WateryGraves.wav";
+    public static final String SETTING_PATH = Paths.get("").toAbsolutePath() + "/src/main/java/model/dataBase/settings.txt";
+    public static final String ABILITY_PATH = Paths.get("").toAbsolutePath() + "/src/main/java/model/dataBase/abilityCode.txt";
+    public static final String XP_PATH = Paths.get("").toAbsolutePath() + "/src/main/java/model/dataBase/XP.txt";
+    public static final String KEYS_PATH = Paths.get("").toAbsolutePath() + "/src/main/java/model/dataBase/keys.txt";
+    public static final String DAVE_PATH = Paths.get("").toAbsolutePath() + "/src/main/java/controller/audio/CrazyDave.wav";
+    public static final String WATERY_GRAVES_PATH = Paths.get("").toAbsolutePath() + "/src/main/java/controller/audio/WateryGraves.wav";
 
 }

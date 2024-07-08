@@ -1,12 +1,9 @@
-package Model;
+package model;
 
 
 import java.io.File;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class Epsilon implements movable {
     private int HP;

@@ -1,15 +1,11 @@
 package view.frames;
 
-import Controller.Constants;
-import Controller.FileController;
+import controller.Constants;
+import controller.FileController;
 import view.Jcomponents.MyButton;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
-import java.io.PrintWriter;
-import java.nio.file.Paths;
 
 public class KeyBinding extends JFrame {
     private boolean LFU, LFD, LFR, LFL, LFS, LFA;

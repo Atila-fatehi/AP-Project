@@ -1,6 +1,6 @@
 package view.Jcomponents;
 
-import Controller.Constants;
+import controller.Constants;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
@@ -17,6 +17,6 @@ public class MyButton extends JButton {
         setHorizontalTextPosition(JButton.CENTER);
         setBackground(Constants.BACK_COLOR);
         setForeground(Constants.FORE_COLOR);
-        setFont(Constants.BOLD_25);
+        setFont(Constants.BOLD_20);
     }
 }

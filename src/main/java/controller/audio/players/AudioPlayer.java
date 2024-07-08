@@ -1,4 +1,4 @@
-package audio.players;
+package controller.audio.players;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;

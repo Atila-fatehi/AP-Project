@@ -1,8 +1,8 @@
 package view.frames;
 
-import Controller.Constants;
-import Controller.FileController;
-import audio.players.GameMusicPlayer;
+import controller.Constants;
+import controller.FileController;
+import controller.audio.players.GameMusicPlayer;
 import audio.players.MenuMusicPlayer;
 import view.Jcomponents.MyButton;
 import view.Jcomponents.MyLabel;

@@ -1,4 +1,4 @@
-package Controller;
+package controller;
 
 import java.awt.geom.Point2D;
 

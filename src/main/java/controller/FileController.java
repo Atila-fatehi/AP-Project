@@ -1,9 +1,8 @@
-package Controller;
+package controller;
 
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.PrintWriter;
-import java.nio.file.Paths;
 import java.util.Scanner;
 
 public class FileController {

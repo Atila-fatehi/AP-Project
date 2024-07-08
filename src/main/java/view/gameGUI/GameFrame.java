@@ -1,13 +1,25 @@
 package view.gameGUI;
 
-import Controller.Constants;
+import controller.Constants;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class GameFrame extends JFrame {
-    private static final int HEIGHT = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
-    private static final int WIDTH = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+
+    private static GameFrame instance;
+
+    public static GameFrame getInstance() {
+        if (instance == null) {
+            instance = new GameFrame();
+        }
+        return instance;
+    }
+
+
+    public static void generateNewFrame(){
+        instance = new GameFrame();
+    }
+
     private static final int locationX = 600;
     private static final int locationY = 200;
     private static final int initialPanelWidth = 700;
@@ -22,8 +34,9 @@ public class GameFrame extends JFrame {
         setResizable(false);
         setVisible(true);
         //Adding Panel
-        GamePanel gamePanel = new GamePanel(this);
-        gamePanel.setBackground(new Color(0x011022));
+        System.out.println("yes");
+        GamePanel gamePanel = new GamePanel();
+        gamePanel.setBackground(Constants.DARK_BLUE);
         gamePanel.setBounds(locationX, locationY, initialPanelWidth, initialPanelHeight);
         add(gamePanel);
     }

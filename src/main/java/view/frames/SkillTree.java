@@ -1,8 +1,7 @@
 package view.frames;
 
-import Controller.Constants;
-import Controller.FileController;
-import view.Jcomponents.MyButton;
+import controller.Constants;
+import controller.FileController;
 import view.Jcomponents.MyLabel;
 
 import javax.swing.*;
@@ -12,7 +11,6 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.PrintWriter;
 import java.nio.file.Paths;
-import java.util.Scanner;
 
 public class SkillTree extends JFrame {
     //TODO CLEAN THIS WHEN SKILL TREE
