@@ -116,7 +116,7 @@ public abstract class FileController {
         }
     }
 
-    public static void writeXP(int xp){
+    public static void writeXP(int xp) {
         File file = new File(Constants.XP_PATH);
         try {
             PrintWriter printWriter = new PrintWriter(file);
@@ -138,4 +138,20 @@ public abstract class FileController {
         }
     }
 
+    public static int[] readKeyCodes() {
+        int[] codes = new int[6];
+        File file = new File(Constants.KEYS_PATH);
+        try {
+            Scanner scanner = new Scanner(file);
+            codes[0] = Integer.parseInt(scanner.nextLine());
+            codes[1] = Integer.parseInt(scanner.nextLine());
+            codes[2] = Integer.parseInt(scanner.nextLine());
+            codes[3] = Integer.parseInt(scanner.nextLine());
+            codes[4] = Integer.parseInt(scanner.nextLine());
+            codes[5] = Integer.parseInt(scanner.nextLine());
+        } catch (Exception e) {
+            return null;
+        }
+        return codes;
+    }
 }

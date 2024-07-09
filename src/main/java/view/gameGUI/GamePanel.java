@@ -1,8 +1,11 @@
 package view.gameGUI;
 
+import controller.FileController;
 import controller.util.Constants;
 import controller.GameManager;
 import model.*;
+import view.Jcomponents.MyKeyListener;
+import view.Jcomponents.MyMouseListener;
 import view.frames.MainMenu;
 import controller.audio.players.AudioPlayer;
 import controller.audio.players.GameMusicPlayer;
@@ -21,15 +24,14 @@ import java.util.TimerTask;
 public class GamePanel extends JPanel {
 
 
-//    private static GamePanel instance;
-//
-//    public static GamePanel getInstance() {
-//        if (instance == null) {
-//            instance = new GamePanel();
-//        }
-//        System.out.println("brrrrrrrrrrrrrrrrrrrrrrrrrrr");
-//        return instance;
-//    }
+    private static GamePanel instance;
+
+    public static GamePanel getInstance() {
+        if (instance == null) {
+            instance = new GamePanel();
+        }
+        return instance;
+    }
 
     private int locationX = 600;
     private int locationY = 200;
@@ -42,27 +44,23 @@ public class GamePanel extends JPanel {
     private ArrayList<Trigorath> trigoraths = new ArrayList<>();
     private ArrayList<Squarantine> squarantines = new ArrayList<>();
     private ArrayList<Collectable> collectables = new ArrayList<>();
-    private final GameManager gameManager;
     private int elapsedTime;
-    private int w, a, s, d, shop, ability;
 
+    public GamePanel() {
 
+        MyKeyListener.initiateKeyCodes();
 
-
-    GameFrame frame;
-
-    public GamePanel(GameFrame frame) {
-        this.frame = frame;
-        file();
         setFocusable(true);
         setLayout(null);
 
-        addListeners();
+        addMouseListener(new MyMouseListener());
+        addKeyListener(new MyKeyListener());
 
-        System.out.println("really");
-        this.gameManager = new GameManager(frame , this);
         abilityStuff();
+    }
 
+
+    public void startTimer(){
         Timer timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -71,18 +69,13 @@ public class GamePanel extends JPanel {
                 }
                 elapsedTime++;
                 if (elapsedTime == 10) {
-                    gameManager.setPastTen(true);
+                    GameManager.getInstance().setPastTen(true);
                 }
             }
 
         });
         timer.start();
     }
-
-    public void setEpsilon(Epsilon epsilon) {
-        this.epsilon = epsilon;
-    }
-
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -135,104 +128,9 @@ public class GamePanel extends JPanel {
         g.setColor(Constants.STRING_COLOR);
         g.drawString("HP : " + epsilon.getHP() +
                   "       XP : " + epsilon.getXP() +
-                  "       WAVE : " + gameManager.getCurrentWave() +
-                  "       ELAPSED TIME : " + String.valueOf(elapsedTime), 10, 20);
+                  "       WAVE : " + GameManager.getInstance().getCurrentWave() +
+                  "       ELAPSED TIME : " + elapsedTime, 10, 20);
         g.dispose();
-    }
-    public void addListeners() {
-        addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                gameManager.mouseClicked(e.getX(), e.getY());
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-
-            }
-        });
-        addKeyListener(new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-                int keyCode = e.getKeyCode();
-                if (keyCode == w) {
-                    epsilon.setAccU(true);
-                    epsilon.setDecU(false);
-                }
-                if (keyCode == s) {
-                    epsilon.setAccD(true);
-                    epsilon.setDecD(false);
-                }
-                if (keyCode == a) {
-                    epsilon.setAccL(true);
-                    epsilon.setDecL(false);
-                }
-                if (keyCode == d) {
-                    epsilon.setAccR(true);
-                    epsilon.setDecR(false);
-                }
-                if (keyCode == shop) {
-                    gameManager.setPaused(!gameManager.isPaused());
-                    AudioPlayer.play(AudioPlayer.PAUSE);
-                    openShop();
-                }
-                if (keyCode == ability) {
-                    gameManager.activateAbility();
-                }
-                if (keyCode == KeyEvent.VK_ESCAPE) {
-                    GameMusicPlayer.getInstance().getClip().stop();
-                    GameMusicPlayer.getInstance().setPlaying(false);
-                    //TODO
-//                    GameFrame.getInstance().dispose();
-                    frame.dispose();
-                    gameManager.setPaused(true);
-                    gameManager.getModelTimer().cancel();
-                    gameManager.getViewTimer().cancel();
-                    new MainMenu();
-                }
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-                int keyCode = e.getKeyCode();
-                if (keyCode == w) {
-                    epsilon.setAccU(false);
-                    epsilon.setDecU(true);
-                }
-                if (keyCode == s) {
-                    epsilon.setAccD(false);
-                    epsilon.setDecD(true);
-                }
-                if (keyCode == a) {
-                    epsilon.setAccL(false);
-                    epsilon.setDecL(true);
-                }
-                if (keyCode == d) {
-                    epsilon.setAccR(false);
-                    epsilon.setDecR(true);
-                }
-            }
-        });
     }
 
     public void abilityStuff() {
@@ -277,8 +175,9 @@ public class GamePanel extends JPanel {
 
             @Override
             public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == shop) {
-                    gameManager.setPaused(!gameManager.isPaused());
+                //TODO NOT CLEAN
+                if (e.getKeyCode() == MyKeyListener.shop) {
+                    GameManager.getInstance().setPaused(!GameManager.getInstance().isPaused());
                     shopFrame.dispose();
                 }
             }
@@ -326,9 +225,9 @@ public class GamePanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (epsilon.getXP() >= 100) {
                     epsilon.setXP(epsilon.getXP() - 100);
-                    gameManager.setPaused(!gameManager.isPaused());
+                    GameManager.getInstance().setPaused(!GameManager.getInstance().isPaused());
                     shopFrame.dispose();
-                    gameManager.impactOnPointWithoutEpsilon(new Point2D.Double(epsilon.getX(), epsilon.getY()));
+                    GameManager.getInstance().impactOnPointWithoutEpsilon(new Point2D.Double(epsilon.getX(), epsilon.getY()));
                 }
             }
         });
@@ -351,14 +250,14 @@ public class GamePanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (epsilon.getXP() >= 75) {
                     epsilon.setXP(epsilon.getXP() - 75);
-                    gameManager.setPaused(!gameManager.isPaused());
+                    GameManager.getInstance().setPaused(!GameManager.getInstance().isPaused());
                     shopFrame.dispose();
-                    gameManager.setEmpower(true);
+                    GameManager.getInstance().setEmpower(true);
                     java.util.Timer timer = new java.util.Timer();
                     timer.schedule(new TimerTask() {
                         @Override
                         public void run() {
-                            gameManager.setEmpower(false);
+                            GameManager.getInstance().setEmpower(false);
                             timer.cancel();
                         }
                     }, 10000, 100);
@@ -387,7 +286,7 @@ public class GamePanel extends JPanel {
                 if (epsilon.getXP() >= 50) {
                     epsilon.setXP(epsilon.getXP() - 50);
                     epsilon.setHP(epsilon.getHP() + 10);
-                    gameManager.setPaused(!gameManager.isPaused());
+                    GameManager.getInstance().setPaused(!GameManager.getInstance().isPaused());
                     shopFrame.dispose();
                 } else {
 
@@ -407,7 +306,7 @@ public class GamePanel extends JPanel {
         button1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                gameManager.setPaused(!gameManager.isPaused());
+                GameManager.getInstance().setPaused(!GameManager.getInstance().isPaused());
                 shopFrame.dispose();
             }
         });
@@ -448,21 +347,6 @@ public class GamePanel extends JPanel {
         locationX += 3;
         screenHeight -= 6;
         locationY += 3;
-    }
-
-    public void file() {
-        File file = new File(Constants.KEYS_PATH);
-        try {
-            Scanner scanner = new Scanner(file);
-            w = Integer.parseInt(scanner.nextLine());
-            a = Integer.parseInt(scanner.nextLine());
-            s = Integer.parseInt(scanner.nextLine());
-            d = Integer.parseInt(scanner.nextLine());
-            shop = Integer.parseInt(scanner.nextLine());
-            ability = Integer.parseInt(scanner.nextLine());
-        } catch (Exception e) {
-
-        }
     }
 
     //GETTERS AND SETTERS
@@ -520,5 +404,9 @@ public class GamePanel extends JPanel {
 
     public void setCollectables(ArrayList<Collectable> collectables) {
         this.collectables = collectables;
+    }
+
+    public void setEpsilon(Epsilon epsilon) {
+        this.epsilon = epsilon;
     }
 }

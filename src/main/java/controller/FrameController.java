@@ -3,7 +3,7 @@ package controller;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-public class FrameController {
+public abstract class FrameController {
     public static void minimizeAllWindows(){
         try {
             Robot robot = new Robot();

@@ -1,31 +1,30 @@
 package view.gameGUI;
 
+import controller.GameManager;
 import controller.util.Constants;
 
 import javax.swing.*;
 
 public class GameFrame extends JFrame {
 
-//    private static GameFrame instance;
-//
-//    public static GameFrame getInstance() {
-//        if (instance == null) {
-//            instance = new GameFrame();
-//        }
-//        System.out.println("br");
-//        return instance;
-//    }
-//
-//
-//    public static void generateNewFrame(){
-//        System.out.println("grrr");
-//        instance = new GameFrame();
-//    }
+    private static GameFrame instance;
+
+    public static void makeInstance(){
+        instance = new GameFrame();
+    }
+
+    public static GameFrame getInstance() {
+        if (instance == null) {
+            instance = new GameFrame();
+        }
+        return instance;
+    }
 
     private static final int locationX = 600;
     private static final int locationY = 200;
     private static final int initialPanelWidth = 700;
     private static final int initialPanelHeight = 700;
+
     public GameFrame() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
@@ -36,9 +35,13 @@ public class GameFrame extends JFrame {
         setResizable(false);
         setVisible(true);
 
-        GamePanel gamePanel = new GamePanel(this);
-        gamePanel.setBackground(Constants.DARK_BLUE);
-        gamePanel.setBounds(locationX, locationY, initialPanelWidth, initialPanelHeight);
-        add(gamePanel);
+    }
+
+    public void addPanel(){
+        GamePanel.getInstance().setBackground(Constants.DARK_BLUE);
+        GamePanel.getInstance().setBounds(locationX, locationY, initialPanelWidth, initialPanelHeight);
+        GameManager.getInstance();
+        add(GamePanel.getInstance());
+        GamePanel.getInstance().startTimer();
     }
 }

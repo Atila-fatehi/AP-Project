@@ -43,9 +43,10 @@ public class MainMenu extends JFrame {
                 dispose();
                 MenuMusicPlayer.getInstance().stop();
                 GameMusicPlayer.getInstance().start();
-                FrameController.minimizeAllWindows();
-                new GameFrame();
-//                GameFrame.generateNewFrame();
+//                FrameController.minimizeAllWindows();
+                GameFrame.makeInstance();
+                GameFrame.getInstance().addPanel();
+//                new GameFrame();
             }
         });
 
