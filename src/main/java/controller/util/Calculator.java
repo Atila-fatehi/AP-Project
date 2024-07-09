@@ -2,8 +2,8 @@ package controller.util;
 
 import java.awt.geom.Point2D;
 
-public class Calculator {
-    public Point2D circleLineCollision(double circleX, double circleY, double radius, double lineStartX, double lineStartY, double lineEndX, double lineEndY) {
+public abstract class Calculator {
+    public static Point2D circleLineCollision(double circleX, double circleY, double radius, double lineStartX, double lineStartY, double lineEndX, double lineEndY) {
         double deltaX = lineEndX - lineStartX;
         double deltaY = lineEndY - lineStartY;
         double lengthSquared = deltaX * deltaX + deltaY * deltaY;
@@ -27,7 +27,7 @@ public class Calculator {
 
     }
 
-    public double distance(double x1, double y1, double x2, double y2) {
+    public static double distance(double x1, double y1, double x2, double y2) {
         x1 -= x2;
         y1 -= y2;
         return Math.sqrt(x1 * x1 + y1 * y1);

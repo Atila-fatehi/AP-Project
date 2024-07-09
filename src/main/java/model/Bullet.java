@@ -12,7 +12,6 @@ public class Bullet implements movable {
     private final double constantVelocity = 15;
     private double vx;
     private double vy;
-    Calculator Calculator;
 
     public void move() {
         x = x + vx;
@@ -22,7 +21,6 @@ public class Bullet implements movable {
     public Bullet(double x, double y) {
         this.x = x;
         this.y = y;
-        Calculator = new Calculator();
     }
 
     public Point2D onTrigorathCollision(double x1, double x2, double x3, double y1, double y2, double y3) {

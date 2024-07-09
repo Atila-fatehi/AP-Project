@@ -4,7 +4,7 @@ import java.awt.*;
 import java.io.File;
 import java.nio.file.Paths;
 
-public class Constants {
+public abstract class Constants {
     public static final Color BACK_COLOR = new Color(0x9A1A03);
     public static final Color FORE_COLOR = new Color(0xFB8B24);
     public static final Color ANOTHER_FORE_COLOR = new Color(0x074E9C);

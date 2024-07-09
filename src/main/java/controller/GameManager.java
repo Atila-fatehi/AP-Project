@@ -38,7 +38,6 @@ public class GameManager {
     private final ArrayList<Trigorath> trigoraths = new ArrayList<>();
     private final ArrayList<Squarantine> squarantines = new ArrayList<>();
     private final ArrayList<Collectable> collectables = new ArrayList<>();
-    private final controller.util.Calculator Calculator;
     private int wave;
     private int difficulty;
     private int sensitivity;
@@ -54,7 +53,6 @@ public class GameManager {
         GamePanel.getInstance().setEpsilon(epsilon);
         damageRate = 5;
         wave = 0;
-        Calculator = new Calculator();
         File file = new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\dataBase\\settings.txt");
         try {
             Scanner scanner = new Scanner(file);

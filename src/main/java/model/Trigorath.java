@@ -19,7 +19,6 @@ public class Trigorath implements movable {
     private double accX;
     private double accY;
     private boolean played;
-    Calculator Calculator;
 
     public Trigorath(double x1, double y1, double x2, double y2, double x3, double y3) {
         this.x1 = x1;
@@ -29,7 +28,6 @@ public class Trigorath implements movable {
         this.y2 = y2;
         this.y3 = y3;
         this.HP = 15;
-        Calculator = new Calculator();
     }
 
     public Point2D onTrigorathCollision(double x1, double x2, double x3, double y1, double y2, double y3) {

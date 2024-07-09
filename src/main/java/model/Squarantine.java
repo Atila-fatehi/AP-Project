@@ -23,7 +23,6 @@ public class Squarantine implements movable {
     private double vy;
     private double accX;
     private double accY;
-    private final Calculator Calculator;
     private final java.util.Timer timer;
     private boolean played;
     public Squarantine(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
@@ -37,7 +36,6 @@ public class Squarantine implements movable {
         this.y4 = y4;
         this.HP = 10;
         constantVelocity = 1d;
-        Calculator = new Calculator();
         Random random = new Random();
         timer = new java.util.Timer();
         timer.schedule(new TimerTask() {
