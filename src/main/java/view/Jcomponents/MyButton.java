@@ -1,6 +1,6 @@
 package view.Jcomponents;
 
-import controller.Constants;
+import controller.util.Constants;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;

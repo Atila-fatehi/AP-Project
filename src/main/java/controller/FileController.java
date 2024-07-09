@@ -1,11 +1,14 @@
 package controller;
 
+import controller.util.Constants;
+
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.PrintWriter;
+import java.nio.file.Paths;
 import java.util.Scanner;
 
-public class FileController {
+public abstract class FileController {
     public static void createFiles() {
         File file = new File(Constants.SETTING_PATH);
         if (!file.exists()) {
@@ -106,6 +109,18 @@ public class FileController {
             } else {
                 printWriter.println(KeyEvent.VK_R);
             }
+            printWriter.flush();
+            printWriter.close();
+        } catch (Exception e) {
+
+        }
+    }
+
+    public static void writeXP(int xp){
+        File file = new File(Constants.XP_PATH);
+        try {
+            PrintWriter printWriter = new PrintWriter(file);
+            printWriter.println(xp);
             printWriter.flush();
             printWriter.close();
         } catch (Exception e) {

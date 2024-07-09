@@ -1,6 +1,6 @@
 package view.frames;
 
-import controller.Constants;
+import controller.util.Constants;
 import view.Jcomponents.MyButton;
 import view.Jcomponents.MyLabel;
 

@@ -1,9 +1,10 @@
 package view.frames;
 
-import controller.Constants;
-import controller.FileController;
+import controller.FrameController;
 import controller.audio.players.GameMusicPlayer;
 import controller.audio.players.MenuMusicPlayer;
+import controller.util.Constants;
+import controller.FileController;
 import view.Jcomponents.MyButton;
 import view.gameGUI.GameFrame;
 import view.images.WallpaperPainter;
@@ -13,6 +14,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MainMenu extends JFrame {
+
+    private static MainMenu instance;
+
+    public static MainMenu getInstance(){
+        if(instance == null) instance = new MainMenu();
+        return instance;
+    }
 
     public MainMenu() {
         setTitle("WindowKill");
@@ -35,8 +43,9 @@ public class MainMenu extends JFrame {
                 dispose();
                 MenuMusicPlayer.getInstance().stop();
                 GameMusicPlayer.getInstance().start();
-               // FrameController.minimizeAllWindows();
-                GameFrame.generateNewFrame();
+                FrameController.minimizeAllWindows();
+                new GameFrame();
+//                GameFrame.generateNewFrame();
             }
         });
 

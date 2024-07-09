@@ -1,6 +1,6 @@
 package view.gameGUI;
 
-import controller.Constants;
+import controller.util.Constants;
 import controller.GameManager;
 import model.*;
 import view.frames.MainMenu;
@@ -19,6 +19,18 @@ import java.util.Scanner;
 import java.util.TimerTask;
 
 public class GamePanel extends JPanel {
+
+
+//    private static GamePanel instance;
+//
+//    public static GamePanel getInstance() {
+//        if (instance == null) {
+//            instance = new GamePanel();
+//        }
+//        System.out.println("brrrrrrrrrrrrrrrrrrrrrrrrrrr");
+//        return instance;
+//    }
+
     private int locationX = 600;
     private int locationY = 200;
     private int screenWidth = 700;
@@ -32,20 +44,25 @@ public class GamePanel extends JPanel {
     private ArrayList<Collectable> collectables = new ArrayList<>();
     private final GameManager gameManager;
     private int elapsedTime;
-    private final AudioPlayer audioPlayer;
     private int w, a, s, d, shop, ability;
 
-    public GamePanel() {
+
+
+
+    GameFrame frame;
+
+    public GamePanel(GameFrame frame) {
+        this.frame = frame;
         file();
-        audioPlayer = new AudioPlayer();
         setFocusable(true);
         setLayout(null);
-        //add Listeners
+
         addListeners();
-        //Game Manager
-        this.gameManager = new GameManager(GameFrame.getInstance(), this);
+
+        System.out.println("really");
+        this.gameManager = new GameManager(frame , this);
         abilityStuff();
-        //Timers
+
         Timer timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -123,20 +140,6 @@ public class GamePanel extends JPanel {
         g.dispose();
     }
     public void addListeners() {
-        addMouseMotionListener(new MouseMotionListener() {
-            @Override
-            public void mouseDragged(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseMoved(MouseEvent e) {
-                double angle = Math.atan2(epsilon.getY() - e.getY(), epsilon.getX() - e.getX());
-                if(epsilon.hasVertex()) {
-                    //epsilon.updateVertexPosition(Math.cos(angle), Math.sin(angle));
-                }
-            }
-        });
         addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -190,7 +193,7 @@ public class GamePanel extends JPanel {
                 }
                 if (keyCode == shop) {
                     gameManager.setPaused(!gameManager.isPaused());
-                    audioPlayer.play(new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\audio\\pause.wav"));
+                    AudioPlayer.play(AudioPlayer.PAUSE);
                     openShop();
                 }
                 if (keyCode == ability) {
@@ -199,7 +202,9 @@ public class GamePanel extends JPanel {
                 if (keyCode == KeyEvent.VK_ESCAPE) {
                     GameMusicPlayer.getInstance().getClip().stop();
                     GameMusicPlayer.getInstance().setPlaying(false);
-                    GameFrame.getInstance().dispose();
+                    //TODO
+//                    GameFrame.getInstance().dispose();
+                    frame.dispose();
                     gameManager.setPaused(true);
                     gameManager.getModelTimer().cancel();
                     gameManager.getViewTimer().cancel();
@@ -446,7 +451,7 @@ public class GamePanel extends JPanel {
     }
 
     public void file() {
-        File file = new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\dataBase\\Keys.txt");
+        File file = new File(Constants.KEYS_PATH);
         try {
             Scanner scanner = new Scanner(file);
             w = Integer.parseInt(scanner.nextLine());

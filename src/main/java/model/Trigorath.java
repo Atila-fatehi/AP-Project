@@ -1,6 +1,6 @@
 package model;
 
-import controller.Calculator;
+import controller.util.Calculator;
 
 import java.awt.*;
 import java.awt.geom.Point2D;

@@ -1,24 +1,26 @@
 package view.gameGUI;
 
-import controller.Constants;
+import controller.util.Constants;
 
 import javax.swing.*;
 
 public class GameFrame extends JFrame {
 
-    private static GameFrame instance;
-
-    public static GameFrame getInstance() {
-        if (instance == null) {
-            instance = new GameFrame();
-        }
-        return instance;
-    }
-
-
-    public static void generateNewFrame(){
-        instance = new GameFrame();
-    }
+//    private static GameFrame instance;
+//
+//    public static GameFrame getInstance() {
+//        if (instance == null) {
+//            instance = new GameFrame();
+//        }
+//        System.out.println("br");
+//        return instance;
+//    }
+//
+//
+//    public static void generateNewFrame(){
+//        System.out.println("grrr");
+//        instance = new GameFrame();
+//    }
 
     private static final int locationX = 600;
     private static final int locationY = 200;
@@ -33,9 +35,8 @@ public class GameFrame extends JFrame {
         setBackground(Constants.TRANSPARENT);
         setResizable(false);
         setVisible(true);
-        //Adding Panel
-        System.out.println("yes");
-        GamePanel gamePanel = new GamePanel();
+
+        GamePanel gamePanel = new GamePanel(this);
         gamePanel.setBackground(Constants.DARK_BLUE);
         gamePanel.setBounds(locationX, locationY, initialPanelWidth, initialPanelHeight);
         add(gamePanel);
