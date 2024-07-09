@@ -1,10 +1,9 @@
 package view.gameGUI;
 
-import com.sun.tools.jconsole.JConsoleContext;
 import controller.GameManager;
 import controller.util.Constants;
 import view.Jcomponents.MyButton;
-import view.Jcomponents.MyKeyListener;
+import controller.KeyController;
 import view.Jcomponents.MyLabel;
 
 import javax.swing.*;
@@ -30,7 +29,7 @@ public class ShopFrame extends JFrame {
             @Override
             public void keyPressed(KeyEvent e) {
                 //TODO NOT CLEAN
-                if (e.getKeyCode() == MyKeyListener.shop) {
+                if (e.getKeyCode() == KeyController.shop) {
                     GameManager.getInstance().setPaused(!GameManager.getInstance().isPaused());
                     dispose();
                 }

@@ -1,11 +1,9 @@
-package view.Jcomponents;
-
-import controller.GameManager;
+package controller;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class MyMouseListener implements MouseListener {
+public class MouseController implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {

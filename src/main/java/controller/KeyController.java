@@ -1,7 +1,5 @@
-package view.Jcomponents;
+package controller;
 
-import controller.FileController;
-import controller.GameManager;
 import controller.audio.players.AudioPlayer;
 import controller.audio.players.GameMusicPlayer;
 import view.frames.MainMenu;
@@ -11,7 +9,7 @@ import view.gameGUI.GamePanel;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class MyKeyListener implements KeyListener {
+public class KeyController implements KeyListener {
 
     public static int w;
     public static int a;

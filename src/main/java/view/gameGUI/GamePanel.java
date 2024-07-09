@@ -1,25 +1,18 @@
 package view.gameGUI;
 
-import controller.FileController;
 import controller.util.Constants;
 import controller.GameManager;
 import model.*;
-import view.Jcomponents.MyKeyListener;
-import view.Jcomponents.MyMouseListener;
-import view.frames.MainMenu;
-import controller.audio.players.AudioPlayer;
-import controller.audio.players.GameMusicPlayer;
+import controller.KeyController;
+import controller.MouseController;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.Point2D;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.TimerTask;
 
 public class GamePanel extends JPanel {
 
@@ -47,14 +40,11 @@ public class GamePanel extends JPanel {
     private int elapsedTime;
 
     public GamePanel() {
-
-        MyKeyListener.initiateKeyCodes();
-
         setFocusable(true);
         setLayout(null);
-
-        addMouseListener(new MyMouseListener());
-        addKeyListener(new MyKeyListener());
+        KeyController.initiateKeyCodes();
+        addMouseListener(new MouseController());
+        addKeyListener(new KeyController());
 
         abilityStuff();
     }

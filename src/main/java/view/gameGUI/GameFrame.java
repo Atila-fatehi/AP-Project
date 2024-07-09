@@ -1,6 +1,7 @@
 package view.gameGUI;
 
 import controller.GameManager;
+import controller.InputController;
 import controller.util.Constants;
 
 import javax.swing.*;
@@ -42,6 +43,7 @@ public class GameFrame extends JFrame {
         GamePanel.getInstance().setBounds(locationX, locationY, initialPanelWidth, initialPanelHeight);
         GameManager.getInstance();
         add(GamePanel.getInstance());
+        add(InputController.getInstance());
         GamePanel.getInstance().startTimer();
     }
 }
