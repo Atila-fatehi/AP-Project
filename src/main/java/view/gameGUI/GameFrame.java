@@ -20,12 +20,6 @@ public class GameFrame extends JFrame {
         }
         return instance;
     }
-
-    private static final int locationX = 600;
-    private static final int locationY = 200;
-    private static final int initialPanelWidth = 700;
-    private static final int initialPanelHeight = 700;
-
     public GameFrame() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
@@ -35,12 +29,11 @@ public class GameFrame extends JFrame {
         setBackground(Constants.TRANSPARENT);
         setResizable(false);
         setVisible(true);
-
     }
 
     public void addPanel(){
         GamePanel.getInstance().setBackground(Constants.DARK_BLUE);
-        GamePanel.getInstance().setBounds(locationX, locationY, initialPanelWidth, initialPanelHeight);
+        GamePanel.getInstance().setBounds(Constants.INITIAL_PANEL_X, Constants.INITIAL_PANEL_Y, Constants.INITIAL_PANEL_WIDTH,Constants.INITIAL_PANEL_HEIGHT);
         add(GamePanel.getInstance());
         add(InputController.getInstance());
     }

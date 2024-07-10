@@ -19,6 +19,12 @@ public abstract class Constants {
     public static final int SCREEN_WIDTH = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
     public static final int SCREEN_HEIGHT = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 
+    public static final double INITIAL_EPSILON_POS = 350;
+    public static final int INITIAL_PANEL_X = 600;
+    public static final int INITIAL_PANEL_Y = 200;
+    public static final int INITIAL_PANEL_WIDTH = 700;
+    public static final int INITIAL_PANEL_HEIGHT = 700;
+
     public static final int BUTTON_WIDTH = 300;
     public static final int BUTTON_HEIGHT = 50;
     public static final int LABEL_WIDTH = 300;
@@ -40,11 +46,6 @@ public abstract class Constants {
     public static final Font BOLD_35 = new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 35);
 
     public static final String path = "";
-
-    public static final int INITIAL_PANEL_LOCATION_X = 600;
-    public static final int INITIAL_PANEL_LOCATION_Y = 200;
-    public static final int INITIAL_PANEL_WIDTH = 700;
-    public static final int INITIAL_PANEL_HEIGHT = 700;
 
     //Paths
     public static final File WALLPAPER = new File(Paths.get("").toAbsolutePath() + "/src/main/java/view/images/wallpaper.jpg");

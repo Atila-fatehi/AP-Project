@@ -26,11 +26,10 @@ public class GamePanel extends JPanel {
 
     private int locationX = 600;
     private int locationY = 200;
-    private int screenWidth = 700;
-    private int screenHeight = 700;
+    private int panelWidth = 700;
+    private int panelHeight = 700;
     private static final int shrinkageRate = 2;
     private int shrinkageCounter = 0;
-    private Epsilon epsilon;
     private ArrayList<Bullet> bullets = new ArrayList<>();
     private ArrayList<Trigorath> trigoraths = new ArrayList<>();
     private ArrayList<Squarantine> squarantines = new ArrayList<>();
@@ -68,6 +67,7 @@ public class GamePanel extends JPanel {
             g.fillOval((int) collectable.getX(), (int) collectable.getY(), (int) collectable.getRadius() * 2, (int) collectable.getRadius() * 2);
         }
         //draw epsilon
+        Epsilon epsilon = Epsilon.getInstance();
         g.setColor(Constants.EPSILON_COLOR);
         g.fillOval((int) (epsilon.getX() - epsilon.getRadius()), (int) (epsilon.getY() - epsilon.getRadius()), (int) epsilon.getRadius() * 2, (int) epsilon.getRadius() * 2);
         if (epsilon.hasVertex()) {
@@ -105,16 +105,16 @@ public class GamePanel extends JPanel {
     public void shrink() {
         if (shrinkageCounter == shrinkageRate) {
             setLocation(locationX, locationY);
-            setSize(screenWidth, screenHeight);
-            if (screenWidth >= 500) {
-                screenWidth -= 2;
+            setSize(panelWidth, panelHeight);
+            if (panelWidth >= 500) {
+                panelWidth -= 2;
                 locationX += 1;
-                epsilon.setX(epsilon.getX() - 1);
+                Epsilon.getInstance().setX(Epsilon.getInstance().getX() - 1);
             }
-            if (screenHeight >= 500) {
-                screenHeight -= 2;
+            if (panelHeight >= 500) {
+                panelHeight -= 2;
                 locationY += 1;
-                epsilon.setY(epsilon.getY() - 1);
+                Epsilon.getInstance().setY(Epsilon.getInstance().getY() - 1);
             }
             shrinkageCounter = 0;
         }
@@ -123,33 +123,30 @@ public class GamePanel extends JPanel {
 
     public void shrinkToZero() {
         setLocation(locationX, locationY);
-        setSize(screenWidth, screenHeight);
-        screenWidth -= 6;
+        setSize(panelWidth, panelHeight);
+        panelWidth -= 6;
         locationX += 3;
-        screenHeight -= 6;
+        panelHeight -= 6;
         locationY += 3;
     }
 
     //GETTERS AND SETTERS
 
-    public int getScreenWidth() {
-        return screenWidth;
+    public int getPanelWidth() {
+        return panelWidth;
     }
 
-    public void setScreenWidth(int screenWidth) {
-        this.screenWidth = screenWidth;
+    public void setPanelWidth(int panelWidth) {
+        this.panelWidth = panelWidth;
     }
 
-    public int getScreenHeight() {
-        return screenHeight;
+    public int getPanelHeight() {
+        return panelHeight;
     }
 
-    public void setScreenHeight(int screenHeight) {
-        this.screenHeight = screenHeight;
+    public void setPanelHeight(int panelHeight) {
+        this.panelHeight = panelHeight;
     }
-
-
-
     public void setBullets(ArrayList<Bullet> bullets) {
         this.bullets = bullets;
     }
@@ -182,9 +179,6 @@ public class GamePanel extends JPanel {
         this.collectables = collectables;
     }
 
-    public void setEpsilon(Epsilon epsilon) {
-        this.epsilon = epsilon;
-    }
     public void setElapsedTime(int elapsedTime) {
         this.elapsedTime = elapsedTime;
     }

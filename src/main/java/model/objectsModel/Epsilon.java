@@ -1,13 +1,23 @@
 package model.objectsModel;
 
 
+import controller.FileController;
+import controller.util.Constants;
 import model.movable.movable;
 
 import java.io.File;
 import java.nio.file.Paths;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Epsilon implements movable {
+
+    private static Epsilon instance;
+
+    public static Epsilon getInstance(){
+        if(instance == null) instance =  new Epsilon(Constants.INITIAL_EPSILON_POS,Constants.INITIAL_EPSILON_POS);
+        return instance;
+    }
     private int HP;
     private int XP;
     private double x;
@@ -17,23 +27,28 @@ public class Epsilon implements movable {
     private double vy;
     private double MAX_VELOCITY;
     private double ACCELERATION;
+    private int damageRate = 5;
     private SpecialAbility ability;
     private boolean accU, accD, accR, accL;
     private boolean decU = true, decD = true, decR = true, decL = true;
 
-    public Epsilon(double x, double y, double radius) {
+    public Epsilon(double x, double y) {
         this.x = x;
         this.y = y;
-        setHP(100);
-        File file = new File(Paths.get("").toAbsolutePath() + "/src/main/java/dataBase/XP.txt");
-        try {
-            Scanner scanner = new Scanner(file);
-            XP = Integer.parseInt(scanner.nextLine());
-        } catch (Exception e) {
+        this.radius = 13;
+        this.HP = 100;
+        this.XP = Integer.parseInt(FileController.readXP());
 
+        if (Objects.requireNonNull(FileController.readSettings())[0] < 33) {
+            MAX_VELOCITY = 7;
+            ACCELERATION = 0.5;
+        } else if (Objects.requireNonNull(FileController.readSettings())[0] > 66) {
+            MAX_VELOCITY = 15;
+            ACCELERATION = 2;
+        } else {
+            MAX_VELOCITY = 11;
+            ACCELERATION = 1;
         }
-        setXP(XP);
-        this.radius = radius;
         vx = 0;
         vy = 0;
         ability = new SpecialAbility();
@@ -50,16 +65,6 @@ public class Epsilon implements movable {
         if (vertexesNum != 4) {
             vertexesNum++;
         }
-    }
-
-    public void updateVertexPosition() {
-        vertexX = x;
-        vertexY = y - radius - 7;
-    }
-
-    public void updateVertexPosition(double cos, double sin) {
-        vertexX = x * sin;
-        vertexY = (y - radius - 7) * cos;
     }
 
     public void move() {
@@ -106,7 +111,8 @@ public class Epsilon implements movable {
             }
         }
         if (vertex) {
-            updateVertexPosition();
+            vertexX = x;
+            vertexY = y - radius - 7;
         }
     }
 
@@ -278,7 +284,11 @@ public class Epsilon implements movable {
         this.ability = ability;
     }
 
+    public int getDamageRate() {
+        return damageRate;
+    }
 
+    public void setDamageRate(int damageRate) {
+        this.damageRate = damageRate;
+    }
 }
-
-

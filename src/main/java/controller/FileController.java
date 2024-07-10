@@ -167,25 +167,14 @@ public abstract class FileController {
         return codes;
     }
 
-    public static void readAbilities() {
+    public static int readAbilities() {
         File file = new File(Constants.ABILITY_PATH);
         try {
             Scanner scanner = new Scanner(file);
-            int num = Integer.parseInt(scanner.nextLine());
-            if (num == 11) {
-                GameManager.getInstance().getEpsilon().getAbility().setAres(true);
-//                epsilon.setXP(epsilon.getXP() - 100);
-//                gameManager.setDamageRate(7);
-            }
-            if (num == 21) {
-//                epsilon.setXP(epsilon.getXP() - 100);
-                GameManager.getInstance().getEpsilon().getAbility().setAceso(true);
-            }
-            if (num == 31) {
-                GameManager.getInstance().getEpsilon().getAbility().setProteus(true);
-            }
-        } catch (Exception e) {
+            return Integer.parseInt(scanner.nextLine());
 
+        } catch (Exception e) {
+            return 0;
         }
 //        java.util.Timer timer = new java.util.Timer();
 //        timer.schedule(new TimerTask() {

@@ -12,7 +12,6 @@ public class Trigorath implements movable {
     private double posYHP;
     private double x1, x2, x3;
     private double y1, y2, y3;
-    private double constantVelocity;
     private double maxVelocityX;
     private double maxVelocityY;
     private double vx;
@@ -115,6 +114,7 @@ public class Trigorath implements movable {
         double angle = Math.atan2(y - (y1 + y3) / 2, x - (x1 + x2) / 2);
 //        setVx(constantVelocity * Math.cos(angle));
 //        setVy(constantVelocity * Math.sin(angle));
+        double constantVelocity;
         if (Calculator.distance(getCenterOfGravity().getX(), getCenterOfGravity().getY(), x, y) >= 400){
             constantVelocity = 3d;
         }else{

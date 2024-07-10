@@ -2,6 +2,7 @@ package controller;
 
 import controller.audio.players.AudioPlayer;
 import controller.audio.players.GameMusicPlayer;
+import model.objectsModel.Epsilon;
 import view.frames.MainMenu;
 import view.gameGUI.GameFrame;
 import view.gameGUI.GamePanel;
@@ -39,20 +40,20 @@ public class KeyController implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
         if (keyCode ==  w) {
-            GameManager.getInstance().getEpsilon().setAccU(true);
-            GameManager.getInstance().getEpsilon().setDecU(false);
+            Epsilon.getInstance().setAccU(true);
+            Epsilon.getInstance().setDecU(false);
         }
         if (keyCode == s) {
-            GameManager.getInstance().getEpsilon().setAccD(true);
-            GameManager.getInstance().getEpsilon().setDecD(false);
+            Epsilon.getInstance().setAccD(true);
+            Epsilon.getInstance().setDecD(false);
         }
         if (keyCode == a) {
-            GameManager.getInstance().getEpsilon().setAccL(true);
-            GameManager.getInstance().getEpsilon().setDecL(false);
+            Epsilon.getInstance().setAccL(true);
+            Epsilon.getInstance().setDecL(false);
         }
         if (keyCode == d) {
-            GameManager.getInstance().getEpsilon().setAccR(true);
-            GameManager.getInstance().getEpsilon().setDecR(false);
+            Epsilon.getInstance().setAccR(true);
+            Epsilon.getInstance().setDecR(false);
         }
         if (keyCode == shop) {
             GameManager.getInstance().setPaused(! GameManager.getInstance().isPaused());
@@ -77,20 +78,20 @@ public class KeyController implements KeyListener {
     public void keyReleased(KeyEvent e) {
         int keyCode = e.getKeyCode();
         if (keyCode == w) {
-            GameManager.getInstance().getEpsilon().setAccU(false);
-            GameManager.getInstance().getEpsilon().setDecU(true);
+            Epsilon.getInstance().setAccU(false);
+            Epsilon.getInstance().setDecU(true);
         }
         if (keyCode == s) {
-            GameManager.getInstance().getEpsilon().setAccD(false);
-            GameManager.getInstance().getEpsilon().setDecD(true);
+            Epsilon.getInstance().setAccD(false);
+            Epsilon.getInstance().setDecD(true);
         }
         if (keyCode == a) {
-            GameManager.getInstance().getEpsilon().setAccL(false);
-            GameManager.getInstance().getEpsilon().setDecL(true);
+            Epsilon.getInstance().setAccL(false);
+            Epsilon.getInstance().setDecL(true);
         }
         if (keyCode == d) {
-            GameManager.getInstance().getEpsilon().setAccR(false);
-            GameManager.getInstance().getEpsilon().setDecR(true);
+            Epsilon.getInstance().setAccR(false);
+            Epsilon.getInstance().setDecR(true);
         }
     }
 

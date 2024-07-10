@@ -1,12 +1,16 @@
 package model.objectsModel;
 
 import controller.util.Calculator;
+import model.collision.WallCollidable;
 import model.movable.movable;
+import view.gameGUI.GamePanel;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
 
-public class Bullet implements movable {
+public class Bullet implements movable , WallCollidable {
+
+
     private final double radius = 4;
     private double x;
     private double y;
@@ -74,17 +78,18 @@ public class Bullet implements movable {
         return null;
     }
 
-    public int onWallCollision(double w, double h) {
+    @Override
+    public int wallCollision() {
         if (x <= 0) {
             return 1;
         }
         if (y <= 0) {
             return 2;
         }
-        if (x >= w) {
+        if (x >= GamePanel.getInstance().getPanelWidth()) {
             return 3;
         }
-        if (y >= h) {
+        if (y >= GamePanel.getInstance().getPanelHeight()) {
             return 4;
         }
         return 0;
@@ -129,4 +134,6 @@ public class Bullet implements movable {
     public double getConstantVelocity() {
         return constantVelocity;
     }
+
+
 }

@@ -2,6 +2,7 @@ package view.gameGUI;
 
 import controller.GameManager;
 import controller.util.Constants;
+import model.objectsModel.Epsilon;
 import view.Jcomponents.MyButton;
 import controller.KeyController;
 import view.Jcomponents.MyLabel;
@@ -54,7 +55,7 @@ public class ShopFrame extends JFrame {
         setResizable(false);
 
 
-        MyLabel xp = new MyLabel("XP : " + GameManager.getInstance().getEpsilon().getXP(), 200, 100, 300, 100);
+        MyLabel xp = new MyLabel("XP : " + Epsilon.getInstance().getXP(), 200, 100, 300, 100);
         MyLabel banish = new MyLabel("O' Hephaestus، Banish", 100, 225, 300, 50);
         MyLabel empower = new MyLabel("O’ Athena، Empower", 100, 270, 300, 100);
         MyLabel heal = new MyLabel("O' Apollo Heal", 100, 340, 300, 100);
@@ -66,19 +67,19 @@ public class ShopFrame extends JFrame {
         MyButton xp100 = new MyButton("100 XP", 400, 225, Constants.BUTTON_WIDTH - 100, Constants.BUTTON_HEIGHT, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (GameManager.getInstance().getEpsilon().getXP() >= 100) {
-                    GameManager.getInstance().getEpsilon().setXP(GameManager.getInstance().getEpsilon().getXP() - 100);
+                if (Epsilon.getInstance().getXP() >= 100) {
+                    Epsilon.getInstance().setXP(Epsilon.getInstance().getXP() - 100);
                     GameManager.getInstance().setPaused(!GameManager.getInstance().isPaused());
                     dispose();
-                    GameManager.getInstance().impactOnPointWithoutEpsilon(new Point2D.Double(GameManager.getInstance().getEpsilon().getX(), GameManager.getInstance().getEpsilon().getY()));
+                    GameManager.getInstance().impactOnPointWithoutEpsilon(new Point2D.Double(Epsilon.getInstance().getX(), Epsilon.getInstance().getY()));
                 }
             }
         });
         MyButton xp75 = new MyButton("75 XP", 400, 300, Constants.BUTTON_WIDTH - 100, Constants.BUTTON_HEIGHT, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (GameManager.getInstance().getEpsilon().getXP() >= 75) {
-                    GameManager.getInstance().getEpsilon().setXP(GameManager.getInstance().getEpsilon().getXP() - 75);
+                if (Epsilon.getInstance().getXP() >= 75) {
+                    Epsilon.getInstance().setXP(Epsilon.getInstance().getXP() - 75);
                     GameManager.getInstance().setPaused(!GameManager.getInstance().isPaused());
                     dispose();
 
@@ -97,9 +98,9 @@ public class ShopFrame extends JFrame {
         MyButton xp50 = new MyButton("50 XP", 400, 375, Constants.BUTTON_WIDTH - 100, Constants.BUTTON_HEIGHT, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (GameManager.getInstance().getEpsilon().getXP() >= 50) {
-                    GameManager.getInstance().getEpsilon().setXP(GameManager.getInstance().getEpsilon().getXP() - 50);
-                    GameManager.getInstance().getEpsilon().setHP(GameManager.getInstance().getEpsilon().getHP() + 10);
+                if (Epsilon.getInstance().getXP() >= 50) {
+                    Epsilon.getInstance().setXP(Epsilon.getInstance().getXP() - 50);
+                    Epsilon.getInstance().setHP(Epsilon.getInstance().getHP() + 10);
                     GameManager.getInstance().setPaused(!GameManager.getInstance().isPaused());
                     dispose();
                 }
