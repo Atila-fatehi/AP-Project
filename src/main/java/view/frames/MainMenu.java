@@ -1,6 +1,7 @@
 package view.frames;
 
 import controller.FrameController;
+import controller.GameManager;
 import controller.audio.players.GameMusicPlayer;
 import controller.audio.players.MenuMusicPlayer;
 import controller.util.Constants;
@@ -30,9 +31,6 @@ public class MainMenu extends JFrame {
         setLayout(null);
         setResizable(false);
 
-        WallpaperPainter wallpaper = new WallpaperPainter();
-        wallpaper.setBounds(0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
-
         FileController.createFiles();
 
         MenuMusicPlayer.getInstance().start();
@@ -43,10 +41,10 @@ public class MainMenu extends JFrame {
                 dispose();
                 MenuMusicPlayer.getInstance().stop();
                 GameMusicPlayer.getInstance().start();
-//                FrameController.minimizeAllWindows();
+                FrameController.minimizeAllWindows();
                 GameFrame.makeInstance();
                 GameFrame.getInstance().addPanel();
-//                new GameFrame();
+                GameManager.getInstance().startElapsedTimer();
             }
         });
 
@@ -94,10 +92,8 @@ public class MainMenu extends JFrame {
         getContentPane().add(skillTree);
         getContentPane().add(credit);
         getContentPane().add(exit);
-        getContentPane().add(wallpaper);
+        getContentPane().add(new WallpaperPainter());
 
         setVisible(true);
     }
-
-
 }

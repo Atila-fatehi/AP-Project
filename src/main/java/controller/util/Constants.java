@@ -47,6 +47,7 @@ public abstract class Constants {
     public static final int INITIAL_PANEL_HEIGHT = 700;
 
     //Paths
+    public static final File WALLPAPER = new File(Paths.get("").toAbsolutePath() + "/src/main/java/view/images/wallpaper.jpg");
     public static final String SETTING_PATH = Paths.get("").toAbsolutePath() + "/src/main/java/model/dataBase/settings.txt";
     public static final String ABILITY_PATH = Paths.get("").toAbsolutePath() + "/src/main/java/model/dataBase/abilityCode.txt";
     public static final String XP_PATH = Paths.get("").toAbsolutePath() + "/src/main/java/model/dataBase/XP.txt";

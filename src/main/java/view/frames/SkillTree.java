@@ -44,7 +44,7 @@ public class SkillTree extends JFrame {
         add(shape);
         add(writOfProteus);
 
-        XP = Integer.parseInt(FileController.readSingleValue(Constants.XP_PATH));
+        XP = Integer.parseInt(FileController.readXP());
         MyLabel xp = new MyLabel("XP : " + XP , 400 , 10, Constants.LABEL_WIDTH , Constants.LABEL_HEIGHT);
         add(xp);
 

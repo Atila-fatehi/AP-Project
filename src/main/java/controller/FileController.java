@@ -5,7 +5,6 @@ import controller.util.Constants;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.PrintWriter;
-import java.nio.file.Paths;
 import java.util.Scanner;
 
 public abstract class FileController {
@@ -128,8 +127,8 @@ public abstract class FileController {
         }
     }
 
-    public static String readSingleValue(String path) {
-        File file = new File(path);
+    public static String readXP() {
+        File file = new File(Constants.XP_PATH);
         try {
             Scanner scanner = new Scanner(file);
             return scanner.nextLine();
@@ -166,5 +165,37 @@ public abstract class FileController {
             return null;
         }
         return codes;
+    }
+
+    public static void readAbilities() {
+        File file = new File(Constants.ABILITY_PATH);
+        try {
+            Scanner scanner = new Scanner(file);
+            int num = Integer.parseInt(scanner.nextLine());
+            if (num == 11) {
+                GameManager.getInstance().getEpsilon().getAbility().setAres(true);
+//                epsilon.setXP(epsilon.getXP() - 100);
+//                gameManager.setDamageRate(7);
+            }
+            if (num == 21) {
+//                epsilon.setXP(epsilon.getXP() - 100);
+                GameManager.getInstance().getEpsilon().getAbility().setAceso(true);
+            }
+            if (num == 31) {
+                GameManager.getInstance().getEpsilon().getAbility().setProteus(true);
+            }
+        } catch (Exception e) {
+
+        }
+//        java.util.Timer timer = new java.util.Timer();
+//        timer.schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//                epsilon.getAbility().setAres(false);
+//                epsilon.getAbility().setAceso(false);
+//                epsilon.getAbility().setProteus(false);
+//                timer.cancel();
+//            }
+//        }, 5 * 60 * 1000, 1111);
     }
 }

@@ -13,6 +13,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 
 public class Setting extends JFrame {
 
@@ -33,7 +34,7 @@ public class Setting extends JFrame {
         add(dif);
         add(vol);
 
-        JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, 100, 50);
+        JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, 100, Objects.requireNonNull(FileController.readSettings())[0]);
         slider.setMajorTickSpacing(10);
         slider.setMinorTickSpacing(1);
         slider.setPaintTicks(true);
@@ -65,7 +66,7 @@ public class Setting extends JFrame {
             }
         });
 
-        JSlider slider2 = new JSlider(JSlider.HORIZONTAL, 1, 3, 2);
+        JSlider slider2 = new JSlider(JSlider.HORIZONTAL, 1, 3, Objects.requireNonNull(FileController.readSettings())[1]);
         slider2.setMajorTickSpacing(1);
         slider2.setMinorTickSpacing(1);
         slider2.setPaintTicks(true);

@@ -12,7 +12,7 @@ public class Application implements Runnable{
 
     @Override
     public void run() {
-        new MainMenu();
+        MainMenu.getInstance();
 //        new GameFrame();
     }
 

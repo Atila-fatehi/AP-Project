@@ -10,11 +10,10 @@ import controller.audio.players.GameMusicPlayer;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class GameManager {
@@ -29,7 +28,7 @@ public class GameManager {
 
     private final Epsilon epsilon;
     private boolean paused;
-    private static final int expandRate = 15;
+    private static final int expandRate = 1;
     private final ArrayList<Bullet> bullets = new ArrayList<>();
     private final ArrayList<Trigorath> trigoraths = new ArrayList<>();
     private final ArrayList<Squarantine> squarantines = new ArrayList<>();
@@ -43,6 +42,7 @@ public class GameManager {
     private boolean gameOver;
     private boolean gameWon;
     private boolean empower;
+    private int elapsedTime;
 
     public GameManager() {
         epsilon = new Epsilon(350, 350, 13);
@@ -50,10 +50,9 @@ public class GameManager {
         damageRate = 5;
         wave = 0;
 
-        int[] codes = FileController.readSettings();
-        assert codes != null;
-        sensitivity = codes[0];
-        difficulty = codes[1];
+        FileController.readAbilities();
+        sensitivity = Objects.requireNonNull(FileController.readSettings())[0];
+        difficulty = Objects.requireNonNull(FileController.readSettings())[1];
 
         if (sensitivity < 30) {
             epsilon.setMAX_VELOCITY(7);
@@ -94,6 +93,24 @@ public class GameManager {
 
     }
 
+
+    public void startElapsedTimer(){
+        javax.swing.Timer timer = new javax.swing.Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (epsilon.getAbility().isAceso() && epsilon.getAbility().isActive()) {
+                    epsilon.setHP(epsilon.getHP() + 1);
+                }
+                elapsedTime++;
+                if (elapsedTime == 10) {
+                    pastTen = true;
+                }
+                GamePanel.getInstance().setElapsedTime(elapsedTime);
+            }
+
+        });
+        timer.start();
+    }
     private boolean pastTen;
 
     public void updateView() {
@@ -167,20 +184,31 @@ public class GameManager {
         for (int i = 0; i < bullets.size(); i++) {
             int wallCollisionNum = bullets.get(i).onWallCollision(GamePanel.getInstance().getScreenWidth(), GamePanel.getInstance().getScreenHeight());
             if (wallCollisionNum == 1) {
-                GamePanel.getInstance().setLocation(GamePanel.getInstance().getLocationX() - expandRate, GamePanel.getInstance().getLocationY());
-                GamePanel.getInstance().setSize(GamePanel.getInstance().getScreenWidth() + expandRate, GamePanel.getInstance().getScreenHeight());
-                GamePanel.getInstance().setScreenWidth(GamePanel.getInstance().getScreenWidth() + expandRate);
-                GamePanel.getInstance().setLocationX(GamePanel.getInstance().getLocationX() - expandRate);
-                epsilon.setX(epsilon.getX() + expandRate);
-                for (int j = 0; j < trigoraths.size(); j++) {
-                    trigoraths.get(j).shiftX(expandRate);
-                }
-                for (int j = 0; j < squarantines.size(); j++) {
-                    squarantines.get(j).shiftX(expandRate);
-                }
-                for (int j = 0; j < collectables.size(); j++) {
-                    collectables.get(j).shiftX(expandRate);
-                }
+                java.util.Timer timer = new java.util.Timer();
+                timer.schedule(new TimerTask() {
+                    int counter = 0;
+                    @Override
+                    public void run() {
+                        GamePanel.getInstance().setLocation(GamePanel.getInstance().getLocationX() - expandRate, GamePanel.getInstance().getLocationY());
+                        GamePanel.getInstance().setSize(GamePanel.getInstance().getScreenWidth() + expandRate, GamePanel.getInstance().getScreenHeight());
+                        GamePanel.getInstance().setScreenWidth(GamePanel.getInstance().getScreenWidth() + expandRate);
+                        GamePanel.getInstance().setLocationX(GamePanel.getInstance().getLocationX() - expandRate);
+                        epsilon.setX(epsilon.getX() + expandRate);
+                        for (int j = 0; j < trigoraths.size(); j++) {
+                            trigoraths.get(j).shiftX(expandRate);
+                        }
+                        for (int j = 0; j < squarantines.size(); j++) {
+                            squarantines.get(j).shiftX(expandRate);
+                        }
+                        for (int j = 0; j < collectables.size(); j++) {
+                            collectables.get(j).shiftX(expandRate);
+                        }
+                        counter++;
+                        if(counter == 50){
+                            timer.cancel();
+                        }
+                    }
+                } , 0 , 10);
                 bullets.remove(i);
                 i--;
             } else if (wallCollisionNum == 2) {
@@ -627,20 +655,12 @@ public class GameManager {
         this.empower = empower;
     }
 
-    public Timer getModelTimer() {
+    public java.util.Timer getModelTimer() {
         return modelTimer;
     }
 
-    public Timer getViewTimer() {
+    public java.util.Timer getViewTimer() {
         return viewTimer;
-    }
-
-    public boolean isPastTen() {
-        return pastTen;
-    }
-
-    public void setPastTen(boolean pastTen) {
-        this.pastTen = pastTen;
     }
 
     public void setDamageRate(int damageRate) {

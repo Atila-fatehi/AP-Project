@@ -43,27 +43,8 @@ public class GamePanel extends JPanel {
         KeyController.initiateKeyCodes();
         addMouseListener(new MouseController());
         addKeyListener(new KeyController());
-
-        abilityStuff();
     }
 
-
-    public void startTimer(){
-        Timer timer = new Timer(1000, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (epsilon.getAbility().isAceso() && epsilon.getAbility().isActive()) {
-                    epsilon.setHP(epsilon.getHP() + 1);
-                }
-                elapsedTime++;
-                if (elapsedTime == 10) {
-                    GameManager.getInstance().setPastTen(true);
-                }
-            }
-
-        });
-        timer.start();
-    }
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -121,38 +102,6 @@ public class GamePanel extends JPanel {
         g.dispose();
     }
 
-    public void abilityStuff() {
-        File file = new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\dataBase\\abilityCode.txt");
-        try {
-            Scanner scanner = new Scanner(file);
-            int num = Integer.parseInt(scanner.nextLine());
-            if (num == 11) {
-                epsilon.getAbility().setAres(true);
-//                epsilon.setXP(epsilon.getXP() - 100);
-//                gameManager.setDamageRate(7);
-            }
-            if (num == 21) {
-//                epsilon.setXP(epsilon.getXP() - 100);
-                epsilon.getAbility().setAceso(true);
-            }
-            if (num == 31) {
-                epsilon.getAbility().setProteus(true);
-            }
-        } catch (Exception e) {
-
-        }
-//        java.util.Timer timer = new java.util.Timer();
-//        timer.schedule(new TimerTask() {
-//            @Override
-//            public void run() {
-//                epsilon.getAbility().setAres(false);
-//                epsilon.getAbility().setAceso(false);
-//                epsilon.getAbility().setProteus(false);
-//                timer.cancel();
-//            }
-//        }, 5 * 60 * 1000, 1111);
-    }
-
     public void shrink() {
         if (shrinkageCounter == shrinkageRate) {
             setLocation(locationX, locationY);
@@ -182,9 +131,6 @@ public class GamePanel extends JPanel {
     }
 
     //GETTERS AND SETTERS
-    public Epsilon getEpsilon() {
-        return epsilon;
-    }
 
     public int getScreenWidth() {
         return screenWidth;
@@ -202,9 +148,7 @@ public class GamePanel extends JPanel {
         this.screenHeight = screenHeight;
     }
 
-    public ArrayList<Bullet> getBullets() {
-        return bullets;
-    }
+
 
     public void setBullets(ArrayList<Bullet> bullets) {
         this.bullets = bullets;
@@ -240,5 +184,8 @@ public class GamePanel extends JPanel {
 
     public void setEpsilon(Epsilon epsilon) {
         this.epsilon = epsilon;
+    }
+    public void setElapsedTime(int elapsedTime) {
+        this.elapsedTime = elapsedTime;
     }
 }

@@ -20,7 +20,7 @@ public class Tutorial extends JFrame {
         setResizable(false);
         MyLabel label = new MyLabel("RUN" , 300 ,110, 500 , 100 );
         add(label);
-        MyButton back = new MyButton("BAck", 400, 550, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT, new ActionListener() {
+        MyButton back = new MyButton("Back", 400, 550, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
