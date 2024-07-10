@@ -139,11 +139,11 @@ int difficulty;
         for (int i = 0; i < bullets.size(); i++) {
             bullets.get(i).move();
             for (int j = 0; j < trigoraths.size(); j++) {
-                Point2D trigorathCollisionPoint = bullets.get(i).onTrigorathCollision(trigoraths.get(j).getX1(), trigoraths.get(j).getX2(), trigoraths.get(j).getX3(), trigoraths.get(j).getY1(), trigoraths.get(j).getY2(), trigoraths.get(j).getY3());
-                if (trigorathCollisionPoint != null) {
+                Point2D collisionPoint = Collision.checkBulletCollision(bullets.get(i) , trigoraths.get(j));
+                if (collisionPoint != null) {
                     AudioPlayer.play(AudioPlayer.SPLAT);
                     trigoraths.get(j).setHP(trigoraths.get(j).getHP() - Epsilon.getInstance().getDamageRate());
-                    impactOnPoint(trigorathCollisionPoint);
+                    impactOnPoint(collisionPoint);
                     bullets.remove(i);
                     i--;
                     break;
@@ -153,11 +153,11 @@ int difficulty;
         //Squ collision
         for (int i = 0; i < bullets.size(); i++) {
             for (int j = 0; j < squarantines.size(); j++) {
-                Point2D squarantineCollisionPoint = bullets.get(i).onSquarantineCollision(squarantines.get(j).getX1(), squarantines.get(j).getX2(), squarantines.get(j).getX3(), squarantines.get(j).getX4(), squarantines.get(j).getY1(), squarantines.get(j).getY2(), squarantines.get(j).getY3(), squarantines.get(j).getY4());
-                if (squarantineCollisionPoint != null) {
+                Point2D collisionPoint = Collision.checkBulletCollision(bullets.get(i) , squarantines.get(j));
+                if (collisionPoint != null) {
                     AudioPlayer.play(AudioPlayer.SPLAT);
                     squarantines.get(j).setHP(squarantines.get(j).getHP() - Epsilon.getInstance().getDamageRate());
-                    impactOnPoint(squarantineCollisionPoint);
+                    impactOnPoint(collisionPoint);
                     bullets.remove(i);
                     i--;
                     break;

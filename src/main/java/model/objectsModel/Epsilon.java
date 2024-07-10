@@ -11,14 +11,15 @@ import java.nio.file.Paths;
 import java.util.Objects;
 import java.util.Scanner;
 
-public class Epsilon implements movable , Collidable {
+public class Epsilon implements movable, Collidable {
 
     private static Epsilon instance;
 
-    public static Epsilon getInstance(){
-        if(instance == null) instance =  new Epsilon(Constants.INITIAL_EPSILON_POS,Constants.INITIAL_EPSILON_POS);
+    public static Epsilon getInstance() {
+        if (instance == null) instance = new Epsilon(Constants.INITIAL_EPSILON_POS, Constants.INITIAL_EPSILON_POS);
         return instance;
     }
+
     private int HP;
     private int XP;
     private double x;
@@ -182,7 +183,6 @@ public class Epsilon implements movable , Collidable {
     public void setAccD(boolean accD) {
         this.accD = accD;
     }
-
 
 
     public void setAccR(boolean accR) {

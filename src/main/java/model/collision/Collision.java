@@ -1,6 +1,7 @@
 package model.collision;
 
 import controller.util.Calculator;
+import model.objectsModel.Bullet;
 import model.objectsModel.Epsilon;
 import model.objectsModel.Trigorath;
 
@@ -32,6 +33,32 @@ public abstract class Collision {
         int x = (int) Epsilon.getInstance().getX();
         int y = (int) Epsilon.getInstance().getY();
         int radius = (int) Epsilon.getInstance().getRadius();
+        for (int i = 0; i < xPoints.length; i++) {
+            if (Calculator.distance(x, y, xPoints[i], yPoints[i]) <= radius) {
+                return new Point2D.Double(xPoints[i], yPoints[i]);
+            }
+        }
+        for (int i = 0; i < xPoints.length; i++) {
+            Point2D point;
+            if (i == xPoints.length - 1) {
+                point = Calculator.circleLineCollision(x, y, radius, xPoints[i], yPoints[i], xPoints[0], yPoints[0]);
+            } else {
+                point = Calculator.circleLineCollision(x, y, radius, xPoints[i], yPoints[i], xPoints[i + 1], yPoints[i + 1]);
+            }
+            if (point != null) {
+                return point;
+            }
+        }
+
+        return null;
+    }
+
+    public static Point2D checkBulletCollision(Bullet bullet , Collidable collidable){
+        int[] xPoints = collidable.getXPoints();
+        int[] yPoints = collidable.getYPoints();
+        int x = (int) bullet.getX();
+        int y = (int) bullet.getX();
+        int radius = (int) bullet.getRadius();
         for (int i = 0; i < xPoints.length; i++) {
             if (Calculator.distance(x, y, xPoints[i], yPoints[i]) <= radius) {
                 return new Point2D.Double(xPoints[i], yPoints[i]);
