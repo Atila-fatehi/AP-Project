@@ -1,6 +1,7 @@
 package view.gameGUI;
 
-import controller.GameManager;
+import model.collision.CollisionHandler;
+import model.logic.GameManager;
 import controller.util.Constants;
 import model.objectsModel.Epsilon;
 import view.Jcomponents.MyButton;
@@ -71,7 +72,7 @@ public class ShopFrame extends JFrame {
                     Epsilon.getInstance().setXP(Epsilon.getInstance().getXP() - 100);
                     GameManager.getInstance().setPaused(!GameManager.getInstance().isPaused());
                     dispose();
-                    GameManager.getInstance().impactOnPointWithoutEpsilon(new Point2D.Double(Epsilon.getInstance().getX(), Epsilon.getInstance().getY()));
+                    CollisionHandler.handleCollisionOnPointNoEpsilon(new Point2D.Double(Epsilon.getInstance().getX(), Epsilon.getInstance().getY()));
                 }
             }
         });

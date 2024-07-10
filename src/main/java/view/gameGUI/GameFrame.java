@@ -1,6 +1,5 @@
 package view.gameGUI;
 
-import controller.GameManager;
 import controller.InputController;
 import controller.util.Constants;
 

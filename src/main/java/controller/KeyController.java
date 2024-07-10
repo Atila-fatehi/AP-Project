@@ -2,10 +2,10 @@ package controller;
 
 import controller.audio.players.AudioPlayer;
 import controller.audio.players.GameMusicPlayer;
+import model.logic.GameManager;
 import model.objectsModel.Epsilon;
 import view.frames.MainMenu;
 import view.gameGUI.GameFrame;
-import view.gameGUI.GamePanel;
 import view.gameGUI.ShopFrame;
 
 import java.awt.event.KeyEvent;

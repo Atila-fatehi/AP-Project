@@ -1,18 +1,15 @@
 package view.gameGUI;
 
 import controller.util.Constants;
-import controller.GameManager;
+import model.logic.GameManager;
 import controller.KeyController;
 import controller.MouseController;
+import model.logic.GameState;
 import model.objectsModel.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.io.File;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class GamePanel extends JPanel {
     private static GamePanel instance;
@@ -97,7 +94,7 @@ public class GamePanel extends JPanel {
         g.setColor(Constants.STRING_COLOR);
         g.drawString("HP : " + epsilon.getHP() +
                   "       XP : " + epsilon.getXP() +
-                  "       WAVE : " + GameManager.getInstance().getCurrentWave() +
+                  "       WAVE : " + GameState.wave +
                   "       ELAPSED TIME : " + elapsedTime, 10, 20);
         g.dispose();
     }

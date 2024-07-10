@@ -2,6 +2,7 @@ package model.collision;
 
 import controller.util.Calculator;
 import model.objectsModel.Bullet;
+import model.objectsModel.Collectable;
 import model.objectsModel.Epsilon;
 import model.objectsModel.Trigorath;
 
@@ -75,8 +76,12 @@ public abstract class Collision {
                 return point;
             }
         }
-
         return null;
+    }
+
+    public static boolean checkCoinCollision(Collectable coin){
+        return Calculator.distance(Epsilon.getInstance().getX(), Epsilon.getInstance().getY(), coin.getX(), coin.getY())
+                <= coin.getRadius() + Epsilon.getInstance().getRadius() + 20;
     }
 
 }

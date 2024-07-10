@@ -1,7 +1,7 @@
 package view.frames;
 
 import controller.FrameController;
-import controller.GameManager;
+import model.logic.GameManager;
 import controller.audio.players.GameMusicPlayer;
 import controller.audio.players.MenuMusicPlayer;
 import controller.util.Constants;
