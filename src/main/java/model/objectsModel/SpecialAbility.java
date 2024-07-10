@@ -1,4 +1,4 @@
-package model;
+package model.objectsModel;
 
 public class SpecialAbility {
     boolean ares;

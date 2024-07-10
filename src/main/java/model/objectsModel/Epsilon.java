@@ -1,5 +1,7 @@
-package model;
+package model.objectsModel;
 
+
+import model.movable.movable;
 
 import java.io.File;
 import java.nio.file.Paths;

@@ -154,4 +154,17 @@ public abstract class FileController {
         }
         return codes;
     }
+
+    public static int[] readSettings() {
+        int[] codes = new int[2];
+        File file = new File(Constants.SETTING_PATH);
+        try {
+            Scanner scanner = new Scanner(file);
+            codes[0] = Integer.parseInt(scanner.nextLine());
+            codes[1] = Integer.parseInt(scanner.nextLine());
+        } catch (Exception e) {
+            return null;
+        }
+        return codes;
+    }
 }

@@ -1,4 +1,4 @@
-package model;
+package model.movable;
 
 public interface movable {
      void move();

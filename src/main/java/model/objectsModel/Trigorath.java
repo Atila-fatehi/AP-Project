@@ -1,6 +1,7 @@
-package model;
+package model.objectsModel;
 
 import controller.util.Calculator;
+import model.movable.movable;
 
 import java.awt.*;
 import java.awt.geom.Point2D;

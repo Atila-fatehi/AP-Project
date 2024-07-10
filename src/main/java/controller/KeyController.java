@@ -5,6 +5,7 @@ import controller.audio.players.GameMusicPlayer;
 import view.frames.MainMenu;
 import view.gameGUI.GameFrame;
 import view.gameGUI.GamePanel;
+import view.gameGUI.ShopFrame;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -56,7 +57,7 @@ public class KeyController implements KeyListener {
         if (keyCode == shop) {
             GameManager.getInstance().setPaused(! GameManager.getInstance().isPaused());
             AudioPlayer.play(AudioPlayer.PAUSE);
-            GamePanel.getInstance().openShop();
+            new ShopFrame();
         }
         if (keyCode == ability) {
             GameManager.getInstance().activateAbility();

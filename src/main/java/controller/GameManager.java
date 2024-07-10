@@ -1,7 +1,7 @@
 package controller;
 
 import controller.util.Calculator;
-import model.*;
+import model.objectsModel.*;
 import view.frames.MainMenu;
 import view.gameGUI.GameFrame;
 import view.gameGUI.GamePanel;
@@ -11,12 +11,8 @@ import controller.audio.players.GameMusicPlayer;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
-import java.io.File;
-import java.io.PrintWriter;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
@@ -53,14 +49,12 @@ public class GameManager {
         GamePanel.getInstance().setEpsilon(epsilon);
         damageRate = 5;
         wave = 0;
-        File file = new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\dataBase\\settings.txt");
-        try {
-            Scanner scanner = new Scanner(file);
-            sensitivity = Integer.parseInt(scanner.nextLine());
-            difficulty = Integer.parseInt(scanner.nextLine());
-        } catch (Exception e) {
 
-        }
+        int[] codes = FileController.readSettings();
+        assert codes != null;
+        sensitivity = codes[0];
+        difficulty = codes[1];
+
         if (sensitivity < 30) {
             epsilon.setMAX_VELOCITY(7);
             epsilon.setACCELERATION(0.5);
@@ -71,6 +65,7 @@ public class GameManager {
             epsilon.setMAX_VELOCITY(11);
             epsilon.setACCELERATION(1);
         }
+
         viewTimer = new java.util.Timer();
         viewTimer.schedule(new TimerTask() {
             @Override
@@ -83,6 +78,7 @@ public class GameManager {
                 }
             }
         }, 0, (int) (double) TimeUnit.SECONDS.toMillis(1) / 60/*GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0].getDisplayMode().getRefreshRate()*/);
+
         modelTimer = new java.util.Timer();
         modelTimer.schedule(new TimerTask() {
             @Override
@@ -95,6 +91,7 @@ public class GameManager {
                 }
             }
         }, 0, (int) (double) TimeUnit.SECONDS.toMillis(1) / 100);
+
     }
 
     private boolean pastTen;

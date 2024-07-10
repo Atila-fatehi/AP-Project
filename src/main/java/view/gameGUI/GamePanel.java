@@ -2,9 +2,9 @@ package view.gameGUI;
 
 import controller.util.Constants;
 import controller.GameManager;
-import model.*;
 import controller.KeyController;
 import controller.MouseController;
+import model.objectsModel.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,8 +15,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class GamePanel extends JPanel {
-
-
     private static GamePanel instance;
 
     public static GamePanel getInstance() {
@@ -153,10 +151,6 @@ public class GamePanel extends JPanel {
 //                timer.cancel();
 //            }
 //        }, 5 * 60 * 1000, 1111);
-    }
-
-    public void openShop() {
-        new ShopFrame();
     }
 
     public void shrink() {
