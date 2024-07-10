@@ -3,6 +3,7 @@ package model.objectsModel;
 
 import controller.FileController;
 import controller.util.Constants;
+import model.collision.Collidable;
 import model.movable.movable;
 
 import java.io.File;
@@ -10,7 +11,7 @@ import java.nio.file.Paths;
 import java.util.Objects;
 import java.util.Scanner;
 
-public class Epsilon implements movable {
+public class Epsilon implements movable , Collidable {
 
     private static Epsilon instance;
 
@@ -25,10 +26,10 @@ public class Epsilon implements movable {
     private double radius;
     private double vx;
     private double vy;
-    private double MAX_VELOCITY;
-    private double ACCELERATION;
+    private final double MAX_VELOCITY;
+    private final double ACCELERATION;
     private int damageRate = 5;
-    private SpecialAbility ability;
+    private final SpecialAbility ability = new SpecialAbility();
     private boolean accU, accD, accR, accL;
     private boolean decU = true, decD = true, decR = true, decL = true;
 
@@ -38,7 +39,15 @@ public class Epsilon implements movable {
         this.radius = 13;
         this.HP = 100;
         this.XP = Integer.parseInt(FileController.readXP());
-
+        if (FileController.readAbilities() == 11) {
+            ability.setAres(true);
+        }
+        if (FileController.readAbilities() == 21) {
+            ability.setAceso(true);
+        }
+        if (FileController.readAbilities() == 31) {
+            ability.setProteus(true);
+        }
         if (Objects.requireNonNull(FileController.readSettings())[0] < 33) {
             MAX_VELOCITY = 7;
             ACCELERATION = 0.5;
@@ -51,7 +60,6 @@ public class Epsilon implements movable {
         }
         vx = 0;
         vy = 0;
-        ability = new SpecialAbility();
         ability.setActive(false);
     }
 
@@ -148,17 +156,11 @@ public class Epsilon implements movable {
         this.radius = radius;
     }
 
-    public double getVx() {
-        return vx;
-    }
 
     public void setVx(double vx) {
         this.vx = vx;
     }
 
-    public double getVy() {
-        return vy;
-    }
 
     public void setVy(double vy) {
         this.vy = vy;
@@ -172,76 +174,43 @@ public class Epsilon implements movable {
         this.HP = HP;
     }
 
-    public boolean isAccU() {
-        return accU;
-    }
-
     public void setAccU(boolean accU) {
         this.accU = accU;
     }
 
-    public boolean isAccD() {
-        return accD;
-    }
 
     public void setAccD(boolean accD) {
         this.accD = accD;
     }
 
-    public boolean isAccR() {
-        return accR;
-    }
+
 
     public void setAccR(boolean accR) {
         this.accR = accR;
     }
 
-    public boolean isAccL() {
-        return accL;
-    }
 
     public void setAccL(boolean accL) {
         this.accL = accL;
     }
 
-    public boolean isDecU() {
-        return decU;
-    }
 
     public void setDecU(boolean decU) {
         this.decU = decU;
-    }
-
-    public boolean isDecD() {
-        return decD;
     }
 
     public void setDecD(boolean decD) {
         this.decD = decD;
     }
 
-    public boolean isDecR() {
-        return decR;
-    }
 
     public void setDecR(boolean decR) {
         this.decR = decR;
     }
 
-    public boolean isDecL() {
-        return decL;
-    }
 
     public void setDecL(boolean decL) {
         this.decL = decL;
-    }
-
-    public void setMAX_VELOCITY(double MAX_VELOCITY) {
-        this.MAX_VELOCITY = MAX_VELOCITY;
-    }
-
-    public void setACCELERATION(double ACCELERATION) {
-        this.ACCELERATION = ACCELERATION;
     }
 
     public SpecialAbility getAbility() {
@@ -252,36 +221,16 @@ public class Epsilon implements movable {
         return vertex;
     }
 
-    public void setVertex(boolean vertex) {
-        this.vertex = vertex;
-    }
-
     public int getVertexesNum() {
         return vertexesNum;
-    }
-
-    public void setVertexesNum(int vertexesNum) {
-        this.vertexesNum = vertexesNum;
     }
 
     public double getVertexX() {
         return vertexX;
     }
 
-    public void setVertexX(double vertexX) {
-        this.vertexX = vertexX;
-    }
-
     public double getVertexY() {
         return vertexY;
-    }
-
-    public void setVertexY(double vertexY) {
-        this.vertexY = vertexY;
-    }
-
-    public void setAbility(SpecialAbility ability) {
-        this.ability = ability;
     }
 
     public int getDamageRate() {
@@ -290,5 +239,15 @@ public class Epsilon implements movable {
 
     public void setDamageRate(int damageRate) {
         this.damageRate = damageRate;
+    }
+
+    @Override
+    public int[] getXPoints() {
+        return new int[]{(int) x};
+    }
+
+    @Override
+    public int[] getYPoints() {
+        return new int[]{(int) y};
     }
 }

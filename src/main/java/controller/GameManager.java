@@ -1,6 +1,8 @@
 package controller;
 
 import controller.util.Calculator;
+import model.collision.Collidable;
+import model.collision.Collision;
 import model.collision.WallCollisionHandler;
 import model.objectsModel.*;
 import view.frames.MainMenu;
@@ -33,7 +35,7 @@ public class GameManager {
     private final ArrayList<Squarantine> squarantines = new ArrayList<>();
     private final ArrayList<Collectable> collectables = new ArrayList<>();
     private int wave;
-    private int difficulty;
+
     private int sensitivity;
     private final java.util.Timer modelTimer;
     private final java.util.Timer viewTimer;
@@ -41,21 +43,8 @@ public class GameManager {
     private boolean gameWon;
     private boolean empower;
     private int elapsedTime;
-
+int difficulty;
     public GameManager() {
-
-        if (FileController.readAbilities() == 11) {
-            Epsilon.getInstance().getAbility().setAres(true);
-//                epsilon.setXP(epsilon.getXP() - 100);
-//                gameManager.setDamageRate(7);
-        }
-        if (FileController.readAbilities() == 21) {
-//                epsilon.setXP(epsilon.getXP() - 100);
-            Epsilon.getInstance().getAbility().setAceso(true);
-        }
-        if (FileController.readAbilities() == 31) {
-            Epsilon.getInstance().getAbility().setProteus(true);
-        }
 
         difficulty = Objects.requireNonNull(FileController.readSettings())[1];
 
@@ -194,51 +183,51 @@ public class GameManager {
                     trigoraths.get(i).setPlayed(true);
                 }
             }
-            if (Epsilon.getInstance().hasVertex()) {
-                if (trigoraths.get(i).onPointCollision(Epsilon.getInstance().getVertexX(), Epsilon.getInstance().getVertexY()) != null) {
-                    trigoraths.get(i).setHP(trigoraths.get(i).getHP() - 10);
-                    AudioPlayer.play(AudioPlayer.SPLAT);
-                    impactOnPoint(new Point2D.Double(Epsilon.getInstance().getVertexX(), Epsilon.getInstance().getVertexY()));
-                }
-                if (Epsilon.getInstance().getVertexesNum() >= 2) {
-                    if (trigoraths.get(i).onPointCollision(Epsilon.getInstance().getVertexX(), Epsilon.getInstance().getVertexY() + Epsilon.getInstance().getRadius() * 2 + 14) != null) {
-                        trigoraths.get(i).setHP(trigoraths.get(i).getHP() - 10);
-                        AudioPlayer.play(AudioPlayer.SPLAT);
-                        impactOnPoint(new Point2D.Double(Epsilon.getInstance().getVertexX(), Epsilon.getInstance().getVertexY()));
-                    }
-                }
-                if (Epsilon.getInstance().getVertexesNum() >= 3) {
-                    if (trigoraths.get(i).onPointCollision(Epsilon.getInstance().getX() + Epsilon.getInstance().getRadius() + 7, Epsilon.getInstance().getY()) != null) {
-                        AudioPlayer.play(AudioPlayer.SPLAT);
-                        trigoraths.get(i).setHP(trigoraths.get(i).getHP() - 10);
-                        impactOnPoint(new Point2D.Double(Epsilon.getInstance().getX() + Epsilon.getInstance().getRadius() + 7, Epsilon.getInstance().getY()));
-                    }
-                }
-                if (Epsilon.getInstance().getVertexesNum() >= 4) {
-                    if (trigoraths.get(i).onPointCollision(Epsilon.getInstance().getX() - Epsilon.getInstance().getRadius() - 7, Epsilon.getInstance().getY()) != null) {
-                        AudioPlayer.play(AudioPlayer.SPLAT);
-                        trigoraths.get(i).setHP(trigoraths.get(i).getHP() - 10);
-                        impactOnPoint(new Point2D.Double(Epsilon.getInstance().getX() - Epsilon.getInstance().getRadius() - 7, Epsilon.getInstance().getY()));
-                    }
-                }
-            }
-            Point2D epsilonCollisionPoint = trigoraths.get(i).onEpsilonCollision(Epsilon.getInstance().getX(), Epsilon.getInstance().getY(), Epsilon.getInstance().getRadius());
+//            if (Epsilon.getInstance().hasVertex()) {
+//                if (trigoraths.get(i).onPointCollision(Epsilon.getInstance().getVertexX(), Epsilon.getInstance().getVertexY()) != null) {
+//                    trigoraths.get(i).setHP(trigoraths.get(i).getHP() - 10);
+//                    AudioPlayer.play(AudioPlayer.SPLAT);
+//                    impactOnPoint(new Point2D.Double(Epsilon.getInstance().getVertexX(), Epsilon.getInstance().getVertexY()));
+//                }
+//                if (Epsilon.getInstance().getVertexesNum() >= 2) {
+//                    if (trigoraths.get(i).onPointCollision(Epsilon.getInstance().getVertexX(), Epsilon.getInstance().getVertexY() + Epsilon.getInstance().getRadius() * 2 + 14) != null) {
+//                        trigoraths.get(i).setHP(trigoraths.get(i).getHP() - 10);
+//                        AudioPlayer.play(AudioPlayer.SPLAT);
+//                        impactOnPoint(new Point2D.Double(Epsilon.getInstance().getVertexX(), Epsilon.getInstance().getVertexY()));
+//                    }
+//                }
+//                if (Epsilon.getInstance().getVertexesNum() >= 3) {
+//                    if (trigoraths.get(i).onPointCollision(Epsilon.getInstance().getX() + Epsilon.getInstance().getRadius() + 7, Epsilon.getInstance().getY()) != null) {
+//                        AudioPlayer.play(AudioPlayer.SPLAT);
+//                        trigoraths.get(i).setHP(trigoraths.get(i).getHP() - 10);
+//                        impactOnPoint(new Point2D.Double(Epsilon.getInstance().getX() + Epsilon.getInstance().getRadius() + 7, Epsilon.getInstance().getY()));
+//                    }
+//                }
+//                if (Epsilon.getInstance().getVertexesNum() >= 4) {
+//                    if (trigoraths.get(i).onPointCollision(Epsilon.getInstance().getX() - Epsilon.getInstance().getRadius() - 7, Epsilon.getInstance().getY()) != null) {
+//                        AudioPlayer.play(AudioPlayer.SPLAT);
+//                        trigoraths.get(i).setHP(trigoraths.get(i).getHP() - 10);
+//                        impactOnPoint(new Point2D.Double(Epsilon.getInstance().getX() - Epsilon.getInstance().getRadius() - 7, Epsilon.getInstance().getY()));
+//                    }
+//                }
+//            }
+            Point2D epsilonCollisionPoint = Collision.checkEpsilonCollision(trigoraths.get(i));
             if (epsilonCollisionPoint != null) {
                 impactOnPoint(epsilonCollisionPoint);
                 Epsilon.getInstance().setHP(Epsilon.getInstance().getHP() - 10);
             }
             for (int j = 0; j < trigoraths.size(); j++) {
                 if (i != j) {
-                    Point2D trigorathCollisionPoint = trigoraths.get(i).onTrigorathCollision(trigoraths.get(j).getX1(), trigoraths.get(j).getX2(), trigoraths.get(j).getX3(), trigoraths.get(j).getY1(), trigoraths.get(j).getY2(), trigoraths.get(j).getY3());
-                    if (trigorathCollisionPoint != null) {
-                        impactOnPoint(trigorathCollisionPoint);
+                    Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(trigoraths.get(i) , trigoraths.get(j));
+                    if (collisionPoint != null) {
+                        impactOnPoint(collisionPoint);
                     }
                 }
             }
             for (int j = 0; j < squarantines.size(); j++) {
-                Point2D squarantineCollisionPoint = trigoraths.get(i).onSquarantineCollision(squarantines.get(j).getX1(), squarantines.get(j).getX2(), squarantines.get(j).getX3(), squarantines.get(j).getX4(), squarantines.get(j).getY1(), squarantines.get(j).getY2(), squarantines.get(j).getY3(), squarantines.get(j).getY4());
-                if (squarantineCollisionPoint != null) {
-                    impactOnPoint(squarantineCollisionPoint);
+                Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(trigoraths.get(i) , squarantines.get(j));
+                if (collisionPoint != null) {
+                    impactOnPoint(collisionPoint);
                 }
             }
             if (trigoraths.get(i).getHP() <= 0) {
@@ -260,51 +249,51 @@ public class GameManager {
                     squarantines.get(i).setPlayed(true);
                 }
             }
-            if (Epsilon.getInstance().hasVertex()) {
-                if (squarantines.get(i).onPointCollision(Epsilon.getInstance().getVertexX(), Epsilon.getInstance().getVertexY()) != null) {
-                    squarantines.get(i).setHP(squarantines.get(i).getHP() - 10);
-                    AudioPlayer.play(AudioPlayer.SPLAT);
-                    impactOnPoint(new Point2D.Double(Epsilon.getInstance().getVertexX(), Epsilon.getInstance().getVertexY()));
-                }
-                if (Epsilon.getInstance().getVertexesNum() >= 2) {
-                    if (squarantines.get(i).onPointCollision(Epsilon.getInstance().getVertexX(), Epsilon.getInstance().getVertexY() + Epsilon.getInstance().getRadius() * 2 + 14) != null) {
-                        squarantines.get(i).setHP(squarantines.get(i).getHP() - 10);
-                        AudioPlayer.play(AudioPlayer.SPLAT);
-                        impactOnPoint(new Point2D.Double(Epsilon.getInstance().getVertexX(), Epsilon.getInstance().getVertexY()));
-                    }
-                }
-                if (Epsilon.getInstance().getVertexesNum() >= 3) {
-                    if (squarantines.get(i).onPointCollision(Epsilon.getInstance().getX() + Epsilon.getInstance().getRadius() + 7, Epsilon.getInstance().getY()) != null) {
-                        squarantines.get(i).setHP(squarantines.get(i).getHP() - 10);
-                        AudioPlayer.play(AudioPlayer.SPLAT);
-                        impactOnPoint(new Point2D.Double(Epsilon.getInstance().getX() + Epsilon.getInstance().getRadius() + 7, Epsilon.getInstance().getY()));
-                    }
-                }
-                if (Epsilon.getInstance().getVertexesNum() >= 4) {
-                    if (squarantines.get(i).onPointCollision(Epsilon.getInstance().getX() - Epsilon.getInstance().getRadius() - 7, Epsilon.getInstance().getY()) != null) {
-                        squarantines.get(i).setHP(squarantines.get(i).getHP() - 10);
-                        AudioPlayer.play(AudioPlayer.SPLAT);
-                        impactOnPoint(new Point2D.Double(Epsilon.getInstance().getX() - Epsilon.getInstance().getRadius() - 7, Epsilon.getInstance().getY()));
-                    }
-                }
-            }
-            Point2D epsilonCollisionPoint = squarantines.get(i).onEpsilonCollision(Epsilon.getInstance().getX(), Epsilon.getInstance().getY(), Epsilon.getInstance().getRadius());
+//            if (Epsilon.getInstance().hasVertex()) {
+//                if (squarantines.get(i).onPointCollision(Epsilon.getInstance().getVertexX(), Epsilon.getInstance().getVertexY()) != null) {
+//                    squarantines.get(i).setHP(squarantines.get(i).getHP() - 10);
+//                    AudioPlayer.play(AudioPlayer.SPLAT);
+//                    impactOnPoint(new Point2D.Double(Epsilon.getInstance().getVertexX(), Epsilon.getInstance().getVertexY()));
+//                }
+//                if (Epsilon.getInstance().getVertexesNum() >= 2) {
+//                    if (squarantines.get(i).onPointCollision(Epsilon.getInstance().getVertexX(), Epsilon.getInstance().getVertexY() + Epsilon.getInstance().getRadius() * 2 + 14) != null) {
+//                        squarantines.get(i).setHP(squarantines.get(i).getHP() - 10);
+//                        AudioPlayer.play(AudioPlayer.SPLAT);
+//                        impactOnPoint(new Point2D.Double(Epsilon.getInstance().getVertexX(), Epsilon.getInstance().getVertexY()));
+//                    }
+//                }
+//                if (Epsilon.getInstance().getVertexesNum() >= 3) {
+//                    if (squarantines.get(i).onPointCollision(Epsilon.getInstance().getX() + Epsilon.getInstance().getRadius() + 7, Epsilon.getInstance().getY()) != null) {
+//                        squarantines.get(i).setHP(squarantines.get(i).getHP() - 10);
+//                        AudioPlayer.play(AudioPlayer.SPLAT);
+//                        impactOnPoint(new Point2D.Double(Epsilon.getInstance().getX() + Epsilon.getInstance().getRadius() + 7, Epsilon.getInstance().getY()));
+//                    }
+//                }
+//                if (Epsilon.getInstance().getVertexesNum() >= 4) {
+//                    if (squarantines.get(i).onPointCollision(Epsilon.getInstance().getX() - Epsilon.getInstance().getRadius() - 7, Epsilon.getInstance().getY()) != null) {
+//                        squarantines.get(i).setHP(squarantines.get(i).getHP() - 10);
+//                        AudioPlayer.play(AudioPlayer.SPLAT);
+//                        impactOnPoint(new Point2D.Double(Epsilon.getInstance().getX() - Epsilon.getInstance().getRadius() - 7, Epsilon.getInstance().getY()));
+//                    }
+//                }
+//            }
+            Point2D epsilonCollisionPoint = Collision.checkEpsilonCollision(squarantines.get(i));
             if (epsilonCollisionPoint != null) {
                 impactOnPoint(epsilonCollisionPoint);
                 Epsilon.getInstance().setHP(Epsilon.getInstance().getHP() - 6);
             }
 
             for (int j = 0; j < trigoraths.size(); j++) {
-                Point2D trigorathCollisionPoint = squarantines.get(i).onTrigorathCollision(trigoraths.get(j).getX1(), trigoraths.get(j).getX2(), trigoraths.get(j).getX3(), trigoraths.get(j).getY1(), trigoraths.get(j).getY2(), trigoraths.get(j).getY3());
-                if (trigorathCollisionPoint != null) {
-                    impactOnPoint(trigorathCollisionPoint);
+                Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(squarantines.get(i) , trigoraths.get(j));
+                if (collisionPoint != null) {
+                    impactOnPoint(collisionPoint);
                 }
             }
             for (int j = 0; j < squarantines.size(); j++) {
                 if (i != j) {
-                    Point2D squarantineCollisionPoint = squarantines.get(i).onSquarantineCollision(squarantines.get(j).getX1(), squarantines.get(j).getX2(), squarantines.get(j).getX3(), squarantines.get(j).getX4(), squarantines.get(j).getY1(), squarantines.get(j).getY2(), squarantines.get(j).getY3(), squarantines.get(j).getY4());
-                    if (squarantineCollisionPoint != null) {
-                        impactOnPoint(squarantineCollisionPoint);
+                    Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(squarantines.get(i) , squarantines.get(j));
+                    if (collisionPoint != null) {
+                        impactOnPoint(collisionPoint);
                     }
                 }
             }

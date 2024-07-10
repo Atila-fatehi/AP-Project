@@ -12,6 +12,7 @@ public class GameState {
     private final ArrayList<Squarantine> squarantines = new ArrayList<>();
     private final ArrayList<Collectable> collectables = new ArrayList<>();
     private int elapsedTime;
+    private int difficulty;
     private int wave;
 
     public GameState() {

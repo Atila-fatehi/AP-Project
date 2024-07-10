@@ -1,0 +1,55 @@
+package model.collision;
+
+import controller.util.Calculator;
+import model.objectsModel.Epsilon;
+import model.objectsModel.Trigorath;
+
+import java.awt.*;
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
+
+public abstract class Collision {
+
+    public static Point2D checkTwoPolyEntityCollision(Collidable collidable1, Collidable collidable2) {
+        int[] XPoints1 = collidable1.getXPoints();
+        int[] YPoints1 = collidable1.getYPoints();
+
+        int[] XPoints2 = collidable2.getXPoints();
+        int[] YPoints2 = collidable2.getYPoints();
+
+        Polygon poly = new Polygon(XPoints1, YPoints1, XPoints1.length);
+        for (int i = 0; i < XPoints2.length; i++) {
+            if (poly.contains(XPoints2[i], YPoints2[i])) {
+                return new Point2D.Double(XPoints2[i], YPoints2[i]);
+            }
+        }
+        return null;
+    }
+
+    public static Point2D checkEpsilonCollision(Collidable collidable) {
+        int[] xPoints = collidable.getXPoints();
+        int[] yPoints = collidable.getYPoints();
+        int x = (int) Epsilon.getInstance().getX();
+        int y = (int) Epsilon.getInstance().getY();
+        int radius = (int) Epsilon.getInstance().getRadius();
+        for (int i = 0; i < xPoints.length; i++) {
+            if (Calculator.distance(x, y, xPoints[i], yPoints[i]) <= radius) {
+                return new Point2D.Double(xPoints[i], yPoints[i]);
+            }
+        }
+        for (int i = 0; i < xPoints.length; i++) {
+            Point2D point;
+            if (i == xPoints.length - 1) {
+                point = Calculator.circleLineCollision(x, y, radius, xPoints[i], yPoints[i], xPoints[0], yPoints[0]);
+            } else {
+                point = Calculator.circleLineCollision(x, y, radius, xPoints[i], yPoints[i], xPoints[i + 1], yPoints[i + 1]);
+            }
+            if (point != null) {
+                return point;
+            }
+        }
+
+        return null;
+    }
+
+}

@@ -1,12 +1,13 @@
 package model.objectsModel;
 
 import controller.util.Calculator;
+import model.collision.Collidable;
 import model.movable.movable;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
 
-public class Trigorath implements movable {
+public class Trigorath implements movable  , Collidable {
     private int HP;
     private double posXHP;
     private double posYHP;
@@ -30,74 +31,6 @@ public class Trigorath implements movable {
         this.HP = 15;
     }
 
-    public Point2D onTrigorathCollision(double x1, double x2, double x3, double y1, double y2, double y3) {
-        int[] xPoints = {(int) x1, (int) x2, (int) x3};
-        int[] yPoints = {(int) y1, (int) y2, (int) y3};
-
-        Polygon trigorath = new Polygon(xPoints, yPoints, 3);
-        if (trigorath.contains(this.x1, this.y1)) {
-            return new Point2D.Double(this.x1, this.y1);
-        }
-        if (trigorath.contains(this.x2, this.y2)) {
-            return new Point2D.Double(this.x2, this.y2);
-        }
-        if (trigorath.contains(this.x3, this.y3)) {
-            return new Point2D.Double(this.x3, this.y3);
-        }
-        return null;
-    }
-
-    public Point2D onSquarantineCollision(double x1, double x2, double x3, double x4, double y1, double y2, double y3, double y4) {
-        int[] xPoints = {(int) x1, (int) x2, (int) x3, (int) x4};
-        int[] yPoints = {(int) y1, (int) y2, (int) y3, (int) y4};
-
-        Polygon squarantine = new Polygon(xPoints, yPoints, 4);
-        if (squarantine.contains(this.x1, this.y1)) {
-            return new Point2D.Double(this.x1, this.y1);
-        }
-        if (squarantine.contains(this.x2, this.y2)) {
-            return new Point2D.Double(this.x2, this.y2);
-        }
-        if (squarantine.contains(this.x3, this.y3)) {
-            return new Point2D.Double(this.x3, this.y3);
-        }
-        return null;
-    }
-    public Point2D onPointCollision(double x , double y){
-        int[] xPoints = {(int) x1, (int) x2, (int) x3};
-        int[] yPoints = {(int) y1, (int) y2, (int) y3};
-
-        Polygon trigorath = new Polygon(xPoints, yPoints, 3);
-        if (trigorath.contains(x, y)) {
-            return new Point2D.Double(x, y);
-        }
-        return null;
-    }
-    public Point2D onEpsilonCollision(double x, double y, double radius) {
-        if (Calculator.distance(x, y, x1, y1) <= radius) {
-            return new Point2D.Double(x1, y1);
-        }
-        if (Calculator.distance(x, y, x2, y2) <= radius) {
-            return new Point2D.Double(x2, y2);
-        }
-        if (Calculator.distance(x, y, x3, y3) <= radius) {
-            return new Point2D.Double(x3, y3);
-        }
-        Point2D point1 = Calculator.circleLineCollision(x, y, radius, x1, y1, x2, y2);
-        if (point1 != null) {
-            return point1;
-        }
-        Point2D point2 = Calculator.circleLineCollision(x, y, radius, x2, y2, x3, y3);
-        if (point2 != null) {
-            return point2;
-        }
-        Point2D point3 = Calculator.circleLineCollision(x, y, radius, x3, y3, x1, y1);
-        if (point3 != null) {
-            return point3;
-        }
-        return null;
-    }
-
     public void shiftX(double rate) {
         x1 += rate;
         x2 += rate;
@@ -112,8 +45,6 @@ public class Trigorath implements movable {
 
     public void calculateMovingDirection(double x, double y) {
         double angle = Math.atan2(y - (y1 + y3) / 2, x - (x1 + x2) / 2);
-//        setVx(constantVelocity * Math.cos(angle));
-//        setVy(constantVelocity * Math.sin(angle));
         double constantVelocity;
         if (Calculator.distance(getCenterOfGravity().getX(), getCenterOfGravity().getY(), x, y) >= 400){
             constantVelocity = 3d;
