@@ -56,9 +56,11 @@ public class KeyController implements KeyListener {
             Epsilon.getInstance().setDecR(false);
         }
         if (keyCode == shop) {
-            GameManager.getInstance().setPaused(! GameManager.getInstance().isPaused());
-            AudioPlayer.play(AudioPlayer.PAUSE);
-            new ShopFrame();
+            if(!GameManager.getInstance().isPaused()) {
+                GameManager.getInstance().setPaused(true);
+                AudioPlayer.play(AudioPlayer.PAUSE);
+                new ShopFrame();
+            }
         }
         if (keyCode == ability) {
             GameManager.getInstance().activateAbility();

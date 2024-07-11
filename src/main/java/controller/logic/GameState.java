@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class GameState {
+
+    //TODO add pause
     public static final Epsilon epsilon = Epsilon.getInstance();
     public static final ArrayList<Bullet> bullets = new ArrayList<>();
     public static final ArrayList<Trigorath> trigoraths = new ArrayList<>();
