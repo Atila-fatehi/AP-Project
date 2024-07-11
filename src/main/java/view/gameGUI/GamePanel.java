@@ -40,11 +40,12 @@ public class GamePanel extends JPanel {
         Epsilon.getInstance().selfPaint(g);
 
         g.setFont(Constants.BOLD_15);
+
         ArrayList<Paintable> paintables = GameState.getPaintables();
         for (Paintable paintable : paintables) {
             paintable.selfPaint(g);
         }
-        //draw Strings
+
         g.setColor(Constants.STRING_COLOR);
         g.drawString("HP : " + Epsilon.getInstance().getHP() +
                   "       XP : " + Epsilon.getInstance().getXP() +

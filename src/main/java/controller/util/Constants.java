@@ -14,7 +14,6 @@ public abstract class Constants {
     public static final Color EPSILON_COLOR = new Color(0x38C1F1);
     public static final Color STRING_COLOR = new Color(0x8A26FF);
     public static final Color ANOTHER_STRING_COLOR = new Color(0xA826FF);
-
     public static final Color TRANSPARENT = new Color(0, 0, 0, 0);
 
     public static final int SCREEN_WIDTH = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
@@ -57,4 +56,6 @@ public abstract class Constants {
     public static final String DAVE_PATH = Paths.get("").toAbsolutePath() + "/src/main/java/controller/audio/CrazyDave.wav";
     public static final String WATERY_GRAVES_PATH = Paths.get("").toAbsolutePath() + "/src/main/java/controller/audio/WateryGraves.wav";
 
+    public static final int SQUARANTINE_SIZE = 25;
+    public static final int TRIGORATH_SIZE = 30;
 }

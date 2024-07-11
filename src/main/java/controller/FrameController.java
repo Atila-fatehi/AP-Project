@@ -18,7 +18,7 @@ public abstract class FrameController {
 
             robot.keyRelease(KeyEvent.VK_WINDOWS);
         } catch (AWTException e) {
-            e.printStackTrace();
+            System.out.println("robot problem");
         }
     }
 }

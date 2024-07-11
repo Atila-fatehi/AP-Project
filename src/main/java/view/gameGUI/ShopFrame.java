@@ -29,7 +29,6 @@ public class ShopFrame extends JFrame {
 
             @Override
             public void keyPressed(KeyEvent e) {
-                //TODO NOT CLEAN
                 if (e.getKeyCode() == KeyController.shop) {
                     GameManager.getInstance().setPaused(false);
                     dispose();
@@ -68,7 +67,7 @@ public class ShopFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (Epsilon.getInstance().getXP() >= 100) {
                     Epsilon.getInstance().setXP(Epsilon.getInstance().getXP() - 100);
-                    GameManager.getInstance().setPaused(!GameManager.getInstance().isPaused());
+                    GameManager.getInstance().setPaused(false);
                     dispose();
                     CollisionHandler.handleCollisionOnPointNoEpsilon(new Point2D.Double(Epsilon.getInstance().getX(), Epsilon.getInstance().getY()));
                 }
@@ -79,7 +78,7 @@ public class ShopFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (Epsilon.getInstance().getXP() >= 75) {
                     Epsilon.getInstance().setXP(Epsilon.getInstance().getXP() - 75);
-                    GameManager.getInstance().setPaused(!GameManager.getInstance().isPaused());
+                    GameManager.getInstance().setPaused(false);
                     dispose();
 
                     GameManager.getInstance().setEmpower(true);
@@ -102,7 +101,7 @@ public class ShopFrame extends JFrame {
                 if (Epsilon.getInstance().getXP() >= 50) {
                     Epsilon.getInstance().setXP(Epsilon.getInstance().getXP() - 50);
                     Epsilon.getInstance().setHP(Epsilon.getInstance().getHP() + 10);
-                    GameManager.getInstance().setPaused(!GameManager.getInstance().isPaused());
+                    GameManager.getInstance().setPaused(false);
                     dispose();
                 }
             }

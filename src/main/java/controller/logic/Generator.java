@@ -1,6 +1,7 @@
 package controller.logic;
 
 import controller.audio.players.AudioPlayer;
+import controller.util.Constants;
 import model.objectsModel.Bullet;
 import model.objectsModel.Epsilon;
 import model.objectsModel.Squarantine;
@@ -11,7 +12,9 @@ import java.util.Random;
 import java.util.TimerTask;
 
 public abstract class Generator {
+
     public static boolean inWait ;
+
     public static void generateSimpleWave() {
         if (GameState.trigoraths.isEmpty() && GameState.squarantines.isEmpty() && !inWait) {
             GameState.wave++;
@@ -47,7 +50,6 @@ public abstract class Generator {
         }
     }
 
-
     public static void makeNewTrigorath() {
         Random random = new Random();
         int initialPositionX = random.nextInt(GamePanel.getInstance().getPanelWidth());
@@ -62,7 +64,9 @@ public abstract class Generator {
         } else {
             initialPositionY -= GamePanel.getInstance().getPanelHeight();
         }
-        GameState.trigoraths.add(new Trigorath(initialPositionX, initialPositionY, initialPositionX + 30, initialPositionY, initialPositionX + 15, initialPositionY - 25));
+        GameState.trigoraths.add(new Trigorath(initialPositionX, initialPositionY,
+                initialPositionX + Constants.TRIGORATH_SIZE, initialPositionY,
+                initialPositionX + (double) Constants.TRIGORATH_SIZE / 2, initialPositionY - 25));
     }
 
     public static void makeNewSquarantine() {
@@ -79,7 +83,10 @@ public abstract class Generator {
         } else {
             initialPositionY -= GamePanel.getInstance().getPanelHeight();
         }
-        GameState.squarantines.add(new Squarantine(initialPositionX, initialPositionY, initialPositionX + 25, initialPositionY, initialPositionX + 25, initialPositionY + 25, initialPositionX, initialPositionY + 25));
+        GameState.squarantines.add(new Squarantine(initialPositionX, initialPositionY,
+                initialPositionX + Constants.SQUARANTINE_SIZE, initialPositionY,
+                initialPositionX + Constants.SQUARANTINE_SIZE, initialPositionY + Constants.SQUARANTINE_SIZE,
+                initialPositionX, initialPositionY + Constants.SQUARANTINE_SIZE));
 
     }
 
@@ -90,5 +97,4 @@ public abstract class Generator {
         bullet.setVy(bullet.getConstantVelocity() * Math.sin(angle));
         GameState.bullets.add(bullet);
     }
-
 }
