@@ -1,6 +1,8 @@
 package model.objectsModel;
 
 import controller.util.Calculator;
+import controller.util.Constants;
+import model.Paintable.Paintable;
 import model.collision.Collidable;
 import model.movable.movable;
 
@@ -11,7 +13,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
-public class Squarantine implements movable, Collidable {
+public class Squarantine implements movable, Collidable, Paintable {
 
     private int HP;
     private double posXHP;
@@ -75,9 +77,6 @@ public class Squarantine implements movable, Collidable {
     }
     public void calculateMovingDirection(double x, double y) {
         double angle = Math.atan2(y - (y1 + y3) / 2, x - (x1 + x2) / 2);
-//        setVx(constantVelocity * Math.cos(angle));
-//        setVy(constantVelocity * Math.sin(angle));
-
         maxVelocityX = constantVelocity * Math.cos(angle);
         maxVelocityY = constantVelocity * Math.sin(angle);
         accX = Math.cos(angle);
@@ -249,5 +248,13 @@ public class Squarantine implements movable, Collidable {
 
     public void setPlayed(boolean played) {
         this.played = played;
+    }
+
+    @Override
+    public void selfPaint(Graphics g) {
+        g.setColor(Constants.SQUA_GREEN);
+        g.fillPolygon(getXPoints(), getYPoints(), 4);
+        g.setColor(Color.BLACK);
+        g.drawString(String.valueOf(HP), (int) posXHP, (int) posYHP);
     }
 }

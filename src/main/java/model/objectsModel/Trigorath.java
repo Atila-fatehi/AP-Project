@@ -1,13 +1,15 @@
 package model.objectsModel;
 
 import controller.util.Calculator;
+import controller.util.Constants;
+import model.Paintable.Paintable;
 import model.collision.Collidable;
 import model.movable.movable;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
 
-public class Trigorath implements movable  , Collidable {
+public class Trigorath implements movable, Collidable, Paintable {
     private int HP;
     private double posXHP;
     private double posYHP;
@@ -46,9 +48,9 @@ public class Trigorath implements movable  , Collidable {
     public void calculateMovingDirection(double x, double y) {
         double angle = Math.atan2(y - (y1 + y3) / 2, x - (x1 + x2) / 2);
         double constantVelocity;
-        if (Calculator.distance(getCenterOfGravity().getX(), getCenterOfGravity().getY(), x, y) >= 400){
+        if (Calculator.distance(getCenterOfGravity().getX(), getCenterOfGravity().getY(), x, y) >= 400) {
             constantVelocity = 3d;
-        }else{
+        } else {
             constantVelocity = 1d;
         }
         maxVelocityX = constantVelocity * Math.cos(angle);
@@ -182,10 +184,6 @@ public class Trigorath implements movable  , Collidable {
         return posXHP;
     }
 
-    public void setPosXHP(double posXHP) {
-        this.posXHP = posXHP;
-    }
-
     public double getPosYHP() {
         return posYHP;
     }
@@ -198,7 +196,12 @@ public class Trigorath implements movable  , Collidable {
         this.played = played;
     }
 
-    public void setPosYHP(double posYHP) {
-        this.posYHP = posYHP;
+
+    @Override
+    public void selfPaint(Graphics g) {
+        g.setColor(Constants.TRI_YELLOW);
+        g.fillPolygon(getXPoints(), getYPoints(), 3);
+        g.setColor(Color.BLACK);
+        g.drawString(String.valueOf(HP), (int) posXHP, (int) posYHP);
     }
 }

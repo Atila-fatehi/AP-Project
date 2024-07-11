@@ -3,15 +3,14 @@ package model.objectsModel;
 
 import controller.FileController;
 import controller.util.Constants;
+import model.Paintable.Paintable;
 import model.collision.Collidable;
 import model.movable.movable;
 
-import java.io.File;
-import java.nio.file.Paths;
+import java.awt.*;
 import java.util.Objects;
-import java.util.Scanner;
 
-public class Epsilon implements movable, Collidable {
+public class Epsilon implements movable, Collidable, Paintable {
 
     private static Epsilon instance;
 
@@ -20,11 +19,11 @@ public class Epsilon implements movable, Collidable {
         return instance;
     }
 
-    private int HP;
+    private int HP = 100;
     private int XP;
     private double x;
     private double y;
-    private double radius;
+    private double radius = 13;
     private double vx;
     private double vy;
     private final double MAX_VELOCITY;
@@ -33,12 +32,14 @@ public class Epsilon implements movable, Collidable {
     private final SpecialAbility ability = new SpecialAbility();
     private boolean accU, accD, accR, accL;
     private boolean decU = true, decD = true, decR = true, decL = true;
+    private boolean hasVertex;
+    private int vertexesNum;
+    private double vertexX;
+    private double vertexY;
 
     public Epsilon(double x, double y) {
         this.x = x;
         this.y = y;
-        this.radius = 13;
-        this.HP = 100;
         this.XP = Integer.parseInt(FileController.readXP());
         if (FileController.readAbilities() == 11) {
             ability.setAres(true);
@@ -64,13 +65,8 @@ public class Epsilon implements movable, Collidable {
         ability.setActive(false);
     }
 
-    private boolean vertex;
-    private int vertexesNum;
-    private double vertexX;
-    private double vertexY;
-
     public void addVertex() {
-        vertex = true;
+        hasVertex = true;
         if (vertexesNum != 4) {
             vertexesNum++;
         }
@@ -119,12 +115,34 @@ public class Epsilon implements movable, Collidable {
                 vx -= ACCELERATION;
             }
         }
-        if (vertex) {
+        if (hasVertex) {
             vertexX = x;
             vertexY = y - radius - 7;
         }
     }
-
+    @Override
+    public void selfPaint(Graphics g) {
+        g.setColor(Constants.EPSILON_COLOR);
+        g.fillOval((int) (x - radius), (int) (y - radius), (int) radius * 2, (int) radius * 2);
+        if (hasVertex) {
+            g.drawLine((int) (x - radius), (int) y, (int) vertexX, (int) vertexY);
+            g.drawLine((int) (x + radius), (int) y, (int) vertexX, (int) vertexY);
+            if (vertexesNum >= 2) {
+                g.drawLine((int) (x - radius), (int) y, (int) vertexX, (int) (vertexY + 2 * radius + 14));
+                g.drawLine((int) (x + radius), (int) y, (int) vertexX, (int) (vertexY + 2 * radius + 14));
+            }
+            if (vertexesNum >= 3) {
+                g.drawLine((int) x, (int) (y - radius), (int) (x + radius + 7), (int) y);
+                g.drawLine((int) x, (int) (y + radius), (int) (x + radius + 7), (int) y);
+            }
+            if (vertexesNum >= 4) {
+                g.drawLine((int) x, (int) (y - radius), (int) (x - radius - 7), (int) y);
+                g.drawLine((int) x, (int) (y + radius), (int) (x - radius - 7), (int) y);
+            }
+        }
+        g.setColor(Constants.DARK_BLUE);
+        g.fillOval((int) (x - radius) + 4, (int) (y - radius) + 4, (int) radius * 2 - 8, (int) radius * 2 - 8);
+    }
     public int getXP() {
         return XP;
     }
@@ -152,11 +170,6 @@ public class Epsilon implements movable, Collidable {
     public double getRadius() {
         return radius;
     }
-
-    public void setRadius(double radius) {
-        this.radius = radius;
-    }
-
 
     public void setVx(double vx) {
         this.vx = vx;
@@ -217,28 +230,16 @@ public class Epsilon implements movable, Collidable {
         return ability;
     }
 
-    public boolean hasVertex() {
-        return vertex;
-    }
-
-    public int getVertexesNum() {
-        return vertexesNum;
-    }
-
-    public double getVertexX() {
-        return vertexX;
-    }
-
-    public double getVertexY() {
-        return vertexY;
-    }
-
     public int getDamageRate() {
         return damageRate;
     }
 
     public void setDamageRate(int damageRate) {
         this.damageRate = damageRate;
+    }
+
+    public void setRadius(double radius) {
+        this.radius = radius;
     }
 
     @Override

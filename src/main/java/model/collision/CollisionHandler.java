@@ -1,7 +1,7 @@
 package model.collision;
 
 import controller.util.Calculator;
-import model.logic.GameState;
+import controller.logic.GameState;
 import model.objectsModel.Epsilon;
 
 import java.awt.geom.Point2D;

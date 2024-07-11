@@ -1,6 +1,8 @@
 package model.objectsModel;
 
 import controller.util.Calculator;
+import controller.util.Constants;
+import model.Paintable.Paintable;
 import model.collision.Collidable;
 import model.collision.WallCollidable;
 import model.movable.movable;
@@ -9,7 +11,7 @@ import view.gameGUI.GamePanel;
 import java.awt.*;
 import java.awt.geom.Point2D;
 
-public class Bullet implements movable, WallCollidable, Collidable {
+public class Bullet implements movable, WallCollidable, Collidable , Paintable {
 
 
     private final double radius = 4;
@@ -94,5 +96,11 @@ public class Bullet implements movable, WallCollidable, Collidable {
     @Override
     public int[] getYPoints() {
         return new int[]{(int) y};
+    }
+
+    @Override
+    public void selfPaint(Graphics g) {
+        g.setColor(Constants.EPSILON_COLOR);
+        g.fillOval((int) (x - radius), (int) (y - radius), (int) radius * 2, (int) radius * 2);
     }
 }

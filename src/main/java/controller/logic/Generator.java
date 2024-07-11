@@ -1,4 +1,4 @@
-package model.logic;
+package controller.logic;
 
 import controller.audio.players.AudioPlayer;
 import model.objectsModel.Bullet;

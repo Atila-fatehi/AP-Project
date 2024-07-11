@@ -1,6 +1,6 @@
 package controller;
 
-import model.logic.GameManager;
+import controller.logic.GameManager;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;

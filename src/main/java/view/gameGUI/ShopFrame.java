@@ -1,8 +1,9 @@
 package view.gameGUI;
 
 import model.collision.CollisionHandler;
-import model.logic.GameManager;
+import controller.logic.GameManager;
 import controller.util.Constants;
+import controller.logic.GameState;
 import model.objectsModel.Epsilon;
 import view.Jcomponents.MyButton;
 import controller.KeyController;
@@ -19,8 +20,6 @@ import java.awt.geom.Point2D;
 import java.util.TimerTask;
 
 public class ShopFrame extends JFrame {
-
-
     public ShopFrame() throws HeadlessException {
         addKeyListener(new KeyListener() {
             @Override
@@ -32,7 +31,7 @@ public class ShopFrame extends JFrame {
             public void keyPressed(KeyEvent e) {
                 //TODO NOT CLEAN
                 if (e.getKeyCode() == KeyController.shop) {
-                    GameManager.getInstance().setPaused(!GameManager.getInstance().isPaused());
+                    GameManager.getInstance().setPaused(false);
                     dispose();
                 }
             }
@@ -42,10 +41,10 @@ public class ShopFrame extends JFrame {
 
             }
         });
-        getContentPane().setBackground(Constants.DARK_BLUE);
         setTitle("SHOP");
         setFocusable(true);
         requestFocus();
+        getContentPane().setBackground(Constants.DARK_BLUE);
         Border border = BorderFactory.createLineBorder(Color.WHITE, 2);
         getRootPane().setBorder(border);
         setUndecorated(true);
@@ -54,7 +53,6 @@ public class ShopFrame extends JFrame {
         setLayout(null);
         setVisible(true);
         setResizable(false);
-
 
         MyLabel xp = new MyLabel("XP : " + Epsilon.getInstance().getXP(), 200, 100, 300, 100);
         MyLabel banish = new MyLabel("O' Hephaestus، Banish", 100, 225, 300, 50);
@@ -85,11 +83,13 @@ public class ShopFrame extends JFrame {
                     dispose();
 
                     GameManager.getInstance().setEmpower(true);
+                    GameState.empower = true;
                     java.util.Timer timer = new java.util.Timer();
                     timer.schedule(new TimerTask() {
                         @Override
                         public void run() {
                             GameManager.getInstance().setEmpower(false);
+                            GameState.empower = false;
                             timer.cancel();
                         }
                     }, 10000, 100);
@@ -111,7 +111,7 @@ public class ShopFrame extends JFrame {
         MyButton done = new MyButton("Done", 200, 550, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                GameManager.getInstance().setPaused(!GameManager.getInstance().isPaused());
+                GameManager.getInstance().setPaused(false);
                 dispose();
             }
         });

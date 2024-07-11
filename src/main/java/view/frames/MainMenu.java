@@ -1,11 +1,10 @@
 package view.frames;
 
 import controller.FrameController;
-import model.logic.GameManager;
+import controller.logic.GameManager;
 import controller.audio.players.GameMusicPlayer;
 import controller.audio.players.MenuMusicPlayer;
 import controller.util.Constants;
-import controller.FileController;
 import view.Jcomponents.MyButton;
 import view.gameGUI.GameFrame;
 import view.images.WallpaperPainter;

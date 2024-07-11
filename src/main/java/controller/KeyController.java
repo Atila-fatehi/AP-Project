@@ -2,7 +2,7 @@ package controller;
 
 import controller.audio.players.AudioPlayer;
 import controller.audio.players.GameMusicPlayer;
-import model.logic.GameManager;
+import controller.logic.GameManager;
 import model.objectsModel.Epsilon;
 import view.frames.MainMenu;
 import view.gameGUI.GameFrame;

@@ -1,7 +1,7 @@
-package model.logic;
+package controller.logic;
 
 import controller.FileController;
-import controller.util.Calculator;
+import controller.util.Constants;
 import model.collision.Collision;
 import model.collision.CollisionHandler;
 import model.collision.WallCollisionHandler;
@@ -28,13 +28,14 @@ public class GameManager {
         if (instance == null) instance = new GameManager();
         return instance;
     }
+
     private boolean paused;
-    private static final int expandRate = 1;
     private final java.util.Timer modelTimer;
     private final java.util.Timer viewTimer;
     private boolean gameOver;
     private boolean gameWon;
     private boolean empower;
+
     public GameManager() {
         viewTimer = new java.util.Timer();
         viewTimer.schedule(new TimerTask() {
@@ -100,7 +101,7 @@ public class GameManager {
         for (int i = 0; i < GameState.bullets.size(); i++) {
             GameState.bullets.get(i).move();
             for (int j = 0; j < GameState.trigoraths.size(); j++) {
-                Point2D collisionPoint = Collision.checkBulletCollision(GameState.bullets.get(i) , GameState.trigoraths.get(j));
+                Point2D collisionPoint = Collision.checkBulletCollision(GameState.bullets.get(i), GameState.trigoraths.get(j));
                 if (collisionPoint != null) {
                     AudioPlayer.play(AudioPlayer.SPLAT);
                     GameState.trigoraths.get(j).setHP(GameState.trigoraths.get(j).getHP() - Epsilon.getInstance().getDamageRate());
@@ -114,7 +115,7 @@ public class GameManager {
         //Squ collision
         for (int i = 0; i < GameState.bullets.size(); i++) {
             for (int j = 0; j < GameState.squarantines.size(); j++) {
-                Point2D collisionPoint = Collision.checkBulletCollision(GameState.bullets.get(i) , GameState.squarantines.get(j));
+                Point2D collisionPoint = Collision.checkBulletCollision(GameState.bullets.get(i), GameState.squarantines.get(j));
                 if (collisionPoint != null) {
                     AudioPlayer.play(AudioPlayer.SPLAT);
                     GameState.squarantines.get(j).setHP(GameState.squarantines.get(j).getHP() - Epsilon.getInstance().getDamageRate());
@@ -126,8 +127,8 @@ public class GameManager {
             }
         }
         //wall collision
-        for (int i = 0; i <GameState.bullets.size(); i++) {
-            if(GameState.bullets.get(i).wallCollision() != 0){
+        for (int i = 0; i < GameState.bullets.size(); i++) {
+            if (GameState.bullets.get(i).wallCollision() != 0) {
                 WallCollisionHandler.handleWallCollision(GameState.bullets.get(i).wallCollision());
                 GameState.bullets.remove(i);
                 i--;
@@ -179,22 +180,22 @@ public class GameManager {
             }
             for (int j = 0; j < GameState.trigoraths.size(); j++) {
                 if (i != j) {
-                    Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(GameState.trigoraths.get(i) , GameState.trigoraths.get(j));
+                    Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(GameState.trigoraths.get(i), GameState.trigoraths.get(j));
                     if (collisionPoint != null) {
                         CollisionHandler.handleCollisionOnPoint(collisionPoint);
                     }
                 }
             }
             for (int j = 0; j < GameState.squarantines.size(); j++) {
-                Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(GameState.trigoraths.get(i) , GameState.squarantines.get(j));
+                Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(GameState.trigoraths.get(i), GameState.squarantines.get(j));
                 if (collisionPoint != null) {
                     CollisionHandler.handleCollisionOnPoint(collisionPoint);
                 }
             }
             if (GameState.trigoraths.get(i).getHP() <= 0) {
                 AudioPlayer.play(AudioPlayer.MELON_IMPACT);
-                GameState.collectables.add(new Collectable(GameState.trigoraths.get(i).getCenterOfGravity().getX(), GameState.trigoraths.get(i).getCenterOfGravity().getY(), new Color(0xFFD900)));
-                GameState.collectables.add(new Collectable(GameState.trigoraths.get(i).getCenterOfGravity().getX() + 10, GameState.trigoraths.get(i).getCenterOfGravity().getY() + 10, new Color(0xFFD900)));
+                GameState.collectables.add(new Collectable(GameState.trigoraths.get(i).getCenterOfGravity().getX(), GameState.trigoraths.get(i).getCenterOfGravity().getY(), 5, Constants.TRI_YELLOW));
+                GameState.collectables.add(new Collectable(GameState.trigoraths.get(i).getCenterOfGravity().getX() + 10, GameState.trigoraths.get(i).getCenterOfGravity().getY() + 10, 5, Constants.TRI_YELLOW));
                 GameState.trigoraths.remove(i);
                 i--;
             }
@@ -245,21 +246,21 @@ public class GameManager {
             }
 
             for (int j = 0; j < GameState.trigoraths.size(); j++) {
-                Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(GameState.squarantines.get(i) , GameState.trigoraths.get(j));
+                Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(GameState.squarantines.get(i), GameState.trigoraths.get(j));
                 if (collisionPoint != null) {
                     CollisionHandler.handleCollisionOnPoint(collisionPoint);
                 }
             }
             for (int j = 0; j < GameState.squarantines.size(); j++) {
                 if (i != j) {
-                    Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(GameState.squarantines.get(i) , GameState.squarantines.get(j));
+                    Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(GameState.squarantines.get(i), GameState.squarantines.get(j));
                     if (collisionPoint != null) {
                         CollisionHandler.handleCollisionOnPoint(collisionPoint);
                     }
                 }
             }
             if (GameState.squarantines.get(i).getHP() <= 0) {
-                GameState.collectables.add(new Collectable(GameState.squarantines.get(i).getCenterOfGravity().getX(), GameState.squarantines.get(i).getCenterOfGravity().getY(), new Color(0x22FF00)));
+                GameState.collectables.add(new Collectable(GameState.squarantines.get(i).getCenterOfGravity().getX(), GameState.squarantines.get(i).getCenterOfGravity().getY(), 5, Constants.SQUA_GREEN));
                 GameState.squarantines.get(i).getTimer().cancel();
                 GameState.squarantines.remove(i);
                 i--;

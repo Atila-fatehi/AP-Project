@@ -1,10 +1,10 @@
 package view.gameGUI;
 
 import controller.util.Constants;
-import model.logic.GameManager;
 import controller.KeyController;
 import controller.MouseController;
-import model.logic.GameState;
+import controller.logic.GameState;
+import model.Paintable.Paintable;
 import model.objectsModel.*;
 
 import javax.swing.*;
@@ -37,62 +37,22 @@ public class GamePanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        ArrayList<Bullet> bullets = GameState.bullets;
-        ArrayList<Trigorath> trigoraths = GameState.trigoraths;
-        ArrayList<Squarantine> squarantines = GameState.squarantines;
-        ArrayList<Collectable> collectables = GameState.collectables;
-        //draw Enemies
+        Epsilon.getInstance().selfPaint(g);
+
         g.setFont(Constants.BOLD_15);
-        for (Trigorath trigorath : trigoraths) {
-            g.setColor(Constants.TRI_YELLOW);
-            g.fillPolygon(trigorath.getXPoints(), trigorath.getYPoints(), 3);
-            g.setColor(Color.BLACK);
-            g.drawString(String.valueOf(trigorath.getHP()), (int) trigorath.getPosXHP(), (int) trigorath.getPosYHP());
-        }
-        for (Squarantine squarantine : squarantines) {
-            g.setColor(Constants.SQUA_GREEN);
-            g.fillPolygon(squarantine.getXPoints(), squarantine.getYPoints(), 4);
-            g.setColor(Color.BLACK);
-            g.drawString(String.valueOf(squarantine.getHP()), (int) squarantine.getPosXHP(), (int) squarantine.getPosYHP());
-        }
-        //draw collectable
-        for (Collectable collectable : collectables) {
-            g.setColor(collectable.getColor());
-            g.fillOval((int) collectable.getX(), (int) collectable.getY(), (int) collectable.getRadius() * 2, (int) collectable.getRadius() * 2);
-        }
-        //draw epsilon
-        Epsilon epsilon = Epsilon.getInstance();
-        g.setColor(Constants.EPSILON_COLOR);
-        g.fillOval((int) (epsilon.getX() - epsilon.getRadius()), (int) (epsilon.getY() - epsilon.getRadius()), (int) epsilon.getRadius() * 2, (int) epsilon.getRadius() * 2);
-        if (epsilon.hasVertex()) {
-            g.drawLine((int) (epsilon.getX() - epsilon.getRadius()), (int) epsilon.getY(), (int) epsilon.getVertexX(), (int) epsilon.getVertexY());
-            g.drawLine((int) (epsilon.getX() + epsilon.getRadius()), (int) epsilon.getY(), (int) epsilon.getVertexX(), (int) epsilon.getVertexY());
-            if (epsilon.getVertexesNum() >= 2) {
-                g.drawLine((int) (epsilon.getX() - epsilon.getRadius()), (int) epsilon.getY(), (int) epsilon.getVertexX(), (int) (epsilon.getVertexY() + 2 * epsilon.getRadius() + 14));
-                g.drawLine((int) (epsilon.getX() + epsilon.getRadius()), (int) epsilon.getY(), (int) epsilon.getVertexX(), (int) (epsilon.getVertexY() + 2 * epsilon.getRadius() + 14));
-            }
-            if (epsilon.getVertexesNum() >= 3) {
-                g.drawLine((int) epsilon.getX(), (int) (epsilon.getY() - epsilon.getRadius()), (int) (epsilon.getX() + epsilon.getRadius() + 7), (int) epsilon.getY());
-                g.drawLine((int) epsilon.getX(), (int) (epsilon.getY() + epsilon.getRadius()), (int) (epsilon.getX() + epsilon.getRadius() + 7), (int) epsilon.getY());
-            }
-            if (epsilon.getVertexesNum() >= 4) {
-                g.drawLine((int) epsilon.getX(), (int) (epsilon.getY() - epsilon.getRadius()), (int) (epsilon.getX() - epsilon.getRadius() - 7), (int) epsilon.getY());
-                g.drawLine((int) epsilon.getX(), (int) (epsilon.getY() + epsilon.getRadius()), (int) (epsilon.getX() - epsilon.getRadius() - 7), (int) epsilon.getY());
-            }
-        }
-        g.setColor(Constants.DARK_BLUE);
-        g.fillOval((int) (epsilon.getX() - epsilon.getRadius()) + 4, (int) (epsilon.getY() - epsilon.getRadius()) + 4, (int) epsilon.getRadius() * 2 - 8, (int) epsilon.getRadius() * 2 - 8);
-        //draw bullets
-        g.setColor(Constants.EPSILON_COLOR);
-        for (int i = 0; i < bullets.size(); i++) {
-            g.fillOval((int) (bullets.get(i).getX() - bullets.get(i).getRadius()), (int) (bullets.get(i).getY() - bullets.get(i).getRadius()), (int) bullets.get(i).getRadius() * 2, (int) bullets.get(i).getRadius() * 2);
+        ArrayList<Paintable> paintables = GameState.getPaintables();
+        for (Paintable paintable : paintables) {
+            paintable.selfPaint(g);
         }
         //draw Strings
         g.setColor(Constants.STRING_COLOR);
-        g.drawString("HP : " + epsilon.getHP() +
-                  "       XP : " + epsilon.getXP() +
+        g.drawString("HP : " + Epsilon.getInstance().getHP() +
+                  "       XP : " + Epsilon.getInstance().getXP() +
                   "       WAVE : " + GameState.wave +
                   "       ELAPSED TIME : " + GameState.elapsedTime, 10, 20);
+        g.setColor(Constants.ANOTHER_STRING_COLOR);
+        //TODO
+        g.drawString("Active Skill : " + GameState.getAbility(), 10, 45);
         g.dispose();
     }
 
@@ -124,8 +84,6 @@ public class GamePanel extends JPanel {
         panelHeight -= 6;
         locationY += 3;
     }
-
-    //GETTERS AND SETTERS
 
     public int getPanelWidth() {
         return panelWidth;
