@@ -89,11 +89,6 @@ public class GameManager {
             if (pastTen) {
                 GamePanel.getInstance().shrink();
             }
-            GamePanel.getInstance().setBullets(GameState.bullets);
-            GamePanel.getInstance().setTrigoraths(GameState.trigoraths);
-            GamePanel.getInstance().setSquarantines(GameState.squarantines);
-            GamePanel.getInstance().setCollectables(GameState.collectables);
-            GamePanel.getInstance().setElapsedTime(GameState.elapsedTime);
         }
         GamePanel.getInstance().repaint();
     }

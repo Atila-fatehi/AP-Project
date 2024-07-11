@@ -19,4 +19,12 @@ public class MyButton extends JButton {
         setForeground(Constants.FORE_COLOR);
         setFont(Constants.BOLD_20);
     }
+
+    public void changeColor() {
+        setBackground(Constants.ANOTHER_FORE_COLOR);
+    }
+
+    public void resetColor(){
+        setBackground(Constants.BACK_COLOR);
+    }
 }

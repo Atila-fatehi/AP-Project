@@ -15,9 +15,7 @@ public class GamePanel extends JPanel {
     private static GamePanel instance;
 
     public static GamePanel getInstance() {
-        if (instance == null) {
-            instance = new GamePanel();
-        }
+        if (instance == null) instance = new GamePanel();
         return instance;
     }
 
@@ -25,13 +23,7 @@ public class GamePanel extends JPanel {
     private int locationY = 200;
     private int panelWidth = 700;
     private int panelHeight = 700;
-    private static final int shrinkageRate = 2;
     private int shrinkageCounter = 0;
-    private ArrayList<Bullet> bullets = new ArrayList<>();
-    private ArrayList<Trigorath> trigoraths = new ArrayList<>();
-    private ArrayList<Squarantine> squarantines = new ArrayList<>();
-    private ArrayList<Collectable> collectables = new ArrayList<>();
-    private int elapsedTime;
 
     public GamePanel() {
         setFocusable(true);
@@ -44,6 +36,11 @@ public class GamePanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+
+        ArrayList<Bullet> bullets = GameState.bullets;
+        ArrayList<Trigorath> trigoraths = GameState.trigoraths;
+        ArrayList<Squarantine> squarantines = GameState.squarantines;
+        ArrayList<Collectable> collectables = GameState.collectables;
         //draw Enemies
         g.setFont(Constants.BOLD_15);
         for (Trigorath trigorath : trigoraths) {
@@ -95,11 +92,12 @@ public class GamePanel extends JPanel {
         g.drawString("HP : " + epsilon.getHP() +
                   "       XP : " + epsilon.getXP() +
                   "       WAVE : " + GameState.wave +
-                  "       ELAPSED TIME : " + elapsedTime, 10, 20);
+                  "       ELAPSED TIME : " + GameState.elapsedTime, 10, 20);
         g.dispose();
     }
 
     public void shrink() {
+        int shrinkageRate = 2;
         if (shrinkageCounter == shrinkageRate) {
             setLocation(locationX, locationY);
             setSize(panelWidth, panelHeight);
@@ -144,10 +142,6 @@ public class GamePanel extends JPanel {
     public void setPanelHeight(int panelHeight) {
         this.panelHeight = panelHeight;
     }
-    public void setBullets(ArrayList<Bullet> bullets) {
-        this.bullets = bullets;
-    }
-
     public int getLocationX() {
         return locationX;
     }
@@ -162,21 +156,5 @@ public class GamePanel extends JPanel {
 
     public void setLocationY(int locationY) {
         this.locationY = locationY;
-    }
-
-    public void setTrigoraths(ArrayList<Trigorath> trigoraths) {
-        this.trigoraths = trigoraths;
-    }
-
-    public void setSquarantines(ArrayList<Squarantine> squarantines) {
-        this.squarantines = squarantines;
-    }
-
-    public void setCollectables(ArrayList<Collectable> collectables) {
-        this.collectables = collectables;
-    }
-
-    public void setElapsedTime(int elapsedTime) {
-        this.elapsedTime = elapsedTime;
     }
 }

@@ -1,6 +1,8 @@
 package org.example;
 
+import controller.FileController;
 import controller.audio.players.AudioPlayer;
+import controller.audio.players.MenuMusicPlayer;
 import view.frames.MainMenu;
 import view.gameGUI.GameFrame;
 
@@ -13,6 +15,9 @@ public class Application implements Runnable{
     @Override
     public void run() {
         MainMenu.getInstance();
+        FileController.createFiles();
+        MenuMusicPlayer.getInstance().start();
+
 //        new GameFrame();
     }
 

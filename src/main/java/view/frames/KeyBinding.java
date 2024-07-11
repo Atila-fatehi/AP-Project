@@ -10,6 +10,7 @@ import java.awt.event.*;
 public class KeyBinding extends JFrame {
     private boolean LFU, LFD, LFR, LFL, LFS, LFA;
     private int w = -1, a = -1, s = -1, d = -1, sh = -1, ab = -1;
+    private final MyButton up, down, right, left, shop, ability;
 
     public KeyBinding() {
         getContentPane().setBackground(Constants.DARK_BLUE);
@@ -21,28 +22,28 @@ public class KeyBinding extends JFrame {
         setVisible(true);
         setResizable(false);
 
-        MyButton up = new MyButton("UP", 200, 100, 110, 110, new ActionListener() {
+        up = new MyButton("UP", 200, 100, 110, 110, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
             }
         });
         add(up);
-        MyButton down = new MyButton("DOWN", 200, 220, 110, 110, new ActionListener() {
+        down = new MyButton("DOWN", 200, 220, 110, 110, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
             }
         });
         add(down);
-        MyButton right = new MyButton("RIGHT", 320, 220, 110, 110, new ActionListener() {
+        right = new MyButton("RIGHT", 320, 220, 110, 110, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
             }
         });
         add(right);
-        MyButton left = new MyButton("LEFT", 80, 220, 110, 110, new ActionListener() {
+        left = new MyButton("LEFT", 80, 220, 110, 110, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
@@ -50,7 +51,7 @@ public class KeyBinding extends JFrame {
         });
         add(left);
 
-        MyButton shop = new MyButton("SHOP", 520, 220, 110, 110, new ActionListener() {
+        shop = new MyButton("SHOP", 520, 220, 110, 110, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
@@ -58,7 +59,7 @@ public class KeyBinding extends JFrame {
         });
         add(shop);
 
-        MyButton ability = new MyButton("ABILITY", 660, 220, 110, 110, new ActionListener() {
+        ability = new MyButton("ABILITY", 660, 220, 110, 110, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
@@ -75,12 +76,8 @@ public class KeyBinding extends JFrame {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                    ability.setEnabled(true);
-                    shop.setEnabled(true);
-                    left.setEnabled(true);
-                    right.setEnabled(true);
-                    up.setEnabled(true);
-                    down.setEnabled(true);
+                    makeAllEnabled();
+                    changeAllColor();
                 } else {
                     if (LFA) {
                         ab = e.getKeyCode();
@@ -100,12 +97,8 @@ public class KeyBinding extends JFrame {
                     if (LFR) {
                         d = e.getKeyCode();
                     }
-                    ability.setEnabled(true);
-                    shop.setEnabled(true);
-                    left.setEnabled(true);
-                    right.setEnabled(true);
-                    up.setEnabled(true);
-                    down.setEnabled(true);
+                    makeAllEnabled();
+                    changeAllColor();
                 }
             }
 
@@ -119,12 +112,8 @@ public class KeyBinding extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 makeAllFalse();
                 LFA = true;
+                makeAllEnabled();
                 ability.setEnabled(false);
-                shop.setEnabled(true);
-                left.setEnabled(true);
-                right.setEnabled(true);
-                up.setEnabled(true);
-                down.setEnabled(true);
             }
         });
         shop.addActionListener(new ActionListener() {
@@ -132,12 +121,8 @@ public class KeyBinding extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 makeAllFalse();
                 LFS = true;
-                ability.setEnabled(true);
+                makeAllEnabled();
                 shop.setEnabled(false);
-                left.setEnabled(true);
-                right.setEnabled(true);
-                up.setEnabled(true);
-                down.setEnabled(true);
             }
         });
         left.addActionListener(new ActionListener() {
@@ -145,68 +130,73 @@ public class KeyBinding extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 makeAllFalse();
                 LFL = true;
-                ability.setEnabled(true);
-                shop.setEnabled(true);
+                makeAllEnabled();
                 left.setEnabled(false);
-                right.setEnabled(true);
-                up.setEnabled(true);
-                down.setEnabled(true);
             }
         });
         down.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                down.changeColor();
                 makeAllFalse();
                 LFD = true;
-                ability.setEnabled(true);
-                shop.setEnabled(true);
-                left.setEnabled(true);
-                right.setEnabled(true);
-                up.setEnabled(true);
+                makeAllEnabled();
                 down.setEnabled(false);
             }
         });
         right.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                right.changeColor();
                 makeAllFalse();
                 LFR = true;
-                ability.setEnabled(true);
-                shop.setEnabled(true);
-                left.setEnabled(true);
+                makeAllEnabled();
                 right.setEnabled(false);
-                up.setEnabled(true);
-                down.setEnabled(true);
             }
         });
         up.addActionListener(e -> {
+            up.changeColor();
             makeAllFalse();
             LFU = true;
-            ability.setEnabled(true);
-            shop.setEnabled(true);
-            left.setEnabled(true);
-            right.setEnabled(true);
+            makeAllEnabled();
             up.setEnabled(false);
-            down.setEnabled(true);
         });
 
         MyButton back = new MyButton("Back", 300, 550, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                FileController.writeKeys(w,s,d,a,sh,ab);
+                FileController.writeKeys(w, s, d, a, sh, ab);
                 new MainMenu();
             }
         });
         add(back);
     }
 
-    void makeAllFalse(){
+    void makeAllFalse() {
         LFU = false;
         LFD = false;
         LFR = false;
         LFL = false;
         LFS = false;
         LFA = false;
+    }
+
+    void makeAllEnabled() {
+        ability.setEnabled(true);
+        shop.setEnabled(true);
+        left.setEnabled(true);
+        right.setEnabled(true);
+        up.setEnabled(true);
+        down.setEnabled(true);
+    }
+
+    void changeAllColor() {
+        ability.resetColor();
+        shop.resetColor();
+        up.resetColor();
+        down.resetColor();
+        right.resetColor();
+        left.resetColor();
     }
 }

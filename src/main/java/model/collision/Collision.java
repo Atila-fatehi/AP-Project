@@ -58,8 +58,12 @@ public abstract class Collision {
         int[] xPoints = collidable.getXPoints();
         int[] yPoints = collidable.getYPoints();
         int x = (int) bullet.getX();
-        int y = (int) bullet.getX();
+        int y = (int) bullet.getY();
         int radius = (int) bullet.getRadius();
+        Polygon poly = new Polygon(xPoints, yPoints, xPoints.length);
+        if(poly.contains(x,y)){
+            return new Point2D.Double(x,y);
+        }
         for (int i = 0; i < xPoints.length; i++) {
             if (Calculator.distance(x, y, xPoints[i], yPoints[i]) <= radius) {
                 return new Point2D.Double(xPoints[i], yPoints[i]);
