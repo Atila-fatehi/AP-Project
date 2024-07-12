@@ -1,6 +1,6 @@
 package model.collision;
 
-import model.objectsModel.Epsilon;
+import model.objectsModel.epsilon.Epsilon;
 import view.gameGUI.GamePanel;
 
 import java.util.TimerTask;

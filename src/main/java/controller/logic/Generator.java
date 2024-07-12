@@ -2,10 +2,10 @@ package controller.logic;
 
 import controller.audio.players.AudioPlayer;
 import controller.util.Constants;
-import model.objectsModel.Bullet;
-import model.objectsModel.Epsilon;
-import model.objectsModel.Squarantine;
-import model.objectsModel.Trigorath;
+import model.objectsModel.epsilon.Bullet;
+import model.objectsModel.epsilon.Epsilon;
+import model.objectsModel.enemy.Squarantine;
+import model.objectsModel.enemy.Trigorath;
 import view.gameGUI.GamePanel;
 
 import java.util.Random;
@@ -64,9 +64,11 @@ public abstract class Generator {
         } else {
             initialPositionY -= GamePanel.getInstance().getPanelHeight();
         }
-        GameState.trigoraths.add(new Trigorath(initialPositionX, initialPositionY,
-                initialPositionX + Constants.TRIGORATH_SIZE, initialPositionY,
-                initialPositionX + (double) Constants.TRIGORATH_SIZE / 2, initialPositionY - 25));
+        GameState.trigoraths.add(new Trigorath(new double[]{initialPositionX , initialPositionX + Constants.TRIGORATH_SIZE , initialPositionX + (double) Constants.TRIGORATH_SIZE / 2},
+                new double[]{initialPositionY , initialPositionY , initialPositionY - 25}));
+//        GameState.trigoraths.add(new Trigorath(initialPositionX, initialPositionY,
+//                initialPositionX + Constants.TRIGORATH_SIZE, initialPositionY,
+//                initialPositionX + (double) Constants.TRIGORATH_SIZE / 2, initialPositionY - 25));
     }
 
     public static void makeNewSquarantine() {
@@ -83,18 +85,18 @@ public abstract class Generator {
         } else {
             initialPositionY -= GamePanel.getInstance().getPanelHeight();
         }
-        GameState.squarantines.add(new Squarantine(initialPositionX, initialPositionY,
-                initialPositionX + Constants.SQUARANTINE_SIZE, initialPositionY,
-                initialPositionX + Constants.SQUARANTINE_SIZE, initialPositionY + Constants.SQUARANTINE_SIZE,
-                initialPositionX, initialPositionY + Constants.SQUARANTINE_SIZE));
+        GameState.squarantines.add(new Squarantine(new double[]{initialPositionX,initialPositionX + Constants.SQUARANTINE_SIZE , initialPositionX + Constants.SQUARANTINE_SIZE , initialPositionX} ,
+                new double[]{initialPositionY , initialPositionY , initialPositionY + Constants.SQUARANTINE_SIZE , initialPositionY + Constants.SQUARANTINE_SIZE}));
+//        GameState.squarantines.add(new Squarantine(initialPositionX, initialPositionY,
+//                initialPositionX + Constants.SQUARANTINE_SIZE, initialPositionY,
+//                initialPositionX + Constants.SQUARANTINE_SIZE, initialPositionY + Constants.SQUARANTINE_SIZE,
+//                initialPositionX, initialPositionY + Constants.SQUARANTINE_SIZE));
 
     }
 
     public static void makeNewBullet(int x, int y) {
         Bullet bullet = new Bullet(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
-        double angle = Math.atan2(y - Epsilon.getInstance().getY(), x - Epsilon.getInstance().getX());
-        bullet.setVx(bullet.getConstantVelocity() * Math.cos(angle));
-        bullet.setVy(bullet.getConstantVelocity() * Math.sin(angle));
+        bullet.calculateMovingDirection(x,y);
         GameState.bullets.add(bullet);
     }
 }

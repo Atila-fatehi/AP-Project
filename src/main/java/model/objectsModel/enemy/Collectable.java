@@ -1,4 +1,4 @@
-package model.objectsModel;
+package model.objectsModel.enemy;
 
 import model.Paintable.Paintable;
 

@@ -3,7 +3,7 @@ package controller;
 import controller.audio.players.AudioPlayer;
 import controller.audio.players.GameMusicPlayer;
 import controller.logic.GameManager;
-import model.objectsModel.Epsilon;
+import model.objectsModel.epsilon.Epsilon;
 import view.frames.MainMenu;
 import view.gameGUI.GameFrame;
 import view.gameGUI.ShopFrame;
@@ -69,7 +69,7 @@ public class KeyController implements KeyListener {
             GameMusicPlayer.getInstance().getClip().stop();
             GameMusicPlayer.getInstance().setPlaying(false);
             GameFrame.getInstance().dispose();
-            GameManager.getInstance().setPaused(true);
+           // GameManager.getInstance().setPaused(true);
             GameManager.getInstance().getModelTimer().cancel();
             GameManager.getInstance().getViewTimer().cancel();
             new MainMenu();

@@ -29,6 +29,7 @@ public class GameFrame extends JFrame {
     }
 
     public void addPanel(){
+        GamePanel.makeInstance();
         GamePanel.getInstance().setBackground(Constants.DARK_BLUE);
         GamePanel.getInstance().setBounds(Constants.INITIAL_PANEL_X, Constants.INITIAL_PANEL_Y, Constants.INITIAL_PANEL_WIDTH,Constants.INITIAL_PANEL_HEIGHT);
         add(GamePanel.getInstance());

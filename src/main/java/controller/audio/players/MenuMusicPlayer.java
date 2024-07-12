@@ -14,11 +14,9 @@ public class MenuMusicPlayer {
 
     public static MenuMusicPlayer getInstance() {
         if (instance == null) {
-            synchronized (MenuMusicPlayer.class) {
-                if (instance == null) {
-                    instance = new MenuMusicPlayer();
-                }
-            }
+            //synchronized (MenuMusicPlayer.class) {
+            instance = new MenuMusicPlayer();
+            //}
         }
         return instance;
     }
@@ -45,7 +43,7 @@ public class MenuMusicPlayer {
             clip.loop(Clip.LOOP_CONTINUOUSLY);
             clip.start();
         } catch (Exception e) {
-
+            System.out.println("music player problem");
         }
     }
 

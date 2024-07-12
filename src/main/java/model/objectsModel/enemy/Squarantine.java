@@ -1,10 +1,9 @@
-package model.objectsModel;
+package model.objectsModel.enemy;
 
-import controller.util.Calculator;
 import controller.util.Constants;
 import model.Paintable.Paintable;
 import model.collision.Collidable;
-import model.movable.movable;
+import model.movable.Movable;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -13,33 +12,43 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
-public class Squarantine implements movable, Collidable, Paintable {
+public class Squarantine implements Movable, Collidable, Paintable {
 
-    private int HP;
+    private int HP = 10;
     private double posXHP;
     private double posYHP;
-    private double x1, x2, x3, x4;
-    private double y1, y2, y3, y4;
-    private double constantVelocity;
+    private final double[] xPoints;
+    private final double[] yPoints;
+    private double constantVelocity = 1d;
     private double maxVelocityX;
     private double maxVelocityY;
     private double vx;
     private double vy;
     private double accX;
     private double accY;
-    private final java.util.Timer timer;
     private boolean played;
-    public Squarantine(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
-        this.x1 = x1;
-        this.x2 = x2;
-        this.x3 = x3;
-        this.x4 = x4;
-        this.y1 = y1;
-        this.y2 = y2;
-        this.y3 = y3;
-        this.y4 = y4;
-        this.HP = 10;
-        constantVelocity = 1d;
+    private java.util.Timer timer;
+    public Squarantine(double[] x, double[] y) {
+        this.xPoints = x;
+        this.yPoints = y;
+        randomAggression();
+    }
+
+    public void shiftX(double rate) {
+        xPoints[0] += rate;
+        xPoints[1] += rate;
+        xPoints[2] += rate;
+        xPoints[3] += rate;
+    }
+
+    public void shiftY(double rate) {
+        yPoints[0] += rate;
+        yPoints[1] += rate;
+        yPoints[2] += rate;
+        yPoints[3] += rate;
+    }
+
+    public void randomAggression(){
         Random random = new Random();
         timer = new java.util.Timer();
         timer.schedule(new TimerTask() {
@@ -57,26 +66,9 @@ public class Squarantine implements movable, Collidable, Paintable {
             }
         },5000,3000);
     }
-
-    public void shiftX(double rate) {
-        x1 += rate;
-        x2 += rate;
-        x3 += rate;
-        x4 += rate;
-    }
-
-    public void shiftY(double rate) {
-        y1 += rate;
-        y2 += rate;
-        y3 += rate;
-        y4 += rate;
-    }
-
-    public void randomAggression(){
-
-    }
+    
     public void calculateMovingDirection(double x, double y) {
-        double angle = Math.atan2(y - (y1 + y3) / 2, x - (x1 + x2) / 2);
+        double angle = Math.atan2(y - (yPoints[0] + yPoints[2]) / 2, x - (xPoints[0] + xPoints[1]) / 2);
         maxVelocityX = constantVelocity * Math.cos(angle);
         maxVelocityY = constantVelocity * Math.sin(angle);
         accX = Math.cos(angle);
@@ -84,14 +76,14 @@ public class Squarantine implements movable, Collidable, Paintable {
     }
 
     public void move() {
-        x1 += vx;
-        x2 += vx;
-        x3 += vx;
-        x4 += vx;
-        y1 += vy;
-        y2 += vy;
-        y3 += vy;
-        y4 += vy;
+        xPoints[0] += vx;
+        xPoints[1] += vx;
+        xPoints[2] += vx;
+        xPoints[3] += vx;
+        yPoints[0] += vy;
+        yPoints[1] += vy;
+        yPoints[2] += vy;
+        yPoints[3] += vy;
 
         if (maxVelocityX > 0) {
             if (vx < maxVelocityX) {
@@ -114,24 +106,24 @@ public class Squarantine implements movable, Collidable, Paintable {
         }
 
         if (HP >= 10) {
-            posXHP = x1 + 5;
-            posYHP = y1 + 17;
+            posXHP = xPoints[0] + 5;
+            posYHP = yPoints[0] + 17;
         } else {
-            posXHP = x1 + 9;
-            posYHP = y1 + 17;
+            posXHP = xPoints[0] + 9;
+            posYHP = yPoints[0] + 17;
         }
     }
 
     public Point2D getCenterOfGravity() {
-        return new Point2D.Double((x1 + x2) / 2, (y1 + y3) / 2);
+        return new Point2D.Double((xPoints[0] + xPoints[1]) / 2, (yPoints[0] + yPoints[2]) / 2);
     }
 
     public int[] getXPoints() {
-        return new int[]{(int) x1, (int) x2, (int) x3, (int) x4};
+        return new int[]{(int) xPoints[0], (int) xPoints[1], (int) xPoints[2], (int) xPoints[3]};
     }
 
     public int[] getYPoints() {
-        return new int[]{(int) y1, (int) y2, (int) y3, (int) y4};
+        return new int[]{(int) yPoints[0], (int) yPoints[1], (int) yPoints[2], (int) yPoints[3]};
     }
 
     public int getHP() {
@@ -156,70 +148,6 @@ public class Squarantine implements movable, Collidable, Paintable {
 
     public void setPosYHP(double posYHP) {
         this.posYHP = posYHP;
-    }
-
-    public double getX1() {
-        return x1;
-    }
-
-    public void setX1(double x1) {
-        this.x1 = x1;
-    }
-
-    public double getX2() {
-        return x2;
-    }
-
-    public void setX2(double x2) {
-        this.x2 = x2;
-    }
-
-    public double getX3() {
-        return x3;
-    }
-
-    public void setX3(double x3) {
-        this.x3 = x3;
-    }
-
-    public double getX4() {
-        return x4;
-    }
-
-    public void setX4(double x4) {
-        this.x4 = x4;
-    }
-
-    public double getY1() {
-        return y1;
-    }
-
-    public void setY1(double y1) {
-        this.y1 = y1;
-    }
-
-    public double getY2() {
-        return y2;
-    }
-
-    public void setY2(double y2) {
-        this.y2 = y2;
-    }
-
-    public double getY3() {
-        return y3;
-    }
-
-    public void setY3(double y3) {
-        this.y3 = y3;
-    }
-
-    public double getY4() {
-        return y4;
-    }
-
-    public void setY4(double y4) {
-        this.y4 = y4;
     }
 
     public double getVx() {

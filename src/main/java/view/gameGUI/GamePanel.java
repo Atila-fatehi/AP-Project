@@ -5,7 +5,7 @@ import controller.KeyController;
 import controller.MouseController;
 import controller.logic.GameState;
 import model.Paintable.Paintable;
-import model.objectsModel.*;
+import model.objectsModel.epsilon.Epsilon;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,6 +13,10 @@ import java.util.ArrayList;
 
 public class GamePanel extends JPanel {
     private static GamePanel instance;
+
+    public static void makeInstance(){
+        instance = new GamePanel();
+    }
 
     public static GamePanel getInstance() {
         if (instance == null) instance = new GamePanel();

@@ -1,28 +1,34 @@
-package model.objectsModel;
+package model.objectsModel.epsilon;
 
-import controller.util.Calculator;
 import controller.util.Constants;
 import model.Paintable.Paintable;
 import model.collision.Collidable;
 import model.collision.WallCollidable;
-import model.movable.movable;
+import model.movable.Movable;
 import view.gameGUI.GamePanel;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
 
-public class Bullet implements movable, WallCollidable, Collidable , Paintable {
+public class Bullet implements Movable, WallCollidable, Collidable, Paintable {
 
 
-    private final double radius = 4;
     private double x;
     private double y;
     private double vx;
     private double vy;
+    private final double radius = 4;
+    private final double constantVelocity = 15;
 
     public void move() {
         x = x + vx;
         y = y + vy;
+    }
+
+    @Override
+    public void calculateMovingDirection(double x, double y) {
+        double angle = Math.atan2(y - Epsilon.getInstance().getY(), x - Epsilon.getInstance().getX());
+        vx = constantVelocity * Math.cos(angle);
+        vy = constantVelocity * Math.sin(angle);
     }
 
     public Bullet(double x, double y) {
@@ -81,10 +87,6 @@ public class Bullet implements movable, WallCollidable, Collidable , Paintable {
 
     public void setVy(double vy) {
         this.vy = vy;
-    }
-
-    public double getConstantVelocity() {
-        return 15;
     }
 
 

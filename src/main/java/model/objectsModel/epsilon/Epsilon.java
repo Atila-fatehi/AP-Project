@@ -1,16 +1,17 @@
-package model.objectsModel;
+package model.objectsModel.epsilon;
 
 
 import controller.FileController;
 import controller.util.Constants;
 import model.Paintable.Paintable;
 import model.collision.Collidable;
-import model.movable.movable;
+import model.movable.Movable;
+import model.objectsModel.SpecialAbility;
 
 import java.awt.*;
 import java.util.Objects;
 
-public class Epsilon implements movable, Collidable, Paintable {
+public class Epsilon implements Movable, Collidable, Paintable {
 
     private static Epsilon instance;
 
@@ -120,6 +121,12 @@ public class Epsilon implements movable, Collidable, Paintable {
             vertexY = y - radius - 7;
         }
     }
+
+    @Override
+    public void calculateMovingDirection(double x, double y) {
+
+    }
+
     @Override
     public void selfPaint(Graphics g) {
         g.setColor(Constants.EPSILON_COLOR);

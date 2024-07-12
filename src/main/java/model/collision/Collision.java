@@ -1,14 +1,12 @@
 package model.collision;
 
 import controller.util.Calculator;
-import model.objectsModel.Bullet;
-import model.objectsModel.Collectable;
-import model.objectsModel.Epsilon;
-import model.objectsModel.Trigorath;
+import model.objectsModel.epsilon.Bullet;
+import model.objectsModel.enemy.Collectable;
+import model.objectsModel.epsilon.Epsilon;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
 
 public abstract class Collision {
 

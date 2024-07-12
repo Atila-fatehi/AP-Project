@@ -1,6 +1,10 @@
 package model.objectsModel;
 
 public class SpecialAbility {
+
+
+
+    //TODO ooooooooooooooooooooo
     boolean ares;
     boolean aceso;
     boolean proteus;

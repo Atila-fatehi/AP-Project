@@ -1,9 +1,12 @@
 package controller.logic;
 
 import controller.FileController;
-import controller.util.Constants;
 import model.Paintable.Paintable;
-import model.objectsModel.*;
+import model.objectsModel.enemy.Collectable;
+import model.objectsModel.enemy.Squarantine;
+import model.objectsModel.enemy.Trigorath;
+import model.objectsModel.epsilon.Bullet;
+import model.objectsModel.epsilon.Epsilon;
 
 import java.util.ArrayList;
 import java.util.Objects;

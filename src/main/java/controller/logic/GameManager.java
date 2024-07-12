@@ -5,7 +5,8 @@ import controller.util.Constants;
 import model.collision.Collision;
 import model.collision.CollisionHandler;
 import model.collision.WallCollisionHandler;
-import model.objectsModel.*;
+import model.objectsModel.enemy.Collectable;
+import model.objectsModel.epsilon.Epsilon;
 import view.frames.MainMenu;
 import view.gameGUI.GameFrame;
 import view.gameGUI.GamePanel;
@@ -13,7 +14,6 @@ import controller.audio.players.AudioPlayer;
 import controller.audio.players.GameMusicPlayer;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
@@ -139,7 +139,7 @@ public class GameManager {
         for (int i = 0; i < GameState.trigoraths.size(); i++) {
             GameState.trigoraths.get(i).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
             GameState.trigoraths.get(i).move();
-            if (GameState.trigoraths.get(i).getX1() >= 0 && GameState.trigoraths.get(i).getX1() <= GamePanel.getInstance().getPanelWidth() && GameState.trigoraths.get(i).getY1() >= 0 && GameState.trigoraths.get(i).getX1() <= GamePanel.getInstance().getPanelHeight()) {
+            if (GameState.trigoraths.get(i).getXPoints()[0] >= 0 && GameState.trigoraths.get(i).getXPoints()[0] <= GamePanel.getInstance().getPanelWidth() && GameState.trigoraths.get(i).getYPoints()[0] >= 0 && GameState.trigoraths.get(i).getXPoints()[0] <= GamePanel.getInstance().getPanelHeight()) {
                 if (!GameState.trigoraths.get(i).isPlayed()) {
                     AudioPlayer.play(AudioPlayer.GROAN);
                     GameState.trigoraths.get(i).setPlayed(true);
@@ -205,7 +205,7 @@ public class GameManager {
         for (int i = 0; i < GameState.squarantines.size(); i++) {
             GameState.squarantines.get(i).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
             GameState.squarantines.get(i).move();
-            if (GameState.squarantines.get(i).getX1() >= 0 && GameState.squarantines.get(i).getX1() <= GamePanel.getInstance().getPanelWidth() && GameState.squarantines.get(i).getY1() >= 0 && GameState.squarantines.get(i).getX1() <= GamePanel.getInstance().getPanelHeight()) {
+            if (GameState.squarantines.get(i).getXPoints()[0] >= 0 && GameState.squarantines.get(i).getXPoints()[0] <= GamePanel.getInstance().getPanelWidth() && GameState.squarantines.get(i).getYPoints()[0] >= 0 && GameState.squarantines.get(i).getXPoints()[0] <= GamePanel.getInstance().getPanelHeight()) {
                 if (!GameState.squarantines.get(i).isPlayed()) {
                     AudioPlayer.play(AudioPlayer.GROAN);
                     GameState.squarantines.get(i).setPlayed(true);
@@ -260,6 +260,7 @@ public class GameManager {
                 }
             }
             if (GameState.squarantines.get(i).getHP() <= 0) {
+                AudioPlayer.play(AudioPlayer.MELON_IMPACT);
                 GameState.collectables.add(new Collectable(GameState.squarantines.get(i).getCenterOfGravity().getX(), GameState.squarantines.get(i).getCenterOfGravity().getY(), 5, Constants.SQUA_GREEN));
                 GameState.squarantines.get(i).getTimer().cancel();
                 GameState.squarantines.remove(i);
@@ -400,8 +401,6 @@ public class GameManager {
             }
         }
     }
-
-    //GETTER SETTERS
 
     public boolean isPaused() {
         return paused;

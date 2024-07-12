@@ -4,7 +4,7 @@ import model.collision.CollisionHandler;
 import controller.logic.GameManager;
 import controller.util.Constants;
 import controller.logic.GameState;
-import model.objectsModel.Epsilon;
+import model.objectsModel.epsilon.Epsilon;
 import view.Jcomponents.MyButton;
 import controller.KeyController;
 import view.Jcomponents.MyLabel;
