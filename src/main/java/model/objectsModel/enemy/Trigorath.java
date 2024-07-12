@@ -148,7 +148,7 @@ public class Trigorath implements Movable, Collidable, Paintable {
     @Override
     public void selfPaint(Graphics g) {
         g.setColor(Constants.TRI_YELLOW);
-        g.fillPolygon(getXPoints(), getYPoints(), 3);
+        g.fillPolygon(getXPoints(), getYPoints(), xPoints.length);
         g.setColor(Color.BLACK);
         g.drawString(String.valueOf(HP), (int) posXHP, (int) posYHP);
     }

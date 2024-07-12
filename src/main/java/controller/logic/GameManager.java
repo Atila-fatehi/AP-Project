@@ -268,6 +268,12 @@ public class GameManager {
             }
         }
 
+        //omenoct stuff
+        for (int i = 0; i < GameState.omenocts.size(); i++) {
+            GameState.omenocts.get(i).calculateMovingDirection(Epsilon.getInstance().getX() , Epsilon.getInstance().getY());
+            GameState.omenocts.get(i).move();
+        }
+
         //epsilon stuff
         Epsilon.getInstance().move();
         if (Epsilon.getInstance().getHP() <= 0) {

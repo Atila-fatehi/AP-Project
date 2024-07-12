@@ -3,6 +3,7 @@ package controller.logic;
 import controller.FileController;
 import model.Paintable.Paintable;
 import model.objectsModel.enemy.Collectable;
+import model.objectsModel.enemy.Omenoct;
 import model.objectsModel.enemy.Squarantine;
 import model.objectsModel.enemy.Trigorath;
 import model.objectsModel.epsilon.Bullet;
@@ -19,6 +20,7 @@ public class GameState {
     public static final ArrayList<Trigorath> trigoraths = new ArrayList<>();
     public static final ArrayList<Squarantine> squarantines = new ArrayList<>();
     public static final ArrayList<Collectable> collectables = new ArrayList<>();
+    public static final ArrayList<Omenoct> omenocts = new ArrayList<>();
     public static int elapsedTime;
     public static int difficulty = Objects.requireNonNull(FileController.readSettings())[1];
     public static int wave;
@@ -44,6 +46,7 @@ public class GameState {
         paintables.addAll(trigoraths);
         paintables.addAll(squarantines);
         paintables.addAll(collectables);
+        paintables.addAll(omenocts);
         return paintables;
     }
 

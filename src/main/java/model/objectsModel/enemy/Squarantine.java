@@ -181,7 +181,7 @@ public class Squarantine implements Movable, Collidable, Paintable {
     @Override
     public void selfPaint(Graphics g) {
         g.setColor(Constants.SQUA_GREEN);
-        g.fillPolygon(getXPoints(), getYPoints(), 4);
+        g.fillPolygon(getXPoints(), getYPoints(), xPoints.length);
         g.setColor(Color.BLACK);
         g.drawString(String.valueOf(HP), (int) posXHP, (int) posYHP);
     }

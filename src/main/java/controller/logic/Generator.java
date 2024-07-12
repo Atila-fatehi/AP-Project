@@ -2,6 +2,7 @@ package controller.logic;
 
 import controller.audio.players.AudioPlayer;
 import controller.util.Constants;
+import model.objectsModel.enemy.Omenoct;
 import model.objectsModel.epsilon.Bullet;
 import model.objectsModel.epsilon.Epsilon;
 import model.objectsModel.enemy.Squarantine;
@@ -13,11 +14,11 @@ import java.util.TimerTask;
 
 public abstract class Generator {
 
-    public static boolean inWait ;
+    public static boolean inWait;
 
     public static void generateSimpleWave() {
         if (GameState.trigoraths.isEmpty() && GameState.squarantines.isEmpty() && !inWait) {
-            GameState.wave++;
+            //GameState.wave++;
             if (GameState.wave == 4) {
                 GameManager.getInstance().setGameWon(true);
                 GameManager.getInstance().gameWon();
@@ -29,18 +30,19 @@ public abstract class Generator {
                     public void run() {
                         AudioPlayer.play(AudioPlayer.AWOOGA);
                         Random random = new Random();
-                        makeNewSquarantine();
-                        makeNewTrigorath();
-                        for (int i = 0; i < GameState.wave * GameState.difficulty; i++) {
-                            if (random.nextBoolean()) {
-                                makeNewSquarantine();
-                            }
-                        }
-                        for (int i = 0; i < GameState.wave * GameState.difficulty; i++) {
-                            if (random.nextBoolean()) {
-                                makeNewTrigorath();
-                            }
-                        }
+                        makeNewOmenoct();
+//                        makeNewSquarantine();
+//                        makeNewTrigorath();
+//                        for (int i = 0; i < GameState.wave * GameState.difficulty; i++) {
+//                            if (random.nextBoolean()) {
+//                                makeNewSquarantine();
+//                            }
+//                        }
+//                        for (int i = 0; i < GameState.wave * GameState.difficulty; i++) {
+//                            if (random.nextBoolean()) {
+//                                makeNewTrigorath();
+//                            }
+//                        }
                         inWait = false;
                         timer.cancel();
                     }
@@ -52,51 +54,69 @@ public abstract class Generator {
 
     public static void makeNewTrigorath() {
         Random random = new Random();
-        int initialPositionX = random.nextInt(GamePanel.getInstance().getPanelWidth());
-        int initialPositionY = random.nextInt(GamePanel.getInstance().getPanelHeight());
+        int initX = random.nextInt(GamePanel.getInstance().getPanelWidth());
+        int initY = random.nextInt(GamePanel.getInstance().getPanelHeight());
         if (random.nextBoolean()) {
-            initialPositionX += GamePanel.getInstance().getPanelWidth();
+            initX += GamePanel.getInstance().getPanelWidth();
         } else {
-            initialPositionX -= GamePanel.getInstance().getPanelWidth();
+            initX -= GamePanel.getInstance().getPanelWidth();
         }
         if (random.nextBoolean()) {
-            initialPositionY += GamePanel.getInstance().getPanelHeight();
+            initY += GamePanel.getInstance().getPanelHeight();
         } else {
-            initialPositionY -= GamePanel.getInstance().getPanelHeight();
+            initY -= GamePanel.getInstance().getPanelHeight();
         }
-        GameState.trigoraths.add(new Trigorath(new double[]{initialPositionX , initialPositionX + Constants.TRIGORATH_SIZE , initialPositionX + (double) Constants.TRIGORATH_SIZE / 2},
-                new double[]{initialPositionY , initialPositionY , initialPositionY - 25}));
-//        GameState.trigoraths.add(new Trigorath(initialPositionX, initialPositionY,
-//                initialPositionX + Constants.TRIGORATH_SIZE, initialPositionY,
-//                initialPositionX + (double) Constants.TRIGORATH_SIZE / 2, initialPositionY - 25));
+        int size = Constants.TRIGORATH_SIZE;
+        GameState.trigoraths.add(new Trigorath(new double[]{initX, initX + size, initX + (double) size / 2},
+                new double[]{initY, initY, initY - 25}));
     }
 
     public static void makeNewSquarantine() {
         Random random = new Random();
-        int initialPositionX = random.nextInt(GamePanel.getInstance().getPanelWidth());
-        int initialPositionY = random.nextInt(GamePanel.getInstance().getPanelHeight());
+        int initX = random.nextInt(GamePanel.getInstance().getPanelWidth());
+        int initY = random.nextInt(GamePanel.getInstance().getPanelHeight());
         if (random.nextBoolean()) {
-            initialPositionX += GamePanel.getInstance().getPanelWidth();
+            initX += GamePanel.getInstance().getPanelWidth();
         } else {
-            initialPositionX -= GamePanel.getInstance().getPanelWidth();
+            initX -= GamePanel.getInstance().getPanelWidth();
         }
         if (random.nextBoolean()) {
-            initialPositionY += GamePanel.getInstance().getPanelHeight();
+            initY += GamePanel.getInstance().getPanelHeight();
         } else {
-            initialPositionY -= GamePanel.getInstance().getPanelHeight();
+            initY -= GamePanel.getInstance().getPanelHeight();
         }
-        GameState.squarantines.add(new Squarantine(new double[]{initialPositionX,initialPositionX + Constants.SQUARANTINE_SIZE , initialPositionX + Constants.SQUARANTINE_SIZE , initialPositionX} ,
-                new double[]{initialPositionY , initialPositionY , initialPositionY + Constants.SQUARANTINE_SIZE , initialPositionY + Constants.SQUARANTINE_SIZE}));
-//        GameState.squarantines.add(new Squarantine(initialPositionX, initialPositionY,
-//                initialPositionX + Constants.SQUARANTINE_SIZE, initialPositionY,
-//                initialPositionX + Constants.SQUARANTINE_SIZE, initialPositionY + Constants.SQUARANTINE_SIZE,
-//                initialPositionX, initialPositionY + Constants.SQUARANTINE_SIZE));
+        int size = Constants.SQUARANTINE_SIZE;
+        GameState.squarantines.add(new Squarantine(new double[]{initX, initX + size, initX + size, initX},
+                new double[]{initY, initY, initY + size, initY + size}));
 
     }
 
     public static void makeNewBullet(int x, int y) {
         Bullet bullet = new Bullet(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
-        bullet.calculateMovingDirection(x,y);
+        bullet.calculateMovingDirection(x, y);
         GameState.bullets.add(bullet);
     }
+
+    public static void makeNewOmenoct() {
+        Random random = new Random();
+        int initX = random.nextInt(GamePanel.getInstance().getPanelWidth());
+        int initY = random.nextInt(GamePanel.getInstance().getPanelHeight());
+        if (random.nextBoolean()) {
+            initX += GamePanel.getInstance().getPanelWidth();
+        } else {
+            initX -= GamePanel.getInstance().getPanelWidth();
+        }
+        if (random.nextBoolean()) {
+            initY += GamePanel.getInstance().getPanelHeight();
+        } else {
+            initY -= GamePanel.getInstance().getPanelHeight();
+        }
+        int size = Constants.OMENOCT_SIZE;
+        initX = 100;
+        initY = 100;
+        GameState.omenocts.add(new Omenoct(new double[]{initX, initX + size, initX + 2 * size, initX + 2 * size, initX + size , initX , initX - size , initX - size},
+                new double[]{initY, initY, initY + size, initY + 2 * size, initY + 3 * size , initY + 3 * size , initY + 2 * size , initY + size}));
+
+    }
+
 }

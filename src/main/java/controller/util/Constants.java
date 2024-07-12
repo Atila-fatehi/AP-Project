@@ -11,6 +11,7 @@ public abstract class Constants {
     public static final Color DARK_BLUE = new Color(0x011022);
     public static final Color TRI_YELLOW = new Color(0xFFD900);
     public static final Color SQUA_GREEN = new Color(0x22FF00);
+    public static final Color OMEN_PINK = new Color(0xFF07BB);
     public static final Color EPSILON_COLOR = new Color(0x38C1F1);
     public static final Color STRING_COLOR = new Color(0x8A26FF);
     public static final Color ANOTHER_STRING_COLOR = new Color(0xA826FF);
@@ -58,4 +59,5 @@ public abstract class Constants {
 
     public static final int SQUARANTINE_SIZE = 25;
     public static final int TRIGORATH_SIZE = 30;
+    public static final int OMENOCT_SIZE = 20;
 }
