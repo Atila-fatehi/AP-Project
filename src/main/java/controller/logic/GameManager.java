@@ -37,7 +37,7 @@ public class GameManager {
     private boolean empower;
 
     public GameManager() {
-        Generator.makeNewOmenoct();
+        Generator.makeNewArchmire();
         viewTimer = new java.util.Timer();
         viewTimer.schedule(new TimerTask() {
             @Override
@@ -316,6 +316,11 @@ public class GameManager {
             }
         }
 
+        //archmire stuff
+        for (int i = 0; i < GameState.archmires.size(); i++) {
+            GameState.archmires.get(i).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
+            GameState.archmires.get(i).move();
+        }
 
         //epsilon stuff
         Epsilon.getInstance().move();

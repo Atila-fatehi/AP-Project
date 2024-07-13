@@ -2,10 +2,7 @@ package controller.logic;
 
 import controller.FileController;
 import model.Paintable.Paintable;
-import model.objectsModel.enemy.Collectable;
-import model.objectsModel.enemy.Omenoct;
-import model.objectsModel.enemy.Squarantine;
-import model.objectsModel.enemy.Trigorath;
+import model.objectsModel.enemy.*;
 import model.objectsModel.epsilon.Bullet;
 import model.objectsModel.epsilon.Epsilon;
 
@@ -14,13 +11,14 @@ import java.util.Objects;
 
 public class GameState {
 
-    //TODO add pause
+    //TODO add pause and make them not static
     public static final Epsilon epsilon = Epsilon.getInstance();
     public static final ArrayList<Bullet> bullets = new ArrayList<>();
     public static final ArrayList<Trigorath> trigoraths = new ArrayList<>();
     public static final ArrayList<Squarantine> squarantines = new ArrayList<>();
     public static final ArrayList<Collectable> collectables = new ArrayList<>();
     public static final ArrayList<Omenoct> omenocts = new ArrayList<>();
+    public static final ArrayList<Archmire> archmires = new ArrayList<>();
     public static int elapsedTime;
     public static int difficulty = Objects.requireNonNull(FileController.readSettings())[1];
     public static int wave;
@@ -47,6 +45,7 @@ public class GameState {
         paintables.addAll(squarantines);
         paintables.addAll(collectables);
         paintables.addAll(omenocts);
+        paintables.addAll(archmires);
         return paintables;
     }
 

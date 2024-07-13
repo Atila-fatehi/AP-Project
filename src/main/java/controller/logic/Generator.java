@@ -2,6 +2,7 @@ package controller.logic;
 
 import controller.audio.players.AudioPlayer;
 import controller.util.Constants;
+import model.objectsModel.enemy.Archmire;
 import model.objectsModel.enemy.Omenoct;
 import model.objectsModel.epsilon.Bullet;
 import model.objectsModel.epsilon.Epsilon;
@@ -116,5 +117,20 @@ public abstract class Generator {
                 new double[]{initY, initY, initY + size, initY + 2 * size, initY + 3 * size , initY + 3 * size , initY + 2 * size , initY + size}));
 
     }
-
+    public static void makeNewArchmire() {
+        Random random = new Random();
+        int initX = random.nextInt(GamePanel.getInstance().getPanelWidth());
+        int initY = random.nextInt(GamePanel.getInstance().getPanelHeight());
+        if (random.nextBoolean()) {
+            initX += GamePanel.getInstance().getPanelWidth();
+        } else {
+            initX -= GamePanel.getInstance().getPanelWidth();
+        }
+        if (random.nextBoolean()) {
+            initY += GamePanel.getInstance().getPanelHeight();
+        } else {
+            initY -= GamePanel.getInstance().getPanelHeight();
+        }
+        GameState.archmires.add(new Archmire(initX, initY));
+    }
 }

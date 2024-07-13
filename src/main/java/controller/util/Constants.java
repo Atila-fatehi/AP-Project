@@ -12,6 +12,8 @@ public abstract class Constants {
     public static final Color TRI_YELLOW = new Color(0xFFD900);
     public static final Color SQUA_GREEN = new Color(0x22FF00);
     public static final Color OMEN_PINK = new Color(0xFF07BB);
+    public static final Color ARCH_RED = new Color(0xFF0734);
+    public static final Color ARCH_DARKER_RED = new Color(0x630013);
     public static final Color EPSILON_COLOR = new Color(0x38C1F1);
     public static final Color STRING_COLOR = new Color(0x8A26FF);
     public static final Color ANOTHER_STRING_COLOR = new Color(0xA826FF);
