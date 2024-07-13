@@ -3,6 +3,7 @@ package model.objectsModel.epsilon;
 import controller.util.Constants;
 import model.Paintable.Paintable;
 import model.collision.Collidable;
+import model.collision.Collision;
 import model.collision.WallCollidable;
 import model.movable.Movable;
 import view.gameGUI.GamePanel;
@@ -16,8 +17,10 @@ public class Bullet implements Movable, WallCollidable, Collidable, Paintable {
     private double y;
     private double vx;
     private double vy;
-    private final double radius = 4;
-    private final double constantVelocity = 15;
+    private double radius;
+    private double constantVelocity;
+    private Color color;
+    private boolean fromEpsilon;
 
     public void move() {
         x = x + vx;
@@ -26,14 +29,23 @@ public class Bullet implements Movable, WallCollidable, Collidable, Paintable {
 
     @Override
     public void calculateMovingDirection(double x, double y) {
-        double angle = Math.atan2(y - Epsilon.getInstance().getY(), x - Epsilon.getInstance().getX());
+        double angle = Math.atan2(y - this.y, x - this.x);
         vx = constantVelocity * Math.cos(angle);
         vy = constantVelocity * Math.sin(angle);
     }
 
-    public Bullet(double x, double y) {
+    public Bullet(double x, double y , boolean fromEpsilon , Color color) {
         this.x = x;
         this.y = y;
+        this.fromEpsilon =fromEpsilon;
+        this.color = color;
+        if(fromEpsilon){
+            constantVelocity = 15;
+            radius = 4;
+        }else{
+            constantVelocity = 5;
+            radius = 8;
+        }
     }
 
     @Override
@@ -89,6 +101,29 @@ public class Bullet implements Movable, WallCollidable, Collidable, Paintable {
         this.vy = vy;
     }
 
+    public double getConstantVelocity() {
+        return constantVelocity;
+    }
+
+    public void setConstantVelocity(double constantVelocity) {
+        this.constantVelocity = constantVelocity;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public boolean isFromEpsilon() {
+        return fromEpsilon;
+    }
+
+    public void setFromEpsilon(boolean fromEpsilon) {
+        this.fromEpsilon = fromEpsilon;
+    }
 
     @Override
     public int[] getXPoints() {
@@ -102,7 +137,7 @@ public class Bullet implements Movable, WallCollidable, Collidable, Paintable {
 
     @Override
     public void selfPaint(Graphics g) {
-        g.setColor(Constants.EPSILON_COLOR);
+        g.setColor(color);
         g.fillOval((int) (x - radius), (int) (y - radius), (int) radius * 2, (int) radius * 2);
     }
 }

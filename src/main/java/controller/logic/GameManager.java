@@ -37,6 +37,7 @@ public class GameManager {
     private boolean empower;
 
     public GameManager() {
+        Generator.makeNewOmenoct();
         viewTimer = new java.util.Timer();
         viewTimer.schedule(new TimerTask() {
             @Override
@@ -95,7 +96,7 @@ public class GameManager {
     }
 
     public void updateModel() {
-        Generator.generateSimpleWave();
+//        Generator.generateSimpleWave();
         //Bullet stuff
         //Tri collision
         for (int i = 0; i < GameState.bullets.size(); i++) {
@@ -126,8 +127,33 @@ public class GameManager {
                 }
             }
         }
+        //omenoct collision
+        for (int i = 0; i < GameState.bullets.size(); i++) {
+            for (int j = 0; j < GameState.omenocts.size(); j++) {
+                Point2D collisionPoint = Collision.checkBulletCollision(GameState.bullets.get(i), GameState.omenocts.get(j));
+                if (collisionPoint != null) {
+                    AudioPlayer.play(AudioPlayer.SPLAT);
+                    GameState.omenocts.get(j).setHP(GameState.omenocts.get(j).getHP() - Epsilon.getInstance().getDamageRate());
+                    CollisionHandler.handleCollisionOnPoint(collisionPoint);
+                    GameState.bullets.remove(i);
+                    i--;
+                    break;
+                }
+            }
+        }
+        //epsilon collision
+        for (int i = 0; i < GameState.bullets.size(); i++) {
+            Point2D epsilonCollisionPoint = Collision.checkCircleCollision(GameState.bullets.get(i));
+            if (epsilonCollisionPoint != null) {
+                CollisionHandler.handleCollisionOnPoint(epsilonCollisionPoint);
+                Epsilon.getInstance().setHP(Epsilon.getInstance().getHP() - 4);
+                GameState.bullets.remove(i);
+                i--;
+            }
+        }
         //wall collision
         for (int i = 0; i < GameState.bullets.size(); i++) {
+            if(!GameState.bullets.get(i).isFromEpsilon()) continue;
             if (GameState.bullets.get(i).wallCollision() != 0) {
                 WallCollisionHandler.handleWallCollision(GameState.bullets.get(i).wallCollision());
                 GameState.bullets.remove(i);
@@ -272,7 +298,24 @@ public class GameManager {
         for (int i = 0; i < GameState.omenocts.size(); i++) {
             GameState.omenocts.get(i).calculateMovingDirection(Epsilon.getInstance().getX() , Epsilon.getInstance().getY());
             GameState.omenocts.get(i).move();
+            Point2D epsilonCollisionPoint = Collision.checkEpsilonCollision(GameState.omenocts.get(i));
+            if (epsilonCollisionPoint != null) {
+                CollisionHandler.handleCollisionOnPoint(epsilonCollisionPoint);
+                Epsilon.getInstance().setHP(Epsilon.getInstance().getHP() - 10);
+            }
+            if (GameState.omenocts.get(i).getHP() <= 0) {
+                AudioPlayer.play(AudioPlayer.MELON_IMPACT);
+                for (int j = 0; j < 8; j++) {
+                    int randX = (int) (new Random().nextInt(3 * Constants.OMENOCT_SIZE) - 1.5 * Constants.OMENOCT_SIZE);
+                    int randY = (int) (new Random().nextInt(3 * Constants.OMENOCT_SIZE) - 1.5 * Constants.OMENOCT_SIZE);
+                    GameState.collectables.add(new Collectable(GameState.omenocts.get(i).getCenterX() + randX, GameState.omenocts.get(i).getCenterY() + randY, 4, Constants.OMEN_PINK));
+                }
+                GameState.omenocts.get(i).getShootTimer().cancel();
+                GameState.omenocts.remove(i);
+                i--;
+            }
         }
+
 
         //epsilon stuff
         Epsilon.getInstance().move();

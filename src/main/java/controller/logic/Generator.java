@@ -19,17 +19,17 @@ public abstract class Generator {
     public static void generateSimpleWave() {
         if (GameState.trigoraths.isEmpty() && GameState.squarantines.isEmpty() && !inWait) {
             //GameState.wave++;
-            if (GameState.wave == 4) {
-                GameManager.getInstance().setGameWon(true);
-                GameManager.getInstance().gameWon();
-            } else {
-                AudioPlayer.play(AudioPlayer.WAVE);
-                java.util.Timer timer = new java.util.Timer();
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        AudioPlayer.play(AudioPlayer.AWOOGA);
-                        Random random = new Random();
+//            if (GameState.wave == 4) {
+//                GameManager.getInstance().setGameWon(true);
+//                GameManager.getInstance().gameWon();
+//            } else {
+//                AudioPlayer.play(AudioPlayer.WAVE);
+//                java.util.Timer timer = new java.util.Timer();
+//                timer.schedule(new TimerTask() {
+//                    @Override
+//                    public void run() {
+//                        AudioPlayer.play(AudioPlayer.AWOOGA);
+//                        Random random = new Random();
                         makeNewOmenoct();
 //                        makeNewSquarantine();
 //                        makeNewTrigorath();
@@ -43,12 +43,12 @@ public abstract class Generator {
 //                                makeNewTrigorath();
 //                            }
 //                        }
-                        inWait = false;
-                        timer.cancel();
-                    }
-                }, 3000, 1111);
-                inWait = true;
-            }
+//                        inWait = false;
+//                        timer.cancel();
+//                    }
+//                }, 3000, 1111);
+//                inWait = true;
+//            }
         }
     }
 
@@ -92,7 +92,7 @@ public abstract class Generator {
     }
 
     public static void makeNewBullet(int x, int y) {
-        Bullet bullet = new Bullet(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
+        Bullet bullet = new Bullet(Epsilon.getInstance().getX(), Epsilon.getInstance().getY() , true, Constants.EPSILON_COLOR);
         bullet.calculateMovingDirection(x, y);
         GameState.bullets.add(bullet);
     }
@@ -112,8 +112,6 @@ public abstract class Generator {
             initY -= GamePanel.getInstance().getPanelHeight();
         }
         int size = Constants.OMENOCT_SIZE;
-        initX = 100;
-        initY = 100;
         GameState.omenocts.add(new Omenoct(new double[]{initX, initX + size, initX + 2 * size, initX + 2 * size, initX + size , initX , initX - size , initX - size},
                 new double[]{initY, initY, initY + size, initY + 2 * size, initY + 3 * size , initY + 3 * size , initY + 2 * size , initY + size}));
 

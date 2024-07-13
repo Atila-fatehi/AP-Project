@@ -53,6 +53,7 @@ public abstract class Collision {
     }
 
     public static Point2D checkBulletCollision(Bullet bullet , Collidable collidable){
+        if(!bullet.isFromEpsilon()) return null;
         int[] xPoints = collidable.getXPoints();
         int[] yPoints = collidable.getYPoints();
         int x = (int) bullet.getX();
@@ -84,6 +85,14 @@ public abstract class Collision {
     public static boolean checkCoinCollision(Collectable coin){
         return Calculator.distance(Epsilon.getInstance().getX(), Epsilon.getInstance().getY(), coin.getX(), coin.getY())
                 <= coin.getRadius() + Epsilon.getInstance().getRadius() + 20;
+    }
+    public static Point2D checkCircleCollision(Bullet bullet){
+        if(bullet.isFromEpsilon()) return null;
+        if(Calculator.distance(Epsilon.getInstance().getX(), Epsilon.getInstance().getY(), bullet.getX(), bullet.getY())
+                <= bullet.getRadius() + Epsilon.getInstance().getRadius() + 3){
+            return new Point2D.Double(bullet.getX() , bullet.getY());
+        }
+        return null;
     }
 
 }
