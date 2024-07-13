@@ -30,7 +30,7 @@ public abstract class WallCollisionHandler {
                     GamePanel.getInstance().setSize(GamePanel.getInstance().getPanelWidth() + wallExpansionRate, GamePanel.getInstance().getPanelHeight());
                     GamePanel.getInstance().setPanelWidth(GamePanel.getInstance().getPanelWidth() + wallExpansionRate);
                     GamePanel.getInstance().setLocationX(GamePanel.getInstance().getLocationX() - wallExpansionRate);
-                    Epsilon.getInstance().setX(Epsilon.getInstance().getX() + wallExpansionRate);
+//                    Epsilon.getInstance().setX(Epsilon.getInstance().getX() + wallExpansionRate);
 
                     for (int j = 0; j < GameState.trigoraths.size(); j++) {
                         GameState.trigoraths.get(j).shiftX(wallExpansionRate);
@@ -58,7 +58,7 @@ public abstract class WallCollisionHandler {
                     GamePanel.getInstance().setSize(GamePanel.getInstance().getPanelWidth(), GamePanel.getInstance().getPanelHeight() + wallExpansionRate);
                     GamePanel.getInstance().setPanelHeight(GamePanel.getInstance().getPanelHeight() + wallExpansionRate);
                     GamePanel.getInstance().setLocationY(GamePanel.getInstance().getLocationY() - wallExpansionRate);
-                    Epsilon.getInstance().setY(Epsilon.getInstance().getY() + wallExpansionRate);
+//                    Epsilon.getInstance().setY(Epsilon.getInstance().getY() + wallExpansionRate);
 
                     for (int j = 0; j < GameState.trigoraths.size(); j++) {
                         GameState.trigoraths.get(j).shiftY(wallExpansionRate);

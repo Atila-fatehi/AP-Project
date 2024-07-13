@@ -23,11 +23,10 @@ public class GamePanel extends JPanel {
         return instance;
     }
 
-    private int locationX = 600;
-    private int locationY = 200;
-    private int panelWidth = 700;
-    private int panelHeight = 700;
-    private int shrinkageCounter = 0;
+    private int locationX = Constants.INITIAL_PANEL_X;
+    private int locationY = Constants.INITIAL_PANEL_Y;
+    private int panelWidth = Constants.INITIAL_PANEL_WIDTH;
+    private int panelHeight = Constants.INITIAL_PANEL_HEIGHT;
 
     public GamePanel() {
         setFocusable(true);
@@ -40,11 +39,8 @@ public class GamePanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
-        Epsilon.getInstance().selfPaint(g);
-
+        //get components in panel
         g.setFont(Constants.BOLD_15);
-
         ArrayList<Paintable> paintables = GameState.getPaintables();
         for (Paintable paintable : paintables) {
             paintable.selfPaint(g);
@@ -61,6 +57,10 @@ public class GamePanel extends JPanel {
         g.dispose();
     }
 
+
+
+    private int shrinkageCounter = 0;
+
     public void shrink() {
         int shrinkageRate = 2;
         if (shrinkageCounter == shrinkageRate) {
@@ -69,12 +69,12 @@ public class GamePanel extends JPanel {
             if (panelWidth >= 500) {
                 panelWidth -= 2;
                 locationX += 1;
-                Epsilon.getInstance().setX(Epsilon.getInstance().getX() - 1);
+//                Epsilon.getInstance().setX(Epsilon.getInstance().getX() - 1);
             }
             if (panelHeight >= 500) {
                 panelHeight -= 2;
                 locationY += 1;
-                Epsilon.getInstance().setY(Epsilon.getInstance().getY() - 1);
+//                Epsilon.getInstance().setY(Epsilon.getInstance().getY() - 1);
             }
             shrinkageCounter = 0;
         }

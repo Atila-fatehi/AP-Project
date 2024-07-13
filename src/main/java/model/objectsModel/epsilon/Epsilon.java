@@ -7,7 +7,9 @@ import model.Paintable.Paintable;
 import model.collision.Collidable;
 import model.movable.Movable;
 import model.objectsModel.SpecialAbility;
+import view.gameGUI.GamePanel;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.Objects;
 
@@ -16,7 +18,7 @@ public class Epsilon implements Movable, Collidable, Paintable {
     private static Epsilon instance;
 
     public static Epsilon getInstance() {
-        if (instance == null) instance = new Epsilon(Constants.INITIAL_EPSILON_POS, Constants.INITIAL_EPSILON_POS);
+        if (instance == null) instance = new Epsilon(Constants.INITIAL_EPSILON_POSX, Constants.INITIAL_EPSILON_POSY);
         return instance;
     }
 
@@ -37,6 +39,7 @@ public class Epsilon implements Movable, Collidable, Paintable {
     private int vertexesNum;
     private double vertexX;
     private double vertexY;
+    private JPanel currentPanel;
 
     public Epsilon(double x, double y) {
         this.x = x;
@@ -129,27 +132,31 @@ public class Epsilon implements Movable, Collidable, Paintable {
 
     @Override
     public void selfPaint(Graphics g) {
+        int locationX = GamePanel.getInstance().getLocationX();
+        int locationY = GamePanel.getInstance().getLocationY();
         g.setColor(Constants.EPSILON_COLOR);
-        g.fillOval((int) (x - radius), (int) (y - radius), (int) radius * 2, (int) radius * 2);
-        if (hasVertex) {
-            g.drawLine((int) (x - radius), (int) y, (int) vertexX, (int) vertexY);
-            g.drawLine((int) (x + radius), (int) y, (int) vertexX, (int) vertexY);
-            if (vertexesNum >= 2) {
-                g.drawLine((int) (x - radius), (int) y, (int) vertexX, (int) (vertexY + 2 * radius + 14));
-                g.drawLine((int) (x + radius), (int) y, (int) vertexX, (int) (vertexY + 2 * radius + 14));
-            }
-            if (vertexesNum >= 3) {
-                g.drawLine((int) x, (int) (y - radius), (int) (x + radius + 7), (int) y);
-                g.drawLine((int) x, (int) (y + radius), (int) (x + radius + 7), (int) y);
-            }
-            if (vertexesNum >= 4) {
-                g.drawLine((int) x, (int) (y - radius), (int) (x - radius - 7), (int) y);
-                g.drawLine((int) x, (int) (y + radius), (int) (x - radius - 7), (int) y);
-            }
-        }
+        g.fillOval((int) (x - radius - locationX), (int) (y - radius - locationY), (int) radius * 2, (int) radius * 2);
+//        if (hasVertex) {
+//            g.drawLine((int) (x - radius), (int) y, (int) vertexX, (int) vertexY);
+//            g.drawLine((int) (x + radius), (int) y, (int) vertexX, (int) vertexY);
+//            if (vertexesNum >= 2) {
+//                g.drawLine((int) (x - radius), (int) y, (int) vertexX, (int) (vertexY + 2 * radius + 14));
+//                g.drawLine((int) (x + radius), (int) y, (int) vertexX, (int) (vertexY + 2 * radius + 14));
+//            }
+//            if (vertexesNum >= 3) {
+//                g.drawLine((int) x, (int) (y - radius), (int) (x + radius + 7), (int) y);
+//                g.drawLine((int) x, (int) (y + radius), (int) (x + radius + 7), (int) y);
+//            }
+//            if (vertexesNum >= 4) {
+//                g.drawLine((int) x, (int) (y - radius), (int) (x - radius - 7), (int) y);
+//                g.drawLine((int) x, (int) (y + radius), (int) (x - radius - 7), (int) y);
+//            }
+//        }
         g.setColor(Constants.DARK_BLUE);
-        g.fillOval((int) (x - radius) + 4, (int) (y - radius) + 4, (int) radius * 2 - 8, (int) radius * 2 - 8);
+        int inner = 4;
+        g.fillOval((int) (x - radius - locationX) + inner, (int) (y - radius - locationY) + inner, (int) (radius - inner) * 2, (int) (radius - inner) * 2);
     }
+
     public int getXP() {
         return XP;
     }

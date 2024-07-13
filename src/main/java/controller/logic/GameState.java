@@ -40,12 +40,13 @@ public class GameState {
 
     public static ArrayList<Paintable> getPaintables(){
         ArrayList<Paintable> paintables = new ArrayList<>();
-        paintables.addAll(bullets);
         paintables.addAll(trigoraths);
         paintables.addAll(squarantines);
         paintables.addAll(collectables);
         paintables.addAll(omenocts);
         paintables.addAll(archmires);
+        paintables.addAll(bullets);
+        paintables.add(epsilon);
         return paintables;
     }
 

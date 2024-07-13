@@ -6,6 +6,7 @@ import model.collision.Collision;
 import model.collision.CollisionHandler;
 import model.collision.WallCollisionHandler;
 import model.objectsModel.enemy.Collectable;
+import model.objectsModel.enemy.Wyrm;
 import model.objectsModel.epsilon.Epsilon;
 import view.frames.MainMenu;
 import view.gameGUI.GameFrame;
@@ -35,9 +36,10 @@ public class GameManager {
     private boolean gameOver;
     private boolean gameWon;
     private boolean empower;
-
+    Wyrm wyrm;
     public GameManager() {
-        Generator.makeNewArchmire();
+//        Generator.makeNewTrigorath();
+        wyrm = new Wyrm(0,0);
         viewTimer = new java.util.Timer();
         viewTimer.schedule(new TimerTask() {
             @Override
@@ -96,6 +98,8 @@ public class GameManager {
     }
 
     public void updateModel() {
+//        wyrm.calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
+//        wyrm.move();
 //        Generator.generateSimpleWave();
         //Bullet stuff
         //Tri collision
@@ -324,10 +328,12 @@ public class GameManager {
 
         //epsilon stuff
         Epsilon.getInstance().move();
+
         if (Epsilon.getInstance().getHP() <= 0) {
             gameOver();
             paused = true;
         }
+
         for (int i = 0; i < GameState.collectables.size(); i++) {
             if (Collision.checkCoinCollision(GameState.collectables.get(i))) {
                 Epsilon.getInstance().setXP(Epsilon.getInstance().getXP() + GameState.collectables.get(i).getXp());
@@ -336,19 +342,21 @@ public class GameManager {
                 i--;
             }
         }
-        if (Epsilon.getInstance().getX() - Epsilon.getInstance().getRadius() < 0) {
-            Epsilon.getInstance().setX(Epsilon.getInstance().getRadius());
+
+
+        if (Epsilon.getInstance().getX() - Epsilon.getInstance().getRadius() < GamePanel.getInstance().getLocationX()) {
+            Epsilon.getInstance().setX(GamePanel.getInstance().getLocationX() + Epsilon.getInstance().getRadius());
             Epsilon.getInstance().setVx(0);
-        } else if (Epsilon.getInstance().getX() + Epsilon.getInstance().getRadius() > GamePanel.getInstance().getPanelWidth()) {
-            Epsilon.getInstance().setX(GamePanel.getInstance().getPanelWidth() - Epsilon.getInstance().getRadius());
+        } else if (Epsilon.getInstance().getX() + Epsilon.getInstance().getRadius() > GamePanel.getInstance().getPanelWidth() + GamePanel.getInstance().getLocationX()) {
+            Epsilon.getInstance().setX(GamePanel.getInstance().getPanelWidth() + GamePanel.getInstance().getLocationX() - Epsilon.getInstance().getRadius());
             Epsilon.getInstance().setVx(0);
         }
 
-        if (Epsilon.getInstance().getY() - Epsilon.getInstance().getRadius() < 0) {
-            Epsilon.getInstance().setY(Epsilon.getInstance().getRadius());
+        if (Epsilon.getInstance().getY() - Epsilon.getInstance().getRadius() < GamePanel.getInstance().getLocationY()) {
+            Epsilon.getInstance().setY(Epsilon.getInstance().getRadius() + GamePanel.getInstance().getLocationY());
             Epsilon.getInstance().setVy(0);
-        } else if (Epsilon.getInstance().getY() + Epsilon.getInstance().getRadius() > GamePanel.getInstance().getPanelHeight()) {
-            Epsilon.getInstance().setY(GamePanel.getInstance().getPanelHeight() - Epsilon.getInstance().getRadius());
+        } else if (Epsilon.getInstance().getY() + Epsilon.getInstance().getRadius() > GamePanel.getInstance().getPanelHeight() + GamePanel.getInstance().getLocationY()) {
+            Epsilon.getInstance().setY(GamePanel.getInstance().getPanelHeight() + GamePanel.getInstance().getLocationY() - Epsilon.getInstance().getRadius());
             Epsilon.getInstance().setVy(0);
         }
     }

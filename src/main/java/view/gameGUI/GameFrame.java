@@ -1,6 +1,8 @@
 package view.gameGUI;
 
 import controller.InputController;
+import controller.KeyController;
+import controller.MouseController;
 import controller.util.Constants;
 
 import javax.swing.*;

@@ -22,11 +22,18 @@ public abstract class Constants {
     public static final int SCREEN_WIDTH = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
     public static final int SCREEN_HEIGHT = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 
-    public static final double INITIAL_EPSILON_POS = 350;
+    public static final double INITIAL_EPSILON_POSX = 950;
+    public static final double INITIAL_EPSILON_POSY = 550;
+
     public static final int INITIAL_PANEL_X = 600;
     public static final int INITIAL_PANEL_Y = 200;
     public static final int INITIAL_PANEL_WIDTH = 700;
     public static final int INITIAL_PANEL_HEIGHT = 700;
+
+//    public static final int INITIAL_PANEL_X = 0;
+//    public static final int INITIAL_PANEL_Y = 0;
+//    public static final int INITIAL_PANEL_WIDTH = 1920;
+//    public static final int INITIAL_PANEL_HEIGHT = 1080;
 
     public static final int BUTTON_WIDTH = 300;
     public static final int BUTTON_HEIGHT = 50;

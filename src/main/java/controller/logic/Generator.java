@@ -93,7 +93,7 @@ public abstract class Generator {
     }
 
     public static void makeNewBullet(int x, int y) {
-        Bullet bullet = new Bullet(Epsilon.getInstance().getX(), Epsilon.getInstance().getY() , true, Constants.EPSILON_COLOR);
+        Bullet bullet = new Bullet(Epsilon.getInstance().getX(), Epsilon.getInstance().getY(), true, Constants.EPSILON_COLOR);
         bullet.calculateMovingDirection(x, y);
         GameState.bullets.add(bullet);
     }

@@ -50,16 +50,16 @@ public class Bullet implements Movable, WallCollidable, Collidable, Paintable {
 
     @Override
     public int wallCollision() {
-        if (x <= 0) {
+        if (x <= GamePanel.getInstance().getLocationX()) {
             return 1;
         }
-        if (y <= 0) {
+        if (y <= GamePanel.getInstance().getLocationY()) {
             return 2;
         }
-        if (x >= GamePanel.getInstance().getPanelWidth()) {
+        if (x >= GamePanel.getInstance().getPanelWidth() + GamePanel.getInstance().getLocationX()) {
             return 3;
         }
-        if (y >= GamePanel.getInstance().getPanelHeight()) {
+        if (y >= GamePanel.getInstance().getPanelHeight() + GamePanel.getInstance().getLocationY()) {
             return 4;
         }
         return 0;
@@ -84,45 +84,8 @@ public class Bullet implements Movable, WallCollidable, Collidable, Paintable {
     public void setY(double y) {
         this.y = y;
     }
-
-    public double getVx() {
-        return vx;
-    }
-
-    public void setVx(double vx) {
-        this.vx = vx;
-    }
-
-    public double getVy() {
-        return vy;
-    }
-
-    public void setVy(double vy) {
-        this.vy = vy;
-    }
-
-    public double getConstantVelocity() {
-        return constantVelocity;
-    }
-
-    public void setConstantVelocity(double constantVelocity) {
-        this.constantVelocity = constantVelocity;
-    }
-
-    public Color getColor() {
-        return color;
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
     public boolean isFromEpsilon() {
         return fromEpsilon;
-    }
-
-    public void setFromEpsilon(boolean fromEpsilon) {
-        this.fromEpsilon = fromEpsilon;
     }
 
     @Override
@@ -137,7 +100,9 @@ public class Bullet implements Movable, WallCollidable, Collidable, Paintable {
 
     @Override
     public void selfPaint(Graphics g) {
+        int locationX = GamePanel.getInstance().getLocationX();
+        int locationY = GamePanel.getInstance().getLocationY();
         g.setColor(color);
-        g.fillOval((int) (x - radius), (int) (y - radius), (int) radius * 2, (int) radius * 2);
+        g.fillOval((int) (x - radius - locationX), (int) (y - radius - locationY), (int) radius * 2, (int) radius * 2);
     }
 }

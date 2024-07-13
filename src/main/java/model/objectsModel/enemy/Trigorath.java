@@ -5,7 +5,6 @@ import controller.util.Constants;
 import model.Paintable.Paintable;
 import model.collision.Collidable;
 import model.movable.Movable;
-import model.objectsModel.EnemyModel;
 
 import java.awt.*;
 import java.awt.geom.Point2D;

@@ -11,7 +11,6 @@ import java.awt.image.ImageProducer;
 public class Necropick implements Paintable, Movable {
     @Override
     public void selfPaint(Graphics g) {
-//        Image image = new BufferedImage();
 //        g.drawImage();
     }
 
