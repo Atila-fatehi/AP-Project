@@ -38,7 +38,7 @@ public class GameManager {
     private boolean empower;
     Wyrm wyrm;
     public GameManager() {
-//        Generator.makeNewTrigorath();
+//        Generator.makeNewTrigorath();Generator.makeNewSquarantine();Generator.makeNewSquarantine();
         wyrm = new Wyrm(0,0);
         viewTimer = new java.util.Timer();
         viewTimer.schedule(new TimerTask() {

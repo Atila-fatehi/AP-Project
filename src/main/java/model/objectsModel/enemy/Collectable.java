@@ -1,6 +1,7 @@
 package model.objectsModel.enemy;
 
 import model.Paintable.Paintable;
+import view.gameGUI.GamePanel;
 
 import java.awt.*;
 
@@ -69,7 +70,9 @@ public class Collectable implements Paintable {
 
     @Override
     public void selfPaint(Graphics g) {
+        int locationX = GamePanel.getInstance().getLocationX();
+        int locationY = GamePanel.getInstance().getLocationY();
         g.setColor(color);
-        g.fillOval((int) x, (int) y, (int) radius * 2, (int) radius * 2);
+        g.fillOval((int) x - locationX, (int) y - locationY, (int) radius * 2, (int) radius * 2);
     }
 }

@@ -5,6 +5,7 @@ import controller.util.Constants;
 import model.Paintable.Paintable;
 import model.collision.Collidable;
 import model.movable.Movable;
+import view.gameGUI.GamePanel;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -26,18 +27,6 @@ public class Trigorath implements Movable, Collidable, Paintable {
     public Trigorath(double[] x, double[] y) {
         this.xPoints = x;
         this.yPoints = y;
-    }
-
-    public void shiftX(double rate) {
-        xPoints[0] += rate;
-        xPoints[1] += rate;
-        xPoints[2] += rate;
-    }
-
-    public void shiftY(double rate) {
-        yPoints[0] += rate;
-        yPoints[1] += rate;
-        yPoints[2] += rate;
     }
 
     @Override
@@ -103,16 +92,16 @@ public class Trigorath implements Movable, Collidable, Paintable {
         return new int[]{(int) yPoints[0], (int) yPoints[1], (int) yPoints[2]};
     }
 
-    public double getVx() {
-        return vx;
+    public int[] getRelativeXPoints() {
+        int locationX = GamePanel.getInstance().getLocationX();
+        return new int[]{(int) xPoints[0] - locationX, (int) xPoints[1] - locationX, (int) xPoints[2] - locationX};
     }
-
+    public int[] getRelativeYPoints() {
+        int locationY = GamePanel.getInstance().getLocationY();
+        return new int[]{(int) yPoints[0] - locationY, (int) yPoints[1] - locationY, (int) yPoints[2] - locationY};
+    }
     public void setVx(double vx) {
         this.vx = vx;
-    }
-
-    public double getVy() {
-        return vy;
     }
 
     public void setVy(double vy) {
@@ -127,14 +116,6 @@ public class Trigorath implements Movable, Collidable, Paintable {
         this.HP = HP;
     }
 
-    public double getPosXHP() {
-        return posXHP;
-    }
-
-    public double getPosYHP() {
-        return posYHP;
-    }
-
     public boolean isPlayed() {
         return played;
     }
@@ -146,9 +127,11 @@ public class Trigorath implements Movable, Collidable, Paintable {
 
     @Override
     public void selfPaint(Graphics g) {
+        int locationX = GamePanel.getInstance().getLocationX();
+        int locationY = GamePanel.getInstance().getLocationY();
         g.setColor(Constants.TRI_YELLOW);
-        g.fillPolygon(getXPoints(), getYPoints(), xPoints.length);
+        g.fillPolygon(getRelativeXPoints(), getRelativeYPoints(), xPoints.length);
         g.setColor(Color.BLACK);
-        g.drawString(String.valueOf(HP), (int) posXHP, (int) posYHP);
+        g.drawString(String.valueOf(HP), (int) posXHP - locationX, (int) posYHP - locationY);
     }
 }

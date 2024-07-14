@@ -4,6 +4,7 @@ import controller.util.Constants;
 import model.Paintable.Paintable;
 import model.collision.Collidable;
 import model.movable.Movable;
+import view.gameGUI.GamePanel;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -28,45 +29,32 @@ public class Squarantine implements Movable, Collidable, Paintable {
     private double accY;
     private boolean played;
     private java.util.Timer timer;
+
     public Squarantine(double[] x, double[] y) {
         this.xPoints = x;
         this.yPoints = y;
         randomAggression();
     }
 
-    public void shiftX(double rate) {
-        xPoints[0] += rate;
-        xPoints[1] += rate;
-        xPoints[2] += rate;
-        xPoints[3] += rate;
-    }
-
-    public void shiftY(double rate) {
-        yPoints[0] += rate;
-        yPoints[1] += rate;
-        yPoints[2] += rate;
-        yPoints[3] += rate;
-    }
-
-    public void randomAggression(){
+    public void randomAggression() {
         Random random = new Random();
         timer = new java.util.Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                if(random.nextBoolean()){
+                if (random.nextBoolean()) {
                     constantVelocity = 5d;
                     try {
                         TimeUnit.SECONDS.sleep(1);
-                    }catch (Exception e){
+                    } catch (Exception e) {
 
                     }
                     constantVelocity = 1d;
                 }
             }
-        },5000,3000);
+        }, 5000, 3000);
     }
-    
+
     public void calculateMovingDirection(double x, double y) {
         double angle = Math.atan2(y - (yPoints[0] + yPoints[2]) / 2, x - (xPoints[0] + xPoints[1]) / 2);
         maxVelocityX = constantVelocity * Math.cos(angle);
@@ -126,6 +114,18 @@ public class Squarantine implements Movable, Collidable, Paintable {
         return new int[]{(int) yPoints[0], (int) yPoints[1], (int) yPoints[2], (int) yPoints[3]};
     }
 
+    public int[] getRelativeXPoints() {
+        int locationX = GamePanel.getInstance().getLocationX();
+        return new int[]{(int) xPoints[0] - locationX, (int) xPoints[1] - locationX,
+                (int) xPoints[2] - locationX, (int) xPoints[3] - locationX};
+    }
+
+    public int[] getRelativeYPoints() {
+        int locationY = GamePanel.getInstance().getLocationY();
+        return new int[]{(int) yPoints[0] - locationY, (int) yPoints[1] - locationY,
+                (int) yPoints[2] - locationY, (int) yPoints[3] - locationY};
+    }
+
     public int getHP() {
         return HP;
     }
@@ -134,32 +134,8 @@ public class Squarantine implements Movable, Collidable, Paintable {
         this.HP = HP;
     }
 
-    public double getPosXHP() {
-        return posXHP;
-    }
-
-    public void setPosXHP(double posXHP) {
-        this.posXHP = posXHP;
-    }
-
-    public double getPosYHP() {
-        return posYHP;
-    }
-
-    public void setPosYHP(double posYHP) {
-        this.posYHP = posYHP;
-    }
-
-    public double getVx() {
-        return vx;
-    }
-
     public void setVx(double vx) {
         this.vx = vx;
-    }
-
-    public double getVy() {
-        return vy;
     }
 
     public void setVy(double vy) {
@@ -180,9 +156,11 @@ public class Squarantine implements Movable, Collidable, Paintable {
 
     @Override
     public void selfPaint(Graphics g) {
+        int locationX = GamePanel.getInstance().getLocationX();
+        int locationY = GamePanel.getInstance().getLocationY();
         g.setColor(Constants.SQUA_GREEN);
-        g.fillPolygon(getXPoints(), getYPoints(), xPoints.length);
+        g.fillPolygon(getRelativeXPoints(), getRelativeYPoints(), xPoints.length);
         g.setColor(Color.BLACK);
-        g.drawString(String.valueOf(HP), (int) posXHP, (int) posYHP);
+        g.drawString(String.valueOf(HP), (int) posXHP - locationX, (int) posYHP - locationY);
     }
 }
