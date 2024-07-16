@@ -40,7 +40,7 @@ public class GameManager {
     public GameManager() {
 
 
-        Generator.makeNewArchmire();
+        Generator.makeNewNecropick();
 
 
         viewTimer = new java.util.Timer();
@@ -84,8 +84,6 @@ public class GameManager {
     }
 
     public void updateModel() {
-//        wyrm.calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
-//        wyrm.move();
 //        Generator.generateSimpleWave();
         //Bullet stuff
         //Tri collision
@@ -310,6 +308,12 @@ public class GameManager {
         for (int i = 0; i < GameState.archmires.size(); i++) {
             GameState.archmires.get(i).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
             GameState.archmires.get(i).move();
+        }
+
+        //necropick stuff
+        for (int i = 0; i < GameState.necropicks.size(); i++) {
+            GameState.necropicks.get(i).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
+            GameState.necropicks.get(i).move();
         }
 
         //epsilon stuff

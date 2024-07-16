@@ -7,7 +7,6 @@ import controller.audio.players.MenuMusicPlayer;
 import controller.util.Constants;
 import view.Jcomponents.MyButton;
 import view.gameGUI.GameFrame;
-import view.images.WallpaperPainter;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

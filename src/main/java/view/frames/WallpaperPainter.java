@@ -1,4 +1,4 @@
-package view.images;
+package view.frames;
 
 import controller.util.Constants;
 

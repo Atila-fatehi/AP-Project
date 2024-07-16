@@ -29,6 +29,7 @@ public class Archmire implements Paintable, Movable {
     private double accY;
     private boolean played;
     private java.util.Timer timer;
+    private java.util.Timer timer1;
     private ArrayList<Integer> traveledX = new ArrayList<>();
     private ArrayList<Integer> traveledY = new ArrayList<>();
     private ArrayList<java.util.Timer> traveledTimer = new ArrayList<>();
@@ -48,7 +49,7 @@ public class Archmire implements Paintable, Movable {
                 traveledY.add((int) y);
             }
         }, 0, 100);
-        java.util.Timer timer1 = new java.util.Timer();
+        timer1 = new java.util.Timer();
         timer1.schedule(new TimerTask() {
             @Override
             public void run() {

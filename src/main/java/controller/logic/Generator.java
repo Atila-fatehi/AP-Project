@@ -2,12 +2,9 @@ package controller.logic;
 
 import controller.audio.players.AudioPlayer;
 import controller.util.Constants;
-import model.objectsModel.enemy.Archmire;
-import model.objectsModel.enemy.Omenoct;
+import model.objectsModel.enemy.*;
 import model.objectsModel.epsilon.Bullet;
 import model.objectsModel.epsilon.Epsilon;
-import model.objectsModel.enemy.Squarantine;
-import model.objectsModel.enemy.Trigorath;
 import view.gameGUI.GamePanel;
 
 import java.util.Random;
@@ -88,6 +85,11 @@ public abstract class Generator {
         int initX = randomiseInitialPosX();
         int initY = randomiseInitialPosY();
         GameState.archmires.add(new Archmire(initX, initY));
+    }
+    public static void makeNewNecropick(){
+        int initX = randomiseInitialPosX();
+        int initY = randomiseInitialPosY();
+        GameState.necropicks.add(new Necropick(initX, initY));
     }
 
     static int randomiseInitialPosX(){
