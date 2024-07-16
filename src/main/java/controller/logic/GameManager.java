@@ -38,11 +38,7 @@ public class GameManager {
     private boolean gameWon;
     private boolean empower;
     public GameManager() {
-
-
         Generator.makeNewNecropick();
-
-
         viewTimer = new java.util.Timer();
         viewTimer.schedule(new TimerTask() {
             @Override
@@ -148,6 +144,15 @@ public class GameManager {
                 i--;
             }
         }
+        //bounds
+        for (int i = 0; i < GameState.bullets.size(); i++) {
+            if (GameState.bullets.get(i).getX() < 0 ||GameState.bullets.get(i).getY() < 0 ||
+                    GameState.bullets.get(i).getX() > Constants.SCREEN_WIDTH || GameState.bullets.get(i).getX() < Constants.SCREEN_HEIGHT) {
+                GameState.bullets.remove(i);
+                i--;
+            }
+        }
+
 
         //Tri stuff
         for (int i = 0; i < GameState.trigoraths.size(); i++) {
@@ -336,9 +341,6 @@ public class GameManager {
 
     }
 
-
-
-
     public void startElapsedTimer() {
         javax.swing.Timer timer = new javax.swing.Timer(1000, new ActionListener() {
             @Override
@@ -355,10 +357,6 @@ public class GameManager {
         });
         timer.start();
     }
-
-
-
-
 
     public void gameWon() {
         GameMusicPlayer.getInstance().getClip().stop();
