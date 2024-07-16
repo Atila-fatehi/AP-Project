@@ -20,6 +20,7 @@ public class GameState {
     public static final ArrayList<Omenoct> omenocts = new ArrayList<>();
     public static final ArrayList<Archmire> archmires = new ArrayList<>();
     public static final ArrayList<Necropick> necropicks = new ArrayList<>();
+    public static final ArrayList<Wyrm> wyrms = new ArrayList<>();
     public static int elapsedTime;
     public static int difficulty = Objects.requireNonNull(FileController.readSettings())[1];
     public static int wave;
@@ -46,6 +47,7 @@ public class GameState {
         paintables.addAll(collectables);
         paintables.addAll(omenocts);
         paintables.addAll(necropicks);
+        paintables.addAll(wyrms);
         paintables.addAll(bullets);
         paintables.add(epsilon);
         paintables.addAll(archmires);

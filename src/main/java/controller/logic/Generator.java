@@ -91,6 +91,11 @@ public abstract class Generator {
         int initY = randomiseInitialPosY();
         GameState.necropicks.add(new Necropick(initX, initY));
     }
+    public static void makeNewWyrm(){
+        int initX = randomiseInitialPosX();
+        int initY = randomiseInitialPosY();
+        GameState.wyrms.add(new Wyrm(initX, initY));
+    }
 
     static int randomiseInitialPosX(){
         Random random = new Random();

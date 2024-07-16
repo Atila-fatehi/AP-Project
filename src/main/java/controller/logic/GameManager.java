@@ -38,7 +38,12 @@ public class GameManager {
     private boolean gameWon;
     private boolean empower;
     public GameManager() {
-        Generator.makeNewNecropick();
+
+        Generator.makeNewWyrm();
+        Generator.makeNewWyrm();
+        Generator.makeNewWyrm();
+        Generator.makeNewWyrm();
+
         viewTimer = new java.util.Timer();
         viewTimer.schedule(new TimerTask() {
             @Override
@@ -147,7 +152,7 @@ public class GameManager {
         //bounds
         for (int i = 0; i < GameState.bullets.size(); i++) {
             if (GameState.bullets.get(i).getX() < 0 ||GameState.bullets.get(i).getY() < 0 ||
-                    GameState.bullets.get(i).getX() > Constants.SCREEN_WIDTH || GameState.bullets.get(i).getX() < Constants.SCREEN_HEIGHT) {
+                    GameState.bullets.get(i).getX() > Constants.SCREEN_WIDTH || GameState.bullets.get(i).getY() > Constants.SCREEN_HEIGHT) {
                 GameState.bullets.remove(i);
                 i--;
             }
@@ -321,6 +326,11 @@ public class GameManager {
             GameState.necropicks.get(i).move();
         }
 
+        //wyrm stuff
+        for (int i = 0; i < GameState.wyrms.size(); i++) {
+            GameState.wyrms.get(i).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
+            GameState.wyrms.get(i).move();
+        }
         //epsilon stuff
         Epsilon.getInstance().move();
         Epsilon.getInstance().wallCollision();

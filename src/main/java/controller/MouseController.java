@@ -1,6 +1,7 @@
 package controller;
 
 import controller.logic.GameManager;
+import model.objectsModel.epsilon.Epsilon;
 import view.gameGUI.GamePanel;
 
 import java.awt.event.MouseEvent;

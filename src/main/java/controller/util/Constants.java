@@ -12,6 +12,7 @@ public abstract class Constants {
     public static final Color TRI_YELLOW = new Color(0xFFD900);
     public static final Color SQUA_GREEN = new Color(0x22FF00);
     public static final Color OMEN_PINK = new Color(0xFF07BB);
+    public static final Color WYRM_PINK = new Color(0xFF078F);
     public static final Color ARCH_RED = new Color(0xFF0734);
     public static final Color ARCH_DARKER_RED = new Color(0x630013);
     public static final Color EPSILON_COLOR = new Color(0x38C1F1);
@@ -60,6 +61,7 @@ public abstract class Constants {
     //Paths
     public static final File WALLPAPER = new File(Paths.get("").toAbsolutePath() + "/src/main/java/view/images/wallpaper.jpg");
     public static final File NECRO_PICK = new File(Paths.get("").toAbsolutePath() + "/src/main/java/view/images/Necropick.PNG");
+    public static final File WYRM_PIC = new File(Paths.get("").toAbsolutePath() + "/src/main/java/view/images/wyrm.PNG");
 
     public static final String SETTING_PATH = Paths.get("").toAbsolutePath() + "/src/main/java/model/dataBase/settings.txt";
     public static final String ABILITY_PATH = Paths.get("").toAbsolutePath() + "/src/main/java/model/dataBase/abilityCode.txt";
