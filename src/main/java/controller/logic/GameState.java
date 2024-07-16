@@ -44,9 +44,9 @@ public class GameState {
         paintables.addAll(squarantines);
         paintables.addAll(collectables);
         paintables.addAll(omenocts);
-        paintables.addAll(archmires);
         paintables.addAll(bullets);
         paintables.add(epsilon);
+        paintables.addAll(archmires);
         return paintables;
     }
 

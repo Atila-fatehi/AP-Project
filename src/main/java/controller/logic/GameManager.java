@@ -13,6 +13,7 @@ import view.gameGUI.GameFrame;
 import view.gameGUI.GamePanel;
 import controller.audio.players.AudioPlayer;
 import controller.audio.players.GameMusicPlayer;
+import view.gameGUI.GamePanel2;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -36,10 +37,12 @@ public class GameManager {
     private boolean gameOver;
     private boolean gameWon;
     private boolean empower;
-    Wyrm wyrm;
     public GameManager() {
-//        Generator.makeNewTrigorath();Generator.makeNewSquarantine();Generator.makeNewSquarantine();
-        wyrm = new Wyrm(0,0);
+
+
+        Generator.makeNewArchmire();
+
+
         viewTimer = new java.util.Timer();
         viewTimer.schedule(new TimerTask() {
             @Override
@@ -52,6 +55,7 @@ public class GameManager {
                 }
             }
         }, 0, (int) (double) TimeUnit.SECONDS.toMillis(1) / 60/*GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0].getDisplayMode().getRefreshRate()*/);
+
 
         modelTimer = new java.util.Timer();
         modelTimer.schedule(new TimerTask() {
@@ -68,26 +72,7 @@ public class GameManager {
 
     }
 
-
-    public void startElapsedTimer() {
-        javax.swing.Timer timer = new javax.swing.Timer(1000, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (Epsilon.getInstance().getAbility().isAceso() && Epsilon.getInstance().getAbility().isActive()) {
-                    Epsilon.getInstance().setHP(Epsilon.getInstance().getHP() + 1);
-                }
-                GameState.elapsedTime++;
-                if (GameState.elapsedTime == 10) {
-                    pastTen = true;
-                }
-            }
-
-        });
-        timer.start();
-    }
-
     private boolean pastTen;
-
     public void updateView() {
         if (!gameWon) {
             if (pastTen) {
@@ -95,6 +80,7 @@ public class GameManager {
             }
         }
         GamePanel.getInstance().repaint();
+        GamePanel2.getInstance().repaint();
     }
 
     public void updateModel() {
@@ -328,7 +314,7 @@ public class GameManager {
 
         //epsilon stuff
         Epsilon.getInstance().move();
-
+        Epsilon.getInstance().wallCollision();
         if (Epsilon.getInstance().getHP() <= 0) {
             gameOver();
             paused = true;
@@ -344,22 +330,31 @@ public class GameManager {
         }
 
 
-        if (Epsilon.getInstance().getX() - Epsilon.getInstance().getRadius() < GamePanel.getInstance().getLocationX()) {
-            Epsilon.getInstance().setX(GamePanel.getInstance().getLocationX() + Epsilon.getInstance().getRadius());
-            Epsilon.getInstance().setVx(0);
-        } else if (Epsilon.getInstance().getX() + Epsilon.getInstance().getRadius() > GamePanel.getInstance().getPanelWidth() + GamePanel.getInstance().getLocationX()) {
-            Epsilon.getInstance().setX(GamePanel.getInstance().getPanelWidth() + GamePanel.getInstance().getLocationX() - Epsilon.getInstance().getRadius());
-            Epsilon.getInstance().setVx(0);
-        }
-
-        if (Epsilon.getInstance().getY() - Epsilon.getInstance().getRadius() < GamePanel.getInstance().getLocationY()) {
-            Epsilon.getInstance().setY(Epsilon.getInstance().getRadius() + GamePanel.getInstance().getLocationY());
-            Epsilon.getInstance().setVy(0);
-        } else if (Epsilon.getInstance().getY() + Epsilon.getInstance().getRadius() > GamePanel.getInstance().getPanelHeight() + GamePanel.getInstance().getLocationY()) {
-            Epsilon.getInstance().setY(GamePanel.getInstance().getPanelHeight() + GamePanel.getInstance().getLocationY() - Epsilon.getInstance().getRadius());
-            Epsilon.getInstance().setVy(0);
-        }
     }
+
+
+
+
+    public void startElapsedTimer() {
+        javax.swing.Timer timer = new javax.swing.Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (Epsilon.getInstance().getAbility().isAceso() && Epsilon.getInstance().getAbility().isActive()) {
+                    Epsilon.getInstance().setHP(Epsilon.getInstance().getHP() + 1);
+                }
+                GameState.elapsedTime++;
+                if (GameState.elapsedTime == 10) {
+                    pastTen = true;
+                }
+            }
+
+        });
+        timer.start();
+    }
+
+
+
+
 
     public void gameWon() {
         GameMusicPlayer.getInstance().getClip().stop();

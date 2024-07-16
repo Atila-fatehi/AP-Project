@@ -29,7 +29,8 @@ public class Omenoct implements Paintable, Collidable, Movable {
     private double accX;
     private double accY;
     private boolean played;
-    private java.util.Timer shootTimer;
+    private final java.util.Timer shootTimer;
+
     public Omenoct(double[] xPoints, double[] yPoints) {
         this.xPoints = xPoints;
         this.yPoints = yPoints;
@@ -39,15 +40,16 @@ public class Omenoct implements Paintable, Collidable, Movable {
             public void run() {
                 shootBullet();
             }
-        },2000,1500);
+        }, 2000, 1500);
     }
 
 
-    void shootBullet(){
-        Bullet bullet = new Bullet(getCenterX(), getCenterY() , false, Constants.OMEN_PINK);
+    void shootBullet() {
+        Bullet bullet = new Bullet(getCenterX(), getCenterY(), false, Constants.OMEN_PINK);
         bullet.calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
         GameState.bullets.add(bullet);
     }
+
     @Override
     public void calculateMovingDirection(double x, double y) {
         //get epsilon current frame
@@ -55,13 +57,15 @@ public class Omenoct implements Paintable, Collidable, Movable {
         //if(epsilon changed frame) return;
         int width = GamePanel.getInstance().getPanelWidth();
         int height = GamePanel.getInstance().getPanelHeight();
+        int locX = GamePanel.getInstance().getLocationX();
+        int locY = GamePanel.getInstance().getLocationY();
         if (calculated) {
             if (destination) {
-                destinationX = 0;
-                destinationY = height / 2;
+                destinationX = locX;
+                destinationY = locY + height / 2;
             } else {
-                destinationX = width;
-                destinationY = height / 2;
+                destinationX = locX + width;
+                destinationY = locY + height / 2;
             }
             double angle = Math.atan2(destinationY - getCenterY(), destinationX - getCenterX());
             maxVelocityX = constantVelocity * Math.cos(angle);
@@ -76,18 +80,19 @@ public class Omenoct implements Paintable, Collidable, Movable {
 
         } else {
             if (Calculator.distance(0, (double) height / 2, getCenterX(), getCenterY()) <= Calculator.distance(width, (double) height / 2, getCenterX(), getCenterY())) {
-                destinationX = 0;
-                destinationY = height / 2;
+                destinationX = locX;
+                destinationY = locY + height / 2;
                 destination = true;
                 calculated = true;
             } else {
-                destinationX = width;
-                destinationY = height / 2;
+                destinationX = locX + width;
+                destinationY = locY + height / 2;
                 destination = false;
                 calculated = true;
             }
         }
     }
+
     @Override
     public void move() {
         xPoints[0] += vx;
@@ -127,10 +132,10 @@ public class Omenoct implements Paintable, Collidable, Movable {
                 vy += accY;
             }
         }
-        if(destination){
+        if (destination) {
             posXHP = xPoints[1] - 3;
             posYHP = yPoints[3] - 5;
-        }else{
+        } else {
             posXHP = xPoints[0] - 3;
             posYHP = yPoints[6] - 5;
         }
@@ -143,14 +148,15 @@ public class Omenoct implements Paintable, Collidable, Movable {
     boolean destination;
 
 
-
     public void stickPositionToPanel() {
         int width = GamePanel.getInstance().getPanelWidth();
         int height = GamePanel.getInstance().getPanelHeight();
+        int locX = GamePanel.getInstance().getLocationX();
+        int locY = GamePanel.getInstance().getLocationY();
         if (destination) {
-            xPoints[0] = (double) (-1 * Constants.OMENOCT_SIZE) / 2;
+            xPoints[0] = locX + (double) (-1 * Constants.OMENOCT_SIZE) / 2;
         } else {
-            xPoints[0] = width - Constants.OMENOCT_SIZE;
+            xPoints[0] = locX + width - Constants.OMENOCT_SIZE;
         }
         xPoints[1] = xPoints[0] + Constants.OMENOCT_SIZE;
         xPoints[2] = xPoints[1] + Constants.OMENOCT_SIZE;
@@ -160,7 +166,7 @@ public class Omenoct implements Paintable, Collidable, Movable {
         xPoints[6] = xPoints[5] - Constants.OMENOCT_SIZE;
         xPoints[7] = xPoints[6];
 
-        yPoints[0] = (double) height / 2 - Constants.OMENOCT_SIZE - (double) Constants.OMENOCT_SIZE / 2;
+        yPoints[0] = locY + (double) height / 2 - Constants.OMENOCT_SIZE - (double) Constants.OMENOCT_SIZE / 2;
         yPoints[1] = yPoints[0];
         yPoints[2] = yPoints[1] + Constants.OMENOCT_SIZE;
         yPoints[3] = yPoints[2] + Constants.OMENOCT_SIZE;
@@ -169,10 +175,10 @@ public class Omenoct implements Paintable, Collidable, Movable {
         yPoints[6] = yPoints[5] - Constants.OMENOCT_SIZE;
         yPoints[7] = yPoints[6] - Constants.OMENOCT_SIZE;
 
-        if(destination){
+        if (destination) {
             posXHP = xPoints[1] - 3;
             posYHP = yPoints[3] - 5;
-        }else{
+        } else {
             posXHP = xPoints[0] - 3;
             posYHP = yPoints[6] - 5;
         }
@@ -187,15 +193,6 @@ public class Omenoct implements Paintable, Collidable, Movable {
     }
 
     @Override
-    public void selfPaint(Graphics g) {
-        g.setColor(Constants.OMEN_PINK);
-        g.fillPolygon(getXPoints(), getYPoints(), xPoints.length);
-        g.setColor(Color.BLACK);
-        g.drawString(String.valueOf(HP), (int) posXHP, (int) posYHP);
-
-    }
-
-    @Override
     public int[] getXPoints() {
         return new int[]{(int) xPoints[0], (int) xPoints[1], (int) xPoints[2], (int) xPoints[3], (int) xPoints[4],
                 (int) xPoints[5], (int) xPoints[6], (int) xPoints[7]};
@@ -205,6 +202,18 @@ public class Omenoct implements Paintable, Collidable, Movable {
     public int[] getYPoints() {
         return new int[]{(int) yPoints[0], (int) yPoints[1], (int) yPoints[2], (int) yPoints[3], (int) yPoints[4],
                 (int) yPoints[5], (int) yPoints[6], (int) yPoints[7]};
+    }
+
+    public int[] getRelativeXPoints() {
+        int locationX = GamePanel.getInstance().getLocationX();
+        return new int[]{(int) xPoints[0] - locationX, (int) xPoints[1] - locationX, (int) xPoints[2] - locationX, (int) xPoints[3] - locationX,
+                (int) xPoints[4] - locationX, (int) xPoints[5] - locationX, (int) xPoints[6] - locationX, (int) xPoints[7] - locationX};
+    }
+
+    public int[] getRelativeYPoints() {
+        int locationY = GamePanel.getInstance().getLocationY();
+        return new int[]{(int) yPoints[0] - locationY, (int) yPoints[1] - locationY, (int) yPoints[2] - locationY, (int) yPoints[3] - locationY,
+                (int) yPoints[4] - locationY, (int) yPoints[5] - locationY, (int) yPoints[6] - locationY, (int) yPoints[7] - locationY};
     }
 
     public Timer getShootTimer() {
@@ -222,4 +231,16 @@ public class Omenoct implements Paintable, Collidable, Movable {
     public boolean isDestination() {
         return destination;
     }
+
+    @Override
+    public void selfPaint(Graphics g) {
+        int locationX = GamePanel.getInstance().getLocationX();
+        int locationY = GamePanel.getInstance().getLocationY();
+        g.setColor(Constants.OMEN_PINK);
+        g.fillPolygon(getRelativeXPoints(), getRelativeYPoints(), xPoints.length);
+        g.setColor(Color.BLACK);
+        g.drawString(String.valueOf(HP), (int) posXHP - locationX, (int) posYHP - locationY);
+
+    }
+
 }

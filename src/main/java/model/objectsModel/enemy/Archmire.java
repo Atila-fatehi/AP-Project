@@ -3,9 +3,11 @@ package model.objectsModel.enemy;
 import controller.util.Constants;
 import model.Paintable.Paintable;
 import model.movable.Movable;
+import view.gameGUI.GamePanel;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
@@ -29,6 +31,7 @@ public class Archmire implements Paintable, Movable {
     private java.util.Timer timer;
     private ArrayList<Integer> traveledX = new ArrayList<>();
     private ArrayList<Integer> traveledY = new ArrayList<>();
+    private ArrayList<java.util.Timer> traveledTimer = new ArrayList<>();
 
 
     public Archmire(double x, double y) {
@@ -45,6 +48,15 @@ public class Archmire implements Paintable, Movable {
                 traveledY.add((int) y);
             }
         }, 0, 100);
+        java.util.Timer timer1 = new java.util.Timer();
+        timer1.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                traveledX.removeFirst();
+                traveledY.removeFirst();
+            }
+        } , 5000 , 100);
+        traveledTimer.add(timer1);
     }
 
 
@@ -89,14 +101,16 @@ public class Archmire implements Paintable, Movable {
 
     @Override
     public void selfPaint(Graphics g) {
+        int locX = GamePanel.getInstance().getLocationX();
+        int locY = GamePanel.getInstance().getLocationY();
         g.setColor(Constants.ARCH_DARKER_RED);
         for (int i = 0; i < traveledX.size(); i++) {
-            g.fillOval(traveledX.get(i), traveledY.get(i), (int) radius_a, (int) radius_b);
+            g.fillOval(traveledX.get(i) - locX, traveledY.get(i) - locY, (int) radius_a, (int) radius_b);
         }
         g.setColor(Constants.ARCH_RED);
-        g.fillOval((int) x, (int) y, (int) radius_a, (int) radius_b);
+        g.fillOval((int) x - locX, (int) y - locY, (int) radius_a, (int) radius_b);
         g.setColor(Color.BLACK);
-        g.drawString(String.valueOf(HP), (int) posXHP, (int) posYHP);
+        g.drawString(String.valueOf(HP), (int) posXHP - locX, (int) posYHP - locY);
     }
 
 }

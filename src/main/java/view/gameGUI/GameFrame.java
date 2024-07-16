@@ -37,4 +37,11 @@ public class GameFrame extends JFrame {
         add(GamePanel.getInstance());
         add(InputController.getInstance());
     }
+
+    public void addPanel2(){
+        GamePanel2.makeInstance();
+        GamePanel2.getInstance().setBackground(Constants.DARK_BLUE);
+        GamePanel2.getInstance().setBounds(0, 0, Constants.INITIAL_PANEL_WIDTH,Constants.INITIAL_PANEL_HEIGHT);
+        add(GamePanel2.getInstance());
+    }
 }

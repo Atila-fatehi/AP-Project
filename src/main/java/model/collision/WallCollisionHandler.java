@@ -94,5 +94,22 @@ public abstract class WallCollisionHandler {
         }
     }
 
+    public static void handleEpsilonWallCollision(){
+        if (Epsilon.getInstance().getX() - Epsilon.getInstance().getRadius() < GamePanel.getInstance().getLocationX()) {
+            Epsilon.getInstance().setX(GamePanel.getInstance().getLocationX() + Epsilon.getInstance().getRadius());
+            Epsilon.getInstance().setVx(0);
+        } else if (Epsilon.getInstance().getX() + Epsilon.getInstance().getRadius() > GamePanel.getInstance().getPanelWidth() + GamePanel.getInstance().getLocationX()) {
+            Epsilon.getInstance().setX(GamePanel.getInstance().getPanelWidth() + GamePanel.getInstance().getLocationX() - Epsilon.getInstance().getRadius());
+            Epsilon.getInstance().setVx(0);
+        }
+
+        if (Epsilon.getInstance().getY() - Epsilon.getInstance().getRadius() < GamePanel.getInstance().getLocationY()) {
+            Epsilon.getInstance().setY(Epsilon.getInstance().getRadius() + GamePanel.getInstance().getLocationY());
+            Epsilon.getInstance().setVy(0);
+        } else if (Epsilon.getInstance().getY() + Epsilon.getInstance().getRadius() > GamePanel.getInstance().getPanelHeight() + GamePanel.getInstance().getLocationY()) {
+            Epsilon.getInstance().setY(GamePanel.getInstance().getPanelHeight() + GamePanel.getInstance().getLocationY() - Epsilon.getInstance().getRadius());
+            Epsilon.getInstance().setVy(0);
+        }
+    }
 
 }

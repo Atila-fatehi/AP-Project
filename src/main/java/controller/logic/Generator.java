@@ -85,8 +85,9 @@ public abstract class Generator {
     }
 
     public static void makeNewArchmire() {
-
-//        GameState.archmires.add(new Archmire(initX, initY));
+        int initX = randomiseInitialPosX();
+        int initY = randomiseInitialPosY();
+        GameState.archmires.add(new Archmire(initX, initY));
     }
 
     static int randomiseInitialPosX(){

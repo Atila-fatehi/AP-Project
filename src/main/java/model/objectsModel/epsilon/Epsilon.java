@@ -5,6 +5,8 @@ import controller.FileController;
 import controller.util.Constants;
 import model.Paintable.Paintable;
 import model.collision.Collidable;
+import model.collision.WallCollidable;
+import model.collision.WallCollisionHandler;
 import model.movable.Movable;
 import model.objectsModel.SpecialAbility;
 import view.gameGUI.GamePanel;
@@ -13,7 +15,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Objects;
 
-public class Epsilon implements Movable, Collidable, Paintable {
+public class Epsilon implements Movable, Collidable, Paintable, WallCollidable {
 
     private static Epsilon instance;
 
@@ -45,6 +47,7 @@ public class Epsilon implements Movable, Collidable, Paintable {
         this.x = x;
         this.y = y;
         this.XP = Integer.parseInt(FileController.readXP());
+        currentPanel = GamePanel.getInstance();
         if (FileController.readAbilities() == 11) {
             ability.setAres(true);
         }
@@ -123,6 +126,7 @@ public class Epsilon implements Movable, Collidable, Paintable {
             vertexX = x;
             vertexY = y - radius - 7;
         }
+        currentPanel = GamePanel.getInstance();
     }
 
     @Override
@@ -132,8 +136,8 @@ public class Epsilon implements Movable, Collidable, Paintable {
 
     @Override
     public void selfPaint(Graphics g) {
-        int locationX = GamePanel.getInstance().getLocationX();
-        int locationY = GamePanel.getInstance().getLocationY();
+        int locationX = (int) currentPanel.getLocation().getX();
+        int locationY = (int) currentPanel.getLocation().getY();
         g.setColor(Constants.EPSILON_COLOR);
         g.fillOval((int) (x - radius - locationX), (int) (y - radius - locationY), (int) radius * 2, (int) radius * 2);
 //        if (hasVertex) {
@@ -188,7 +192,6 @@ public class Epsilon implements Movable, Collidable, Paintable {
     public void setVx(double vx) {
         this.vx = vx;
     }
-
 
     public void setVy(double vy) {
         this.vy = vy;
@@ -264,5 +267,11 @@ public class Epsilon implements Movable, Collidable, Paintable {
     @Override
     public int[] getYPoints() {
         return new int[]{(int) y};
+    }
+
+    @Override
+    public int wallCollision() {
+        WallCollisionHandler.handleEpsilonWallCollision();
+        return 0;
     }
 }
