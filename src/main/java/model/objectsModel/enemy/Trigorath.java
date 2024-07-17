@@ -1,5 +1,6 @@
 package model.objectsModel.enemy;
 
+import controller.logic.GameState;
 import controller.util.Calculator;
 import controller.util.Constants;
 import model.Paintable.Paintable;
@@ -7,6 +8,7 @@ import model.collision.Collidable;
 import model.movable.Movable;
 import view.gameGUI.GamePanel;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
 
@@ -92,12 +94,12 @@ public class Trigorath implements Movable, Collidable, Paintable {
         return new int[]{(int) yPoints[0], (int) yPoints[1], (int) yPoints[2]};
     }
 
-    public int[] getRelativeXPoints() {
-        int locationX = GamePanel.getInstance().getLocationX();
+    public int[] getRelativeXPoints(JPanel panel) {
+        int locationX =panel.getX();
         return new int[]{(int) xPoints[0] - locationX, (int) xPoints[1] - locationX, (int) xPoints[2] - locationX};
     }
-    public int[] getRelativeYPoints() {
-        int locationY = GamePanel.getInstance().getLocationY();
+    public int[] getRelativeYPoints(JPanel panel) {
+        int locationY = panel.getY();
         return new int[]{(int) yPoints[0] - locationY, (int) yPoints[1] - locationY, (int) yPoints[2] - locationY};
     }
     public void setVx(double vx) {
@@ -127,11 +129,21 @@ public class Trigorath implements Movable, Collidable, Paintable {
 
     @Override
     public void selfPaint(Graphics g) {
-        int locationX = GamePanel.getInstance().getLocationX();
-        int locationY = GamePanel.getInstance().getLocationY();
+        int locX = GamePanel.getInstance().getLocationX();
+        int locY = GamePanel.getInstance().getLocationY();
         g.setColor(Constants.TRI_YELLOW);
-        g.fillPolygon(getRelativeXPoints(), getRelativeYPoints(), xPoints.length);
+        g.fillPolygon(getRelativeXPoints(GamePanel.getInstance()), getRelativeYPoints(GamePanel.getInstance()), xPoints.length);
         g.setColor(Color.BLACK);
-        g.drawString(String.valueOf(HP), (int) posXHP - locationX, (int) posYHP - locationY);
+        g.drawString(String.valueOf(HP), (int) posXHP - locX, (int) posYHP - locY);
+
+        for (int i = 0; i < GameState.panels.size(); i++) {
+            locX = GameState.panels.get(i).getX();
+            locY = GameState.panels.get(i).getY();
+            Graphics g2 = GameState.panels.get(i).getGraphics();
+            g2.setColor(Constants.TRI_YELLOW);
+            g2.fillPolygon(getRelativeXPoints(GameState.panels.get(i)), getRelativeYPoints(GameState.panels.get(i)), xPoints.length);
+            g2.setColor(Color.BLACK);
+            g2.drawString(String.valueOf(HP), (int) posXHP - locX, (int) posYHP - locY);
+        }
     }
 }

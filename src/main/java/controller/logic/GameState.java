@@ -5,6 +5,7 @@ import model.Paintable.Paintable;
 import model.objectsModel.enemy.*;
 import model.objectsModel.epsilon.Bullet;
 import model.objectsModel.epsilon.Epsilon;
+import model.objectsModel.miniBoss.Barricados;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ public class GameState {
     public static final ArrayList<Archmire> archmires = new ArrayList<>();
     public static final ArrayList<Necropick> necropicks = new ArrayList<>();
     public static final ArrayList<Wyrm> wyrms = new ArrayList<>();
+    public static final ArrayList<Barricados> barricados = new ArrayList<>();
     public static final ArrayList<JPanel> panels = new ArrayList<>();
     public static int elapsedTime;
     public static int difficulty = Objects.requireNonNull(FileController.readSettings())[1];
@@ -50,6 +52,7 @@ public class GameState {
         paintables.addAll(omenocts);
         paintables.addAll(necropicks);
         paintables.addAll(wyrms);
+        paintables.addAll(barricados);
         paintables.addAll(bullets);
         paintables.add(epsilon);
         paintables.addAll(archmires);

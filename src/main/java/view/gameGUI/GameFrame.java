@@ -1,8 +1,6 @@
 package view.gameGUI;
 
 import controller.InputController;
-import controller.KeyController;
-import controller.MouseController;
 import controller.util.Constants;
 
 import javax.swing.*;
@@ -35,13 +33,15 @@ public class GameFrame extends JFrame {
         GamePanel.getInstance().setBackground(Constants.DARK_BLUE);
         GamePanel.getInstance().setBounds(Constants.INITIAL_PANEL_X, Constants.INITIAL_PANEL_Y, Constants.INITIAL_PANEL_WIDTH,Constants.INITIAL_PANEL_HEIGHT);
         add(GamePanel.getInstance());
+
         add(InputController.getInstance());
+
+        Panel22.makeInstance();
+        Panel22.getInstance().setBackground(Constants.DARK_BLUE);
+        Panel22.getInstance().setBounds(0, 0, 500,500);
+        add(Panel22.getInstance());
     }
 
-    public void addPanel2(){
-        GamePanel2.makeInstance();
-        GamePanel2.getInstance().setBackground(Constants.DARK_BLUE);
-        GamePanel2.getInstance().setBounds(0, 0, Constants.INITIAL_PANEL_WIDTH,Constants.INITIAL_PANEL_HEIGHT);
-        add(GamePanel2.getInstance());
-    }
+
+
 }

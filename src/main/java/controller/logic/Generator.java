@@ -5,6 +5,7 @@ import controller.util.Constants;
 import model.objectsModel.enemy.*;
 import model.objectsModel.epsilon.Bullet;
 import model.objectsModel.epsilon.Epsilon;
+import model.objectsModel.miniBoss.Barricados;
 import view.gameGUI.GamePanel;
 
 import java.util.Random;
@@ -96,7 +97,11 @@ public abstract class Generator {
         int initY = randomiseInitialPosY();
         GameState.wyrms.add(new Wyrm(initX, initY));
     }
-
+    public static void makeNewBarricados(){
+        int initX = randomXonScreen();
+        int initY = randomYonScreen();
+        GameState.barricados.add(new Barricados(initX, initY));
+    }
     static int randomiseInitialPosX(){
         Random random = new Random();
         int initX = random.nextInt(GamePanel.getInstance().getPanelWidth());
@@ -117,5 +122,10 @@ public abstract class Generator {
         }
         return initY + GamePanel.getInstance().getLocationY();
     }
-
+    static int randomXonScreen(){
+        return new Random().nextInt(700) + GamePanel.getInstance().getLocationX();
+    }
+    static int randomYonScreen(){
+        return new Random().nextInt(700) + GamePanel.getInstance().getLocationY();
+    }
 }

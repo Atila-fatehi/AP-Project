@@ -34,7 +34,6 @@ public class MainMenu extends JFrame {
                 FrameController.minimizeAllWindows();
                 GameFrame.makeInstance();
                 GameFrame.getInstance().addPanel();
-               // GameFrame.getInstance().addPanel2();
                 GameManager.getInstance().startElapsedTimer();
             }
         });

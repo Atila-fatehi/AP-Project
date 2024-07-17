@@ -17,7 +17,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Wyrm implements Movable, Paintable {
-    JPanel panel;
     private double x;
     private double y;
     private double width = 90;
@@ -33,6 +32,7 @@ public class Wyrm implements Movable, Paintable {
     private double vy;
     private double accX;
     private double accY;
+    private Panel panel;
     private Image image;
     private boolean linearMovement;
     private final java.util.Timer shootTimer = new java.util.Timer();
@@ -40,10 +40,8 @@ public class Wyrm implements Movable, Paintable {
     public Wyrm(double x, double y) {
         this.x = x;
         this.y = y;
-        panel = new JPanel();
-        panel.setBounds((int) x - 10, (int) y - 10, (int) width + 20, (int) height + 20);
-        panel.setBackground(Constants.DARK_BLUE);
-        GameState.panels.add(panel);
+
+        panel = new Panel();
 
         try {
             Image yourImage = (Image) ImageIO.read(Constants.WYRM_PIC);
@@ -51,8 +49,6 @@ public class Wyrm implements Movable, Paintable {
         } catch (Exception e) {
             System.out.println("exception in wyrm paint");
         }
-
-        GameFrame.getInstance().add(panel);
         shootTimer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -61,6 +57,25 @@ public class Wyrm implements Movable, Paintable {
         }, 2000, 1500);
     }
 
+    class Panel extends JPanel {
+        public Panel() {
+            setBounds((int) x - 10, (int) y - 10, (int) width + 20, (int) height + 20);
+            setBackground(Constants.DARK_BLUE);
+            GameState.panels.add(this);
+            GameFrame.getInstance().add(this);
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            int locX = panel.getX();
+            int locY = panel.getY();
+            g.drawImage(image, (int) x - locX - 45, (int) y - locY - 35, this);
+            panel.setLocation((int) x - 45 - 10, (int) y - 35 - 10);
+
+            g.dispose();
+        }
+    }
     void shootBullet() {
 //        Bullet bullet = new Bullet(x, y, false, Constants.WYRM_PINK);
 //        bullet.calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
@@ -139,7 +154,7 @@ public class Wyrm implements Movable, Paintable {
         locX = panel.getX();
         locY = panel.getY();
         Graphics g2 = panel.getGraphics();
-        g2.drawImage(image, (int) x - locX - 45, (int) y - locY - 35, GamePanel.getInstance());
+        g2.drawImage(image, (int) x - locX - 45, (int) y - locY - 35, panel);
         panel.setLocation((int) x - 45 - 10, (int) y - 35 - 10);
     }
 

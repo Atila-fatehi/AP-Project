@@ -14,7 +14,7 @@ public class InputController extends JPanel {
         setFocusable(true);
         requestFocus();
         KeyController.initiateKeyCodes();
-        addMouseListener(new MouseController());
+        addMouseListener(new MouseController(this));
         addKeyListener(new KeyController());
     }
 }

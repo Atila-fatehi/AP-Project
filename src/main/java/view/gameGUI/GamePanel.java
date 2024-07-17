@@ -35,14 +35,15 @@ public class GamePanel extends JPanel {
         setFocusable(true);
         setLayout(null);
         KeyController.initiateKeyCodes();
-        addMouseListener(new MouseController());
+        addMouseListener(new MouseController(this));
         addKeyListener(new KeyController());
+
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        //get components in panel
+
         g.setFont(Constants.BOLD_15);
         ArrayList<Paintable> paintables = GameState.getPaintables();
         for (Paintable paintable : paintables) {
@@ -72,12 +73,10 @@ public class GamePanel extends JPanel {
             if (panelWidth >= 500) {
                 panelWidth -= 2;
                 locationX += 1;
-//                Epsilon.getInstance().setX(Epsilon.getInstance().getX() - 1);
             }
             if (panelHeight >= 500) {
                 panelHeight -= 2;
                 locationY += 1;
-//                Epsilon.getInstance().setY(Epsilon.getInstance().getY() - 1);
             }
             shrinkageCounter = 0;
         }

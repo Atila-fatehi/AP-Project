@@ -6,14 +6,12 @@ import model.collision.Collision;
 import model.collision.CollisionHandler;
 import model.collision.WallCollisionHandler;
 import model.objectsModel.enemy.Collectable;
-import model.objectsModel.enemy.Wyrm;
 import model.objectsModel.epsilon.Epsilon;
 import view.frames.MainMenu;
 import view.gameGUI.GameFrame;
 import view.gameGUI.GamePanel;
 import controller.audio.players.AudioPlayer;
 import controller.audio.players.GameMusicPlayer;
-import view.gameGUI.GamePanel2;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -37,14 +35,15 @@ public class GameManager {
     private boolean gameOver;
     private boolean gameWon;
     private boolean empower;
-    public GameManager() {
 
-        Generator.makeNewWyrm();
-        Generator.makeNewWyrm();
-        Generator.makeNewWyrm();
-        Generator.makeNewWyrm();
-        Generator.makeNewWyrm();
-        Generator.makeNewWyrm();
+    public GameManager() {
+            Generator.makeNewBarricados();
+//        Generator.makeNewTrigorath();
+//        Generator.makeNewTrigorath();
+//        Generator.makeNewTrigorath();
+//        Generator.makeNewTrigorath();
+//        Generator.makeNewTrigorath();
+
 
         viewTimer = new java.util.Timer();
         viewTimer.schedule(new TimerTask() {
@@ -83,7 +82,10 @@ public class GameManager {
             }
         }
         GamePanel.getInstance().repaint();
-        GamePanel2.getInstance().repaint();
+        ArrayList<JPanel> panels = GameState.panels;
+        for (JPanel panel : panels) {
+            panel.repaint();
+        }
     }
 
     public void updateModel() {
