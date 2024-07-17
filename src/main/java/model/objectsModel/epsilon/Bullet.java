@@ -9,6 +9,7 @@ import model.collision.WallCollidable;
 import model.movable.Movable;
 import view.gameGUI.GamePanel;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class Bullet implements Movable, WallCollidable, Collidable, Paintable {
@@ -96,6 +97,16 @@ public class Bullet implements Movable, WallCollidable, Collidable, Paintable {
     @Override
     public int[] getYPoints() {
         return new int[]{(int) y};
+    }
+
+    @Override
+    public int[] getRelativeXPoints(JPanel panel) {
+        return new int[0];
+    }
+
+    @Override
+    public int[] getRelativeYPoints(JPanel panel) {
+        return new int[0];
     }
 
     @Override

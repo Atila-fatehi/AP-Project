@@ -184,6 +184,16 @@ public class Epsilon implements Movable, Collidable, Paintable, WallCollidable {
     }
 
     @Override
+    public int[] getRelativeXPoints(JPanel panel) {
+        return new int[]{getXPoints()[0] - panel.getX()};
+    }
+
+    @Override
+    public int[] getRelativeYPoints(JPanel panel) {
+        return new int[]{getYPoints()[0] - panel.getY()};
+    }
+
+    @Override
     public int wallCollision() {
         WallCollisionHandler.handleEpsilonWallCollision();
         return 0;

@@ -14,6 +14,7 @@ import controller.audio.players.AudioPlayer;
 import controller.audio.players.GameMusicPlayer;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
@@ -37,13 +38,25 @@ public class GameManager {
     private boolean empower;
 
     public GameManager() {
-            Generator.makeNewOrb();
+//        Generator.makeNewSquarantine();Generator.makeNewSquarantine();
+//        Generator.makeNewSquarantine();
+//        Generator.makeNewSquarantine();
+//        Generator.makeNewSquarantine();
+//        Generator.makeNewSquarantine();
+//
 //        Generator.makeNewTrigorath();
 //        Generator.makeNewTrigorath();
+//        Generator.makeNewTrigorath();
+//        Generator.makeNewTrigorath();
+//        Generator.makeNewTrigorath();
+//        Generator.makeNewTrigorath();
+//        Generator.makeNewTrigorath();
+//
+//        Generator.makeNewOmenoct();
 //        Generator.makeNewWyrm();
 //        Generator.makeNewTrigorath();
 //        Generator.makeNewTrigorath();
-//        Generator.makeNewTrigorath();
+//        Generator.makeNewNecropick();
 
 
         viewTimer = new java.util.Timer();
@@ -76,6 +89,7 @@ public class GameManager {
     }
 
     private boolean pastTen;
+
     public void updateView() {
         if (!gameWon) {
             if (pastTen) {
@@ -90,8 +104,126 @@ public class GameManager {
     }
 
     public void updateModel() {
-//        Generator.generateSimpleWave();
+        //Tri stuff
+        for (int i = 0; i < GameState.trigoraths.size(); i++) {
+            GameState.trigoraths.get(i).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
+            GameState.trigoraths.get(i).move();
+            GameState.trigoraths.get(i).playAudio();
+            GameState.trigoraths.get(i).checkCollisions();
+            if (GameState.trigoraths.get(i).getHP() <= 0) {
+                AudioPlayer.play(AudioPlayer.MELON_IMPACT);
+                GameState.collectables.add(new Collectable(GameState.trigoraths.get(i).getCenterOfGravity().getX(), GameState.trigoraths.get(i).getCenterOfGravity().getY(), 5, Constants.TRI_YELLOW));
+                GameState.collectables.add(new Collectable(GameState.trigoraths.get(i).getCenterOfGravity().getX() + 10, GameState.trigoraths.get(i).getCenterOfGravity().getY() + 10, 5, Constants.TRI_YELLOW));
+                GameState.trigoraths.remove(i);
+                i--;
+            }
+        }
+
+        //squarantine stuff
+        for (int i = 0; i < GameState.squarantines.size(); i++) {
+            GameState.squarantines.get(i).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
+            GameState.squarantines.get(i).move();
+            GameState.squarantines.get(i).playAudio();
+            GameState.squarantines.get(i).checkCollisions();
+            if (GameState.squarantines.get(i).getHP() <= 0) {
+                AudioPlayer.play(AudioPlayer.MELON_IMPACT);
+                GameState.collectables.add(new Collectable(GameState.squarantines.get(i).getCenterOfGravity().getX(), GameState.squarantines.get(i).getCenterOfGravity().getY(), 5, Constants.SQUA_GREEN));
+                GameState.squarantines.get(i).getTimer().cancel();
+                GameState.squarantines.remove(i);
+                i--;
+            }
+        }
+
+        //omenoct stuff
+        for (int i = 0; i < GameState.omenocts.size(); i++) {
+            GameState.omenocts.get(i).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
+            GameState.omenocts.get(i).move();
+            GameState.omenocts.get(i).checkCollisions();
+            if (GameState.omenocts.get(i).getHP() <= 0) {
+                AudioPlayer.play(AudioPlayer.MELON_IMPACT);
+                for (int j = 0; j < 8; j++) {
+                    int randX = (int) (new Random().nextInt(3 * Constants.OMENOCT_SIZE) - 1.5 * Constants.OMENOCT_SIZE);
+                    int randY = (int) (new Random().nextInt(3 * Constants.OMENOCT_SIZE) - 1.5 * Constants.OMENOCT_SIZE);
+                    GameState.collectables.add(new Collectable(GameState.omenocts.get(i).getCenterX() + randX, GameState.omenocts.get(i).getCenterY() + randY, 4, Constants.OMEN_PINK));
+                }
+                GameState.omenocts.get(i).getShootTimer().cancel();
+                GameState.omenocts.remove(i);
+                i--;
+            }
+        }
+
+        //necropick stuff
+        for (int i = 0; i < GameState.necropicks.size(); i++) {
+            GameState.necropicks.get(i).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
+            GameState.necropicks.get(i).move();
+            GameState.necropicks.get(i).playAudio();
+            GameState.necropicks.get(i).checkCollisions();
+            if (GameState.necropicks.get(i).getHP() <= 0) {
+                AudioPlayer.play(AudioPlayer.MELON_IMPACT);
+                for (int j = 0; j < 4; j++) {
+                    int size = (int) GameState.necropicks.get(i).getSize();
+                    int randX = (int) (new Random().nextInt(2 * size) - size);
+                    int randY = (int) (new Random().nextInt(2 * size) - size);
+                    GameState.collectables.add(new Collectable(GameState.necropicks.get(i).getXPoints()[0] + randX, GameState.necropicks.get(i).getYPoints()[0] + randY, 2, Color.GRAY));
+                }
+                GameState.necropicks.get(i).getTimer().cancel();
+                GameState.necropicks.remove(i);
+                i--;
+            }
+        }
+
+
+        //archmire stuff
+//        for (int i = 0; i < GameState.archmires.size(); i++) {
+//            GameState.archmires.get(i).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
+//            GameState.archmires.get(i).move();
+//            GameState.archmires.get(i).playAudio();
+//            GameState.archmires.get(i).checkCollisions();
+//            if (GameState.archmires.get(i).getHP() <= 0) {
+//                AudioPlayer.play(AudioPlayer.MELON_IMPACT);
+//                for (int j = 0; j < 4; j++) {
+//                    int randX = (int) (new Random().nextInt(3 * Constants.OMENOCT_SIZE) - 1.5 * Constants.OMENOCT_SIZE);
+//                    int randY = (int) (new Random().nextInt(3 * Constants.OMENOCT_SIZE) - 1.5 * Constants.OMENOCT_SIZE);
+//                    GameState.collectables.add(new Collectable(GameState.archmires.get(i).getCenterX() + randX, GameState.archmires.get(i).getCenterY() + randY, 2, Constants.OMEN_PINK));
+//                }
+//                GameState.archmires.get(i).getShootTimer().cancel();
+//                GameState.archmires.remove(i);
+//                i--;
+//            }
+//        }
+//
+//
+//        //wyrm stuff
+//        for (int i = 0; i < GameState.wyrms.size(); i++) {
+//            GameState.wyrms.get(i).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
+//            GameState.wyrms.get(i).move();
+//        }
+
+
+        //epsilon stuff
+        Epsilon.getInstance().move();
+        Epsilon.getInstance().wallCollision();
+//        for (int i = 0; i < GameState.barricados.size(); i++) {
+//            Point2D collisionPoint = Collision.checkEpsilonCollision(GameState.barricados.get(i));
+//            if(collisionPoint == null)continue;
+//            System.out.println(collisionPoint);
+//
+//        }
+        for (int i = 0; i < GameState.collectables.size(); i++) {
+            if (Collision.checkCoinCollision(GameState.collectables.get(i))) {
+                Epsilon.getInstance().setXP(Epsilon.getInstance().getXP() + GameState.collectables.get(i).getXp());
+                AudioPlayer.play(AudioPlayer.COIN);
+                GameState.collectables.remove(i);
+                i--;
+            }
+        }
+        if (Epsilon.getInstance().getHP() <= 0) {
+            gameOver();
+            paused = true;
+        }
+
         //Bullet stuff
+
         //Tri collision
         for (int i = 0; i < GameState.bullets.size(); i++) {
             GameState.bullets.get(i).move();
@@ -135,6 +267,20 @@ public class GameManager {
                 }
             }
         }
+        //necro collision
+        for (int i = 0; i < GameState.bullets.size(); i++) {
+            for (int j = 0; j < GameState.necropicks.size(); j++) {
+                Point2D collisionPoint = Collision.checkBulletCollision(GameState.bullets.get(i), GameState.necropicks.get(j));
+                if (collisionPoint != null) {
+                    AudioPlayer.play(AudioPlayer.SPLAT);
+                    GameState.necropicks.get(j).setHP(GameState.necropicks.get(j).getHP() - Epsilon.getInstance().getDamageRate());
+                    CollisionHandler.handleCollisionOnPoint(collisionPoint);
+                    GameState.bullets.remove(i);
+                    i--;
+                    break;
+                }
+            }
+        }
         //epsilon collision
         for (int i = 0; i < GameState.bullets.size(); i++) {
             Point2D epsilonCollisionPoint = Collision.checkCircleCollision(GameState.bullets.get(i));
@@ -147,7 +293,7 @@ public class GameManager {
         }
         //wall collision
         for (int i = 0; i < GameState.bullets.size(); i++) {
-            if(!GameState.bullets.get(i).isFromEpsilon()) continue;
+            if (!GameState.bullets.get(i).isFromEpsilon()) continue;
             if (GameState.bullets.get(i).wallCollision() != 0) {
                 WallCollisionHandler.handleWallCollision(GameState.bullets.get(i).wallCollision());
                 GameState.bullets.remove(i);
@@ -156,213 +302,12 @@ public class GameManager {
         }
         //bounds
         for (int i = 0; i < GameState.bullets.size(); i++) {
-            if (GameState.bullets.get(i).getX() < 0 ||GameState.bullets.get(i).getY() < 0 ||
+            if (GameState.bullets.get(i).getX() < 0 || GameState.bullets.get(i).getY() < 0 ||
                     GameState.bullets.get(i).getX() > Constants.SCREEN_WIDTH || GameState.bullets.get(i).getY() > Constants.SCREEN_HEIGHT) {
                 GameState.bullets.remove(i);
                 i--;
             }
         }
-
-
-        //Tri stuff
-        for (int i = 0; i < GameState.trigoraths.size(); i++) {
-            GameState.trigoraths.get(i).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
-            GameState.trigoraths.get(i).move();
-            if (GameState.trigoraths.get(i).getXPoints()[0] >= 0 && GameState.trigoraths.get(i).getXPoints()[0] <= GamePanel.getInstance().getPanelWidth() && GameState.trigoraths.get(i).getYPoints()[0] >= 0 && GameState.trigoraths.get(i).getXPoints()[0] <= GamePanel.getInstance().getPanelHeight()) {
-                if (!GameState.trigoraths.get(i).isPlayed()) {
-                    AudioPlayer.play(AudioPlayer.GROAN);
-                    GameState.trigoraths.get(i).setPlayed(true);
-                }
-            }
-//            if (Epsilon.getInstance().hasVertex()) {
-//                if (trigoraths.get(i).onPointCollision(Epsilon.getInstance().getVertexX(), Epsilon.getInstance().getVertexY()) != null) {
-//                    trigoraths.get(i).setHP(trigoraths.get(i).getHP() - 10);
-//                    AudioPlayer.play(AudioPlayer.SPLAT);
-//                    impactOnPoint(new Point2D.Double(Epsilon.getInstance().getVertexX(), Epsilon.getInstance().getVertexY()));
-//                }
-//                if (Epsilon.getInstance().getVertexesNum() >= 2) {
-//                    if (trigoraths.get(i).onPointCollision(Epsilon.getInstance().getVertexX(), Epsilon.getInstance().getVertexY() + Epsilon.getInstance().getRadius() * 2 + 14) != null) {
-//                        trigoraths.get(i).setHP(trigoraths.get(i).getHP() - 10);
-//                        AudioPlayer.play(AudioPlayer.SPLAT);
-//                        impactOnPoint(new Point2D.Double(Epsilon.getInstance().getVertexX(), Epsilon.getInstance().getVertexY()));
-//                    }
-//                }
-//                if (Epsilon.getInstance().getVertexesNum() >= 3) {
-//                    if (trigoraths.get(i).onPointCollision(Epsilon.getInstance().getX() + Epsilon.getInstance().getRadius() + 7, Epsilon.getInstance().getY()) != null) {
-//                        AudioPlayer.play(AudioPlayer.SPLAT);
-//                        trigoraths.get(i).setHP(trigoraths.get(i).getHP() - 10);
-//                        impactOnPoint(new Point2D.Double(Epsilon.getInstance().getX() + Epsilon.getInstance().getRadius() + 7, Epsilon.getInstance().getY()));
-//                    }
-//                }
-//                if (Epsilon.getInstance().getVertexesNum() >= 4) {
-//                    if (trigoraths.get(i).onPointCollision(Epsilon.getInstance().getX() - Epsilon.getInstance().getRadius() - 7, Epsilon.getInstance().getY()) != null) {
-//                        AudioPlayer.play(AudioPlayer.SPLAT);
-//                        trigoraths.get(i).setHP(trigoraths.get(i).getHP() - 10);
-//                        impactOnPoint(new Point2D.Double(Epsilon.getInstance().getX() - Epsilon.getInstance().getRadius() - 7, Epsilon.getInstance().getY()));
-//                    }
-//                }
-//            }
-            Point2D epsilonCollisionPoint = Collision.checkEpsilonCollision(GameState.trigoraths.get(i));
-            if (epsilonCollisionPoint != null) {
-                CollisionHandler.handleCollisionOnPoint(epsilonCollisionPoint);
-                Epsilon.getInstance().setHP(Epsilon.getInstance().getHP() - 10);
-            }
-            for (int j = 0; j < GameState.trigoraths.size(); j++) {
-                if (i != j) {
-                    Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(GameState.trigoraths.get(i), GameState.trigoraths.get(j));
-                    if (collisionPoint != null) {
-                        CollisionHandler.handleCollisionOnPoint(collisionPoint);
-                    }
-                }
-            }
-            for (int j = 0; j < GameState.squarantines.size(); j++) {
-                Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(GameState.trigoraths.get(i), GameState.squarantines.get(j));
-                if (collisionPoint != null) {
-                    CollisionHandler.handleCollisionOnPoint(collisionPoint);
-                }
-            }
-            if (GameState.trigoraths.get(i).getHP() <= 0) {
-                AudioPlayer.play(AudioPlayer.MELON_IMPACT);
-                GameState.collectables.add(new Collectable(GameState.trigoraths.get(i).getCenterOfGravity().getX(), GameState.trigoraths.get(i).getCenterOfGravity().getY(), 5, Constants.TRI_YELLOW));
-                GameState.collectables.add(new Collectable(GameState.trigoraths.get(i).getCenterOfGravity().getX() + 10, GameState.trigoraths.get(i).getCenterOfGravity().getY() + 10, 5, Constants.TRI_YELLOW));
-                GameState.trigoraths.remove(i);
-                i--;
-            }
-        }
-
-        //squarantine stuff
-        for (int i = 0; i < GameState.squarantines.size(); i++) {
-            GameState.squarantines.get(i).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
-            GameState.squarantines.get(i).move();
-            if (GameState.squarantines.get(i).getXPoints()[0] >= 0 && GameState.squarantines.get(i).getXPoints()[0] <= GamePanel.getInstance().getPanelWidth() && GameState.squarantines.get(i).getYPoints()[0] >= 0 && GameState.squarantines.get(i).getXPoints()[0] <= GamePanel.getInstance().getPanelHeight()) {
-                if (!GameState.squarantines.get(i).isPlayed()) {
-                    AudioPlayer.play(AudioPlayer.GROAN);
-                    GameState.squarantines.get(i).setPlayed(true);
-                }
-            }
-//            if (Epsilon.getInstance().hasVertex()) {
-//                if (squarantines.get(i).onPointCollision(Epsilon.getInstance().getVertexX(), Epsilon.getInstance().getVertexY()) != null) {
-//                    squarantines.get(i).setHP(squarantines.get(i).getHP() - 10);
-//                    AudioPlayer.play(AudioPlayer.SPLAT);
-//                    impactOnPoint(new Point2D.Double(Epsilon.getInstance().getVertexX(), Epsilon.getInstance().getVertexY()));
-//                }
-//                if (Epsilon.getInstance().getVertexesNum() >= 2) {
-//                    if (squarantines.get(i).onPointCollision(Epsilon.getInstance().getVertexX(), Epsilon.getInstance().getVertexY() + Epsilon.getInstance().getRadius() * 2 + 14) != null) {
-//                        squarantines.get(i).setHP(squarantines.get(i).getHP() - 10);
-//                        AudioPlayer.play(AudioPlayer.SPLAT);
-//                        impactOnPoint(new Point2D.Double(Epsilon.getInstance().getVertexX(), Epsilon.getInstance().getVertexY()));
-//                    }
-//                }
-//                if (Epsilon.getInstance().getVertexesNum() >= 3) {
-//                    if (squarantines.get(i).onPointCollision(Epsilon.getInstance().getX() + Epsilon.getInstance().getRadius() + 7, Epsilon.getInstance().getY()) != null) {
-//                        squarantines.get(i).setHP(squarantines.get(i).getHP() - 10);
-//                        AudioPlayer.play(AudioPlayer.SPLAT);
-//                        impactOnPoint(new Point2D.Double(Epsilon.getInstance().getX() + Epsilon.getInstance().getRadius() + 7, Epsilon.getInstance().getY()));
-//                    }
-//                }
-//                if (Epsilon.getInstance().getVertexesNum() >= 4) {
-//                    if (squarantines.get(i).onPointCollision(Epsilon.getInstance().getX() - Epsilon.getInstance().getRadius() - 7, Epsilon.getInstance().getY()) != null) {
-//                        squarantines.get(i).setHP(squarantines.get(i).getHP() - 10);
-//                        AudioPlayer.play(AudioPlayer.SPLAT);
-//                        impactOnPoint(new Point2D.Double(Epsilon.getInstance().getX() - Epsilon.getInstance().getRadius() - 7, Epsilon.getInstance().getY()));
-//                    }
-//                }
-//            }
-            Point2D epsilonCollisionPoint = Collision.checkEpsilonCollision(GameState.squarantines.get(i));
-            if (epsilonCollisionPoint != null) {
-                CollisionHandler.handleCollisionOnPoint(epsilonCollisionPoint);
-                Epsilon.getInstance().setHP(Epsilon.getInstance().getHP() - 6);
-            }
-
-            for (int j = 0; j < GameState.trigoraths.size(); j++) {
-                Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(GameState.squarantines.get(i), GameState.trigoraths.get(j));
-                if (collisionPoint != null) {
-                    CollisionHandler.handleCollisionOnPoint(collisionPoint);
-                }
-            }
-            for (int j = 0; j < GameState.squarantines.size(); j++) {
-                if (i != j) {
-                    Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(GameState.squarantines.get(i), GameState.squarantines.get(j));
-                    if (collisionPoint != null) {
-                        CollisionHandler.handleCollisionOnPoint(collisionPoint);
-                    }
-                }
-            }
-            if (GameState.squarantines.get(i).getHP() <= 0) {
-                AudioPlayer.play(AudioPlayer.MELON_IMPACT);
-                GameState.collectables.add(new Collectable(GameState.squarantines.get(i).getCenterOfGravity().getX(), GameState.squarantines.get(i).getCenterOfGravity().getY(), 5, Constants.SQUA_GREEN));
-                GameState.squarantines.get(i).getTimer().cancel();
-                GameState.squarantines.remove(i);
-                i--;
-            }
-        }
-
-        //omenoct stuff
-        for (int i = 0; i < GameState.omenocts.size(); i++) {
-            GameState.omenocts.get(i).calculateMovingDirection(Epsilon.getInstance().getX() , Epsilon.getInstance().getY());
-            GameState.omenocts.get(i).move();
-            Point2D epsilonCollisionPoint = Collision.checkEpsilonCollision(GameState.omenocts.get(i));
-            if (epsilonCollisionPoint != null) {
-                CollisionHandler.handleCollisionOnPoint(epsilonCollisionPoint);
-                Epsilon.getInstance().setHP(Epsilon.getInstance().getHP() - 10);
-            }
-            if (GameState.omenocts.get(i).getHP() <= 0) {
-                AudioPlayer.play(AudioPlayer.MELON_IMPACT);
-                for (int j = 0; j < 8; j++) {
-                    int randX = (int) (new Random().nextInt(3 * Constants.OMENOCT_SIZE) - 1.5 * Constants.OMENOCT_SIZE);
-                    int randY = (int) (new Random().nextInt(3 * Constants.OMENOCT_SIZE) - 1.5 * Constants.OMENOCT_SIZE);
-                    GameState.collectables.add(new Collectable(GameState.omenocts.get(i).getCenterX() + randX, GameState.omenocts.get(i).getCenterY() + randY, 4, Constants.OMEN_PINK));
-                }
-                GameState.omenocts.get(i).getShootTimer().cancel();
-                GameState.omenocts.remove(i);
-                i--;
-            }
-        }
-
-        //archmire stuff
-        for (int i = 0; i < GameState.archmires.size(); i++) {
-            GameState.archmires.get(i).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
-            GameState.archmires.get(i).move();
-        }
-
-        //necropick stuff
-        for (int i = 0; i < GameState.necropicks.size(); i++) {
-            GameState.necropicks.get(i).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
-            GameState.necropicks.get(i).move();
-        }
-
-        //wyrm stuff
-        for (int i = 0; i < GameState.wyrms.size(); i++) {
-            GameState.wyrms.get(i).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
-            GameState.wyrms.get(i).move();
-        }
-
-
-        //epsilon stuff
-        Epsilon.getInstance().move();
-        Epsilon.getInstance().wallCollision();
-        for (int i = 0; i < GameState.barricados.size(); i++) {
-            Point2D collisionPoint = Collision.checkEpsilonCollision(GameState.barricados.get(i));
-            if(collisionPoint == null)continue;
-            System.out.println(collisionPoint);
-
-        }
-
-
-        if (Epsilon.getInstance().getHP() <= 0) {
-            gameOver();
-            paused = true;
-        }
-
-        for (int i = 0; i < GameState.collectables.size(); i++) {
-            if (Collision.checkCoinCollision(GameState.collectables.get(i))) {
-                Epsilon.getInstance().setXP(Epsilon.getInstance().getXP() + GameState.collectables.get(i).getXp());
-                AudioPlayer.play(AudioPlayer.COIN);
-                GameState.collectables.remove(i);
-                i--;
-            }
-        }
-
 
     }
 

@@ -97,4 +97,14 @@ public class Barricados implements Paintable, Collidable {
     public int[] getYPoints() {
         return new int[]{(int) y, (int) y, (int) (y + size), (int) (y + size)};
     }
+
+    @Override
+    public int[] getRelativeXPoints(JPanel panel) {
+        return new int[0];
+    }
+
+    @Override
+    public int[] getRelativeYPoints(JPanel panel) {
+        return new int[0];
+    }
 }

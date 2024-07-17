@@ -65,6 +65,16 @@ public class BlackOrb implements Collidable, Paintable {
     }
 
     @Override
+    public int[] getRelativeXPoints(JPanel panel) {
+        return new int[0];
+    }
+
+    @Override
+    public int[] getRelativeYPoints(JPanel panel) {
+        return new int[0];
+    }
+
+    @Override
     public void selfPaint(Graphics g) {
 
     }

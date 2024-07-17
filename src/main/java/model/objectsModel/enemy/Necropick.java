@@ -1,22 +1,30 @@
 package model.objectsModel.enemy;
 
+import controller.audio.players.AudioPlayer;
 import controller.logic.GameState;
 import controller.util.Constants;
 import model.Paintable.Paintable;
+import model.collision.Collidable;
+import model.collision.Collision;
+import model.collision.CollisionHandler;
 import model.movable.Movable;
 import model.objectsModel.epsilon.Bullet;
 import model.objectsModel.epsilon.Epsilon;
 import view.gameGUI.GamePanel;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.util.Random;
+import java.util.Timer;
 import java.util.TimerTask;
 
-public class Necropick implements Paintable, Movable {
+public class Necropick implements Paintable, Movable, Collidable {
     private int HP = 10;
     private double x;
     private double y;
+    private double size = 50;
     private final int radiusFromEpsilon = 180;
     private boolean played;
     private Image image;
@@ -28,7 +36,7 @@ public class Necropick implements Paintable, Movable {
         this.y = y;
         try {
             Image yourImage = (Image) ImageIO.read(Constants.NECRO_PICK);
-            image = yourImage.getScaledInstance(50, 50, Image.SCALE_DEFAULT);
+            image = yourImage.getScaledInstance((int) size, (int) size, Image.SCALE_DEFAULT);
 
         } catch (Exception e) {
             System.out.println("exception in necropick paint");
@@ -41,6 +49,7 @@ public class Necropick implements Paintable, Movable {
             public void run() {
                 if (disappear) {
                     disappear = false;
+                    playAudio();
                     fire();
                 } else {
                     if (count % 2 == 0) {
@@ -49,7 +58,14 @@ public class Necropick implements Paintable, Movable {
                     count++;
                 }
             }
-        }, 2000, 1000);
+        }, 0, 4000);
+    }
+
+    public void playAudio() {
+        if (!played) {
+            AudioPlayer.play(AudioPlayer.GROAN);
+            played = true;
+        }
     }
 
     @Override
@@ -57,7 +73,6 @@ public class Necropick implements Paintable, Movable {
         int locX = GamePanel.getInstance().getLocationX();
         int locY = GamePanel.getInstance().getLocationY();
         if (!disappear) g.drawImage(image, (int) x - locX, (int) y - locY, GamePanel.getInstance());
-
 
         for (int i = 0; i < GameState.panels.size(); i++) {
             locX = GameState.panels.get(i).getX();
@@ -132,14 +147,14 @@ public class Necropick implements Paintable, Movable {
                 } else {
                     y -= radiusFromEpsilon;
                 }
-                x -= 25;
+                x -= size / 2;
             } else {
                 if (new Random().nextBoolean()) {
                     x += radiusFromEpsilon;
                 } else {
                     x -= radiusFromEpsilon;
                 }
-                y -= 25;
+                y -= size / 2;
             }
             this.x = x;
             this.y = y;
@@ -148,31 +163,93 @@ public class Necropick implements Paintable, Movable {
     }
 
     void fire() {
-        Bullet bullet = new Bullet(x + 25, y + 25, false, Color.GRAY);
-        bullet.calculateMovingDirection(x + 25, y + 25 + 5);
+        Bullet bullet = new Bullet(x + size / 2, y + size / 2, false, Color.GRAY);
+        bullet.calculateMovingDirection(x + size / 2, y + size / 2 + 5);
         GameState.bullets.add(bullet);
-        bullet = new Bullet(x + 25, y + 25, false, Color.GRAY);
-        bullet.calculateMovingDirection(x + 25 + 5, y + 25);
+        bullet = new Bullet(x + size / 2, y + size / 2, false, Color.GRAY);
+        bullet.calculateMovingDirection(x + size / 2 + 5, y + size / 2);
         GameState.bullets.add(bullet);
-        bullet = new Bullet(x + 25, y + 25, false, Color.GRAY);
-        bullet.calculateMovingDirection(x + 25 - 5, y + 25);
+        bullet = new Bullet(x + size / 2, y + size / 2, false, Color.GRAY);
+        bullet.calculateMovingDirection(x + size / 2 - 5, y + size / 2);
         GameState.bullets.add(bullet);
-        bullet = new Bullet(x + 25, y + 25, false, Color.GRAY);
-        bullet.calculateMovingDirection(x + 25, y + 25 - 5);
+        bullet = new Bullet(x + size / 2, y + size / 2, false, Color.GRAY);
+        bullet.calculateMovingDirection(x + size / 2, y + size / 2 - 5);
         GameState.bullets.add(bullet);
 
-        bullet = new Bullet(x + 25, y + 25, false, Color.GRAY);
-        bullet.calculateMovingDirection(x + 25 - 5, y + 25 - 5);
+        bullet = new Bullet(x + size / 2, y + size / 2, false, Color.GRAY);
+        bullet.calculateMovingDirection(x + size / 2 - 5, y + size / 2 - 5);
         GameState.bullets.add(bullet);
-        bullet = new Bullet(x + 25, y + 25, false, Color.GRAY);
-        bullet.calculateMovingDirection(x + 25 + 5, y + 25 - 5);
+        bullet = new Bullet(x + size / 2, y + size / 2, false, Color.GRAY);
+        bullet.calculateMovingDirection(x + size / 2 + 5, y + size / 2 - 5);
         GameState.bullets.add(bullet);
-        bullet = new Bullet(x + 25, y + 25, false, Color.GRAY);
-        bullet.calculateMovingDirection(x + 25 + 5, y + 25 + 5);
+        bullet = new Bullet(x + size / 2, y + size / 2, false, Color.GRAY);
+        bullet.calculateMovingDirection(x + size / 2 + 5, y + size / 2 + 5);
         GameState.bullets.add(bullet);
-        bullet = new Bullet(x + 25, y + 25, false, Color.GRAY);
-        bullet.calculateMovingDirection(x + 25 - 5, y + 25 + 5);
+        bullet = new Bullet(x + size / 2, y + size / 2, false, Color.GRAY);
+        bullet.calculateMovingDirection(x + size / 2 - 5, y + size / 2 + 5);
         GameState.bullets.add(bullet);
     }
 
+    public void checkCollisions() {
+        Point2D epsilonCollisionPoint = Collision.checkEpsilonCollision(this);
+        if (epsilonCollisionPoint != null) {
+            CollisionHandler.handleCollisionOnPoint(epsilonCollisionPoint);
+        }
+        for (int j = 0; j < GameState.trigoraths.size(); j++) {
+            Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(this, GameState.trigoraths.get(j));
+            if (collisionPoint != null) {
+                CollisionHandler.handleCollisionOnPoint(collisionPoint);
+            }
+        }
+        for (int j = 0; j < GameState.squarantines.size(); j++) {
+            Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(this, GameState.squarantines.get(j));
+            if (collisionPoint != null) {
+                CollisionHandler.handleCollisionOnPoint(collisionPoint);
+            }
+        }
+        for (int j = 0; j < GameState.omenocts.size(); j++) {
+            Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(this, GameState.omenocts.get(j));
+            if (collisionPoint != null) {
+                disappear = true;
+            }
+        }
+    }
+
+    @Override
+    public int[] getXPoints() {
+        return new int[]{(int) (x + 15), (int) (x + 30), (int) (x + 30), (int) (x + 15)};
+    }
+
+    @Override
+    public int[] getYPoints() {
+        return new int[]{(int) (y), (int) (y), (int) (y + size), (int) (y + size)};
+    }
+
+    public int[] getRelativeXPoints(JPanel panel) {
+        int locationX = panel.getX();
+        return new int[]{(int) getXPoints()[0] - locationX, (int) getXPoints()[1] - locationX,
+                (int) getXPoints()[2] - locationX, (int) getXPoints()[3] - locationX};
+    }
+
+    public int[] getRelativeYPoints(JPanel panel) {
+        int locationY = panel.getY();
+        return new int[]{(int) getYPoints()[0] - locationY, (int) getYPoints()[1] - locationY,
+                (int) getYPoints()[2] - locationY, (int) getYPoints()[3] - locationY};
+    }
+
+    public int getHP() {
+        return HP;
+    }
+
+    public void setHP(int HP) {
+        this.HP = HP;
+    }
+
+    public Timer getTimer() {
+        return timer;
+    }
+
+    public double getSize() {
+        return size;
+    }
 }

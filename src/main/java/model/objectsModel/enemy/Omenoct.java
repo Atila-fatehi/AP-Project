@@ -1,16 +1,21 @@
 package model.objectsModel.enemy;
 
+import controller.audio.players.AudioPlayer;
 import controller.logic.GameState;
 import controller.util.Calculator;
 import controller.util.Constants;
 import model.Paintable.Paintable;
 import model.collision.Collidable;
+import model.collision.Collision;
+import model.collision.CollisionHandler;
 import model.movable.Movable;
 import model.objectsModel.epsilon.Bullet;
 import model.objectsModel.epsilon.Epsilon;
 import view.gameGUI.GamePanel;
 
+import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
@@ -43,6 +48,14 @@ public class Omenoct implements Paintable, Collidable, Movable {
         }, 2000, 1500);
     }
 
+    public void playAudio() {
+        if (getXPoints()[0] >= 0 && getXPoints()[0] <= GamePanel.getInstance().getPanelWidth() && getYPoints()[0] >= 0 && getXPoints()[0] <= GamePanel.getInstance().getPanelHeight()) {
+            if (!played) {
+                AudioPlayer.play(AudioPlayer.GROAN);
+                played = true;
+            }
+        }
+    }
 
     void shootBullet() {
         Bullet bullet = new Bullet(getCenterX(), getCenterY(), false, Constants.OMEN_PINK);
@@ -75,6 +88,7 @@ public class Omenoct implements Paintable, Collidable, Movable {
             if (Calculator.distance(getCenterX(), getCenterY(), destinationX, destinationY) > 15) {
                 move();
             } else {
+                playAudio();
                 stickPositionToPanel();
             }
 
@@ -192,6 +206,26 @@ public class Omenoct implements Paintable, Collidable, Movable {
         return (int) (yPoints[7] + Constants.OMENOCT_SIZE / 2);
     }
 
+    public void checkCollisions() {
+        Point2D epsilonCollisionPoint = Collision.checkEpsilonCollision(this);
+        if (epsilonCollisionPoint != null) {
+            CollisionHandler.handleCollisionOnPoint(epsilonCollisionPoint);
+            Epsilon.getInstance().setHP(Epsilon.getInstance().getHP() - 10);
+        }
+        for (int j = 0; j < GameState.trigoraths.size(); j++) {
+            Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(this, GameState.trigoraths.get(j));
+            if (collisionPoint != null) {
+                CollisionHandler.handleCollisionOnPoint(collisionPoint);
+            }
+        }
+        for (int j = 0; j < GameState.squarantines.size(); j++) {
+            Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(this, GameState.squarantines.get(j));
+            if (collisionPoint != null) {
+                CollisionHandler.handleCollisionOnPoint(collisionPoint);
+            }
+        }
+    }
+
     @Override
     public int[] getXPoints() {
         return new int[]{(int) xPoints[0], (int) xPoints[1], (int) xPoints[2], (int) xPoints[3], (int) xPoints[4],
@@ -204,14 +238,14 @@ public class Omenoct implements Paintable, Collidable, Movable {
                 (int) yPoints[5], (int) yPoints[6], (int) yPoints[7]};
     }
 
-    public int[] getRelativeXPoints() {
-        int locationX = GamePanel.getInstance().getLocationX();
+    public int[] getRelativeXPoints(JPanel panel) {
+        int locationX = panel.getX();
         return new int[]{(int) xPoints[0] - locationX, (int) xPoints[1] - locationX, (int) xPoints[2] - locationX, (int) xPoints[3] - locationX,
                 (int) xPoints[4] - locationX, (int) xPoints[5] - locationX, (int) xPoints[6] - locationX, (int) xPoints[7] - locationX};
     }
 
-    public int[] getRelativeYPoints() {
-        int locationY = GamePanel.getInstance().getLocationY();
+    public int[] getRelativeYPoints(JPanel panel) {
+        int locationY = panel.getY();
         return new int[]{(int) yPoints[0] - locationY, (int) yPoints[1] - locationY, (int) yPoints[2] - locationY, (int) yPoints[3] - locationY,
                 (int) yPoints[4] - locationY, (int) yPoints[5] - locationY, (int) yPoints[6] - locationY, (int) yPoints[7] - locationY};
     }
@@ -234,13 +268,22 @@ public class Omenoct implements Paintable, Collidable, Movable {
 
     @Override
     public void selfPaint(Graphics g) {
-        int locationX = GamePanel.getInstance().getLocationX();
-        int locationY = GamePanel.getInstance().getLocationY();
+        int locX = GamePanel.getInstance().getLocationX();
+        int locY = GamePanel.getInstance().getLocationY();
         g.setColor(Constants.OMEN_PINK);
-        g.fillPolygon(getRelativeXPoints(), getRelativeYPoints(), xPoints.length);
+        g.fillPolygon(getRelativeXPoints(GamePanel.getInstance()), getRelativeYPoints(GamePanel.getInstance()), xPoints.length);
         g.setColor(Color.BLACK);
-        g.drawString(String.valueOf(HP), (int) posXHP - locationX, (int) posYHP - locationY);
+        g.drawString(String.valueOf(HP), (int) posXHP - locX, (int) posYHP - locY);
 
+        for (int i = 0; i < GameState.panels.size(); i++) {
+            locX = GameState.panels.get(i).getX();
+            locY = GameState.panels.get(i).getY();
+            Graphics g2 = GameState.panels.get(i).getGraphics();
+            g2.setColor(Constants.OMEN_PINK);
+            g2.fillPolygon(getRelativeXPoints(GameState.panels.get(i)), getRelativeYPoints(GameState.panels.get(i)), xPoints.length);
+            g2.setColor(Color.BLACK);
+            g2.drawString(String.valueOf(HP), (int) posXHP - locX, (int) posYHP - locY);
+        }
     }
 
 }

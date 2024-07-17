@@ -1,18 +1,22 @@
 package model.objectsModel.enemy;
 
+import controller.audio.players.AudioPlayer;
 import controller.logic.GameState;
 import controller.util.Calculator;
 import controller.util.Constants;
 import model.Paintable.Paintable;
 import model.collision.Collidable;
+import model.collision.Collision;
+import model.collision.CollisionHandler;
 import model.movable.Movable;
+import model.objectsModel.epsilon.Epsilon;
 import view.gameGUI.GamePanel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
 
-public class Trigorath implements Movable, Collidable, Paintable {
+public class Trigorath implements Movable, Collidable , Paintable {
     private int HP = 15;
     private double posXHP;
     private double posYHP;
@@ -29,6 +33,7 @@ public class Trigorath implements Movable, Collidable, Paintable {
     public Trigorath(double[] x, double[] y) {
         this.xPoints = x;
         this.yPoints = y;
+
     }
 
     @Override
@@ -82,6 +87,18 @@ public class Trigorath implements Movable, Collidable, Paintable {
         posYHP = yPoints[0] - 4;
     }
 
+    public void playAudio() {
+        if (getXPoints()[0] >= GamePanel.getInstance().getX() &&
+                getXPoints()[0] <= GamePanel.getInstance().getPanelWidth() + GamePanel.getInstance().getX()
+                && getYPoints()[0] >= GamePanel.getInstance().getY() &&
+                getXPoints()[0] <= GamePanel.getInstance().getPanelHeight() +  GamePanel.getInstance().getY()) {
+            if (!played) {
+                AudioPlayer.play(AudioPlayer.GROAN);
+                played = true;
+            }
+        }
+    }
+
     public Point2D getCenterOfGravity() {
         return new Point2D.Double((xPoints[0] + xPoints[1]) / 2, (yPoints[0] + yPoints[2]) / 2);
     }
@@ -95,13 +112,15 @@ public class Trigorath implements Movable, Collidable, Paintable {
     }
 
     public int[] getRelativeXPoints(JPanel panel) {
-        int locationX =panel.getX();
+        int locationX = panel.getX();
         return new int[]{(int) xPoints[0] - locationX, (int) xPoints[1] - locationX, (int) xPoints[2] - locationX};
     }
+
     public int[] getRelativeYPoints(JPanel panel) {
         int locationY = panel.getY();
         return new int[]{(int) yPoints[0] - locationY, (int) yPoints[1] - locationY, (int) yPoints[2] - locationY};
     }
+
     public void setVx(double vx) {
         this.vx = vx;
     }
@@ -118,12 +137,38 @@ public class Trigorath implements Movable, Collidable, Paintable {
         this.HP = HP;
     }
 
-    public boolean isPlayed() {
-        return played;
-    }
-
-    public void setPlayed(boolean played) {
-        this.played = played;
+    public void checkCollisions() {
+        Point2D epsilonCollisionPoint = Collision.checkEpsilonCollision(this);
+        if (epsilonCollisionPoint != null) {
+            CollisionHandler.handleCollisionOnPoint(epsilonCollisionPoint);
+            Epsilon.getInstance().setHP(Epsilon.getInstance().getHP() - 10);
+        }
+        for (int j = 0; j < GameState.trigoraths.size(); j++) {
+            if (GameState.trigoraths.get(j) != this) {
+                Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(this, GameState.trigoraths.get(j));
+                if (collisionPoint != null) {
+                    CollisionHandler.handleCollisionOnPoint(collisionPoint);
+                }
+            }
+        }
+        for (int j = 0; j < GameState.squarantines.size(); j++) {
+            Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(this, GameState.squarantines.get(j));
+            if (collisionPoint != null) {
+                CollisionHandler.handleCollisionOnPoint(collisionPoint);
+            }
+        }
+        for (int j = 0; j < GameState.omenocts.size(); j++) {
+            Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(this, GameState.omenocts.get(j));
+            if (collisionPoint != null) {
+                CollisionHandler.handleCollisionOnPoint(collisionPoint);
+            }
+        }
+        for (int j = 0; j < GameState.necropicks.size(); j++) {
+            Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(this, GameState.necropicks.get(j));
+            if (collisionPoint != null) {
+                CollisionHandler.handleCollisionOnPoint(collisionPoint);
+            }
+        }
     }
 
 
