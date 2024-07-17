@@ -13,7 +13,6 @@ import java.awt.*;
 
 public class Bullet implements Movable, WallCollidable, Collidable, Paintable {
 
-
     private double x;
     private double y;
     private double vx;

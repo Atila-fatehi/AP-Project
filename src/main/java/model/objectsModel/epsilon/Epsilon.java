@@ -173,6 +173,23 @@ public class Epsilon implements Movable, Collidable, Paintable, WallCollidable {
         }
     }
 
+    @Override
+    public int[] getXPoints() {
+        return new int[]{(int) x};
+    }
+
+    @Override
+    public int[] getYPoints() {
+        return new int[]{(int) y};
+    }
+
+    @Override
+    public int wallCollision() {
+        WallCollisionHandler.handleEpsilonWallCollision();
+        return 0;
+    }
+
+
     public int getXP() {
         return XP;
     }
@@ -236,6 +253,21 @@ public class Epsilon implements Movable, Collidable, Paintable, WallCollidable {
         this.accL = accL;
     }
 
+    public boolean isAccU() {
+        return accU;
+    }
+
+    public boolean isAccD() {
+        return accD;
+    }
+
+    public boolean isAccR() {
+        return accR;
+    }
+
+    public boolean isAccL() {
+        return accL;
+    }
 
     public void setDecU(boolean decU) {
         this.decU = decU;
@@ -271,19 +303,4 @@ public class Epsilon implements Movable, Collidable, Paintable, WallCollidable {
         this.radius = radius;
     }
 
-    @Override
-    public int[] getXPoints() {
-        return new int[]{(int) x};
-    }
-
-    @Override
-    public int[] getYPoints() {
-        return new int[]{(int) y};
-    }
-
-    @Override
-    public int wallCollision() {
-        WallCollisionHandler.handleEpsilonWallCollision();
-        return 0;
-    }
 }

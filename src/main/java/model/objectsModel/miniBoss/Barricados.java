@@ -4,14 +4,13 @@ import controller.logic.GameState;
 import controller.util.Constants;
 import model.Paintable.Paintable;
 import model.collision.Collidable;
-import model.objectsModel.epsilon.Epsilon;
 import view.gameGUI.GameFrame;
 import view.gameGUI.GamePanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.TimerTask;
 
 public class Barricados implements Paintable, Collidable {
 
@@ -19,9 +18,9 @@ public class Barricados implements Paintable, Collidable {
     private double y;
     private final double size = 200;
     private boolean played;
-    private Panel panel;
+    private BarriPanel panel;
     private Image image;
-    private java.util.Timer timer;
+    private java.util.Timer timer = new java.util.Timer();
 
     public Barricados(double x, double y) {
         this.x = x;
@@ -34,11 +33,23 @@ public class Barricados implements Paintable, Collidable {
         } catch (Exception e) {
             System.out.println("exception in barri paint");
         }
-        panel = new Panel();
+        panel = new BarriPanel();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                selfDestruct();
+                timer.cancel();
+            }
+        }, 1000 * 60 * 2, 1111);
+
     }
 
-    class Panel extends JPanel {
-        public Panel() {
+    void selfDestruct(){
+        GameState.barricados.remove(this);
+    }
+
+    class BarriPanel extends JPanel {
+        public BarriPanel() {
             setBounds((int) x, (int) y, (int) size, (int) size);
             setBackground(Constants.DARK_BLUE);
             GameState.panels.add(this);

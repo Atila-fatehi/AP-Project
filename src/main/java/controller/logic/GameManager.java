@@ -37,9 +37,10 @@ public class GameManager {
     private boolean empower;
 
     public GameManager() {
-            Generator.makeNewBarricados();
+            Generator.makeNewOrb();
 //        Generator.makeNewTrigorath();
 //        Generator.makeNewTrigorath();
+//        Generator.makeNewWyrm();
 //        Generator.makeNewTrigorath();
 //        Generator.makeNewTrigorath();
 //        Generator.makeNewTrigorath();
@@ -335,9 +336,19 @@ public class GameManager {
             GameState.wyrms.get(i).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
             GameState.wyrms.get(i).move();
         }
+
+
         //epsilon stuff
         Epsilon.getInstance().move();
         Epsilon.getInstance().wallCollision();
+        for (int i = 0; i < GameState.barricados.size(); i++) {
+            Point2D collisionPoint = Collision.checkEpsilonCollision(GameState.barricados.get(i));
+            if(collisionPoint == null)continue;
+            System.out.println(collisionPoint);
+
+        }
+
+
         if (Epsilon.getInstance().getHP() <= 0) {
             gameOver();
             paused = true;

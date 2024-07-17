@@ -108,10 +108,10 @@ public class Wyrm implements Movable, Paintable {
                 }
             }
         } else {
-//            angle += 0.5;
-//            angle %= 360;
-//            x = acquiredX + (int) (radiusFromEpsilon * Math.cos(Math.toRadians(angle)));
-//            y = acquiredY + (int) (radiusFromEpsilon * Math.sin(Math.toRadians(angle)));
+            angle += 0.5;
+            angle %= 360;
+            x = acquiredX + (int) (radiusFromEpsilon * Math.cos(Math.toRadians(angle)));
+            y = acquiredY + (int) (radiusFromEpsilon * Math.sin(Math.toRadians(angle)));
         }
     }
 

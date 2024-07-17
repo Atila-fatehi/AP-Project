@@ -94,5 +94,8 @@ public abstract class Collision {
         }
         return null;
     }
-
+    public static boolean checkPointCollision(Point2D point, Collidable collidable){
+        Polygon poly = new Polygon(collidable.getXPoints(), collidable.getYPoints(), collidable.getXPoints().length);
+        return poly.contains(point);
+    }
 }

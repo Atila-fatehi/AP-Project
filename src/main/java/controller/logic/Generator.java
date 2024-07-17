@@ -6,6 +6,7 @@ import model.objectsModel.enemy.*;
 import model.objectsModel.epsilon.Bullet;
 import model.objectsModel.epsilon.Epsilon;
 import model.objectsModel.miniBoss.Barricados;
+import model.objectsModel.miniBoss.BlackOrb;
 import view.gameGUI.GamePanel;
 
 import java.util.Random;
@@ -101,6 +102,11 @@ public abstract class Generator {
         int initX = randomXonScreen();
         int initY = randomYonScreen();
         GameState.barricados.add(new Barricados(initX, initY));
+    }
+    public static void makeNewOrb(){
+        int initX = randomXonScreen();
+        int initY = 100;
+        GameState.orbs.add(new BlackOrb(initX, initY));
     }
     static int randomiseInitialPosX(){
         Random random = new Random();
