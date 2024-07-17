@@ -1,5 +1,6 @@
 package model.objectsModel.epsilon;
 
+import controller.logic.GameState;
 import controller.util.Constants;
 import model.Paintable.Paintable;
 import model.collision.Collidable;
@@ -100,9 +101,17 @@ public class Bullet implements Movable, WallCollidable, Collidable, Paintable {
 
     @Override
     public void selfPaint(Graphics g) {
-        int locationX = GamePanel.getInstance().getLocationX();
-        int locationY = GamePanel.getInstance().getLocationY();
+        int locX = GamePanel.getInstance().getLocationX();
+        int locY = GamePanel.getInstance().getLocationY();
         g.setColor(color);
-        g.fillOval((int) (x - radius - locationX), (int) (y - radius - locationY), (int) radius * 2, (int) radius * 2);
+        g.fillOval((int) (x - radius - locX), (int) (y - radius - locY), (int) radius * 2, (int) radius * 2);
+
+        for (int i = 0; i < GameState.panels.size(); i++) {
+            locX = GameState.panels.get(i).getX();
+            locY = GameState.panels.get(i).getY();
+            Graphics g2 = GameState.panels.get(i).getGraphics();
+            g2.setColor(color);
+            g2.fillOval((int) (x - radius - locX), (int) (y - radius - locY), (int) radius * 2, (int) radius * 2);
+        }
     }
 }

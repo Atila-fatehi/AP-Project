@@ -43,6 +43,8 @@ public class GameManager {
         Generator.makeNewWyrm();
         Generator.makeNewWyrm();
         Generator.makeNewWyrm();
+        Generator.makeNewWyrm();
+        Generator.makeNewWyrm();
 
         viewTimer = new java.util.Timer();
         viewTimer.schedule(new TimerTask() {

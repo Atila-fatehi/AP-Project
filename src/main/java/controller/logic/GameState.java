@@ -6,6 +6,7 @@ import model.objectsModel.enemy.*;
 import model.objectsModel.epsilon.Bullet;
 import model.objectsModel.epsilon.Epsilon;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -21,6 +22,7 @@ public class GameState {
     public static final ArrayList<Archmire> archmires = new ArrayList<>();
     public static final ArrayList<Necropick> necropicks = new ArrayList<>();
     public static final ArrayList<Wyrm> wyrms = new ArrayList<>();
+    public static final ArrayList<JPanel> panels = new ArrayList<>();
     public static int elapsedTime;
     public static int difficulty = Objects.requireNonNull(FileController.readSettings())[1];
     public static int wave;

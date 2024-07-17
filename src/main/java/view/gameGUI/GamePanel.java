@@ -1,5 +1,6 @@
 package view.gameGUI;
 
+import controller.logic.Generator;
 import controller.util.Constants;
 import controller.KeyController;
 import controller.MouseController;
@@ -9,6 +10,8 @@ import model.objectsModel.epsilon.Epsilon;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
 public class GamePanel extends JPanel {

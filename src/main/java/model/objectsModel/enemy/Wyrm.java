@@ -22,7 +22,6 @@ public class Wyrm implements Movable, Paintable {
     private double y;
     private double width = 90;
     private double height = 70;
-    private double constantVelocity = 1d;
     private double radiusFromEpsilon = 400;
     private double acquiredX;
     private double acquiredY;
@@ -44,12 +43,15 @@ public class Wyrm implements Movable, Paintable {
         panel = new JPanel();
         panel.setBounds((int) x - 10, (int) y - 10, (int) width + 20, (int) height + 20);
         panel.setBackground(Constants.DARK_BLUE);
+        GameState.panels.add(panel);
+
         try {
             Image yourImage = (Image) ImageIO.read(Constants.WYRM_PIC);
             image = yourImage.getScaledInstance(90, 70, Image.SCALE_DEFAULT);
         } catch (Exception e) {
             System.out.println("exception in wyrm paint");
         }
+
         GameFrame.getInstance().add(panel);
         shootTimer.schedule(new TimerTask() {
             @Override
@@ -91,10 +93,10 @@ public class Wyrm implements Movable, Paintable {
                 }
             }
         } else {
-            angle += 0.5;
-            angle %= 360;
-            x = acquiredX + (int) (radiusFromEpsilon * Math.cos(Math.toRadians(angle)));
-            y = acquiredY + (int) (radiusFromEpsilon * Math.sin(Math.toRadians(angle)));
+//            angle += 0.5;
+//            angle %= 360;
+//            x = acquiredX + (int) (radiusFromEpsilon * Math.cos(Math.toRadians(angle)));
+//            y = acquiredY + (int) (radiusFromEpsilon * Math.sin(Math.toRadians(angle)));
         }
     }
 
@@ -140,4 +142,6 @@ public class Wyrm implements Movable, Paintable {
         g2.drawImage(image, (int) x - locX - 45, (int) y - locY - 35, GamePanel.getInstance());
         panel.setLocation((int) x - 45 - 10, (int) y - 35 - 10);
     }
+
+
 }
