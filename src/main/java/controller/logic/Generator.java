@@ -7,6 +7,7 @@ import model.objectsModel.epsilon.Bullet;
 import model.objectsModel.epsilon.Epsilon;
 import model.objectsModel.miniBoss.Barricados;
 import model.objectsModel.miniBoss.BlackOrb;
+import model.objectsModel.miniBoss.OrbManager;
 import view.gameGUI.GamePanel;
 
 import java.util.Random;
@@ -69,7 +70,7 @@ public abstract class Generator {
     }
 
     public static void makeNewBullet(int x, int y) {
-        Bullet bullet = new Bullet(Epsilon.getInstance().getX(), Epsilon.getInstance().getY(), true, Constants.EPSILON_COLOR , Epsilon.getInstance().getDamageRate());
+        Bullet bullet = new Bullet(Epsilon.getInstance().getX(), Epsilon.getInstance().getY(), true, Constants.EPSILON_COLOR, Epsilon.getInstance().getDamageRate());
         bullet.calculateMovingDirection(x, y);
         GameState.bullets.add(bullet);
     }
@@ -78,8 +79,8 @@ public abstract class Generator {
         int initX = randomiseInitialPosX();
         int initY = randomiseInitialPosY();
         int size = Constants.OMENOCT_SIZE;
-        GameState.omenocts.add(new Omenoct(new double[]{initX, initX + size, initX + 2 * size, initX + 2 * size, initX + size , initX , initX - size , initX - size},
-                new double[]{initY, initY, initY + size, initY + 2 * size, initY + 3 * size , initY + 3 * size , initY + 2 * size , initY + size}));
+        GameState.omenocts.add(new Omenoct(new double[]{initX, initX + size, initX + 2 * size, initX + 2 * size, initX + size, initX, initX - size, initX - size},
+                new double[]{initY, initY, initY + size, initY + 2 * size, initY + 3 * size, initY + 3 * size, initY + 2 * size, initY + size}));
 
     }
 
@@ -88,27 +89,54 @@ public abstract class Generator {
         int initY = randomiseInitialPosY();
         GameState.archmires.add(new Archmire(initX, initY));
     }
-    public static void makeNewNecropick(){
+
+    public static void makeNewNecropick() {
         int initX = randomiseInitialPosX();
         int initY = randomiseInitialPosY();
         GameState.necropicks.add(new Necropick(initX, initY));
     }
-    public static void makeNewWyrm(){
+
+    public static void makeNewWyrm() {
         int initX = randomiseInitialPosX();
         int initY = randomiseInitialPosY();
         GameState.wyrms.add(new Wyrm(initX, initY));
     }
-    public static void makeNewBarricados(){
+
+    public static void makeNewBarricados() {
         int initX = randomXonScreen();
         int initY = randomYonScreen();
         GameState.barricados.add(new Barricados(initX, initY));
     }
-    public static void makeNewOrb(){
+
+    public static void makeNewOrb() {
         int initX = randomXonScreen();
         int initY = 100;
-        GameState.orbs.add(new BlackOrb(initX, initY));
+        java.util.Timer timer = new java.util.Timer();
+        timer.schedule(new TimerTask() {
+            int count = 0;
+            @Override
+            public void run() {
+                if (count == 0) {
+                    GameState.orbs.add(new BlackOrb(initX, initY , 0));
+                } else if (count == 1) {
+                    GameState.orbs.add(new BlackOrb(initX + 300, initY + 300 , 1));
+                } else if (count == 2) {
+                    GameState.orbs.add(new BlackOrb(initX + 150, initY + 600 , 2));
+                } else if (count == 3) {
+                    GameState.orbs.add(new BlackOrb(initX - 150, initY + 600 , 3));
+                } else if (count == 4) {
+                    GameState.orbs.add(new BlackOrb(initX - 300, initY + 300 , 4));
+                }
+                count++;
+                if (count == 5) {
+                    timer.cancel();
+                    OrbManager.laser();
+                }
+            }
+        }, 1000, 2000);
     }
-    static int randomiseInitialPosX(){
+
+    static int randomiseInitialPosX() {
         Random random = new Random();
         int initX = random.nextInt(GamePanel.getInstance().getPanelWidth());
         if (random.nextBoolean()) {
@@ -118,7 +146,8 @@ public abstract class Generator {
         }
         return initX + GamePanel.getInstance().getLocationX();
     }
-    static int randomiseInitialPosY(){
+
+    static int randomiseInitialPosY() {
         Random random = new Random();
         int initY = random.nextInt(GamePanel.getInstance().getPanelHeight());
         if (random.nextBoolean()) {
@@ -128,10 +157,12 @@ public abstract class Generator {
         }
         return initY + GamePanel.getInstance().getLocationY();
     }
-    static int randomXonScreen(){
+
+    static int randomXonScreen() {
         return new Random().nextInt(700) + GamePanel.getInstance().getLocationX();
     }
-    static int randomYonScreen(){
+
+    static int randomYonScreen() {
         return new Random().nextInt(700) + GamePanel.getInstance().getLocationY();
     }
 }

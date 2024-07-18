@@ -1,6 +1,7 @@
 package view.gameGUI;
 
 import controller.InputController;
+import controller.logic.GameState;
 import controller.util.Constants;
 
 import javax.swing.*;

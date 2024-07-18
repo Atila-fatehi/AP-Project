@@ -12,6 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
@@ -19,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 public class Archmire implements Paintable, Movable, Drownable, Collidable {
 
     private int HP = 30;
+    private int damage = 10;
     private double posXHP;
     private double posYHP;
     private double radius_a = 40;
@@ -38,6 +40,8 @@ public class Archmire implements Paintable, Movable, Drownable, Collidable {
     private ArrayList<Integer> traveledX = new ArrayList<>();
     private ArrayList<Integer> traveledY = new ArrayList<>();
     private ArrayList<java.util.Timer> traveledTimer = new ArrayList<>();
+//    private ArrayList<java.util.Timer> insTimer = new ArrayList<>();
+    private HashMap<String ,java.util.Timer> insMaps = new HashMap<>();
 
 
     public Archmire(double x, double y) {
@@ -191,29 +195,49 @@ public class Archmire implements Paintable, Movable, Drownable, Collidable {
         return radius_b;
     }
 
-    public void drown(Archmire archmire) {
-//        java.util.Timer ep = new java.util.Timer();
-//        ep.schedule(new TimerTask() {
-//            int count = 0;
-//            @Override
-//            public void run() {
-//                if (!Drown.checkEpsilonDrown(archmire)) {
-//                    ep.cancel();
-//                }else{
-//                    count++;
-//                    if(count == 10){
-//                        Epsilon.getInstance().setHP(Epsilon.getInstance().getHP() - 10);
-//                        count = 0;
-//                    }
-//                }
-//            }
-//        } , 0 , 100);
+    int count = 0;
+    public void startNewTimer(int count){
 
-        for (int j = 0; j < GameState.trigoraths.size(); j++) {
-            if(Drown.checkTwoPolyEntityDrown(this, GameState.trigoraths.get(j))){
-                System.out.println("yes baby");
+
+    }
+    public void drown() {
+        if(Drown.checkEpsilonDrown(this)){
+            if(!insMaps.containsKey("Epsilon")){
+                java.util.Timer ep = new java.util.Timer();
+                ep.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        Epsilon.getInstance().setHP(Epsilon.getInstance().getHP() - damage);
+                    }
+                } ,1000,1000 );
+                insMaps.put("Epsilon" , ep);
+            }
+        }else{
+            if(insMaps.containsKey("Epsilon")){
+                insMaps.get("Epsilon").cancel();
+                insMaps.remove("Epsilon");
             }
         }
+
+//        for (int j = 0; j < GameState.trigoraths.size(); j++) {
+//            if(Drown.checkTwoPolyEntityDrown(this , GameState.trigoraths.get(j))){
+//                if(!insMaps.containsKey(GameState.trigoraths.get(j).getId())){
+//                    java.util.Timer ep = new java.util.Timer();
+//                    insMaps.put(GameState.trigoraths.get(j).getId() , ep);
+//                    ep.schedule(new TimerTask() {
+//                        @Override
+//                        public void run() {
+//
+//                        }
+//                    } ,1000,1000 );
+//                }
+//            }else{
+//                if(insMaps.containsKey("Epsilon")){
+//                    insMaps.get("Epsilon").cancel();
+//                    insMaps.remove("Epsilon");
+//                }
+//            }
+//        }
 //        for (int j = 0; j < GameState.squarantines.size(); j++) {
 //            Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(this, GameState.squarantines.get(j));
 //            if (collisionPoint != null) {

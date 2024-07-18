@@ -7,6 +7,7 @@ import model.objectsModel.epsilon.Bullet;
 import model.objectsModel.epsilon.Epsilon;
 import model.objectsModel.miniBoss.Barricados;
 import model.objectsModel.miniBoss.BlackOrb;
+import model.objectsModel.miniBoss.Laser;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class GameState {
     public static final ArrayList<Wyrm> wyrms = new ArrayList<>();
     public static final ArrayList<Barricados> barricados = new ArrayList<>();
     public static final ArrayList<BlackOrb> orbs = new ArrayList<>();
+    public static final ArrayList<Laser> lasers = new ArrayList<>();
     public static final ArrayList<JPanel> panels = new ArrayList<>();
     public static int elapsedTime;
     public static int difficulty = Objects.requireNonNull(FileController.readSettings())[1];
@@ -55,11 +57,20 @@ public class GameState {
         paintables.addAll(necropicks);
         paintables.addAll(wyrms);
         paintables.addAll(barricados);
+        paintables.addAll(lasers);
         paintables.addAll(orbs);
         paintables.addAll(bullets);
         paintables.add(epsilon);
         paintables.addAll(archmires);
         return paintables;
+    }
+    public static Trigorath getTriByID(String id){
+        for (int i = 0; i < trigoraths.size(); i++) {
+            if(trigoraths.get(i).getId().equals(id)){
+                return trigoraths.get(i);
+            }
+        }
+        return null;
     }
 
 }

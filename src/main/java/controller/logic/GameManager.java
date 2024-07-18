@@ -7,6 +7,7 @@ import model.collision.CollisionHandler;
 import model.collision.WallCollisionHandler;
 import model.objectsModel.enemy.Collectable;
 import model.objectsModel.epsilon.Epsilon;
+import model.objectsModel.miniBoss.OrbManager;
 import view.frames.MainMenu;
 import view.gameGUI.GameFrame;
 import view.gameGUI.GamePanel;
@@ -57,9 +58,12 @@ public class GameManager {
 //        Generator.makeNewWyrm();
 //        Generator.makeNewWyrm();
 //        Generator.makeNewNecropick();
-        Generator.makeNewArchmire();
+//        Generator.makeNewArchmire();
 //        Generator.makeNewBarricados();
-
+        Generator.makeNewOrb();
+        for (int i = 0; i < GameState.panels.size(); i++) {
+            System.out.println(GameState.panels.get(i));
+        }
         viewTimer = new java.util.Timer();
         viewTimer.schedule(new TimerTask() {
             @Override
@@ -195,7 +199,7 @@ public class GameManager {
             GameState.archmires.get(i).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
             GameState.archmires.get(i).move();
 //            GameState.archmires.get(i).playAudio();
-            GameState.archmires.get(i).drown(GameState.archmires.get(i));
+            GameState.archmires.get(i).drown();
             if (GameState.archmires.get(i).getHP() <= 0) {
                 AudioPlayer.play(AudioPlayer.MELON_IMPACT);
                 for (int j = 0; j < 5; j++) {
@@ -216,6 +220,27 @@ public class GameManager {
         //barri stuff
         for (int i = 0; i < GameState.barricados.size(); i++) {
             GameState.barricados.get(i).checkCollision();
+        }
+
+        //orb stuff
+//        OrbManager.drawLines();
+//        OrbManager.drown();
+        for (int i = 0; i < GameState.orbs.size(); i++) {
+            GameState.orbs.get(i).checkCollision();
+            if (GameState.orbs.get(i).getHP() <= 0) {
+                AudioPlayer.play(AudioPlayer.MELON_IMPACT);
+                OrbManager.destroyLaser(GameState.orbs.get(i).getCode());
+                for (int j = 0; j < 5; j++) {
+                    int rada = (int) GameState.orbs.get(i).getSize();
+                    int radb = (int) GameState.orbs.get(i).getSize();
+                    int randX = (int) (new Random().nextInt(2 * rada) - rada);
+                    int randY = (int) (new Random().nextInt(2 * radb) - radb);
+                    GameState.collectables.add(new Collectable(GameState.orbs.get(i).getX() + randX, GameState.orbs.get(i).getY() + randY, 30, Constants.ANOTHER_STRING_COLOR));
+                }
+                GameState.orbs.get(i).selfDestruct();
+                GameState.orbs.remove(i);
+                i--;
+            }
         }
 
         //epsilon stuff
@@ -326,6 +351,18 @@ public class GameManager {
             for (int j = 0; j < GameState.barricados.size(); j++) {
                 Point2D collisionPoint = Collision.checkBulletCollision(GameState.bullets.get(i), GameState.barricados.get(j));
                 if (collisionPoint != null) {
+                    GameState.bullets.remove(i);
+                    i--;
+                    break;
+                }
+            }
+        }
+        //orb collision
+        for (int i = 0; i < GameState.bullets.size(); i++) {
+            for (int j = 0; j < GameState.orbs.size(); j++) {
+                Point2D collisionPoint = Collision.checkOrbCollision(GameState.orbs.get(j) , GameState.bullets.get(i));
+                if (collisionPoint != null && GameState.orbs.get(i).isDamageable()) {
+                    GameState.orbs.get(j).setHP(GameState.orbs.get(j).getHP() - Epsilon.getInstance().getDamageRate());
                     GameState.bullets.remove(i);
                     i--;
                     break;

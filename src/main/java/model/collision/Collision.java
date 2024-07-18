@@ -4,6 +4,7 @@ import controller.util.Calculator;
 import model.objectsModel.epsilon.Bullet;
 import model.objectsModel.enemy.Collectable;
 import model.objectsModel.epsilon.Epsilon;
+import model.objectsModel.miniBoss.BlackOrb;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -98,4 +99,14 @@ public abstract class Collision {
         Polygon poly = new Polygon(collidable.getXPoints(), collidable.getYPoints(), collidable.getXPoints().length);
         return poly.contains(point);
     }
+
+    public static Point2D checkOrbCollision(BlackOrb orb , Bullet bullet) {
+        double radius = 40;
+        if(Calculator.distance(orb.getX() + 10 + radius, orb.getY() + 10 + radius, bullet.getX(), bullet.getY())
+                <= bullet.getRadius() + radius + 3){
+            return new Point2D.Double(bullet.getX() , bullet.getY());
+        }
+        return null;
+    }
+
 }

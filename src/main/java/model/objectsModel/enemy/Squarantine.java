@@ -17,6 +17,7 @@ import java.awt.geom.Point2D;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class Squarantine implements Movable, Collidable, Paintable {
@@ -35,10 +36,12 @@ public class Squarantine implements Movable, Collidable, Paintable {
     private double accY;
     private boolean played;
     private java.util.Timer timer;
+    String id;
 
     public Squarantine(double[] x, double[] y) {
         this.xPoints = x;
         this.yPoints = y;
+        id = String.valueOf(UUID.randomUUID());
         randomAggression();
     }
 
@@ -232,5 +235,12 @@ public class Squarantine implements Movable, Collidable, Paintable {
             g2.drawString(String.valueOf(HP), (int) posXHP - locX, (int) posYHP - locY);
 
         }
+    }
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

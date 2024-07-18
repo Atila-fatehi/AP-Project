@@ -13,10 +13,10 @@ public abstract class WallCollisionHandler {
     public static int wallExpansionSize = 30;
     public static int wallExpansionPeriod = 10;
 
-    public static void handleWallCollision(int wallNumber){
+    public static void handleWallCollision(int wallNumber) {
         if (wallNumber == 1) {
             for (int i = 0; i < GameState.omenocts.size(); i++) {
-                if(GameState.omenocts.get(i).isDestination()){
+                if (GameState.omenocts.get(i).isDestination()) {
                     AudioPlayer.play(AudioPlayer.SPLAT);
                     GameState.omenocts.get(i).setHP(GameState.omenocts.get(i).getHP() - Epsilon.getInstance().getDamageRate());
                 }
@@ -24,6 +24,7 @@ public abstract class WallCollisionHandler {
             java.util.Timer timer = new java.util.Timer();
             timer.schedule(new TimerTask() {
                 int counter = 0;
+
                 @Override
                 public void run() {
                     GamePanel.getInstance().setLocation(GamePanel.getInstance().getLocationX() - wallExpansionRate, GamePanel.getInstance().getLocationY());
@@ -56,7 +57,7 @@ public abstract class WallCollisionHandler {
 
         } else if (wallNumber == 3) {
             for (int i = 0; i < GameState.omenocts.size(); i++) {
-                if(!GameState.omenocts.get(i).isDestination()){
+                if (!GameState.omenocts.get(i).isDestination()) {
                     AudioPlayer.play(AudioPlayer.SPLAT);
                     GameState.omenocts.get(i).setHP(GameState.omenocts.get(i).getHP() - Epsilon.getInstance().getDamageRate());
                 }
@@ -64,6 +65,7 @@ public abstract class WallCollisionHandler {
             java.util.Timer timer = new java.util.Timer();
             timer.schedule(new TimerTask() {
                 int counter = 0;
+
                 @Override
                 public void run() {
                     GamePanel.getInstance().setSize(GamePanel.getInstance().getPanelWidth() + wallExpansionRate, GamePanel.getInstance().getPanelHeight());
@@ -80,6 +82,7 @@ public abstract class WallCollisionHandler {
             java.util.Timer timer = new java.util.Timer();
             timer.schedule(new TimerTask() {
                 int counter = 0;
+
                 @Override
                 public void run() {
                     GamePanel.getInstance().setSize(GamePanel.getInstance().getPanelWidth(), GamePanel.getInstance().getPanelHeight() + wallExpansionRate);
@@ -94,20 +97,33 @@ public abstract class WallCollisionHandler {
         }
     }
 
-    public static void handleEpsilonWallCollision(){
-        if (Epsilon.getInstance().getX() - Epsilon.getInstance().getRadius() < GamePanel.getInstance().getLocationX()) {
-            Epsilon.getInstance().setX(GamePanel.getInstance().getLocationX() + Epsilon.getInstance().getRadius());
-            Epsilon.getInstance().setVx(0);
-        } else if (Epsilon.getInstance().getX() + Epsilon.getInstance().getRadius() > GamePanel.getInstance().getPanelWidth() + GamePanel.getInstance().getLocationX()) {
-            Epsilon.getInstance().setX(GamePanel.getInstance().getPanelWidth() + GamePanel.getInstance().getLocationX() - Epsilon.getInstance().getRadius());
+    public static void handleEpsilonWallCollision() {
+        double x = Epsilon.getInstance().getX();
+        double y = Epsilon.getInstance().getY();
+        double radius = Epsilon.getInstance().getRadius();
+        if (x - radius < GamePanel.getInstance().getLocationX()) {
+//            boolean access = false;
+//            for (int i = 0; i < GameState.panels.size(); i++) {
+//                if (GameState.panels.get(i).getX() + GameState.panels.get(i).getWidth() > GamePanel.getInstance().getLocationX()
+//                        && GameState.panels.get(i).getY() < y - radius
+//                        && GameState.panels.get(i).getY() + GameState.panels.get(i).getHeight() > y + radius) {
+//                    access = true;
+//                }
+//            }
+//            if (!access) {
+                Epsilon.getInstance().setX(GamePanel.getInstance().getLocationX() + radius);
+                Epsilon.getInstance().setVx(0);
+//            }
+        } else if (x + radius > GamePanel.getInstance().getPanelWidth() + GamePanel.getInstance().getLocationX()) {
+            Epsilon.getInstance().setX(GamePanel.getInstance().getPanelWidth() + GamePanel.getInstance().getLocationX() - radius);
             Epsilon.getInstance().setVx(0);
         }
 
-        if (Epsilon.getInstance().getY() - Epsilon.getInstance().getRadius() < GamePanel.getInstance().getLocationY()) {
-            Epsilon.getInstance().setY(Epsilon.getInstance().getRadius() + GamePanel.getInstance().getLocationY());
+        if (y - radius < GamePanel.getInstance().getLocationY()) {
+            Epsilon.getInstance().setY(radius + GamePanel.getInstance().getLocationY());
             Epsilon.getInstance().setVy(0);
-        } else if (Epsilon.getInstance().getY() + Epsilon.getInstance().getRadius() > GamePanel.getInstance().getPanelHeight() + GamePanel.getInstance().getLocationY()) {
-            Epsilon.getInstance().setY(GamePanel.getInstance().getPanelHeight() + GamePanel.getInstance().getLocationY() - Epsilon.getInstance().getRadius());
+        } else if (y + radius > GamePanel.getInstance().getPanelHeight() + GamePanel.getInstance().getLocationY()) {
+            Epsilon.getInstance().setY(GamePanel.getInstance().getPanelHeight() + GamePanel.getInstance().getLocationY() - radius);
             Epsilon.getInstance().setVy(0);
         }
     }

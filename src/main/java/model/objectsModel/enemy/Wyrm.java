@@ -1,6 +1,5 @@
 package model.objectsModel.enemy;
 
-import controller.audio.players.AudioPlayer;
 import controller.logic.GameState;
 import controller.util.Calculator;
 import controller.util.Constants;
@@ -18,7 +17,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
-import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -39,7 +37,7 @@ public class Wyrm implements Movable, Paintable, Collidable {
     private double vy;
     private double accX;
     private double accY;
-    private Panel panel;
+    private WyrmPanel panel;
     private Image image;
     private boolean linearMovement;
     private int clockwise = 1;
@@ -49,7 +47,7 @@ public class Wyrm implements Movable, Paintable, Collidable {
         this.x = x;
         this.y = y;
 
-        panel = new Panel();
+        panel = new WyrmPanel();
 
         try {
             Image yourImage = (Image) ImageIO.read(Constants.WYRM_PIC);
@@ -122,8 +120,8 @@ public class Wyrm implements Movable, Paintable, Collidable {
         }
     }
 
-    class Panel extends JPanel {
-        public Panel() {
+    class WyrmPanel extends JPanel {
+        public WyrmPanel() {
             setBounds((int) x - 10, (int) y - 10, (int) width + 20, (int) height + 20);
             setBackground(Constants.DARK_BLUE);
             GameState.panels.add(this);

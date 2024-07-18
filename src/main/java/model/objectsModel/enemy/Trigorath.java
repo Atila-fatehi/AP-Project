@@ -15,9 +15,11 @@ import view.gameGUI.GamePanel;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.util.UUID;
 
 public class Trigorath implements Movable, Collidable , Paintable {
     private int HP = 15;
+    String id;
     private double posXHP;
     private double posYHP;
     private final double[] xPoints;
@@ -33,7 +35,7 @@ public class Trigorath implements Movable, Collidable , Paintable {
     public Trigorath(double[] x, double[] y) {
         this.xPoints = x;
         this.yPoints = y;
-
+        id = String.valueOf(UUID.randomUUID());
     }
 
     @Override
@@ -204,5 +206,13 @@ public class Trigorath implements Movable, Collidable , Paintable {
             g2.setColor(Color.BLACK);
             g2.drawString(String.valueOf(HP), (int) posXHP - locX, (int) posYHP - locY);
         }
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }
