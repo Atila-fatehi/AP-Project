@@ -4,12 +4,17 @@ import controller.logic.GameState;
 import controller.util.Constants;
 import model.Paintable.Paintable;
 import model.collision.Collidable;
+import model.collision.Collision;
+import model.collision.CollisionHandler;
+import model.movable.Movable;
+import model.objectsModel.epsilon.Epsilon;
 import view.gameGUI.GameFrame;
 import view.gameGUI.GamePanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.util.TimerTask;
 
 public class Barricados implements Paintable, Collidable {
@@ -20,7 +25,7 @@ public class Barricados implements Paintable, Collidable {
     private boolean played;
     private BarriPanel panel;
     private Image image;
-    private java.util.Timer timer = new java.util.Timer();
+    private final java.util.Timer timer = new java.util.Timer();
 
     public Barricados(double x, double y) {
         this.x = x;
@@ -44,8 +49,46 @@ public class Barricados implements Paintable, Collidable {
 
     }
 
-    void selfDestruct(){
+    void selfDestruct() {
         GameState.barricados.remove(this);
+    }
+
+    public void checkCollision() {
+        Point2D epsilonCollisionPoint = Collision.checkEpsilonCollision(this);
+        if (epsilonCollisionPoint != null) {
+            CollisionHandler.stopEpsilon(epsilonCollisionPoint);
+        }
+        for (int j = 0; j < GameState.trigoraths.size(); j++) {
+            Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(this, GameState.trigoraths.get(j));
+            if (collisionPoint != null) {
+                CollisionHandler.handleCollisionOnPoint(collisionPoint);
+            }
+        }
+        for (int j = 0; j < GameState.squarantines.size(); j++) {
+            Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(this, GameState.squarantines.get(j));
+            if (collisionPoint != null) {
+                CollisionHandler.handleCollisionOnPoint(collisionPoint);
+            }
+        }
+        for (int j = 0; j < GameState.omenocts.size(); j++) {
+            Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(this, GameState.omenocts.get(j));
+            if (collisionPoint != null) {
+                CollisionHandler.handleCollisionOnPoint(collisionPoint);
+            }
+        }
+        for (int j = 0; j < GameState.necropicks.size(); j++) {
+            Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(this, GameState.necropicks.get(j));
+            if (collisionPoint != null) {
+                CollisionHandler.handleCollisionOnPoint(collisionPoint);
+            }
+        }
+        for (int j = 0; j < GameState.wyrms.size(); j++) {
+            Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(this, GameState.wyrms.get(j));
+            if (collisionPoint != null) {
+                CollisionHandler.handleCollisionOnPoint(collisionPoint);
+                GameState.wyrms.get(j).changeRotation();
+            }
+        }
     }
 
     class BarriPanel extends JPanel {
@@ -73,7 +116,8 @@ public class Barricados implements Paintable, Collidable {
         int locX = GamePanel.getInstance().getLocationX();
         int locY = GamePanel.getInstance().getLocationY();
         g.drawImage(image, (int) x - locX, (int) y - locY, GamePanel.getInstance());
-
+        g.setColor(Color.ORANGE);
+        g.fillPolygon(getRelativeXPoints(GamePanel.getInstance()), getRelativeYPoints(GamePanel.getInstance()), getXPoints().length);
         locX = panel.getX();
         locY = panel.getY();
         Graphics g2 = panel.getGraphics();
@@ -100,11 +144,15 @@ public class Barricados implements Paintable, Collidable {
 
     @Override
     public int[] getRelativeXPoints(JPanel panel) {
-        return new int[0];
+        int locX = panel.getX();
+        return new int[]{getXPoints()[0] - locX, getXPoints()[1] - locX
+                , getXPoints()[2] - locX, getXPoints()[3] - locX};
     }
 
     @Override
     public int[] getRelativeYPoints(JPanel panel) {
-        return new int[0];
+        int locY = panel.getY();
+        return new int[]{getYPoints()[0] - locY, getYPoints()[1] - locY
+                , getYPoints()[2] - locY, getYPoints()[3] - locY};
     }
 }

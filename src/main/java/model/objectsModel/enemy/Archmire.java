@@ -3,16 +3,18 @@ package model.objectsModel.enemy;
 import controller.logic.GameState;
 import controller.util.Constants;
 import model.Paintable.Paintable;
+import model.collision.Collidable;
 import model.movable.Movable;
 import view.gameGUI.GamePanel;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
-public class Archmire implements Paintable, Movable {
+public class Archmire implements Paintable, Movable , Collidable {
 
     private int HP = 30;
     private double posXHP;
@@ -115,6 +117,7 @@ public class Archmire implements Paintable, Movable {
         }
         g.setColor(Constants.ARCH_RED);
         g.fillOval((int) x - locX, (int) y - locY, (int) radius_a * 2, (int) radius_b * 2);
+
         g.setColor(Color.BLACK);
         g.drawString(String.valueOf(HP), (int) posXHP - locX, (int) posYHP - locY);
 
@@ -137,4 +140,23 @@ public class Archmire implements Paintable, Movable {
         }
     }
 
+    @Override
+    public int[] getXPoints() {
+        return new int[] {};
+    }
+
+    @Override
+    public int[] getYPoints() {
+        return new int[0];
+    }
+
+    @Override
+    public int[] getRelativeXPoints(JPanel panel) {
+        return new int[0];
+    }
+
+    @Override
+    public int[] getRelativeYPoints(JPanel panel) {
+        return new int[0];
+    }
 }

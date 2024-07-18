@@ -160,6 +160,12 @@ public class Squarantine implements Movable, Collidable, Paintable {
                 GameState.wyrms.get(j).changeRotation();
             }
         }
+        for (int j = 0; j < GameState.barricados.size(); j++) {
+            Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(this, GameState.barricados.get(j));
+            if (collisionPoint != null) {
+                CollisionHandler.handleCollisionOnPoint(collisionPoint);
+            }
+        }
 
     }
 

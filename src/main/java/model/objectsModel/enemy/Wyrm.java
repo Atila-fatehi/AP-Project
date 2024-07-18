@@ -113,6 +113,13 @@ public class Wyrm implements Movable, Paintable, Collidable {
                 }
             }
         }
+        for (int i = 0; i < GameState.barricados.size(); i++) {
+            Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(this , GameState.barricados.get(i));
+            if(collisionPoint != null){
+                CollisionHandler.handleCollisionOnPoint(collisionPoint);
+                changeRotation();
+            }
+        }
     }
 
     class Panel extends JPanel {
