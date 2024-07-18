@@ -193,7 +193,7 @@ public class Necropick implements Paintable, Movable, Collidable {
     public void checkCollisions() {
         Point2D epsilonCollisionPoint = Collision.checkEpsilonCollision(this);
         if (epsilonCollisionPoint != null) {
-            CollisionHandler.handleCollisionOnPoint(epsilonCollisionPoint);
+            CollisionHandler.stopEpsilon(epsilonCollisionPoint);
         }
         for (int j = 0; j < GameState.trigoraths.size(); j++) {
             Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(this, GameState.trigoraths.get(j));

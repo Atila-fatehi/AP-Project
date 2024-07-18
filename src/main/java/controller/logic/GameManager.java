@@ -53,10 +53,10 @@ public class GameManager {
 //        Generator.makeNewTrigorath();
 //
 //        Generator.makeNewOmenoct();
-        Generator.makeNewWyrm();
 //        Generator.makeNewWyrm();
 //        Generator.makeNewWyrm();
-//        Generator.makeNewNecropick();
+//        Generator.makeNewWyrm();
+        Generator.makeNewNecropick();
 //        Generator.makeNewArchmire();
 
 
