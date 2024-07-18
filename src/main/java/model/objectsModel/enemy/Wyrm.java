@@ -1,9 +1,13 @@
 package model.objectsModel.enemy;
 
+import controller.audio.players.AudioPlayer;
 import controller.logic.GameState;
 import controller.util.Calculator;
 import controller.util.Constants;
 import model.Paintable.Paintable;
+import model.collision.Collidable;
+import model.collision.Collision;
+import model.collision.CollisionHandler;
 import model.movable.Movable;
 import model.objectsModel.epsilon.Bullet;
 import model.objectsModel.epsilon.Epsilon;
@@ -13,10 +17,13 @@ import view.gameGUI.GamePanel;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Point2D;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Wyrm implements Movable, Paintable {
+public class Wyrm implements Movable, Paintable, Collidable {
+    private double HP = 12;
     private double x;
     private double y;
     private double width = 90;
@@ -35,6 +42,7 @@ public class Wyrm implements Movable, Paintable {
     private Panel panel;
     private Image image;
     private boolean linearMovement;
+    private int clockwise = 1;
     private final java.util.Timer shootTimer = new java.util.Timer();
 
     public Wyrm(double x, double y) {
@@ -45,7 +53,7 @@ public class Wyrm implements Movable, Paintable {
 
         try {
             Image yourImage = (Image) ImageIO.read(Constants.WYRM_PIC);
-            image = yourImage.getScaledInstance(90, 70, Image.SCALE_DEFAULT);
+            image = yourImage.getScaledInstance((int) width, (int) height, Image.SCALE_DEFAULT);
         } catch (Exception e) {
             System.out.println("exception in wyrm paint");
         }
@@ -54,7 +62,57 @@ public class Wyrm implements Movable, Paintable {
             public void run() {
                 shootBullet();
             }
-        }, 2000, 1500);
+        }, 3000, 1500);
+    }
+
+    public void selfDestruct() {
+        GameState.panels.remove(panel);
+        GameFrame.getInstance().remove(panel);
+    }
+
+    public void checkCollisions() {
+        Point2D epsilonCollisionPoint = Collision.checkEpsilonCollision(this);
+        if (epsilonCollisionPoint != null) {
+            CollisionHandler.handleCollisionOnPoint(epsilonCollisionPoint);
+            changeRotation();
+        }
+        for (int j = 0; j < GameState.trigoraths.size(); j++) {
+            Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(this, GameState.trigoraths.get(j));
+            if (collisionPoint != null) {
+                CollisionHandler.handleCollisionOnPoint(collisionPoint);
+                changeRotation();
+            }
+        }
+        for (int j = 0; j < GameState.squarantines.size(); j++) {
+            Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(this, GameState.squarantines.get(j));
+            if (collisionPoint != null) {
+                CollisionHandler.handleCollisionOnPoint(collisionPoint);
+                changeRotation();
+            }
+        }
+        for (int j = 0; j < GameState.omenocts.size(); j++) {
+            Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(this, GameState.omenocts.get(j));
+            if (collisionPoint != null) {
+                CollisionHandler.handleCollisionOnPoint(collisionPoint);
+                changeRotation();
+            }
+        }
+        for (int j = 0; j < GameState.necropicks.size(); j++) {
+            Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(this, GameState.necropicks.get(j));
+            if (collisionPoint != null) {
+                CollisionHandler.handleCollisionOnPoint(collisionPoint);
+                changeRotation();
+            }
+        }
+        for (int j = 0; j < GameState.wyrms.size(); j++) {
+            if (GameState.wyrms.get(j) != this) {
+                Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(this, GameState.wyrms.get(j));
+                if (collisionPoint != null) {
+                    CollisionHandler.handleCollisionOnPoint(collisionPoint);
+                    GameState.wyrms.get(j).changeRotation();
+                }
+            }
+        }
     }
 
     class Panel extends JPanel {
@@ -70,16 +128,17 @@ public class Wyrm implements Movable, Paintable {
             super.paintComponent(g);
             int locX = panel.getX();
             int locY = panel.getY();
-            g.drawImage(image, (int) x - locX - 45, (int) y - locY - 35, this);
-            panel.setLocation((int) x - 45 - 10, (int) y - 35 - 10);
+            g.drawImage(image, (int) x - locX, (int) y - locY, this);
+            panel.setLocation((int) x - 10, (int) y - 10);
 
             g.dispose();
         }
     }
+
     void shootBullet() {
-//        Bullet bullet = new Bullet(x, y, false, Constants.WYRM_PINK);
-//        bullet.calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
-//        GameState.bullets.add(bullet);
+        Bullet bullet = new Bullet(x, y, false, Constants.WYRM_PINK, 8);
+        bullet.calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
+        GameState.bullets.add(bullet);
     }
 
     @Override
@@ -108,7 +167,7 @@ public class Wyrm implements Movable, Paintable {
                 }
             }
         } else {
-            angle += 0.5;
+            angle += 0.5 * clockwise;
             angle %= 360;
             x = acquiredX + (int) (radiusFromEpsilon * Math.cos(Math.toRadians(angle)));
             y = acquiredY + (int) (radiusFromEpsilon * Math.sin(Math.toRadians(angle)));
@@ -117,7 +176,7 @@ public class Wyrm implements Movable, Paintable {
 
     @Override
     public void calculateMovingDirection(double x, double y) {
-        if(!acquired) {
+        if (!acquired) {
             linearMovement = Calculator.distance(x, y, this.x, this.y) >= radiusFromEpsilon;
             if (linearMovement) {
                 double angle = Math.atan2(y - this.y, x - this.x);
@@ -130,10 +189,10 @@ public class Wyrm implements Movable, Paintable {
                 double deltaX = x - this.x;
                 double angleInRadians = Math.atan2(deltaY, deltaX);
                 angle = Math.toDegrees(angleInRadians);
-                if(angle >= 0){
+                if (angle >= 0) {
                     angle -= 180;
                     angle = Math.abs(angle);
-                }else{
+                } else {
                     angle = 180 + Math.abs(angle);
                 }
                 angle = 360 - angle;
@@ -148,15 +207,57 @@ public class Wyrm implements Movable, Paintable {
     public void selfPaint(Graphics g) {
         int locX = GamePanel.getInstance().getX();
         int locY = GamePanel.getInstance().getY();
-        g.drawImage(image, (int) x - locX - 45, (int) y - locY - 35, GamePanel.getInstance());
-//        g.drawRect((int) (x - locX - 45), (int) (y - locY - 35), 90, 70);
+        g.drawImage(image, (int) ((int) x - locX), (int) ((int) y - locY), GamePanel.getInstance());
 
         locX = panel.getX();
         locY = panel.getY();
         Graphics g2 = panel.getGraphics();
-        g2.drawImage(image, (int) x - locX - 45, (int) y - locY - 35, panel);
-        panel.setLocation((int) x - 45 - 10, (int) y - 35 - 10);
+        g2.drawImage(image, (int) ((int) x - locX), (int) ((int) y - locY), panel);
+        panel.setLocation((int) ((int) x - 10), (int) ((int) y - 10));
+
+        for (int i = 0; i < GameState.panels.size(); i++) {
+            locX = GameState.panels.get(i).getX();
+            locY = GameState.panels.get(i).getY();
+            g2 = GameState.panels.get(i).getGraphics();
+            g2.drawImage(image, (int) ((int) x - locX), (int) ((int) y - locY), GameState.panels.get(i));
+        }
     }
 
+    @Override
+    public int[] getXPoints() {
+        return new int[]{(int) (x), (int) (x + width), (int) (x + width), (int) (x)};
+    }
 
+    @Override
+    public int[] getYPoints() {
+        return new int[]{(int) (y), (int) (y), (int) (y + height), (int) (y + height)};
+    }
+
+    public int[] getRelativeXPoints(JPanel panel) {
+        int locationX = panel.getX();
+        return new int[]{(int) getXPoints()[0] - locationX, (int) getXPoints()[1] - locationX,
+                (int) getXPoints()[2] - locationX, (int) getXPoints()[3] - locationX};
+    }
+
+    public int[] getRelativeYPoints(JPanel panel) {
+        int locationY = panel.getY();
+        return new int[]{(int) getYPoints()[0] - locationY, (int) getYPoints()[1] - locationY,
+                (int) getYPoints()[2] - locationY, (int) getYPoints()[3] - locationY};
+    }
+
+    public void changeRotation() {
+        clockwise *= -1;
+    }
+
+    public double getHP() {
+        return HP;
+    }
+
+    public void setHP(double HP) {
+        this.HP = HP;
+    }
+
+    public Timer getShootTimer() {
+        return shootTimer;
+    }
 }

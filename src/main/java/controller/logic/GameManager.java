@@ -43,7 +43,7 @@ public class GameManager {
 //        Generator.makeNewSquarantine();
 //        Generator.makeNewSquarantine();
 //        Generator.makeNewSquarantine();
-//
+
 //        Generator.makeNewTrigorath();
 //        Generator.makeNewTrigorath();
 //        Generator.makeNewTrigorath();
@@ -53,10 +53,11 @@ public class GameManager {
 //        Generator.makeNewTrigorath();
 //
 //        Generator.makeNewOmenoct();
+        Generator.makeNewWyrm();
 //        Generator.makeNewWyrm();
-//        Generator.makeNewTrigorath();
-//        Generator.makeNewTrigorath();
+//        Generator.makeNewWyrm();
 //        Generator.makeNewNecropick();
+//        Generator.makeNewArchmire();
 
 
         viewTimer = new java.util.Timer();
@@ -171,12 +172,28 @@ public class GameManager {
                 i--;
             }
         }
+        //wyrm stuff
+        for (int i = 0; i < GameState.wyrms.size(); i++) {
+            GameState.wyrms.get(i).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
+            GameState.wyrms.get(i).move();
+            GameState.wyrms.get(i).checkCollisions();
+            if (GameState.wyrms.get(i).getHP() <= 0) {
+                AudioPlayer.play(AudioPlayer.MELON_IMPACT);
+                GameState.collectables.add(new Collectable(GameState.wyrms.get(i).getXPoints()[0], GameState.wyrms.get(i).getYPoints()[0], 8, Constants.WYRM_PINK));
+                GameState.collectables.add(new Collectable(GameState.wyrms.get(i).getXPoints()[0]+ 10, GameState.wyrms.get(i).getYPoints()[0] + 10, 8, Constants.WYRM_PINK));
+
+                GameState.wyrms.get(i).getShootTimer().cancel();
+                GameState.wyrms.get(i).selfDestruct();
+                GameState.wyrms.remove(i);
+                i--;
+            }
+        }
 
 
         //archmire stuff
-//        for (int i = 0; i < GameState.archmires.size(); i++) {
-//            GameState.archmires.get(i).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
-//            GameState.archmires.get(i).move();
+        for (int i = 0; i < GameState.archmires.size(); i++) {
+            GameState.archmires.get(i).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
+            GameState.archmires.get(i).move();
 //            GameState.archmires.get(i).playAudio();
 //            GameState.archmires.get(i).checkCollisions();
 //            if (GameState.archmires.get(i).getHP() <= 0) {
@@ -190,25 +207,11 @@ public class GameManager {
 //                GameState.archmires.remove(i);
 //                i--;
 //            }
-//        }
-//
-//
-//        //wyrm stuff
-//        for (int i = 0; i < GameState.wyrms.size(); i++) {
-//            GameState.wyrms.get(i).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
-//            GameState.wyrms.get(i).move();
-//        }
-
+        }
 
         //epsilon stuff
         Epsilon.getInstance().move();
         Epsilon.getInstance().wallCollision();
-//        for (int i = 0; i < GameState.barricados.size(); i++) {
-//            Point2D collisionPoint = Collision.checkEpsilonCollision(GameState.barricados.get(i));
-//            if(collisionPoint == null)continue;
-//            System.out.println(collisionPoint);
-//
-//        }
         for (int i = 0; i < GameState.collectables.size(); i++) {
             if (Collision.checkCoinCollision(GameState.collectables.get(i))) {
                 Epsilon.getInstance().setXP(Epsilon.getInstance().getXP() + GameState.collectables.get(i).getXp());
@@ -281,12 +284,40 @@ public class GameManager {
                 }
             }
         }
+        //wyrm collision
+        for (int i = 0; i < GameState.bullets.size(); i++) {
+            for (int j = 0; j < GameState.wyrms.size(); j++) {
+                Point2D collisionPoint = Collision.checkBulletCollision(GameState.bullets.get(i), GameState.wyrms.get(j));
+                if (collisionPoint != null) {
+                    AudioPlayer.play(AudioPlayer.SPLAT);
+                    GameState.wyrms.get(j).setHP(GameState.wyrms.get(j).getHP() - Epsilon.getInstance().getDamageRate());
+                    CollisionHandler.handleCollisionOnPoint(collisionPoint);
+                    GameState.bullets.remove(i);
+                    i--;
+                    break;
+                }
+            }
+        }
+        //arch collision
+//        for (int i = 0; i < GameState.bullets.size(); i++) {
+//            for (int j = 0; j < GameState.archmires.size(); j++) {
+//                Point2D collisionPoint = Collision.checkBulletCollision(GameState.bullets.get(i), GameState.archmires.get(j));
+//                if (collisionPoint != null) {
+//                    AudioPlayer.play(AudioPlayer.SPLAT);
+//                    GameState.archmires.get(j).setHP(GameState.archmires.get(j).getHP() - Epsilon.getInstance().getDamageRate());
+//                    CollisionHandler.handleCollisionOnPoint(collisionPoint);
+//                    GameState.bullets.remove(i);
+//                    i--;
+//                    break;
+//                }
+//            }
+//        }
         //epsilon collision
         for (int i = 0; i < GameState.bullets.size(); i++) {
             Point2D epsilonCollisionPoint = Collision.checkCircleCollision(GameState.bullets.get(i));
             if (epsilonCollisionPoint != null) {
                 CollisionHandler.handleCollisionOnPoint(epsilonCollisionPoint);
-                Epsilon.getInstance().setHP(Epsilon.getInstance().getHP() - 4);
+                Epsilon.getInstance().setHP(Epsilon.getInstance().getHP() - GameState.bullets.get(i).getDamage());
                 GameState.bullets.remove(i);
                 i--;
             }

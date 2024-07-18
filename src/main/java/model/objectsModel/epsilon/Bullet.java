@@ -22,6 +22,7 @@ public class Bullet implements Movable, WallCollidable, Collidable, Paintable {
     private double constantVelocity;
     private Color color;
     private boolean fromEpsilon;
+    private int damage;
 
     public void move() {
         x = x + vx;
@@ -35,11 +36,12 @@ public class Bullet implements Movable, WallCollidable, Collidable, Paintable {
         vy = constantVelocity * Math.sin(angle);
     }
 
-    public Bullet(double x, double y , boolean fromEpsilon , Color color) {
+    public Bullet(double x, double y , boolean fromEpsilon , Color color , int damage) {
         this.x = x;
         this.y = y;
-        this.fromEpsilon =fromEpsilon;
+        this.fromEpsilon = fromEpsilon;
         this.color = color;
+        this.damage = damage;
         if(fromEpsilon){
             constantVelocity = 15;
             radius = 4;
@@ -107,6 +109,14 @@ public class Bullet implements Movable, WallCollidable, Collidable, Paintable {
     @Override
     public int[] getRelativeYPoints(JPanel panel) {
         return new int[0];
+    }
+
+    public int getDamage() {
+        return damage;
+    }
+
+    public void setDamage(int damage) {
+        this.damage = damage;
     }
 
     @Override

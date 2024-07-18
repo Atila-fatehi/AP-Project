@@ -169,6 +169,13 @@ public class Trigorath implements Movable, Collidable , Paintable {
                 CollisionHandler.handleCollisionOnPoint(collisionPoint);
             }
         }
+        for (int j = 0; j < GameState.wyrms.size(); j++) {
+            Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(this, GameState.wyrms.get(j));
+            if (collisionPoint != null) {
+                CollisionHandler.handleCollisionOnPoint(collisionPoint);
+                GameState.wyrms.get(j).changeRotation();
+            }
+        }
     }
 
 

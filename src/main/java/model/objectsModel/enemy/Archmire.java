@@ -1,5 +1,6 @@
 package model.objectsModel.enemy;
 
+import controller.logic.GameState;
 import controller.util.Constants;
 import model.Paintable.Paintable;
 import model.movable.Movable;
@@ -86,14 +87,14 @@ public class Archmire implements Paintable, Movable {
             }
         }
 
-        posXHP = x + 14;
-        posYHP = y + 22;
+        posXHP = x + 29;
+        posYHP = y + 37;
 
     }
 
     @Override
     public void calculateMovingDirection(double x, double y) {
-        double angle = Math.atan2(y - (this.y + radius_b / 2), x - (this.x + radius_a / 2));
+        double angle = Math.atan2(y - (this.y + radius_b), x - (this.x + radius_a));
         maxVelocityX = constantVelocity * Math.cos(angle);
         maxVelocityY = constantVelocity * Math.sin(angle);
         accX = Math.cos(angle);
@@ -106,12 +107,34 @@ public class Archmire implements Paintable, Movable {
         int locY = GamePanel.getInstance().getLocationY();
         g.setColor(Constants.ARCH_DARKER_RED);
         for (int i = 0; i < traveledX.size(); i++) {
-            g.fillOval(traveledX.get(i) - locX, traveledY.get(i) - locY, (int) radius_a, (int) radius_b);
+            try {
+                g.fillOval(traveledX.get(i) - locX, traveledY.get(i) - locY, (int) radius_a * 2, (int) radius_b * 2);
+            }catch (Exception e){
+
+            }
         }
         g.setColor(Constants.ARCH_RED);
-        g.fillOval((int) x - locX, (int) y - locY, (int) radius_a, (int) radius_b);
+        g.fillOval((int) x - locX, (int) y - locY, (int) radius_a * 2, (int) radius_b * 2);
         g.setColor(Color.BLACK);
         g.drawString(String.valueOf(HP), (int) posXHP - locX, (int) posYHP - locY);
+
+        for (int i = 0; i < GameState.panels.size(); i++) {
+            locX = GameState.panels.get(i).getX();
+            locY = GameState.panels.get(i).getY();
+            Graphics g2 = GameState.panels.get(i).getGraphics();
+            g2.setColor(Constants.ARCH_DARKER_RED);
+            for (int j = 0; j < traveledX.size(); j++) {
+                try {
+                    g2.fillOval(traveledX.get(j) - locX, traveledY.get(j) - locY, (int) radius_a * 2, (int) radius_b * 2);
+                }catch (Exception e){
+
+                }
+            }
+            g2.setColor(Constants.ARCH_RED);
+            g2.fillOval((int) x - locX, (int) y - locY, (int) radius_a * 2, (int) radius_b * 2);
+            g2.setColor(Color.BLACK);
+            g2.drawString(String.valueOf(HP), (int) posXHP - locX, (int) posYHP - locY);
+        }
     }
 
 }

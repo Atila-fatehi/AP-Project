@@ -58,7 +58,7 @@ public class Omenoct implements Paintable, Collidable, Movable {
     }
 
     void shootBullet() {
-        Bullet bullet = new Bullet(getCenterX(), getCenterY(), false, Constants.OMEN_PINK);
+        Bullet bullet = new Bullet(getCenterX(), getCenterY(), false, Constants.OMEN_PINK , 4);
         bullet.calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
         GameState.bullets.add(bullet);
     }
@@ -210,7 +210,7 @@ public class Omenoct implements Paintable, Collidable, Movable {
         Point2D epsilonCollisionPoint = Collision.checkEpsilonCollision(this);
         if (epsilonCollisionPoint != null) {
             CollisionHandler.handleCollisionOnPoint(epsilonCollisionPoint);
-            Epsilon.getInstance().setHP(Epsilon.getInstance().getHP() - 10);
+            Epsilon.getInstance().setHP(Epsilon.getInstance().getHP() - 8);
         }
         for (int j = 0; j < GameState.trigoraths.size(); j++) {
             Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(this, GameState.trigoraths.get(j));
@@ -222,6 +222,13 @@ public class Omenoct implements Paintable, Collidable, Movable {
             Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(this, GameState.squarantines.get(j));
             if (collisionPoint != null) {
                 CollisionHandler.handleCollisionOnPoint(collisionPoint);
+            }
+        }
+        for (int j = 0; j < GameState.wyrms.size(); j++) {
+            Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(this, GameState.wyrms.get(j));
+            if (collisionPoint != null) {
+                CollisionHandler.handleCollisionOnPoint(collisionPoint);
+                GameState.wyrms.get(j).changeRotation();
             }
         }
     }

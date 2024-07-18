@@ -163,29 +163,29 @@ public class Necropick implements Paintable, Movable, Collidable {
     }
 
     void fire() {
-        Bullet bullet = new Bullet(x + size / 2, y + size / 2, false, Color.GRAY);
+        Bullet bullet = new Bullet(x + size / 2, y + size / 2, false, Color.GRAY,5);
         bullet.calculateMovingDirection(x + size / 2, y + size / 2 + 5);
         GameState.bullets.add(bullet);
-        bullet = new Bullet(x + size / 2, y + size / 2, false, Color.GRAY);
+        bullet = new Bullet(x + size / 2, y + size / 2, false, Color.GRAY,5);
         bullet.calculateMovingDirection(x + size / 2 + 5, y + size / 2);
         GameState.bullets.add(bullet);
-        bullet = new Bullet(x + size / 2, y + size / 2, false, Color.GRAY);
+        bullet = new Bullet(x + size / 2, y + size / 2, false, Color.GRAY,5);
         bullet.calculateMovingDirection(x + size / 2 - 5, y + size / 2);
         GameState.bullets.add(bullet);
-        bullet = new Bullet(x + size / 2, y + size / 2, false, Color.GRAY);
+        bullet = new Bullet(x + size / 2, y + size / 2, false, Color.GRAY,5);
         bullet.calculateMovingDirection(x + size / 2, y + size / 2 - 5);
         GameState.bullets.add(bullet);
 
-        bullet = new Bullet(x + size / 2, y + size / 2, false, Color.GRAY);
+        bullet = new Bullet(x + size / 2, y + size / 2, false, Color.GRAY,5);
         bullet.calculateMovingDirection(x + size / 2 - 5, y + size / 2 - 5);
         GameState.bullets.add(bullet);
-        bullet = new Bullet(x + size / 2, y + size / 2, false, Color.GRAY);
+        bullet = new Bullet(x + size / 2, y + size / 2, false, Color.GRAY,5);
         bullet.calculateMovingDirection(x + size / 2 + 5, y + size / 2 - 5);
         GameState.bullets.add(bullet);
-        bullet = new Bullet(x + size / 2, y + size / 2, false, Color.GRAY);
+        bullet = new Bullet(x + size / 2, y + size / 2, false, Color.GRAY,5);
         bullet.calculateMovingDirection(x + size / 2 + 5, y + size / 2 + 5);
         GameState.bullets.add(bullet);
-        bullet = new Bullet(x + size / 2, y + size / 2, false, Color.GRAY);
+        bullet = new Bullet(x + size / 2, y + size / 2, false, Color.GRAY,5);
         bullet.calculateMovingDirection(x + size / 2 - 5, y + size / 2 + 5);
         GameState.bullets.add(bullet);
     }
@@ -211,6 +211,13 @@ public class Necropick implements Paintable, Movable, Collidable {
             Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(this, GameState.omenocts.get(j));
             if (collisionPoint != null) {
                 disappear = true;
+            }
+        }
+        for (int j = 0; j < GameState.wyrms.size(); j++) {
+            Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(this, GameState.wyrms.get(j));
+            if (collisionPoint != null) {
+                CollisionHandler.handleCollisionOnPoint(collisionPoint);
+                GameState.wyrms.get(j).changeRotation();
             }
         }
     }
