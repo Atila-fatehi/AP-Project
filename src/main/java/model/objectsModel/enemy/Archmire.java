@@ -3,18 +3,20 @@ package model.objectsModel.enemy;
 import controller.logic.GameState;
 import controller.util.Constants;
 import model.Paintable.Paintable;
-import model.collision.Collidable;
+import model.collision.*;
 import model.movable.Movable;
+import model.objectsModel.epsilon.Epsilon;
 import view.gameGUI.GamePanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
-public class Archmire implements Paintable, Movable , Collidable {
+public class Archmire implements Paintable, Movable, Drownable, Collidable {
 
     private int HP = 30;
     private double posXHP;
@@ -43,7 +45,8 @@ public class Archmire implements Paintable, Movable , Collidable {
         this.y = y;
         startTimer();
     }
-    void startTimer(){
+
+    void startTimer() {
         timer = new java.util.Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -59,7 +62,7 @@ public class Archmire implements Paintable, Movable , Collidable {
                 traveledX.removeFirst();
                 traveledY.removeFirst();
             }
-        } , 5000 , 100);
+        }, 5000, 100);
         traveledTimer.add(timer1);
     }
 
@@ -111,7 +114,7 @@ public class Archmire implements Paintable, Movable , Collidable {
         for (int i = 0; i < traveledX.size(); i++) {
             try {
                 g.fillOval(traveledX.get(i) - locX, traveledY.get(i) - locY, (int) radius_a * 2, (int) radius_b * 2);
-            }catch (Exception e){
+            } catch (Exception e) {
 
             }
         }
@@ -129,7 +132,7 @@ public class Archmire implements Paintable, Movable , Collidable {
             for (int j = 0; j < traveledX.size(); j++) {
                 try {
                     g2.fillOval(traveledX.get(j) - locX, traveledY.get(j) - locY, (int) radius_a * 2, (int) radius_b * 2);
-                }catch (Exception e){
+                } catch (Exception e) {
 
                 }
             }
@@ -142,21 +145,105 @@ public class Archmire implements Paintable, Movable , Collidable {
 
     @Override
     public int[] getXPoints() {
-        return new int[] {};
+        return new int[]{(int) x, (int) x + 27, (int) x + 54, (int) x + 80, (int) x + 54, (int) x + 27};
     }
 
     @Override
     public int[] getYPoints() {
-        return new int[0];
+        return new int[]{(int) y + 35, (int) y, (int) y, (int) y + 35, (int) y + 70, (int) y + 70};
     }
 
-    @Override
+
     public int[] getRelativeXPoints(JPanel panel) {
-        return new int[0];
+        int locX = panel.getX();
+        return new int[]{getXPoints()[0] - locX, getXPoints()[1] - locX, getXPoints()[2] - locX,
+                getXPoints()[3] - locX, getXPoints()[4] - locX, getXPoints()[5] - locX};
     }
 
-    @Override
+
     public int[] getRelativeYPoints(JPanel panel) {
-        return new int[0];
+        int locY = panel.getY();
+        return new int[]{getYPoints()[0] - locY, getYPoints()[1] - locY, getYPoints()[2] - locY,
+                getYPoints()[3] - locY, getYPoints()[4] - locY, getYPoints()[5] - locY};
+    }
+
+    public int getHP() {
+        return HP;
+    }
+
+    public void setHP(int HP) {
+        this.HP = HP;
+    }
+
+    public Timer getTimer() {
+        return timer;
+    }
+
+    public Timer getTimer1() {
+        return timer1;
+    }
+
+    public double getRadius_a() {
+        return radius_a;
+    }
+
+    public double getRadius_b() {
+        return radius_b;
+    }
+
+    public void drown(Archmire archmire) {
+//        java.util.Timer ep = new java.util.Timer();
+//        ep.schedule(new TimerTask() {
+//            int count = 0;
+//            @Override
+//            public void run() {
+//                if (!Drown.checkEpsilonDrown(archmire)) {
+//                    ep.cancel();
+//                }else{
+//                    count++;
+//                    if(count == 10){
+//                        Epsilon.getInstance().setHP(Epsilon.getInstance().getHP() - 10);
+//                        count = 0;
+//                    }
+//                }
+//            }
+//        } , 0 , 100);
+
+        for (int j = 0; j < GameState.trigoraths.size(); j++) {
+            if(Drown.checkTwoPolyEntityDrown(this, GameState.trigoraths.get(j))){
+                System.out.println("yes baby");
+            }
+        }
+//        for (int j = 0; j < GameState.squarantines.size(); j++) {
+//            Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(this, GameState.squarantines.get(j));
+//            if (collisionPoint != null) {
+//                CollisionHandler.handleCollisionOnPoint(collisionPoint);
+//            }
+//        }
+//        for (int j = 0; j < GameState.omenocts.size(); j++) {
+//            Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(this, GameState.omenocts.get(j));
+//            if (collisionPoint != null) {
+//                CollisionHandler.handleCollisionOnPoint(collisionPoint);
+//            }
+//        }
+//        for (int j = 0; j < GameState.necropicks.size(); j++) {
+//            Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(this, GameState.necropicks.get(j));
+//            if (collisionPoint != null) {
+//                CollisionHandler.handleCollisionOnPoint(collisionPoint);
+//            }
+//        }
+//        for (int j = 0; j < GameState.wyrms.size(); j++) {
+//            Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(this, GameState.wyrms.get(j));
+//            if (collisionPoint != null) {
+//                CollisionHandler.handleCollisionOnPoint(collisionPoint);
+//                GameState.wyrms.get(j).changeRotation();
+//            }
+//        }
+//        for (int j = 0; j < GameState.barricados.size(); j++) {
+//            Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(this, GameState.barricados.get(j));
+//            if (collisionPoint != null) {
+//                CollisionHandler.handleCollisionOnPoint(collisionPoint);
+//            }
+//        }
     }
 }

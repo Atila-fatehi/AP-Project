@@ -57,8 +57,8 @@ public class GameManager {
 //        Generator.makeNewWyrm();
 //        Generator.makeNewWyrm();
 //        Generator.makeNewNecropick();
-//        Generator.makeNewArchmire();
-        Generator.makeNewBarricados();
+        Generator.makeNewArchmire();
+//        Generator.makeNewBarricados();
 
         viewTimer = new java.util.Timer();
         viewTimer.schedule(new TimerTask() {
@@ -195,20 +195,25 @@ public class GameManager {
             GameState.archmires.get(i).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
             GameState.archmires.get(i).move();
 //            GameState.archmires.get(i).playAudio();
-//            GameState.archmires.get(i).drown();
-//            if (GameState.archmires.get(i).getHP() <= 0) {
-//                AudioPlayer.play(AudioPlayer.MELON_IMPACT);
-//                for (int j = 0; j < 4; j++) {
-//                    int randX = (int) (new Random().nextInt(3 * Constants.OMENOCT_SIZE) - 1.5 * Constants.OMENOCT_SIZE);
-//                    int randY = (int) (new Random().nextInt(3 * Constants.OMENOCT_SIZE) - 1.5 * Constants.OMENOCT_SIZE);
-//                    GameState.collectables.add(new Collectable(GameState.archmires.get(i).getCenterX() + randX, GameState.archmires.get(i).getCenterY() + randY, 2, Constants.OMEN_PINK));
-//                }
-//                GameState.archmires.get(i).getTimer().cancel();
-//                GameState.archmires.remove(i);
-//                i--;
-//            }
+            GameState.archmires.get(i).drown(GameState.archmires.get(i));
+            if (GameState.archmires.get(i).getHP() <= 0) {
+                AudioPlayer.play(AudioPlayer.MELON_IMPACT);
+                for (int j = 0; j < 5; j++) {
+                    int rada = (int) GameState.archmires.get(i).getRadius_a();
+                    int radb = (int) GameState.archmires.get(i).getRadius_b();
+                    int randX = (int) (new Random().nextInt(2 * rada) - rada);
+                    int randY = (int) (new Random().nextInt(2 * radb) - radb);
+                    GameState.collectables.add(new Collectable(GameState.archmires.get(i).getXPoints()[0] + randX, GameState.archmires.get(i).getYPoints()[0] + randY, 6, Constants.ARCH_RED));
+                }
+                GameState.archmires.get(i).getTimer().cancel();
+                GameState.archmires.get(i).getTimer1().cancel();
+                GameState.archmires.remove(i);
+                i--;
+            }
         }
-        //archmire stuff
+
+
+        //barri stuff
         for (int i = 0; i < GameState.barricados.size(); i++) {
             GameState.barricados.get(i).checkCollision();
         }
@@ -216,9 +221,6 @@ public class GameManager {
         //epsilon stuff
         Epsilon.getInstance().move();
         Epsilon.getInstance().wallCollision();
-//        if(Collision.checkEpsilonCollision(GameState.barricados.get(0)) != null){
-//            System.out.println("afdjahfkajhfakjdf");
-//        }
         for (int i = 0; i < GameState.collectables.size(); i++) {
             if (Collision.checkCoinCollision(GameState.collectables.get(i))) {
                 Epsilon.getInstance().setXP(Epsilon.getInstance().getXP() + GameState.collectables.get(i).getXp());
@@ -306,19 +308,19 @@ public class GameManager {
             }
         }
         //arch collision
-//        for (int i = 0; i < GameState.bullets.size(); i++) {
-//            for (int j = 0; j < GameState.archmires.size(); j++) {
-//                Point2D collisionPoint = Collision.checkBulletCollision(GameState.bullets.get(i), GameState.archmires.get(j));
-//                if (collisionPoint != null) {
-//                    AudioPlayer.play(AudioPlayer.SPLAT);
-//                    GameState.archmires.get(j).setHP(GameState.archmires.get(j).getHP() - Epsilon.getInstance().getDamageRate());
-//                    CollisionHandler.handleCollisionOnPoint(collisionPoint);
-//                    GameState.bullets.remove(i);
-//                    i--;
-//                    break;
-//                }
-//            }
-//        }
+        for (int i = 0; i < GameState.bullets.size(); i++) {
+            for (int j = 0; j < GameState.archmires.size(); j++) {
+                Point2D collisionPoint = Collision.checkBulletCollision(GameState.bullets.get(i), GameState.archmires.get(j));
+                if (collisionPoint != null) {
+                    AudioPlayer.play(AudioPlayer.SPLAT);
+                    GameState.archmires.get(j).setHP(GameState.archmires.get(j).getHP() - Epsilon.getInstance().getDamageRate());
+                    CollisionHandler.handleCollisionOnPoint(collisionPoint);
+                    GameState.bullets.remove(i);
+                    i--;
+                    break;
+                }
+            }
+        }
         //barri collision
         for (int i = 0; i < GameState.bullets.size(); i++) {
             for (int j = 0; j < GameState.barricados.size(); j++) {
