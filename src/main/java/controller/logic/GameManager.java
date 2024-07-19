@@ -43,7 +43,7 @@ public class GameManager {
 //        Generator.makeNewSquarantine();
 //        Generator.makeNewSquarantine();
 //        Generator.makeNewSquarantine();
-//        Generator.makeNewSquarantine();
+        Generator.makeNewSquarantine();
 
 //        Generator.makeNewTrigorath();
 //        Generator.makeNewTrigorath();
@@ -51,19 +51,15 @@ public class GameManager {
 //        Generator.makeNewTrigorath();
 //        Generator.makeNewTrigorath();
 //        Generator.makeNewTrigorath();
-//        Generator.makeNewTrigorath();
+        Generator.makeNewTrigorath();
 //
-//        Generator.makeNewOmenoct();
-//        Generator.makeNewWyrm();
-//        Generator.makeNewWyrm();
-//        Generator.makeNewWyrm();
-//        Generator.makeNewNecropick();
-//        Generator.makeNewArchmire();
-//        Generator.makeNewBarricados();
+        Generator.makeNewOmenoct();
+        Generator.makeNewWyrm();
+        Generator.makeNewNecropick();
+        Generator.makeNewArchmire();
+        Generator.makeNewBarricados();
         Generator.makeNewOrb();
-        for (int i = 0; i < GameState.panels.size(); i++) {
-            System.out.println(GameState.panels.get(i));
-        }
+
         viewTimer = new java.util.Timer();
         viewTimer.schedule(new TimerTask() {
             @Override
@@ -233,8 +229,8 @@ public class GameManager {
                 for (int j = 0; j < 5; j++) {
                     int rada = (int) GameState.orbs.get(i).getSize();
                     int radb = (int) GameState.orbs.get(i).getSize();
-                    int randX = (int) (new Random().nextInt(2 * rada) - rada);
-                    int randY = (int) (new Random().nextInt(2 * radb) - radb);
+                    int randX = (int) (new Random().nextInt(rada) - rada/2);
+                    int randY = (int) (new Random().nextInt(radb) - radb/2);
                     GameState.collectables.add(new Collectable(GameState.orbs.get(i).getX() + randX, GameState.orbs.get(i).getY() + randY, 30, Constants.ANOTHER_STRING_COLOR));
                 }
                 GameState.orbs.get(i).selfDestruct();
@@ -361,7 +357,7 @@ public class GameManager {
         for (int i = 0; i < GameState.bullets.size(); i++) {
             for (int j = 0; j < GameState.orbs.size(); j++) {
                 Point2D collisionPoint = Collision.checkOrbCollision(GameState.orbs.get(j) , GameState.bullets.get(i));
-                if (collisionPoint != null && GameState.orbs.get(i).isDamageable()) {
+                if (collisionPoint != null && GameState.orbs.get(j).isDamageable()) {
                     GameState.orbs.get(j).setHP(GameState.orbs.get(j).getHP() - Epsilon.getInstance().getDamageRate());
                     GameState.bullets.remove(i);
                     i--;

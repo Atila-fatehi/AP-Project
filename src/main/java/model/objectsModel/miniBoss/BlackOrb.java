@@ -12,6 +12,7 @@ import view.gameGUI.GamePanel;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.TimerTask;
 
 public class BlackOrb implements Collidable, Paintable {
@@ -61,25 +62,15 @@ public class BlackOrb implements Collidable, Paintable {
     }
 
     @Override
-    public void selfPaint(Graphics g) {
-        int locX = GamePanel.getInstance().getX();
-        int locY = GamePanel.getInstance().getY();
-        g.drawImage(image, (int) ((int) x - locX), (int) ((int) y - locY), GamePanel.getInstance());
-//        g.setColor(Color.ORANGE);
-//        g.fillOval((int)x +10 - locX, (int)y+10 - locY, (int)size - 20, (int)size - 20);
+    public void selfPaint(Graphics g , JPanel panel) {
+        int locX = panel.getX();
+        int locY = panel.getY();
+        g.drawImage(image, (int) ((int) x - locX), (int) ((int) y - locY), panel);
 
-
-        locX = panel.getX();
-        locY = panel.getY();
-        Graphics g2 = panel.getGraphics();
-        g2.drawImage(image, (int) ((int) x - locX), (int) ((int) y - locY), panel);
-
-        for (int i = 0; i < GameState.panels.size(); i++) {
-            locX = GameState.panels.get(i).getX();
-            locY = GameState.panels.get(i).getY();
-            g2 = GameState.panels.get(i).getGraphics();
-            g2.drawImage(image, (int) ((int) x - locX), (int) ((int) y - locY), GameState.panels.get(i));
-        }
+//        locX = panel.getX();
+//        locY = panel.getY();
+//        Graphics g2 = panel.getGraphics();
+//        g2.drawImage(image, (int) ((int) x - locX), (int) ((int) y - locY), panel);
     }
 
     public void checkCollision() {
@@ -93,7 +84,7 @@ public class BlackOrb implements Collidable, Paintable {
 
     class OrbPanel extends JPanel {
         public OrbPanel() {
-            setBounds((int) x, (int) y, (int) size, (int) size);
+            setBounds((int) x - 40, (int) y - 40, (int) size + 80, (int) size + 80);
             setBackground(Constants.DARK_BLUE);
             GameState.panels.add(this);
             GameFrame.getInstance().add(this);
@@ -111,7 +102,11 @@ public class BlackOrb implements Collidable, Paintable {
                         GameState.lasers.get(i).getRelativeYPoints(this), GameState.lasers.get(i).getXPoints().length);
             }
             g.drawImage(image, (int) x - locX, (int) y - locY, this);
-
+            g.setFont(Constants.BOLD_15);
+            ArrayList<Paintable> paintables = GameState.getPaintables();
+            for (Paintable paintable : paintables) {
+                paintable.selfPaint(g, this);
+            }
             g.dispose();
         }
     }

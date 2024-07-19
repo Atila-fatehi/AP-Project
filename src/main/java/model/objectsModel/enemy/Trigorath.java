@@ -189,23 +189,22 @@ public class Trigorath implements Movable, Collidable , Paintable {
 
 
     @Override
-    public void selfPaint(Graphics g) {
-        int locX = GamePanel.getInstance().getLocationX();
-        int locY = GamePanel.getInstance().getLocationY();
+    public void selfPaint(Graphics g, JPanel panel) {
+        int locX = panel.getX();
+        int locY = panel.getY();
         g.setColor(Constants.TRI_YELLOW);
-        g.fillPolygon(getRelativeXPoints(GamePanel.getInstance()), getRelativeYPoints(GamePanel.getInstance()), xPoints.length);
+        g.fillPolygon(getRelativeXPoints(panel), getRelativeYPoints(panel), xPoints.length);
         g.setColor(Color.BLACK);
         g.drawString(String.valueOf(HP), (int) posXHP - locX, (int) posYHP - locY);
-
-        for (int i = 0; i < GameState.panels.size(); i++) {
-            locX = GameState.panels.get(i).getX();
-            locY = GameState.panels.get(i).getY();
-            Graphics g2 = GameState.panels.get(i).getGraphics();
-            g2.setColor(Constants.TRI_YELLOW);
-            g2.fillPolygon(getRelativeXPoints(GameState.panels.get(i)), getRelativeYPoints(GameState.panels.get(i)), xPoints.length);
-            g2.setColor(Color.BLACK);
-            g2.drawString(String.valueOf(HP), (int) posXHP - locX, (int) posYHP - locY);
-        }
+//        for (int i = 0; i < GameState.panels.size(); i++) {
+//            locX = GameState.panels.get(i).getX();
+//            locY = GameState.panels.get(i).getY();
+//            Graphics g2 = GameState.panels.get(i).getGraphics();
+//            g2.setColor(Constants.TRI_YELLOW);
+//            g2.fillPolygon(getRelativeXPoints(GameState.panels.get(i)), getRelativeYPoints(GameState.panels.get(i)), xPoints.length);
+//            g2.setColor(Color.BLACK);
+//            g2.drawString(String.valueOf(HP), (int) posXHP - locX, (int) posYHP - locY);
+//        }
     }
 
     public String getId() {

@@ -136,11 +136,14 @@ public class Epsilon implements Movable, Collidable, Paintable, WallCollidable {
     }
 
     @Override
-    public void selfPaint(Graphics g) {
-        int locX = (int) currentPanel.getLocation().getX();
-        int locY = (int) currentPanel.getLocation().getY();
+    public void selfPaint(Graphics g , JPanel panel) {
+        int locX = panel.getX();
+        int locY = panel.getY();
         g.setColor(Constants.EPSILON_COLOR);
         g.fillOval((int) (x - radius - locX), (int) (y - radius - locY), (int) radius * 2, (int) radius * 2);
+        int inner = 4;
+        g.setColor(Constants.DARK_BLUE);
+        g.fillOval((int) (x - radius - locX) + inner, (int) (y - radius - locY) + inner, (int) (radius - inner) * 2, (int) (radius - inner) * 2);
 //        if (hasVertex) {
 //            g.drawLine((int) (x - radius), (int) y, (int) vertexX, (int) vertexY);
 //            g.drawLine((int) (x + radius), (int) y, (int) vertexX, (int) vertexY);
@@ -157,20 +160,15 @@ public class Epsilon implements Movable, Collidable, Paintable, WallCollidable {
 //                g.drawLine((int) x, (int) (y + radius), (int) (x - radius - 7), (int) y);
 //            }
 //        }
-
-        int inner = 4;
-        g.setColor(Constants.DARK_BLUE);
-        g.fillOval((int) (x - radius - locX) + inner, (int) (y - radius - locY) + inner, (int) (radius - inner) * 2, (int) (radius - inner) * 2);
-
-        for (int i = 0; i < GameState.panels.size(); i++) {
-            locX = GameState.panels.get(i).getX();
-            locY = GameState.panels.get(i).getY();
-            Graphics g2 = GameState.panels.get(i).getGraphics();
-            g2.setColor(Constants.EPSILON_COLOR);
-            g2.fillOval((int) (x - radius - locX), (int) (y - radius - locY), (int) radius * 2, (int) radius * 2);
-            g2.setColor(Constants.DARK_BLUE);
-            g2.fillOval((int) (x - radius - locX) + inner, (int) (y - radius - locY) + inner, (int) (radius - inner) * 2, (int) (radius - inner) * 2);
-        }
+//        for (int i = 0; i < GameState.panels.size(); i++) {
+//            locX = GameState.panels.get(i).getX();
+//            locY = GameState.panels.get(i).getY();
+//            Graphics g2 = GameState.panels.get(i).getGraphics();
+//            g2.setColor(Constants.EPSILON_COLOR);
+//            g2.fillOval((int) (x - radius - locX), (int) (y - radius - locY), (int) radius * 2, (int) radius * 2);
+//            g2.setColor(Constants.DARK_BLUE);
+//            g2.fillOval((int) (x - radius - locX) + inner, (int) (y - radius - locY) + inner, (int) (radius - inner) * 2, (int) (radius - inner) * 2);
+//        }
     }
 
     @Override

@@ -70,17 +70,10 @@ public class Necropick implements Paintable, Movable, Collidable {
     }
 
     @Override
-    public void selfPaint(Graphics g) {
-        int locX = GamePanel.getInstance().getLocationX();
-        int locY = GamePanel.getInstance().getLocationY();
-        if (!disappear) g.drawImage(image, (int) x - locX, (int) y - locY, GamePanel.getInstance());
-
-        for (int i = 0; i < GameState.panels.size(); i++) {
-            locX = GameState.panels.get(i).getX();
-            locY = GameState.panels.get(i).getY();
-            Graphics g2 = GameState.panels.get(i).getGraphics();
-            if (!disappear) g2.drawImage(image, (int) x - locX, (int) y - locY, GameState.panels.get(i));
-        }
+    public void selfPaint(Graphics g, JPanel panel) {
+        int locX = panel.getX();
+        int locY = panel.getY();
+        if (!disappear) g.drawImage(image, (int) x - locX, (int) y - locY, panel);
     }
 
     @Override

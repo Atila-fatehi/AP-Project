@@ -17,6 +17,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -112,8 +113,8 @@ public class Wyrm implements Movable, Paintable, Collidable {
             }
         }
         for (int i = 0; i < GameState.barricados.size(); i++) {
-            Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(this , GameState.barricados.get(i));
-            if(collisionPoint != null){
+            Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(this, GameState.barricados.get(i));
+            if (collisionPoint != null) {
                 CollisionHandler.handleCollisionOnPoint(collisionPoint);
                 changeRotation();
             }
@@ -134,11 +135,15 @@ public class Wyrm implements Movable, Paintable, Collidable {
             int locX = panel.getX();
             int locY = panel.getY();
             g.drawImage(image, (int) x - locX, (int) y - locY, this);
-            panel.setLocation((int) x - 10, (int) y - 10);
-
+            g.setFont(Constants.BOLD_15);
+            ArrayList<Paintable> paintables = GameState.getPaintables();
+            for (Paintable paintable : paintables) {
+                paintable.selfPaint(g, this);
+            }
             g.dispose();
-        }
     }
+
+}
 
     void shootBullet() {
         Bullet bullet = new Bullet(x, y, false, Constants.WYRM_PINK, 8);
@@ -177,6 +182,7 @@ public class Wyrm implements Movable, Paintable, Collidable {
             x = acquiredX + (int) (radiusFromEpsilon * Math.cos(Math.toRadians(angle)));
             y = acquiredY + (int) (radiusFromEpsilon * Math.sin(Math.toRadians(angle)));
         }
+        panel.setLocation((int) x - 10, (int) y - 10);
     }
 
     @Override
@@ -209,23 +215,16 @@ public class Wyrm implements Movable, Paintable, Collidable {
     }
 
     @Override
-    public void selfPaint(Graphics g) {
-        int locX = GamePanel.getInstance().getX();
-        int locY = GamePanel.getInstance().getY();
-        g.drawImage(image, (int) ((int) x - locX), (int) ((int) y - locY), GamePanel.getInstance());
+    public void selfPaint(Graphics g , JPanel panel) {
+        int locX = panel.getX();
+        int locY = panel.getY();
+        g.drawImage(image, ((int) x - locX), ((int) y - locY), panel);
 
-        locX = panel.getX();
-        locY = panel.getY();
-        Graphics g2 = panel.getGraphics();
-        g2.drawImage(image, (int) ((int) x - locX), (int) ((int) y - locY), panel);
-        panel.setLocation((int) ((int) x - 10), (int) ((int) y - 10));
-
-        for (int i = 0; i < GameState.panels.size(); i++) {
-            locX = GameState.panels.get(i).getX();
-            locY = GameState.panels.get(i).getY();
-            g2 = GameState.panels.get(i).getGraphics();
-            g2.drawImage(image, (int) ((int) x - locX), (int) ((int) y - locY), GameState.panels.get(i));
-        }
+//        locX = panel.getX();
+//        locY = panel.getY();
+//        Graphics g2 = panel.getGraphics();
+//        g2.drawImage(image, (int) ((int) x - locX), (int) ((int) y - locY), panel);
+//        panel.setLocation((int) ((int) x - 10), (int) ((int) y - 10));
     }
 
     @Override

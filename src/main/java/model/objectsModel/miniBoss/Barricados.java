@@ -15,6 +15,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.TimerTask;
 
 public class Barricados implements Paintable, Collidable {
@@ -105,31 +106,26 @@ public class Barricados implements Paintable, Collidable {
             int locX = panel.getX();
             int locY = panel.getY();
             g.drawImage(image, (int) x - locX, (int) y - locY, this);
-            panel.setLocation((int) x, (int) y);
-
+            g.setFont(Constants.BOLD_15);
+            ArrayList<Paintable> paintables = GameState.getPaintables();
+            for (Paintable paintable : paintables) {
+                paintable.selfPaint(g, this);
+            }
             g.dispose();
         }
     }
 
     @Override
-    public void selfPaint(Graphics g) {
-        int locX = GamePanel.getInstance().getLocationX();
-        int locY = GamePanel.getInstance().getLocationY();
-        g.drawImage(image, (int) x - locX, (int) y - locY, GamePanel.getInstance());
-        g.setColor(Color.ORANGE);
-        g.fillPolygon(getRelativeXPoints(GamePanel.getInstance()), getRelativeYPoints(GamePanel.getInstance()), getXPoints().length);
-        locX = panel.getX();
-        locY = panel.getY();
-        Graphics g2 = panel.getGraphics();
-        g2.drawImage(image, (int) x - locX, (int) y - locY, panel);
-        panel.setLocation((int) x, (int) y);
+    public void selfPaint(Graphics g,JPanel panel) {
+        int locX = panel.getX();
+        int locY = panel.getY();
+        g.drawImage(image, (int) x - locX, (int) y - locY, panel);
 
-        for (int i = 0; i < GameState.panels.size(); i++) {
-            locX = GameState.panels.get(i).getX();
-            locY = GameState.panels.get(i).getY();
-            g2 = GameState.panels.get(i).getGraphics();
-            g2.drawImage(image, (int) x - locX, (int) y - locY, GameState.panels.get(i));
-        }
+//        locX = panel.getX();
+//        locY = panel.getY();
+//        Graphics g2 = panel.getGraphics();
+//        g2.drawImage(image, (int) x - locX, (int) y - locY, panel);
+//        panel.setLocation((int) x, (int) y);
     }
 
     @Override

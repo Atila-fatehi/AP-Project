@@ -23,16 +23,10 @@ public class Laser implements Paintable , Drownable , Collidable {
     }
 
     @Override
-    public void selfPaint(Graphics g) {
+    public void selfPaint(Graphics g , JPanel panel) {
         g.setColor(Constants.ANOTHER_STRING_COLOR);
-        g.fillPolygon(getRelativeXPoints(GamePanel.getInstance()), getRelativeYPoints(GamePanel.getInstance()), xPoints.length);
+        g.fillPolygon(getRelativeXPoints(panel), getRelativeYPoints(panel), xPoints.length);
 
-        for (int i = 0; i < GameState.panels.size(); i++) {
-            Graphics g2 = GameState.panels.get(i).getGraphics();
-            g2.setColor(Constants.ANOTHER_STRING_COLOR);
-            g2.fillPolygon(getRelativeXPoints(GameState.panels.get(i)), getRelativeYPoints(GameState.panels.get(i)), xPoints.length);
-
-        }
     }
 
     public int[] getXPoints() {

@@ -111,9 +111,9 @@ public class Archmire implements Paintable, Movable, Drownable, Collidable {
     }
 
     @Override
-    public void selfPaint(Graphics g) {
-        int locX = GamePanel.getInstance().getLocationX();
-        int locY = GamePanel.getInstance().getLocationY();
+    public void selfPaint(Graphics g, JPanel panel) {
+        int locX = panel.getX();
+        int locY = panel.getY();
         g.setColor(Constants.ARCH_DARKER_RED);
         for (int i = 0; i < traveledX.size(); i++) {
             try {
@@ -127,24 +127,6 @@ public class Archmire implements Paintable, Movable, Drownable, Collidable {
 
         g.setColor(Color.BLACK);
         g.drawString(String.valueOf(HP), (int) posXHP - locX, (int) posYHP - locY);
-
-        for (int i = 0; i < GameState.panels.size(); i++) {
-            locX = GameState.panels.get(i).getX();
-            locY = GameState.panels.get(i).getY();
-            Graphics g2 = GameState.panels.get(i).getGraphics();
-            g2.setColor(Constants.ARCH_DARKER_RED);
-            for (int j = 0; j < traveledX.size(); j++) {
-                try {
-                    g2.fillOval(traveledX.get(j) - locX, traveledY.get(j) - locY, (int) radius_a * 2, (int) radius_b * 2);
-                } catch (Exception e) {
-
-                }
-            }
-            g2.setColor(Constants.ARCH_RED);
-            g2.fillOval((int) x - locX, (int) y - locY, (int) radius_a * 2, (int) radius_b * 2);
-            g2.setColor(Color.BLACK);
-            g2.drawString(String.valueOf(HP), (int) posXHP - locX, (int) posYHP - locY);
-        }
     }
 
     @Override

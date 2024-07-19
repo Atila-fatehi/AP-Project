@@ -47,7 +47,7 @@ public class GamePanel extends JPanel {
         g.setFont(Constants.BOLD_15);
         ArrayList<Paintable> paintables = GameState.getPaintables();
         for (Paintable paintable : paintables) {
-            paintable.selfPaint(g);
+            paintable.selfPaint(g , this);
         }
 
         g.setColor(Constants.STRING_COLOR);
