@@ -16,7 +16,7 @@ public abstract class WallCollisionHandler {
     public static void handleWallCollision(int wallNumber) {
         if (wallNumber == 1) {
             for (int i = 0; i < GameState.omenocts.size(); i++) {
-                if (GameState.omenocts.get(i).isDestination()) {
+                if (GameState.omenocts.get(i).isDestination() && GameState.omenocts.get(i).isStick()) {
                     AudioPlayer.play(AudioPlayer.SPLAT);
                     GameState.omenocts.get(i).setHP(GameState.omenocts.get(i).getHP() - Epsilon.getInstance().getDamageRate());
                 }
@@ -57,7 +57,7 @@ public abstract class WallCollisionHandler {
 
         } else if (wallNumber == 3) {
             for (int i = 0; i < GameState.omenocts.size(); i++) {
-                if (!GameState.omenocts.get(i).isDestination()) {
+                if (!GameState.omenocts.get(i).isDestination() && GameState.omenocts.get(i).isStick()) {
                     AudioPlayer.play(AudioPlayer.SPLAT);
                     GameState.omenocts.get(i).setHP(GameState.omenocts.get(i).getHP() - Epsilon.getInstance().getDamageRate());
                 }
@@ -111,8 +111,8 @@ public abstract class WallCollisionHandler {
 //                }
 //            }
 //            if (!access) {
-                Epsilon.getInstance().setX(GamePanel.getInstance().getLocationX() + radius);
-                Epsilon.getInstance().setVx(0);
+            Epsilon.getInstance().setX(GamePanel.getInstance().getLocationX() + radius);
+            Epsilon.getInstance().setVx(0);
 //            }
         } else if (x + radius > GamePanel.getInstance().getPanelWidth() + GamePanel.getInstance().getLocationX()) {
             Epsilon.getInstance().setX(GamePanel.getInstance().getPanelWidth() + GamePanel.getInstance().getLocationX() - radius);

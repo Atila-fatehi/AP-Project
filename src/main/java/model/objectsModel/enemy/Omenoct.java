@@ -34,6 +34,7 @@ public class Omenoct implements Paintable, Collidable, Movable {
     private double accX;
     private double accY;
     private boolean played;
+    private boolean stick;
     private final java.util.Timer shootTimer;
 
     public Omenoct(double[] xPoints, double[] yPoints) {
@@ -58,7 +59,7 @@ public class Omenoct implements Paintable, Collidable, Movable {
     }
 
     void shootBullet() {
-        Bullet bullet = new Bullet(getCenterX(), getCenterY(), false, Constants.OMEN_PINK , 4);
+        Bullet bullet = new Bullet(getCenterX(), getCenterY(), false, Constants.OMEN_PINK, 4);
         bullet.calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
         GameState.bullets.add(bullet);
     }
@@ -88,12 +89,14 @@ public class Omenoct implements Paintable, Collidable, Movable {
             if (Calculator.distance(getCenterX(), getCenterY(), destinationX, destinationY) > 15) {
                 move();
             } else {
+                stick = true;
                 playAudio();
                 stickPositionToPanel();
             }
 
         } else {
-            if (Calculator.distance(0, (double) height / 2, getCenterX(), getCenterY()) <= Calculator.distance(width, (double) height / 2, getCenterX(), getCenterY())) {
+            if (Calculator.distance(locX, (double) locY + height / 2, getCenterX(), getCenterY())
+                    <= Calculator.distance(locX + width, (double) locY + height / 2, getCenterX(), getCenterY())) {
                 destinationX = locX;
                 destinationY = locY + height / 2;
                 destination = true;
@@ -273,8 +276,12 @@ public class Omenoct implements Paintable, Collidable, Movable {
         return destination;
     }
 
+    public boolean isStick() {
+        return stick;
+    }
+
     @Override
-    public void selfPaint(Graphics g , JPanel panel) {
+    public void selfPaint(Graphics g, JPanel panel) {
         int locX = panel.getX();
         int locY = panel.getY();
         g.setColor(Constants.OMEN_PINK);

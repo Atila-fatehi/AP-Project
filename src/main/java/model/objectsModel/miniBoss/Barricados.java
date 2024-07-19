@@ -50,9 +50,12 @@ public class Barricados implements Paintable, Collidable {
 
     }
 
-    void selfDestruct() {
+    public void selfDestruct() {
         GameState.barricados.remove(this);
+        GameState.panels.remove(panel);
+        GameFrame.getInstance().remove(panel);
     }
+
 
     public void checkCollision() {
         Point2D epsilonCollisionPoint = Collision.checkEpsilonCollision(this);

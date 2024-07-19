@@ -1,6 +1,5 @@
 package view.gameGUI;
 
-import controller.logic.Generator;
 import controller.util.Constants;
 import controller.KeyController;
 import controller.MouseController;
@@ -10,8 +9,6 @@ import model.objectsModel.epsilon.Epsilon;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
 public class GamePanel extends JPanel {
@@ -47,7 +44,11 @@ public class GamePanel extends JPanel {
         g.setFont(Constants.BOLD_15);
         ArrayList<Paintable> paintables = GameState.getPaintables();
         for (Paintable paintable : paintables) {
-            paintable.selfPaint(g , this);
+            try {
+                paintable.selfPaint(g , this);
+            }catch (Exception e){
+                System.out.println("nothing we can do");
+            }
         }
 
         g.setColor(Constants.STRING_COLOR);

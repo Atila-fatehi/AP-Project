@@ -2,6 +2,7 @@ package controller.logic;
 
 import controller.FileController;
 import model.Paintable.Paintable;
+import model.collision.Collidable;
 import model.objectsModel.enemy.*;
 import model.objectsModel.epsilon.Bullet;
 import model.objectsModel.epsilon.Epsilon;
@@ -31,7 +32,7 @@ public class GameState {
     public static final ArrayList<JPanel> panels = new ArrayList<>();
     public static int elapsedTime;
     public static int difficulty = Objects.requireNonNull(FileController.readSettings())[1];
-    public static int wave;
+    public static int wave = 7;
 
     public static boolean banish;
     public static boolean empower;
@@ -64,13 +65,15 @@ public class GameState {
         paintables.addAll(archmires);
         return paintables;
     }
-    public static Trigorath getTriByID(String id){
-        for (int i = 0; i < trigoraths.size(); i++) {
-            if(trigoraths.get(i).getId().equals(id)){
-                return trigoraths.get(i);
-            }
-        }
-        return null;
+    public static ArrayList<Collidable> getComplexEnemies(){
+        ArrayList<Collidable> collidable = new ArrayList<>();
+        collidable.addAll(trigoraths);
+        collidable.addAll(squarantines);
+        collidable.addAll(omenocts);
+        collidable.addAll(necropicks);
+        collidable.addAll(wyrms);
+        collidable.addAll(archmires);
+        return  collidable;
     }
 
 }

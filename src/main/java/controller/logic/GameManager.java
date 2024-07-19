@@ -39,27 +39,6 @@ public class GameManager {
     private boolean empower;
 
     public GameManager() {
-//        Generator.makeNewSquarantine();Generator.makeNewSquarantine();
-//        Generator.makeNewSquarantine();
-//        Generator.makeNewSquarantine();
-//        Generator.makeNewSquarantine();
-        Generator.makeNewSquarantine();
-
-//        Generator.makeNewTrigorath();
-//        Generator.makeNewTrigorath();
-//        Generator.makeNewTrigorath();
-//        Generator.makeNewTrigorath();
-//        Generator.makeNewTrigorath();
-//        Generator.makeNewTrigorath();
-        Generator.makeNewTrigorath();
-//
-        Generator.makeNewOmenoct();
-        Generator.makeNewWyrm();
-        Generator.makeNewNecropick();
-        Generator.makeNewArchmire();
-        Generator.makeNewBarricados();
-        Generator.makeNewOrb();
-
         viewTimer = new java.util.Timer();
         viewTimer.schedule(new TimerTask() {
             @Override
@@ -73,7 +52,6 @@ public class GameManager {
             }
         }, 0, (int) (double) TimeUnit.SECONDS.toMillis(1) / 60/*GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0].getDisplayMode().getRefreshRate()*/);
 
-
         modelTimer = new java.util.Timer();
         modelTimer.schedule(new TimerTask() {
             @Override
@@ -86,7 +64,6 @@ public class GameManager {
                 }
             }
         }, 0, (int) (double) TimeUnit.SECONDS.toMillis(1) / 100);
-
     }
 
     private boolean pastTen;
@@ -105,6 +82,9 @@ public class GameManager {
     }
 
     public void updateModel() {
+
+        WaveGenerator.handleWaves();
+
         //Tri stuff
         for (int i = 0; i < GameState.trigoraths.size(); i++) {
             GameState.trigoraths.get(i).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
@@ -119,7 +99,6 @@ public class GameManager {
                 i--;
             }
         }
-
         //squarantine stuff
         for (int i = 0; i < GameState.squarantines.size(); i++) {
             GameState.squarantines.get(i).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
@@ -134,7 +113,6 @@ public class GameManager {
                 i--;
             }
         }
-
         //omenoct stuff
         for (int i = 0; i < GameState.omenocts.size(); i++) {
             GameState.omenocts.get(i).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
@@ -152,7 +130,6 @@ public class GameManager {
                 i--;
             }
         }
-
         //necropick stuff
         for (int i = 0; i < GameState.necropicks.size(); i++) {
             GameState.necropicks.get(i).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
@@ -180,7 +157,7 @@ public class GameManager {
             if (GameState.wyrms.get(i).getHP() <= 0) {
                 AudioPlayer.play(AudioPlayer.MELON_IMPACT);
                 GameState.collectables.add(new Collectable(GameState.wyrms.get(i).getXPoints()[0], GameState.wyrms.get(i).getYPoints()[0], 8, Constants.WYRM_PINK));
-                GameState.collectables.add(new Collectable(GameState.wyrms.get(i).getXPoints()[0]+ 10, GameState.wyrms.get(i).getYPoints()[0] + 10, 8, Constants.WYRM_PINK));
+                GameState.collectables.add(new Collectable(GameState.wyrms.get(i).getXPoints()[0] + 10, GameState.wyrms.get(i).getYPoints()[0] + 10, 8, Constants.WYRM_PINK));
 
                 GameState.wyrms.get(i).getShootTimer().cancel();
                 GameState.wyrms.get(i).selfDestruct();
@@ -188,8 +165,6 @@ public class GameManager {
                 i--;
             }
         }
-
-
         //archmire stuff
         for (int i = 0; i < GameState.archmires.size(); i++) {
             GameState.archmires.get(i).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
@@ -211,15 +186,11 @@ public class GameManager {
                 i--;
             }
         }
-
-
         //barri stuff
         for (int i = 0; i < GameState.barricados.size(); i++) {
             GameState.barricados.get(i).checkCollision();
         }
-
         //orb stuff
-//        OrbManager.drawLines();
 //        OrbManager.drown();
         for (int i = 0; i < GameState.orbs.size(); i++) {
             GameState.orbs.get(i).checkCollision();
@@ -229,8 +200,8 @@ public class GameManager {
                 for (int j = 0; j < 5; j++) {
                     int rada = (int) GameState.orbs.get(i).getSize();
                     int radb = (int) GameState.orbs.get(i).getSize();
-                    int randX = (int) (new Random().nextInt(rada) - rada/2);
-                    int randY = (int) (new Random().nextInt(radb) - radb/2);
+                    int randX = (int) (new Random().nextInt(rada) - rada / 2);
+                    int randY = (int) (new Random().nextInt(radb) - radb / 2);
                     GameState.collectables.add(new Collectable(GameState.orbs.get(i).getX() + randX, GameState.orbs.get(i).getY() + randY, 30, Constants.ANOTHER_STRING_COLOR));
                 }
                 GameState.orbs.get(i).selfDestruct();
@@ -356,7 +327,7 @@ public class GameManager {
         //orb collision
         for (int i = 0; i < GameState.bullets.size(); i++) {
             for (int j = 0; j < GameState.orbs.size(); j++) {
-                Point2D collisionPoint = Collision.checkOrbCollision(GameState.orbs.get(j) , GameState.bullets.get(i));
+                Point2D collisionPoint = Collision.checkOrbCollision(GameState.orbs.get(j), GameState.bullets.get(i));
                 if (collisionPoint != null && GameState.orbs.get(j).isDamageable()) {
                     GameState.orbs.get(j).setHP(GameState.orbs.get(j).getHP() - Epsilon.getInstance().getDamageRate());
                     GameState.bullets.remove(i);
@@ -402,12 +373,11 @@ public class GameManager {
                 if (Epsilon.getInstance().getAbility().isAceso() && Epsilon.getInstance().getAbility().isActive()) {
                     Epsilon.getInstance().setHP(Epsilon.getInstance().getHP() + 1);
                 }
-                GameState.elapsedTime++;
+                if (!paused) GameState.elapsedTime++;
                 if (GameState.elapsedTime == 10) {
                     pastTen = true;
                 }
             }
-
         });
         timer.start();
     }
@@ -466,13 +436,13 @@ public class GameManager {
 
     public void mouseClicked(int x, int y) {
         if (empower) {
-            Generator.makeNewBullet(x, y);
+            EnemyGenerator.makeNewBullet(x, y);
 
             java.util.Timer timer = new java.util.Timer();
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    Generator.makeNewBullet(x, y);
+                    EnemyGenerator.makeNewBullet(x, y);
                     timer.cancel();
                 }
             }, 100, 1111);
@@ -480,12 +450,12 @@ public class GameManager {
             timer2.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    Generator.makeNewBullet(x, y);
+                    EnemyGenerator.makeNewBullet(x, y);
                     timer2.cancel();
                 }
             }, 200, 1111);
         } else {
-            Generator.makeNewBullet(x, y);
+            EnemyGenerator.makeNewBullet(x, y);
         }
 
     }

@@ -2,6 +2,7 @@ package controller.logic;
 
 import controller.audio.players.AudioPlayer;
 import controller.util.Constants;
+import model.collision.Collision;
 import model.objectsModel.enemy.*;
 import model.objectsModel.epsilon.Bullet;
 import model.objectsModel.epsilon.Epsilon;
@@ -10,47 +11,11 @@ import model.objectsModel.miniBoss.BlackOrb;
 import model.objectsModel.miniBoss.OrbManager;
 import view.gameGUI.GamePanel;
 
+import java.awt.geom.Point2D;
 import java.util.Random;
 import java.util.TimerTask;
 
-public abstract class Generator {
-
-    public static boolean inWait;
-
-    public static void generateSimpleWave() {
-        if (GameState.trigoraths.isEmpty() && GameState.squarantines.isEmpty() && !inWait) {
-            GameState.wave++;
-            if (GameState.wave == 4) {
-                GameManager.getInstance().setGameWon(true);
-                GameManager.getInstance().gameWon();
-            } else {
-                AudioPlayer.play(AudioPlayer.WAVE);
-                java.util.Timer timer = new java.util.Timer();
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        AudioPlayer.play(AudioPlayer.AWOOGA);
-                        Random random = new Random();
-                        makeNewSquarantine();
-                        makeNewTrigorath();
-                        for (int i = 0; i < GameState.wave * GameState.difficulty; i++) {
-                            if (random.nextBoolean()) {
-                                makeNewSquarantine();
-                            }
-                        }
-                        for (int i = 0; i < GameState.wave * GameState.difficulty; i++) {
-                            if (random.nextBoolean()) {
-                                makeNewTrigorath();
-                            }
-                        }
-                        inWait = false;
-                        timer.cancel();
-                    }
-                }, 3000, 1111);
-                inWait = true;
-            }
-        }
-    }
+public abstract class EnemyGenerator {
 
     public static void makeNewTrigorath() {
         int initX = randomiseInitialPosX();
@@ -105,6 +70,14 @@ public abstract class Generator {
     public static void makeNewBarricados() {
         int initX = randomXonScreen();
         int initY = randomYonScreen();
+        Barricados barricados = new Barricados(initX, initY);
+        while (Collision.checkEpsilonCollision(barricados) != null ||
+                Collision.checkPointCollision(new Point2D.Double(Epsilon.getInstance().getX(), Epsilon.getInstance().getY()), barricados)) {
+            barricados.selfDestruct();
+            initX = randomXonScreen();
+            initY = randomYonScreen();
+            barricados = new Barricados(initX, initY);
+        }
         GameState.barricados.add(new Barricados(initX, initY));
     }
 
@@ -114,18 +87,19 @@ public abstract class Generator {
         java.util.Timer timer = new java.util.Timer();
         timer.schedule(new TimerTask() {
             int count = 0;
+
             @Override
             public void run() {
                 if (count == 0) {
-                    GameState.orbs.add(new BlackOrb(initX, initY , 0));
+                    GameState.orbs.add(new BlackOrb(initX, initY, 0));
                 } else if (count == 1) {
-                    GameState.orbs.add(new BlackOrb(initX + 300, initY + 300 , 1));
+                    GameState.orbs.add(new BlackOrb(initX + 300, initY + 300, 1));
                 } else if (count == 2) {
-                    GameState.orbs.add(new BlackOrb(initX + 150, initY + 600 , 2));
+                    GameState.orbs.add(new BlackOrb(initX + 150, initY + 600, 2));
                 } else if (count == 3) {
-                    GameState.orbs.add(new BlackOrb(initX - 150, initY + 600 , 3));
+                    GameState.orbs.add(new BlackOrb(initX - 150, initY + 600, 3));
                 } else if (count == 4) {
-                    GameState.orbs.add(new BlackOrb(initX - 300, initY + 300 , 4));
+                    GameState.orbs.add(new BlackOrb(initX - 300, initY + 300, 4));
                 }
                 count++;
                 if (count == 5) {

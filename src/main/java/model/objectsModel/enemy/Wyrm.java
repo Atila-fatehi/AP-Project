@@ -187,6 +187,9 @@ public class Wyrm implements Movable, Paintable, Collidable {
 
     @Override
     public void calculateMovingDirection(double x, double y) {
+        if(Calculator.distance(x, y, this.x, this.y) >= radiusFromEpsilon){
+            acquired = false;
+        }
         if (!acquired) {
             linearMovement = Calculator.distance(x, y, this.x, this.y) >= radiusFromEpsilon;
             if (linearMovement) {

@@ -12,16 +12,16 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class Panel22 extends JPanel {
-    private static Panel22 instance;
-
-    public static void makeInstance(){
-        instance = new Panel22();
-    }
-
-    public static Panel22 getInstance() {
-        if (instance == null) instance = new Panel22();
-        return instance;
-    }
+//    private static Panel22 instance;
+//
+//    public static void makeInstance(){
+//        instance = new Panel22();
+//    }
+//
+//    public static Panel22 getInstance() {
+//        if (instance == null) instance = new Panel22();
+//        return instance;
+//    }
 
     public Panel22() {
         setFocusable(true);
