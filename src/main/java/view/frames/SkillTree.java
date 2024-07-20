@@ -163,7 +163,7 @@ public class SkillTree extends JFrame {
         });
     }
     public void writeToFile(int val){
-        File file = new File(Paths.get("").toAbsolutePath() + "\\src\\main\\java\\dataBase\\abilityCode.txt");
+        File file = new File(Constants.ABILITY_PATH);
         try {
             PrintWriter printWriter = new PrintWriter(file);
             printWriter.println(val);

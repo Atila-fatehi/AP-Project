@@ -2,14 +2,13 @@ package model.objectsModel.epsilon;
 
 
 import controller.FileController;
-import controller.logic.GameState;
 import controller.util.Constants;
 import model.Paintable.Paintable;
 import model.collision.Collidable;
 import model.collision.WallCollidable;
 import model.collision.WallCollisionHandler;
 import model.movable.Movable;
-import model.objectsModel.SpecialAbility;
+import model.objectsModel.Skill;
 import view.gameGUI.GamePanel;
 
 import javax.swing.*;
@@ -19,6 +18,10 @@ import java.util.Objects;
 public class Epsilon implements Movable, Collidable, Paintable, WallCollidable {
 
     private static Epsilon instance;
+
+    public static void makeInstance(){
+        instance = new Epsilon(Constants.INITIAL_EPSILON_POSX, Constants.INITIAL_EPSILON_POSY);
+    }
 
     public static Epsilon getInstance() {
         if (instance == null) instance = new Epsilon(Constants.INITIAL_EPSILON_POSX, Constants.INITIAL_EPSILON_POSY);
@@ -35,7 +38,7 @@ public class Epsilon implements Movable, Collidable, Paintable, WallCollidable {
     private final double MAX_VELOCITY;
     private final double ACCELERATION;
     private int damageRate = 5;
-    private final SpecialAbility ability = new SpecialAbility();
+    private final Skill ability = new Skill();
     private boolean accU, accD, accR, accL;
     private boolean decU = true, decD = true, decR = true, decL = true;
     private boolean hasVertex;
@@ -295,7 +298,7 @@ public class Epsilon implements Movable, Collidable, Paintable, WallCollidable {
         this.decL = decL;
     }
 
-    public SpecialAbility getAbility() {
+    public Skill getAbility() {
         return ability;
     }
 

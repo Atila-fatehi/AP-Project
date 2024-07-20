@@ -72,6 +72,7 @@ public class KeyController implements KeyListener {
            // GameManager.getInstance().setPaused(true);
             GameManager.getInstance().getModelTimer().cancel();
             GameManager.getInstance().getViewTimer().cancel();
+            GameManager.getInstance().getElapsedTimer().cancel();
             new MainMenu();
         }
     }

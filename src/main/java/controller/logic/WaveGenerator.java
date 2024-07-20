@@ -14,7 +14,7 @@ public abstract class WaveGenerator {
         } else if (GameState.wave <= 9) {
             generateComplexWave();
         } else if (GameState.wave == 10) {
-//            generateFinalBoss();
+            generateFinalBoss();
         }
     }
 
@@ -151,4 +151,7 @@ public abstract class WaveGenerator {
         }
     }
 
+    public static void generateFinalBoss(){
+
+    }
 }

@@ -1,6 +1,6 @@
 package model.objectsModel;
 
-public class SpecialAbility {
+public class Skill {
 
 
 

@@ -20,6 +20,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
 import java.util.*;
+import java.util.Timer;
 import java.util.concurrent.TimeUnit;
 
 public class GameManager {
@@ -37,6 +38,11 @@ public class GameManager {
     private boolean gameOver;
     private boolean gameWon;
     private boolean empower;
+
+    public static void initiateNewGame() {
+        instance = new GameManager();
+        instance.startElapsedTimer();
+    }
 
     public GameManager() {
         viewTimer = new java.util.Timer();
@@ -366,10 +372,13 @@ public class GameManager {
 
     }
 
+    private java.util.Timer elapsedTimer;
+
     public void startElapsedTimer() {
-        javax.swing.Timer timer = new javax.swing.Timer(1000, new ActionListener() {
+        elapsedTimer = new java.util.Timer();
+        elapsedTimer.schedule(new TimerTask() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void run() {
                 if (Epsilon.getInstance().getAbility().isAceso() && Epsilon.getInstance().getAbility().isActive()) {
                     Epsilon.getInstance().setHP(Epsilon.getInstance().getHP() + 1);
                 }
@@ -378,8 +387,7 @@ public class GameManager {
                     pastTen = true;
                 }
             }
-        });
-        timer.start();
+        }, 0, 1000);
     }
 
     public void gameWon() {
@@ -503,6 +511,10 @@ public class GameManager {
 
     public java.util.Timer getViewTimer() {
         return viewTimer;
+    }
+
+    public Timer getElapsedTimer() {
+        return elapsedTimer;
     }
 
     public void setGameWon(boolean gameWon) {

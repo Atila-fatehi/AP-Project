@@ -17,7 +17,7 @@ import java.util.Objects;
 public class GameState {
 
     //TODO add pause and make them not static
-    public static final Epsilon epsilon = Epsilon.getInstance();
+    public static Epsilon epsilon = Epsilon.getInstance();
     public static final ArrayList<Bullet> bullets = new ArrayList<>();
     public static final ArrayList<Trigorath> trigoraths = new ArrayList<>();
     public static final ArrayList<Squarantine> squarantines = new ArrayList<>();
@@ -32,7 +32,7 @@ public class GameState {
     public static final ArrayList<JPanel> panels = new ArrayList<>();
     public static int elapsedTime;
     public static int difficulty = Objects.requireNonNull(FileController.readSettings())[1];
-    public static int wave = 7;
+    public static int wave;
 
     public static boolean banish;
     public static boolean empower;
@@ -76,4 +76,24 @@ public class GameState {
         return  collidable;
     }
 
+    public static void initiateNewGame() {
+        Epsilon.makeInstance();
+        epsilon = Epsilon.getInstance();
+
+        bullets.clear();
+        trigoraths.clear();
+        squarantines.clear();
+        omenocts.clear();
+        necropicks.clear();
+        wyrms.clear();
+        archmires.clear();
+        collectables.clear();
+        barricados.clear();
+        orbs.clear();
+        lasers.clear();
+        panels.clear();
+        elapsedTime = 0;
+        difficulty = Objects.requireNonNull(FileController.readSettings())[1];
+        wave = 0;
+    }
 }

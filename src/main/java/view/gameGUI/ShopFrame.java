@@ -107,18 +107,25 @@ public class ShopFrame extends JFrame {
             }
         });
 
-        MyButton done = new MyButton("Done", 200, 550, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT, new ActionListener() {
+        MyButton done = new MyButton("Done", 200, 550, Constants.BUTTON_WIDTH / 2, Constants.BUTTON_HEIGHT, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 GameManager.getInstance().setPaused(false);
                 dispose();
             }
         });
-
+        MyButton next = new MyButton("Next", 200 + Constants.BUTTON_WIDTH/2, 550, Constants.BUTTON_WIDTH/2, Constants.BUTTON_HEIGHT, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new ShopFramePage2();
+                dispose();
+            }
+        });
         add(xp50);
         add(xp75);
         add(xp100);
         add(done);
+        add(next);
         setVisible(true);
     }
 }

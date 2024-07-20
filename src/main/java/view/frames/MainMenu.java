@@ -4,6 +4,7 @@ import controller.FrameController;
 import controller.logic.GameManager;
 import controller.audio.players.GameMusicPlayer;
 import controller.audio.players.MenuMusicPlayer;
+import controller.logic.GameState;
 import controller.util.Constants;
 import view.Jcomponents.MyButton;
 import view.gameGUI.GameFrame;
@@ -34,7 +35,8 @@ public class MainMenu extends JFrame {
                 FrameController.minimizeAllWindows();
                 GameFrame.makeInstance();
                 GameFrame.getInstance().addPanel();
-                GameManager.getInstance().startElapsedTimer();
+                GameState.initiateNewGame();
+                GameManager.initiateNewGame();
             }
         });
         MyButton setting = new MyButton("Setting", Constants.BUTTON_INITIAL_X, Constants.BUTTON_INITIAL_Y + Constants.BUTTON_MARGIN, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT, new ActionListener() {
