@@ -1,10 +1,11 @@
 package controller;
 
+import controller.logic.GameData;
+import controller.logic.GameState;
 import controller.util.Constants;
 
 import java.awt.event.KeyEvent;
-import java.io.File;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.Scanner;
 
 public abstract class FileController {
@@ -188,4 +189,23 @@ public abstract class FileController {
 //            }
 //        }, 5 * 60 * 1000, 1111);
         }
+
+    public static void serializeGameState() {
+        try (FileOutputStream fileOut = new FileOutputStream(Constants.GAME_STATE_PATH);
+             ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
+            GameData.getInstance().setData();
+            out.writeObject(GameData.getInstance());
+        } catch (IOException i) {
+            System.out.println("Exception in serializing");
+        }
     }
+    public static void deserializeGameState() {
+        try (FileInputStream fileIn = new FileInputStream(Constants.GAME_STATE_PATH);
+             ObjectInputStream in = new ObjectInputStream(fileIn)) {
+            GameState.setData((GameData) in.readObject());
+        } catch (IOException | ClassNotFoundException i) {
+            i.printStackTrace();
+        }
+    }
+
+}

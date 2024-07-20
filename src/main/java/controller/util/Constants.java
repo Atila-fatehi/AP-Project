@@ -71,6 +71,7 @@ public abstract class Constants {
     public static final String KEYS_PATH = Paths.get("").toAbsolutePath() + "/src/main/java/model/dataBase/keys.txt";
     public static final String DAVE_PATH = Paths.get("").toAbsolutePath() + "/src/main/java/controller/audio/CrazyDave.wav";
     public static final String WATERY_GRAVES_PATH = Paths.get("").toAbsolutePath() + "/src/main/java/controller/audio/WateryGraves.wav";
+    public static final String GAME_STATE_PATH = Paths.get("").toAbsolutePath() + "/src/main/java/model/dataBase/gameState.ser";
 
     public static final int SQUARANTINE_SIZE = 25;
     public static final int TRIGORATH_SIZE = 30;

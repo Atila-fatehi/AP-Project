@@ -11,25 +11,25 @@ import model.objectsModel.miniBoss.BlackOrb;
 import model.objectsModel.miniBoss.Laser;
 
 import javax.swing.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class GameState {
+public class GameState implements Serializable {
 
-    //TODO add pause and make them not static
     public static Epsilon epsilon = Epsilon.getInstance();
-    public static final ArrayList<Bullet> bullets = new ArrayList<>();
-    public static final ArrayList<Trigorath> trigoraths = new ArrayList<>();
-    public static final ArrayList<Squarantine> squarantines = new ArrayList<>();
-    public static final ArrayList<Collectable> collectables = new ArrayList<>();
-    public static final ArrayList<Omenoct> omenocts = new ArrayList<>();
-    public static final ArrayList<Archmire> archmires = new ArrayList<>();
-    public static final ArrayList<Necropick> necropicks = new ArrayList<>();
-    public static final ArrayList<Wyrm> wyrms = new ArrayList<>();
-    public static final ArrayList<Barricados> barricados = new ArrayList<>();
-    public static final ArrayList<BlackOrb> orbs = new ArrayList<>();
-    public static final ArrayList<Laser> lasers = new ArrayList<>();
-    public static final ArrayList<JPanel> panels = new ArrayList<>();
+    public static ArrayList<Bullet> bullets = new ArrayList<>();
+    public static ArrayList<Trigorath> trigoraths = new ArrayList<>();
+    public static ArrayList<Squarantine> squarantines = new ArrayList<>();
+    public static ArrayList<Collectable> collectables = new ArrayList<>();
+    public static ArrayList<Omenoct> omenocts = new ArrayList<>();
+    public static ArrayList<Archmire> archmires = new ArrayList<>();
+    public static ArrayList<Necropick> necropicks = new ArrayList<>();
+    public static ArrayList<Wyrm> wyrms = new ArrayList<>();
+    public static ArrayList<Barricados> barricados = new ArrayList<>();
+    public static ArrayList<BlackOrb> orbs = new ArrayList<>();
+    public static ArrayList<Laser> lasers = new ArrayList<>();
+    public static ArrayList<JPanel> panels = new ArrayList<>();
     public static int elapsedTime;
     public static int difficulty = Objects.requireNonNull(FileController.readSettings())[1];
     public static int wave;
@@ -49,7 +49,29 @@ public class GameState {
         return "";
     }
 
-    public static ArrayList<Paintable> getPaintables(){
+    public static void setData(GameData data) {
+        epsilon = data.epsilon;
+        bullets = data.bullets;
+        trigoraths = data.trigoraths;
+        squarantines = data.squarantines;
+        collectables = data.collectables;
+        omenocts = data.omenocts;
+        archmires = data.archmires;
+        necropicks = data.necropicks;
+        wyrms = data.wyrms;
+        barricados = data.barricados;
+        orbs = data.orbs;
+        lasers = data.lasers;
+        panels = data.panels;
+        elapsedTime = data.elapsedTime;
+        difficulty = data.difficulty;
+        wave = data.wave;
+        banish = data.banish;
+        empower = data.empower;
+        heal = data.heal;
+    }
+
+    public static ArrayList<Paintable> getPaintables() {
         ArrayList<Paintable> paintables = new ArrayList<>();
         paintables.addAll(trigoraths);
         paintables.addAll(squarantines);
@@ -65,7 +87,8 @@ public class GameState {
         paintables.addAll(archmires);
         return paintables;
     }
-    public static ArrayList<Collidable> getComplexEnemies(){
+
+    public static ArrayList<Collidable> getComplexEnemies() {
         ArrayList<Collidable> collidable = new ArrayList<>();
         collidable.addAll(trigoraths);
         collidable.addAll(squarantines);
@@ -73,7 +96,7 @@ public class GameState {
         collidable.addAll(necropicks);
         collidable.addAll(wyrms);
         collidable.addAll(archmires);
-        return  collidable;
+        return collidable;
     }
 
     public static void initiateNewGame() {

@@ -11,8 +11,9 @@ import view.gameGUI.GamePanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serializable;
 
-public class Bullet implements Movable, WallCollidable, Collidable, Paintable {
+public class Bullet implements Movable, WallCollidable, Collidable, Paintable, Serializable {
 
     private double x;
     private double y;

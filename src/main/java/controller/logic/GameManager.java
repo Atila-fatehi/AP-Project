@@ -33,8 +33,8 @@ public class GameManager {
     }
 
     private boolean paused;
-    private final java.util.Timer modelTimer;
-    private final java.util.Timer viewTimer;
+    private java.util.Timer modelTimer;
+    private java.util.Timer viewTimer;
     private boolean gameOver;
     private boolean gameWon;
     private boolean empower;
@@ -73,7 +73,6 @@ public class GameManager {
     }
 
     private boolean pastTen;
-
     public void updateView() {
         if (!gameWon) {
             if (pastTen) {
@@ -386,8 +385,57 @@ public class GameManager {
                 if (GameState.elapsedTime == 10) {
                     pastTen = true;
                 }
+                if(GameState.elapsedTime % 5 == 0){
+                    FileController.serializeGameState();
+                }
             }
         }, 0, 1000);
+    }
+
+    public void stopTimers() {
+        GameManager.getInstance().getModelTimer().cancel();
+        GameManager.getInstance().getViewTimer().cancel();
+        GameManager.getInstance().getElapsedTimer().cancel();
+    }
+    public void continueTimers(){
+        elapsedTimer = new java.util.Timer();
+        elapsedTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (Epsilon.getInstance().getAbility().isAceso() && Epsilon.getInstance().getAbility().isActive()) {
+                    Epsilon.getInstance().setHP(Epsilon.getInstance().getHP() + 1);
+                }
+                if (!paused) GameState.elapsedTime++;
+                if (GameState.elapsedTime == 10) {
+                    pastTen = true;
+                }
+            }
+        }, 0, 1000);
+        viewTimer = new java.util.Timer();
+        viewTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (!paused) {
+                    updateView();
+                }
+                if (gameOver) {
+                    viewTimer.cancel();
+                }
+            }
+        }, 0, (int) (double) TimeUnit.SECONDS.toMillis(1) / 60/*GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0].getDisplayMode().getRefreshRate()*/);
+
+        modelTimer = new java.util.Timer();
+        modelTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (!paused && !gameWon) {
+                    updateModel();
+                }
+                if (gameOver) {
+                    modelTimer.cancel();
+                }
+            }
+        }, 0, (int) (double) TimeUnit.SECONDS.toMillis(1) / 100);
     }
 
     public void gameWon() {

@@ -1,5 +1,6 @@
 package view.frames;
 
+import controller.FileController;
 import controller.FrameController;
 import controller.logic.GameManager;
 import controller.audio.players.GameMusicPlayer;
@@ -12,13 +13,17 @@ import view.gameGUI.GameFrame;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainMenu extends JFrame {
     private static MainMenu instance;
-    public static MainMenu getInstance(){
-        if(instance == null) instance = new MainMenu();
+
+    public static MainMenu getInstance() {
+        if (instance == null) instance = new MainMenu();
         return instance;
     }
+
     public MainMenu() {
         setTitle("WindowKill");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -37,6 +42,27 @@ public class MainMenu extends JFrame {
                 GameFrame.getInstance().addPanel();
                 GameState.initiateNewGame();
                 GameManager.initiateNewGame();
+            }
+        });
+        MyButton load = new MyButton("Load Previous Game", Constants.BUTTON_INITIAL_X + Constants.BUTTON_WIDTH + 20, Constants.BUTTON_INITIAL_Y, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                MenuMusicPlayer.getInstance().stop();
+                GameMusicPlayer.getInstance().start();
+                FileController.deserializeGameState();
+                FrameController.minimizeAllWindows();
+                GameFrame.makeInstance();
+                GameFrame.getInstance().addPanel();
+                GameFrame.getInstance().repaint();
+                java.util.Timer timer = new java.util.Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        GameManager.getInstance().continueTimers();
+                        timer.cancel();
+                    }
+                }, 3000, 1111);
             }
         });
         MyButton setting = new MyButton("Setting", Constants.BUTTON_INITIAL_X, Constants.BUTTON_INITIAL_Y + Constants.BUTTON_MARGIN, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT, new ActionListener() {
@@ -79,6 +105,7 @@ public class MainMenu extends JFrame {
         getContentPane().add(skillTree);
         getContentPane().add(credit);
         getContentPane().add(exit);
+        getContentPane().add(load);
         getContentPane().add(new WallpaperPainter());
 
         setVisible(true);
