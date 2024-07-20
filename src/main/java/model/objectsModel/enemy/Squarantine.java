@@ -14,13 +14,14 @@ import view.gameGUI.GamePanel;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-public class Squarantine implements Movable, Collidable, Paintable {
+public class Squarantine implements Movable, Collidable, Paintable, Serializable {
 
     private int HP = 10;
     private double posXHP;

@@ -17,11 +17,12 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Wyrm implements Movable, Paintable, Collidable {
+public class Wyrm implements Movable, Paintable, Collidable , Serializable {
     private double HP = 12;
     private double x;
     private double y;

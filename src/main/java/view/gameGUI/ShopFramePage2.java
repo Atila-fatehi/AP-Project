@@ -5,6 +5,7 @@ import controller.logic.GameManager;
 import controller.logic.GameState;
 import controller.util.Constants;
 import model.collision.CollisionHandler;
+import model.objectsModel.Ability;
 import model.objectsModel.epsilon.Epsilon;
 import view.Jcomponents.MyButton;
 import view.Jcomponents.MyLabel;
@@ -65,19 +66,34 @@ public class ShopFramePage2 extends JFrame{
         MyButton xp100 = new MyButton("120 XP", 400, 225, Constants.BUTTON_WIDTH - 100, Constants.BUTTON_HEIGHT, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                if (Epsilon.getInstance().getXP() >= 120) {
+                    Epsilon.getInstance().setXP(Epsilon.getInstance().getXP() - 120);
+                    Ability.dismay();
+                    GameManager.getInstance().setPaused(false);
+                    dispose();
+                }
             }
         });
         MyButton xp75 = new MyButton("150 XP", 400, 300, Constants.BUTTON_WIDTH - 100, Constants.BUTTON_HEIGHT, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                if (Epsilon.getInstance().getXP() >= 150) {
+                    Epsilon.getInstance().setXP(Epsilon.getInstance().getXP() - 150);
+//                    Ability.slumber();
+                    GameManager.getInstance().setPaused(false);
+                    dispose();
+                }
             }
         });
         MyButton xp50 = new MyButton("200 XP", 400, 375, Constants.BUTTON_WIDTH - 100, Constants.BUTTON_HEIGHT, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                if (Epsilon.getInstance().getXP() >= 200) {
+                    Epsilon.getInstance().setXP(Epsilon.getInstance().getXP() - 200);
+//                    Ability.slaughter();
+                    GameManager.getInstance().setPaused(false);
+                    dispose();
+                }
             }
         });
 

@@ -12,10 +12,11 @@ import view.gameGUI.GamePanel;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.TimerTask;
 
-public class BlackOrb implements Collidable, Paintable {
+public class BlackOrb implements Collidable, Paintable , Serializable {
     private double HP = 30;
     private double x;
     private double y;
@@ -23,7 +24,6 @@ public class BlackOrb implements Collidable, Paintable {
     private boolean damageable;
     private OrbPanel panel;
     private Image image;
-    private final java.util.Timer timer = new java.util.Timer();
     private int code ;
 
     public BlackOrb(double x, double y, int code) {

@@ -45,6 +45,11 @@ public class GameManager {
     }
 
     public GameManager() {
+        EnemyGenerator.makeNewTrigorath();
+        EnemyGenerator.makeNewTrigorath();
+
+        EnemyGenerator.makeNewSquarantine();
+        EnemyGenerator.makeNewSquarantine();
         viewTimer = new java.util.Timer();
         viewTimer.schedule(new TimerTask() {
             @Override
@@ -88,7 +93,7 @@ public class GameManager {
 
     public void updateModel() {
 
-        WaveGenerator.handleWaves();
+//        WaveGenerator.handleWaves();
 
         //Tri stuff
         for (int i = 0; i < GameState.trigoraths.size(); i++) {

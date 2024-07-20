@@ -17,11 +17,12 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Necropick implements Paintable, Movable, Collidable {
+public class Necropick implements Paintable, Movable, Collidable , Serializable {
     private int HP = 10;
     private double x;
     private double y;

@@ -15,10 +15,11 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.TimerTask;
 
-public class Barricados implements Paintable, Collidable {
+public class Barricados implements Paintable, Collidable, Serializable {
 
     private double x;
     private double y;

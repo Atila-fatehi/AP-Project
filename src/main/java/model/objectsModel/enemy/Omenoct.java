@@ -16,11 +16,12 @@ import view.gameGUI.GamePanel;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
-public class Omenoct implements Paintable, Collidable, Movable {
+public class Omenoct implements Paintable, Collidable, Movable , Serializable {
     private int HP = 20;
     private double posXHP;
     private double posYHP;

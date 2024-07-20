@@ -4,6 +4,7 @@ import model.collision.CollisionHandler;
 import controller.logic.GameManager;
 import controller.util.Constants;
 import controller.logic.GameState;
+import model.objectsModel.Ability;
 import model.objectsModel.epsilon.Epsilon;
 import view.Jcomponents.MyButton;
 import controller.KeyController;
@@ -67,9 +68,9 @@ public class ShopFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (Epsilon.getInstance().getXP() >= 100) {
                     Epsilon.getInstance().setXP(Epsilon.getInstance().getXP() - 100);
+                    Ability.banish();
                     GameManager.getInstance().setPaused(false);
                     dispose();
-                    CollisionHandler.handleCollisionOnPointNoEpsilon(new Point2D.Double(Epsilon.getInstance().getX(), Epsilon.getInstance().getY()));
                 }
             }
         });
@@ -78,20 +79,10 @@ public class ShopFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (Epsilon.getInstance().getXP() >= 75) {
                     Epsilon.getInstance().setXP(Epsilon.getInstance().getXP() - 75);
+                    Ability.empower();
                     GameManager.getInstance().setPaused(false);
                     dispose();
 
-                    GameManager.getInstance().setEmpower(true);
-                    GameState.empower = true;
-                    java.util.Timer timer = new java.util.Timer();
-                    timer.schedule(new TimerTask() {
-                        @Override
-                        public void run() {
-                            GameManager.getInstance().setEmpower(false);
-                            GameState.empower = false;
-                            timer.cancel();
-                        }
-                    }, 10000, 100);
                 }
             }
         });
@@ -100,7 +91,7 @@ public class ShopFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (Epsilon.getInstance().getXP() >= 50) {
                     Epsilon.getInstance().setXP(Epsilon.getInstance().getXP() - 50);
-                    Epsilon.getInstance().setHP(Epsilon.getInstance().getHP() + 10);
+                    Ability.heal();
                     GameManager.getInstance().setPaused(false);
                     dispose();
                 }

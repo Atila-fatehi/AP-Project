@@ -108,5 +108,28 @@ public abstract class Collision {
         }
         return null;
     }
+    public static Point2D checkEpsilonCollisionWithRadius(Collidable collidable , int radius) {
+        int[] xPoints = collidable.getXPoints();
+        int[] yPoints = collidable.getYPoints();
+        int x = (int) Epsilon.getInstance().getX();
+        int y = (int) Epsilon.getInstance().getY();
+        for (int i = 0; i < xPoints.length; i++) {
+            if (Calculator.distance(x, y, xPoints[i], yPoints[i]) <= radius) {
+                return new Point2D.Double(xPoints[i], yPoints[i]);
+            }
+        }
+        for (int i = 0; i < xPoints.length; i++) {
+            Point2D point;
+            if (i == xPoints.length - 1) {
+                point = Calculator.circleLineCollision(x, y, radius, xPoints[i], yPoints[i], xPoints[0], yPoints[0]);
+            } else {
+                point = Calculator.circleLineCollision(x, y, radius, xPoints[i], yPoints[i], xPoints[i + 1], yPoints[i + 1]);
+            }
+            if (point != null) {
+                return point;
+            }
+        }
 
+        return null;
+    }
 }

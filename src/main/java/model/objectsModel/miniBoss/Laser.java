@@ -10,8 +10,9 @@ import view.gameGUI.GamePanel;
 import javax.swing.*;
 import javax.xml.xpath.XPath;
 import java.awt.*;
+import java.io.Serializable;
 
-public class Laser implements Paintable , Drownable , Collidable {
+public class Laser implements Paintable , Drownable , Collidable, Serializable {
     private double[] xPoints;
     private double[] yPoints;
     int code;

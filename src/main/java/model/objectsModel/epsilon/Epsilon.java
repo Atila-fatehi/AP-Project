@@ -13,9 +13,10 @@ import view.gameGUI.GamePanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Epsilon implements Movable, Collidable, Paintable, WallCollidable {
+public class Epsilon implements Movable, Collidable, Paintable, WallCollidable, Serializable {
 
     private static Epsilon instance;
 
@@ -147,6 +148,11 @@ public class Epsilon implements Movable, Collidable, Paintable, WallCollidable {
         int inner = 4;
         g.setColor(Constants.DARK_BLUE);
         g.fillOval((int) (x - radius - locX) + inner, (int) (y - radius - locY) + inner, (int) (radius - inner) * 2, (int) (radius - inner) * 2);
+
+        if(dismay){
+            g.setColor(Constants.EPSILON_COLOR);
+            g.drawOval((int) (x - 150 - locX), (int) (y - 150 - locY) , 300,300);
+        }
 //        if (hasVertex) {
 //            g.drawLine((int) (x - radius), (int) y, (int) vertexX, (int) vertexY);
 //            g.drawLine((int) (x + radius), (int) y, (int) vertexX, (int) vertexY);
@@ -314,4 +320,8 @@ public class Epsilon implements Movable, Collidable, Paintable, WallCollidable {
         this.radius = radius;
     }
 
+    private boolean dismay;
+    public void setDismay(boolean b) {
+        dismay = b;
+    }
 }

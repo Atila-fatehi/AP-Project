@@ -37,6 +37,7 @@ public class GameState implements Serializable {
     public static boolean banish;
     public static boolean empower;
     public static boolean heal;
+    public static boolean dismay;
 
     public static String getAbility() {
         if (banish) {
@@ -45,7 +46,10 @@ public class GameState implements Serializable {
             return "O’ Athena, Empower";
         } else if (heal) {
             return "O' Apollo, Heal";
+        }else if (dismay){
+            return "O’ Deimos, Dismay";
         }
+
         return "";
     }
 

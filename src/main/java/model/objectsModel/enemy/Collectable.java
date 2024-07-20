@@ -5,8 +5,9 @@ import view.gameGUI.GamePanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serializable;
 
-public class Collectable implements Paintable {
+public class Collectable implements Paintable, Serializable {
     private double x;
     private double y;
     private double radius;

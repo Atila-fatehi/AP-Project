@@ -15,9 +15,10 @@ import view.gameGUI.GamePanel;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 import java.util.UUID;
 
-public class Trigorath implements Movable, Collidable , Paintable {
+public class Trigorath implements Movable, Collidable , Paintable, Serializable {
     private int HP = 15;
     String id;
     private double posXHP;

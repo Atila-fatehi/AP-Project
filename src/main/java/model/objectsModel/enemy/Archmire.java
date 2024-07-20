@@ -11,13 +11,14 @@ import view.gameGUI.GamePanel;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
-public class Archmire implements Paintable, Movable, Drownable, Collidable {
+public class Archmire implements Paintable, Movable, Drownable, Collidable , Serializable {
 
     private int HP = 30;
     private int damage = 10;
