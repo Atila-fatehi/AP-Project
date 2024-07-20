@@ -3,6 +3,7 @@ package controller;
 import controller.audio.players.AudioPlayer;
 import controller.audio.players.GameMusicPlayer;
 import controller.logic.GameManager;
+import controller.logic.GameState;
 import model.objectsModel.epsilon.Epsilon;
 import view.frames.MainMenu;
 import view.gameGUI.GameFrame;
@@ -56,7 +57,7 @@ public class KeyController implements KeyListener {
             Epsilon.getInstance().setDecR(false);
         }
         if (keyCode == shop) {
-            if(!GameManager.getInstance().isPaused()) {
+            if(!GameManager.getInstance().isPaused() && !GameState.slumber) {
                 GameManager.getInstance().setPaused(true);
                 AudioPlayer.play(AudioPlayer.PAUSE);
                 new ShopFrame();

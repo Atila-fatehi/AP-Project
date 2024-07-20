@@ -35,7 +35,13 @@ public abstract class EnemyGenerator {
     }
 
     public static void makeNewBullet(int x, int y) {
-        Bullet bullet = new Bullet(Epsilon.getInstance().getX(), Epsilon.getInstance().getY(), true, Constants.EPSILON_COLOR, Epsilon.getInstance().getDamageRate());
+        Bullet bullet;
+        if (GameState.slaughter) {
+            bullet = new Bullet(Epsilon.getInstance().getX(), Epsilon.getInstance().getY(), true, Constants.GOLD, 50);
+            GameState.slaughter = false;
+        }else {
+            bullet = new Bullet(Epsilon.getInstance().getX(), Epsilon.getInstance().getY(), true, Constants.EPSILON_COLOR, Epsilon.getInstance().getDamageRate());
+        }
         bullet.calculateMovingDirection(x, y);
         GameState.bullets.add(bullet);
     }

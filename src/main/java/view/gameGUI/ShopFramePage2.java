@@ -21,6 +21,7 @@ import java.awt.geom.Point2D;
 import java.util.TimerTask;
 
 public class ShopFramePage2 extends JFrame{
+    static boolean inCoolDown = false;
     public ShopFramePage2() throws HeadlessException {
         addKeyListener(new KeyListener() {
             @Override
@@ -79,7 +80,7 @@ public class ShopFramePage2 extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 if (Epsilon.getInstance().getXP() >= 150) {
                     Epsilon.getInstance().setXP(Epsilon.getInstance().getXP() - 150);
-//                    Ability.slumber();
+                    Ability.slumber();
                     GameManager.getInstance().setPaused(false);
                     dispose();
                 }
@@ -88,9 +89,18 @@ public class ShopFramePage2 extends JFrame{
         MyButton xp50 = new MyButton("200 XP", 400, 375, Constants.BUTTON_WIDTH - 100, Constants.BUTTON_HEIGHT, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (Epsilon.getInstance().getXP() >= 200) {
+                if (Epsilon.getInstance().getXP() >= 200 && !inCoolDown) {
                     Epsilon.getInstance().setXP(Epsilon.getInstance().getXP() - 200);
-//                    Ability.slaughter();
+                    inCoolDown = true;
+                    Ability.slaughter();
+                    java.util.Timer timer = new java.util.Timer();
+                    timer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            inCoolDown = false;
+                            timer.cancel();
+                        }
+                    }, 120000, 1111);
                     GameManager.getInstance().setPaused(false);
                     dispose();
                 }

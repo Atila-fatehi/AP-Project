@@ -5,6 +5,7 @@ import controller.logic.GameState;
 import model.collision.Collision;
 import model.collision.CollisionHandler;
 import model.objectsModel.epsilon.Epsilon;
+import view.gameGUI.ShopFramePage2;
 
 import java.awt.geom.Point2D;
 import java.util.TimerTask;
@@ -15,13 +16,11 @@ public abstract class Ability {
     }
     
     public static void empower(){
-        GameManager.getInstance().setEmpower(true);
         GameState.empower = true;
         java.util.Timer timer = new java.util.Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                GameManager.getInstance().setEmpower(false);
                 GameState.empower = false;
                 timer.cancel();
             }
@@ -69,5 +68,21 @@ public abstract class Ability {
                 }
             }
         }, 0, 100);
+    }
+
+    public static void slumber(){
+        GameState.slumber = true;
+        java.util.Timer timer = new java.util.Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                GameState.slumber = false;
+                timer.cancel();
+            }
+        }, 10000, 1111);
+    }
+
+    public static void slaughter() {
+        GameState.slaughter = true;
     }
 }

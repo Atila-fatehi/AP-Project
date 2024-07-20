@@ -18,6 +18,7 @@ public abstract class Constants {
     public static final Color EPSILON_COLOR = new Color(0x38C1F1);
     public static final Color STRING_COLOR = new Color(0x8A26FF);
     public static final Color ANOTHER_STRING_COLOR = new Color(0xA826FF);
+    public static final Color GOLD = new Color(0xEBB000);
     public static final Color TRANSPARENT = new Color(0, 0, 0, 0);
 
     public static final int SCREEN_WIDTH = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
