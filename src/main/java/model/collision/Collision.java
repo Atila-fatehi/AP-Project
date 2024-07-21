@@ -99,7 +99,9 @@ public abstract class Collision {
         Polygon poly = new Polygon(collidable.getXPoints(), collidable.getYPoints(), collidable.getXPoints().length);
         return poly.contains(point);
     }
-
+    public static boolean checkPointCollision(Point2D point, Polygon poly){
+        return poly.contains(point);
+    }
     public static Point2D checkOrbCollision(BlackOrb orb , Bullet bullet) {
         double radius = 40;
         if(Calculator.distance(orb.getX() + 10 + radius, orb.getY() + 10 + radius, bullet.getX(), bullet.getY())
@@ -108,6 +110,44 @@ public abstract class Collision {
         }
         return null;
     }
+
+    public static Point2D checkOrbCollision(BlackOrb orb , Collidable collidable) {
+        int[] xPoints = collidable.getXPoints();
+        int[] yPoints = collidable.getYPoints();
+        int radius = 40;
+        int x = (int) orb.getX() + radius + 10;
+        int y = (int) orb.getY() + radius + 10;
+        for (int i = 0; i < xPoints.length; i++) {
+            if (Calculator.distance(x, y, xPoints[i], yPoints[i]) <= radius) {
+                return new Point2D.Double(xPoints[i], yPoints[i]);
+            }
+        }
+        for (int i = 0; i < xPoints.length; i++) {
+            Point2D point;
+            if (i == xPoints.length - 1) {
+                point = Calculator.circleLineCollision(x, y, radius, xPoints[i], yPoints[i], xPoints[0], yPoints[0]);
+            } else {
+                point = Calculator.circleLineCollision(x, y, radius, xPoints[i], yPoints[i], xPoints[i + 1], yPoints[i + 1]);
+            }
+            if (point != null) {
+                return point;
+            }
+        }
+
+        return null;
+    }
+
+    public static Point2D checkOrbCollision(BlackOrb orb) {
+        double radius = 40;
+        if(Calculator.distance(orb.getX() + 10 + radius, orb.getY() + 10 + radius, Epsilon.getInstance().getX(), Epsilon.getInstance().getY())
+                <= Epsilon.getInstance().getRadius() + radius + 3){
+            return new Point2D.Double(Epsilon.getInstance().getX() , Epsilon.getInstance().getY());
+        }
+        return null;
+    }
+
+
+
     public static Point2D checkEpsilonCollisionWithRadius(Collidable collidable , int radius) {
         int[] xPoints = collidable.getXPoints();
         int[] yPoints = collidable.getYPoints();

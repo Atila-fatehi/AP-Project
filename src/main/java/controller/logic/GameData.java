@@ -28,7 +28,7 @@ public class GameData implements Serializable {
     public ArrayList<Squarantine> squarantines = new ArrayList<>();
     public ArrayList<Collectable> collectables = new ArrayList<>();
     public ArrayList<Omenoct> omenocts = new ArrayList<>();
-    public ArrayList<Archmire> archmires = new ArrayList<>();
+//    public ArrayList<Archmire> archmires = new ArrayList<>();
     public ArrayList<Necropick> necropicks = new ArrayList<>();
     public ArrayList<Wyrm> wyrms = new ArrayList<>();
     public ArrayList<Barricados> barricados = new ArrayList<>();
@@ -50,7 +50,7 @@ public class GameData implements Serializable {
         squarantines = GameState.squarantines;
         collectables = GameState.collectables;
         omenocts = GameState.omenocts;
-        archmires = GameState.archmires;
+//        archmires = GameState.archmires;
         necropicks = GameState.necropicks;
         wyrms = GameState.wyrms;
         barricados = GameState.barricados;

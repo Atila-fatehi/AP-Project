@@ -3,6 +3,7 @@ package model.objectsModel.enemy;
 import controller.audio.players.AudioPlayer;
 import controller.logic.GameState;
 import controller.util.Constants;
+import controller.util.CostumeTimer;
 import model.Paintable.Paintable;
 import model.collision.Collidable;
 import model.collision.Collision;
@@ -36,7 +37,6 @@ public class Squarantine implements Movable, Collidable, Paintable, Serializable
     private double accX;
     private double accY;
     private boolean played;
-    private java.util.Timer timer;
     String id;
 
     public Squarantine(double[] x, double[] y) {
@@ -48,7 +48,7 @@ public class Squarantine implements Movable, Collidable, Paintable, Serializable
 
     public void randomAggression() {
         Random random = new Random();
-        timer = new java.util.Timer();
+        java.util.Timer timer = new java.util.Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -63,6 +63,7 @@ public class Squarantine implements Movable, Collidable, Paintable, Serializable
                 }
             }
         }, 5000, 3000);
+        CostumeTimer.getInstance().newTimer(id, timer);
     }
 
     public void calculateMovingDirection(double x, double y) {
@@ -116,7 +117,7 @@ public class Squarantine implements Movable, Collidable, Paintable, Serializable
         if (getXPoints()[0] >= GamePanel.getInstance().getX() &&
                 getXPoints()[0] <= GamePanel.getInstance().getPanelWidth() + GamePanel.getInstance().getX()
                 && getYPoints()[0] >= GamePanel.getInstance().getY() &&
-                getXPoints()[0] <= GamePanel.getInstance().getPanelHeight() +  GamePanel.getInstance().getY()) {
+                getXPoints()[0] <= GamePanel.getInstance().getPanelHeight() + GamePanel.getInstance().getY()) {
             if (!played) {
                 AudioPlayer.play(AudioPlayer.GROAN);
                 played = true;
@@ -214,11 +215,11 @@ public class Squarantine implements Movable, Collidable, Paintable, Serializable
     }
 
     public Timer getTimer() {
-        return timer;
+        return CostumeTimer.getInstance().getMap().get(id);
     }
 
     @Override
-    public void selfPaint(Graphics g ,JPanel panel){
+    public void selfPaint(Graphics g, JPanel panel) {
         int locX = panel.getX();
         int locY = panel.getY();
 
@@ -228,6 +229,7 @@ public class Squarantine implements Movable, Collidable, Paintable, Serializable
         g.drawString(String.valueOf(HP), (int) posXHP - locX, (int) posYHP - locY);
 
     }
+
     public String getId() {
         return id;
     }

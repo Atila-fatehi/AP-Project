@@ -3,6 +3,7 @@ package model.objectsModel.enemy;
 import controller.logic.GameState;
 import controller.util.Calculator;
 import controller.util.Constants;
+import controller.util.CostumeTimer;
 import model.Paintable.Paintable;
 import model.collision.Collidable;
 import model.collision.Collision;
@@ -21,8 +22,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.UUID;
 
-public class Wyrm implements Movable, Paintable, Collidable , Serializable {
+public class Wyrm implements Movable, Paintable, Collidable, Serializable {
+    String id;
     private double HP = 12;
     private double x;
     private double y;
@@ -43,12 +46,11 @@ public class Wyrm implements Movable, Paintable, Collidable , Serializable {
     private Image image;
     private boolean linearMovement;
     private int clockwise = 1;
-    private final java.util.Timer shootTimer = new java.util.Timer();
 
     public Wyrm(double x, double y) {
         this.x = x;
         this.y = y;
-
+        id = UUID.randomUUID().toString();
         panel = new WyrmPanel();
 
         try {
@@ -57,12 +59,14 @@ public class Wyrm implements Movable, Paintable, Collidable , Serializable {
         } catch (Exception e) {
             System.out.println("exception in wyrm paint");
         }
+        java.util.Timer shootTimer = new java.util.Timer();
         shootTimer.schedule(new TimerTask() {
             @Override
             public void run() {
                 shootBullet();
             }
         }, 3000, 1500);
+        CostumeTimer.getInstance().newTimer(id, shootTimer);
     }
 
     public void selfDestruct() {
@@ -122,7 +126,7 @@ public class Wyrm implements Movable, Paintable, Collidable , Serializable {
         }
     }
 
-    class WyrmPanel extends JPanel {
+    class WyrmPanel extends JPanel implements Serializable {
         public WyrmPanel() {
             setBounds((int) x - 10, (int) y - 10, (int) width + 20, (int) height + 20);
             setBackground(Constants.DARK_BLUE);
@@ -142,9 +146,9 @@ public class Wyrm implements Movable, Paintable, Collidable , Serializable {
                 paintable.selfPaint(g, this);
             }
             g.dispose();
-    }
+        }
 
-}
+    }
 
     void shootBullet() {
         Bullet bullet = new Bullet(x, y, false, Constants.WYRM_PINK, 8);
@@ -188,7 +192,7 @@ public class Wyrm implements Movable, Paintable, Collidable , Serializable {
 
     @Override
     public void calculateMovingDirection(double x, double y) {
-        if(Calculator.distance(x, y, this.x, this.y) >= radiusFromEpsilon){
+        if (Calculator.distance(x, y, this.x, this.y) >= radiusFromEpsilon) {
             acquired = false;
         }
         if (!acquired) {
@@ -219,7 +223,7 @@ public class Wyrm implements Movable, Paintable, Collidable , Serializable {
     }
 
     @Override
-    public void selfPaint(Graphics g , JPanel panel) {
+    public void selfPaint(Graphics g, JPanel panel) {
         int locX = panel.getX();
         int locY = panel.getY();
         g.drawImage(image, ((int) x - locX), ((int) y - locY), panel);
@@ -266,6 +270,6 @@ public class Wyrm implements Movable, Paintable, Collidable , Serializable {
     }
 
     public Timer getShootTimer() {
-        return shootTimer;
+        return CostumeTimer.getInstance().getMap().get(id);
     }
 }

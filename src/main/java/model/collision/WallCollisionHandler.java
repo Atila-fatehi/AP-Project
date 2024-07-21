@@ -5,6 +5,7 @@ import controller.logic.GameState;
 import model.objectsModel.epsilon.Epsilon;
 import view.gameGUI.GamePanel;
 
+import javax.swing.*;
 import java.util.TimerTask;
 
 public abstract class WallCollisionHandler {
@@ -101,30 +102,65 @@ public abstract class WallCollisionHandler {
         double x = Epsilon.getInstance().getX();
         double y = Epsilon.getInstance().getY();
         double radius = Epsilon.getInstance().getRadius();
-        if (x - radius < GamePanel.getInstance().getLocationX()) {
-//            boolean access = false;
-//            for (int i = 0; i < GameState.panels.size(); i++) {
-//                if (GameState.panels.get(i).getX() + GameState.panels.get(i).getWidth() > GamePanel.getInstance().getLocationX()
-//                        && GameState.panels.get(i).getY() < y - radius
-//                        && GameState.panels.get(i).getY() + GameState.panels.get(i).getHeight() > y + radius) {
-//                    access = true;
-//                }
-//            }
-//            if (!access) {
-            Epsilon.getInstance().setX(GamePanel.getInstance().getLocationX() + radius);
-            Epsilon.getInstance().setVx(0);
-//            }
-        } else if (x + radius > GamePanel.getInstance().getPanelWidth() + GamePanel.getInstance().getLocationX()) {
-            Epsilon.getInstance().setX(GamePanel.getInstance().getPanelWidth() + GamePanel.getInstance().getLocationX() - radius);
-            Epsilon.getInstance().setVx(0);
+        JPanel panel = Epsilon.getInstance().getCurrentPanel();
+        if (x - radius < panel.getX()) {
+            boolean access = false;
+            for (int i = 0; i < GameState.panels.size(); i++) {
+                if (GameState.panels.get(i) != panel && GameState.panels.get(i).getX() + GameState.panels.get(i).getWidth() > panel.getX()
+                        && GameState.panels.get(i).getX() < panel.getX()
+                        && GameState.panels.get(i).getY() < y - radius
+                        && GameState.panels.get(i).getY() + GameState.panels.get(i).getHeight() > y + radius) {
+                    access = true;
+                }
+            }
+            if (!access) {
+                Epsilon.getInstance().setX(panel.getX() + radius);
+                Epsilon.getInstance().setVx(0);
+            }
+        } else if (x + radius > panel.getWidth() + panel.getX()) {
+            boolean access = false;
+            for (int i = 0; i < GameState.panels.size(); i++) {
+                if (GameState.panels.get(i) != panel && GameState.panels.get(i).getX() < panel.getX() + panel.getWidth()
+                        && GameState.panels.get(i).getX() + GameState.panels.get(i).getWidth() > panel.getX() + panel.getWidth()
+                        && GameState.panels.get(i).getY() < y - radius
+                        && GameState.panels.get(i).getY() + GameState.panels.get(i).getHeight() > y + radius) {
+                    access = true;
+                }
+            }
+            if (!access) {
+                Epsilon.getInstance().setX(panel.getWidth() + panel.getX() - radius);
+                Epsilon.getInstance().setVx(0);
+            }
         }
 
-        if (y - radius < GamePanel.getInstance().getLocationY()) {
-            Epsilon.getInstance().setY(radius + GamePanel.getInstance().getLocationY());
-            Epsilon.getInstance().setVy(0);
-        } else if (y + radius > GamePanel.getInstance().getPanelHeight() + GamePanel.getInstance().getLocationY()) {
-            Epsilon.getInstance().setY(GamePanel.getInstance().getPanelHeight() + GamePanel.getInstance().getLocationY() - radius);
-            Epsilon.getInstance().setVy(0);
+        if (y - radius < panel.getY()) {
+            boolean access = false;
+            for (int i = 0; i < GameState.panels.size(); i++) {
+                if (GameState.panels.get(i) != panel && GameState.panels.get(i).getY() + GameState.panels.get(i).getHeight() > panel.getY()
+                        && GameState.panels.get(i).getY() < panel.getY()
+                        && GameState.panels.get(i).getX() + GameState.panels.get(i).getWidth() > x + radius
+                        && GameState.panels.get(i).getX() < x - radius) {
+                    access = true;
+                }
+            }
+            if (!access) {
+                Epsilon.getInstance().setY(radius + panel.getY());
+                Epsilon.getInstance().setVy(0);
+            }
+        } else if (y + radius > panel.getHeight() + panel.getY()) {
+            boolean access = false;
+            for (int i = 0; i < GameState.panels.size(); i++) {
+                if (GameState.panels.get(i) != panel && GameState.panels.get(i).getY() < panel.getY() + panel.getHeight()
+                        && GameState.panels.get(i).getY() + GameState.panels.get(i).getHeight() > panel.getY() + panel.getHeight()
+                        && GameState.panels.get(i).getX() < x - radius
+                        && GameState.panels.get(i).getX() + GameState.panels.get(i).getWidth() > x + radius) {
+                    access = true;
+                }
+            }
+            if (!access) {
+                Epsilon.getInstance().setY(panel.getHeight() + panel.getY() - radius);
+                Epsilon.getInstance().setVy(0);
+            }
         }
     }
 

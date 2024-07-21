@@ -3,6 +3,7 @@ package model.objectsModel.enemy;
 import controller.audio.players.AudioPlayer;
 import controller.logic.GameState;
 import controller.util.Constants;
+import controller.util.CostumeTimer;
 import model.Paintable.Paintable;
 import model.collision.Collidable;
 import model.collision.Collision;
@@ -21,8 +22,10 @@ import java.io.Serializable;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.UUID;
 
 public class Necropick implements Paintable, Movable, Collidable , Serializable {
+    String id;
     private int HP = 10;
     private double x;
     private double y;
@@ -30,12 +33,12 @@ public class Necropick implements Paintable, Movable, Collidable , Serializable 
     private final int radiusFromEpsilon = 180;
     private boolean played;
     private Image image;
-    private java.util.Timer timer;
     private boolean disappear;
 
     public Necropick(double x, double y) {
         this.x = x;
         this.y = y;
+        id = UUID.randomUUID().toString();
         try {
             Image yourImage = (Image) ImageIO.read(Constants.NECRO_PICK);
             image = yourImage.getScaledInstance((int) size, (int) size, Image.SCALE_DEFAULT);
@@ -43,7 +46,7 @@ public class Necropick implements Paintable, Movable, Collidable , Serializable 
         } catch (Exception e) {
             System.out.println("exception in necropick paint");
         }
-        timer = new java.util.Timer();
+        java.util.Timer timer = new java.util.Timer();
         timer.schedule(new TimerTask() {
             int count = 0;
 
@@ -61,6 +64,7 @@ public class Necropick implements Paintable, Movable, Collidable , Serializable 
                 }
             }
         }, 0, 4000);
+        CostumeTimer.getInstance().newTimer(id , timer);
     }
 
     public void playAudio() {
@@ -248,7 +252,7 @@ public class Necropick implements Paintable, Movable, Collidable , Serializable 
     }
 
     public Timer getTimer() {
-        return timer;
+        return CostumeTimer.getInstance().getMap().get(id);
     }
 
     public double getSize() {

@@ -1,13 +1,7 @@
 package controller.logic;
 
 import controller.FileController;
-import controller.util.Constants;
-import model.collision.Collision;
-import model.collision.CollisionHandler;
-import model.collision.WallCollisionHandler;
-import model.objectsModel.enemy.Collectable;
 import model.objectsModel.epsilon.Epsilon;
-import model.objectsModel.miniBoss.OrbManager;
 import view.frames.MainMenu;
 import view.gameGUI.GameFrame;
 import view.gameGUI.GamePanel;
@@ -15,10 +9,6 @@ import controller.audio.players.AudioPlayer;
 import controller.audio.players.GameMusicPlayer;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.geom.Point2D;
 import java.util.*;
 import java.util.Timer;
 import java.util.concurrent.TimeUnit;
@@ -44,11 +34,15 @@ public class GameManager {
     }
 
     public GameManager() {
-        EnemyGenerator.makeNewTrigorath();
-        EnemyGenerator.makeNewTrigorath();
+//        EnemyGenerator.makeNewTrigorath();
+//        EnemyGenerator.makeNewTrigorath();
 
-        EnemyGenerator.makeNewSquarantine();
-        EnemyGenerator.makeNewSquarantine();
+//        EnemyGenerator.makeNewSquarantine();
+//        EnemyGenerator.makeNewSquarantine();
+
+//        EnemyGenerator.makeNewWyrm();
+        EnemyGenerator.makeNewOrb();
+        GameFrame.getInstance().addOtherPanel();
         viewTimer = new java.util.Timer();
         viewTimer.schedule(new TimerTask() {
             @Override
@@ -83,9 +77,9 @@ public class GameManager {
         elapsedTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                if (Epsilon.getInstance().getAbility().isAceso() && Epsilon.getInstance().getAbility().isActive()) {
-                    Epsilon.getInstance().setHP(Epsilon.getInstance().getHP() + 1);
-                }
+//                if (Epsilon.getInstance().getSkill().isAceso() && Epsilon.getInstance().getSkill().isActive()) {
+//                    Epsilon.getInstance().setHP(Epsilon.getInstance().getHP() + 1);
+//                }
                 if (!paused) GameState.elapsedTime++;
                 if (GameState.elapsedTime == 10) {
                     UpdateView.pastTen = true;
@@ -107,9 +101,9 @@ public class GameManager {
         elapsedTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                if (Epsilon.getInstance().getAbility().isAceso() && Epsilon.getInstance().getAbility().isActive()) {
-                    Epsilon.getInstance().setHP(Epsilon.getInstance().getHP() + 1);
-                }
+//                if (Epsilon.getInstance().getSkill().isAceso() && Epsilon.getInstance().getSkill().isActive()) {
+//                    Epsilon.getInstance().setHP(Epsilon.getInstance().getHP() + 1);
+//                }
                 if (!paused) GameState.elapsedTime++;
                 if (GameState.elapsedTime == 10) {
                     UpdateView.pastTen = true;
@@ -222,28 +216,28 @@ public class GameManager {
     }
 
     public void activateAbility() {
-        if (!Epsilon.getInstance().getAbility().isActive()) {
-            Epsilon.getInstance().getAbility().setActive(true);
-            java.util.Timer timer = new java.util.Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    Epsilon.getInstance().getAbility().setActive(false);
-                    timer.cancel();
-                }
-            }, 5 * 1000, 1111);
-            if (Epsilon.getInstance().getAbility().isProteus()) {
-                Epsilon.getInstance().addVertex();
-                Epsilon.getInstance().setXP(Epsilon.getInstance().getXP() - 100);
-            }
-            if (Epsilon.getInstance().getAbility().isAceso()) {
-                Epsilon.getInstance().setXP(Epsilon.getInstance().getXP() - 100);
-            }
-            if (Epsilon.getInstance().getAbility().isAres()) {
-                Epsilon.getInstance().setDamageRate(7);
-                Epsilon.getInstance().setXP(Epsilon.getInstance().getXP() - 100);
-            }
-        }
+//        if (!Epsilon.getInstance().getSkill().isActive()) {
+//            Epsilon.getInstance().getSkill().setActive(true);
+//            java.util.Timer timer = new java.util.Timer();
+//            timer.schedule(new TimerTask() {
+//                @Override
+//                public void run() {
+//                    Epsilon.getInstance().getSkill().setActive(false);
+//                    timer.cancel();
+//                }
+//            }, 5 * 1000, 1111);
+//            if (Epsilon.getInstance().getSkill().isProteus()) {
+//                Epsilon.getInstance().addVertex();
+//                Epsilon.getInstance().setXP(Epsilon.getInstance().getXP() - 100);
+//            }
+//            if (Epsilon.getInstance().getSkill().isAceso()) {
+//                Epsilon.getInstance().setXP(Epsilon.getInstance().getXP() - 100);
+//            }
+//            if (Epsilon.getInstance().getSkill().isAres()) {
+//                Epsilon.getInstance().setDamageRate(7);
+//                Epsilon.getInstance().setXP(Epsilon.getInstance().getXP() - 100);
+//            }
+//        }
     }
 
     public boolean isPaused() {

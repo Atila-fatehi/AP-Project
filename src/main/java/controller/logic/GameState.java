@@ -9,6 +9,7 @@ import model.objectsModel.epsilon.Epsilon;
 import model.objectsModel.miniBoss.Barricados;
 import model.objectsModel.miniBoss.BlackOrb;
 import model.objectsModel.miniBoss.Laser;
+import view.gameGUI.GamePanel;
 
 import javax.swing.*;
 import java.io.Serializable;
@@ -66,7 +67,7 @@ public class GameState implements Serializable {
         squarantines = data.squarantines;
         collectables = data.collectables;
         omenocts = data.omenocts;
-        archmires = data.archmires;
+//        archmires = data.archmires;
         necropicks = data.necropicks;
         wyrms = data.wyrms;
         barricados = data.barricados;
@@ -90,11 +91,11 @@ public class GameState implements Serializable {
         paintables.addAll(necropicks);
         paintables.addAll(wyrms);
         paintables.addAll(barricados);
-        paintables.addAll(lasers);
-        paintables.addAll(orbs);
         paintables.addAll(bullets);
         paintables.add(epsilon);
         paintables.addAll(archmires);
+        paintables.addAll(lasers);
+        paintables.addAll(orbs);
         return paintables;
     }
 
@@ -128,5 +129,7 @@ public class GameState implements Serializable {
         elapsedTime = 0;
         difficulty = Objects.requireNonNull(FileController.readSettings())[1];
         wave = 0;
+
+        panels.add(GamePanel.getInstance());
     }
 }

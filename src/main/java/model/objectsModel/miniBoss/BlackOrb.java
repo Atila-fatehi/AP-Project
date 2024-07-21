@@ -6,17 +6,21 @@ import controller.util.Constants;
 import jdk.jshell.spi.SPIResolutionException;
 import model.Paintable.Paintable;
 import model.collision.Collidable;
+import model.collision.Collision;
+import model.collision.CollisionHandler;
+import model.objectsModel.epsilon.Epsilon;
 import view.gameGUI.GameFrame;
 import view.gameGUI.GamePanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.TimerTask;
 
-public class BlackOrb implements Collidable, Paintable , Serializable {
+public class BlackOrb implements Collidable, Paintable, Serializable {
     private double HP = 30;
     private double x;
     private double y;
@@ -24,7 +28,7 @@ public class BlackOrb implements Collidable, Paintable , Serializable {
     private boolean damageable;
     private OrbPanel panel;
     private Image image;
-    private int code ;
+    private int code;
 
     public BlackOrb(double x, double y, int code) {
         this.x = x;
@@ -62,7 +66,7 @@ public class BlackOrb implements Collidable, Paintable , Serializable {
     }
 
     @Override
-    public void selfPaint(Graphics g , JPanel panel) {
+    public void selfPaint(Graphics g, JPanel panel) {
         int locX = panel.getX();
         int locY = panel.getY();
         g.drawImage(image, (int) ((int) x - locX), (int) ((int) y - locY), panel);
@@ -74,7 +78,47 @@ public class BlackOrb implements Collidable, Paintable , Serializable {
     }
 
     public void checkCollision() {
-
+        Point2D epsilonCollisionPoint = Collision.checkOrbCollision(this);
+        if (epsilonCollisionPoint != null) {
+            CollisionHandler.handleCollisionOnPoint(epsilonCollisionPoint);
+        }
+        for (int j = 0; j < GameState.trigoraths.size(); j++) {
+            Point2D collisionPoint = Collision.checkOrbCollision(this, GameState.trigoraths.get(j));
+            if (collisionPoint != null) {
+                CollisionHandler.handleCollisionOnPoint(collisionPoint);
+            }
+        }
+        for (int j = 0; j < GameState.squarantines.size(); j++) {
+            Point2D collisionPoint = Collision.checkOrbCollision(this, GameState.squarantines.get(j));
+            if (collisionPoint != null) {
+                CollisionHandler.handleCollisionOnPoint(collisionPoint);
+            }
+        }
+        for (int j = 0; j < GameState.omenocts.size(); j++) {
+            Point2D collisionPoint = Collision.checkOrbCollision(this, GameState.omenocts.get(j));
+            if (collisionPoint != null) {
+                CollisionHandler.handleCollisionOnPoint(collisionPoint);
+            }
+        }
+        for (int j = 0; j < GameState.necropicks.size(); j++) {
+            Point2D collisionPoint = Collision.checkOrbCollision(this, GameState.necropicks.get(j));
+            if (collisionPoint != null) {
+                CollisionHandler.handleCollisionOnPoint(collisionPoint);
+            }
+        }
+        for (int j = 0; j < GameState.wyrms.size(); j++) {
+            Point2D collisionPoint = Collision.checkOrbCollision(this, GameState.wyrms.get(j));
+            if (collisionPoint != null) {
+                CollisionHandler.handleCollisionOnPoint(collisionPoint);
+                GameState.wyrms.get(j).changeRotation();
+            }
+        }
+        for (int j = 0; j < GameState.barricados.size(); j++) {
+            Point2D collisionPoint = Collision.checkOrbCollision(this, GameState.barricados.get(j));
+            if (collisionPoint != null) {
+                CollisionHandler.handleCollisionOnPoint(collisionPoint);
+            }
+        }
     }
 
     public void selfDestruct() {

@@ -41,7 +41,6 @@ public class Archmire implements Paintable, Movable, Drownable, Collidable , Ser
     private ArrayList<Integer> traveledX = new ArrayList<>();
     private ArrayList<Integer> traveledY = new ArrayList<>();
     private ArrayList<java.util.Timer> traveledTimer = new ArrayList<>();
-//    private ArrayList<java.util.Timer> insTimer = new ArrayList<>();
     private HashMap<String ,java.util.Timer> insMaps = new HashMap<>();
 
 
@@ -178,11 +177,6 @@ public class Archmire implements Paintable, Movable, Drownable, Collidable , Ser
         return radius_b;
     }
 
-    int count = 0;
-    public void startNewTimer(int count){
-
-
-    }
     public void drown() {
         if(Drown.checkEpsilonDrown(this)){
             if(!insMaps.containsKey("Epsilon")){

@@ -131,7 +131,9 @@ public abstract class UpdateModel {
             GameState.barricados.get(i).checkCollision();
         }
         //orb stuff
-//        OrbManager.drown();
+        for (int i = 0; i < GameState.lasers.size(); i++) {
+            GameState.lasers.get(i).drown();
+        }
         for (int i = 0; i < GameState.orbs.size(); i++) {
             GameState.orbs.get(i).checkCollision();
             if (GameState.orbs.get(i).getHP() <= 0) {
@@ -155,6 +157,7 @@ public abstract class UpdateModel {
 //epsilon stuff
         Epsilon.getInstance().move();
         Epsilon.getInstance().wallCollision();
+        Epsilon.getInstance().setCurrentPanel();
         for (int i = 0; i < GameState.collectables.size(); i++) {
             if (Collision.checkCoinCollision(GameState.collectables.get(i))) {
                 Epsilon.getInstance().setXP(Epsilon.getInstance().getXP() + GameState.collectables.get(i).getXp());

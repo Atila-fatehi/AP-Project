@@ -2,6 +2,7 @@ package model.objectsModel.miniBoss;
 
 import controller.logic.GameState;
 import controller.util.Constants;
+import controller.util.CostumeTimer;
 import model.Paintable.Paintable;
 import model.collision.Collidable;
 import model.collision.Collision;
@@ -18,6 +19,7 @@ import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.TimerTask;
+import java.util.UUID;
 
 public class Barricados implements Paintable, Collidable, Serializable {
 
@@ -27,12 +29,12 @@ public class Barricados implements Paintable, Collidable, Serializable {
     private boolean played;
     private BarriPanel panel;
     private Image image;
-    private final java.util.Timer timer = new java.util.Timer();
+    String id;
 
     public Barricados(double x, double y) {
         this.x = x;
         this.y = y;
-
+        id = UUID.randomUUID().toString();
         try {
             Image yourImage = (Image) ImageIO.read(Constants.BARRI_PIC);
             image = yourImage.getScaledInstance((int) size, (int) size, Image.SCALE_DEFAULT);
@@ -41,6 +43,7 @@ public class Barricados implements Paintable, Collidable, Serializable {
             System.out.println("exception in barri paint");
         }
         panel = new BarriPanel();
+        java.util.Timer timer = new java.util.Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -48,7 +51,7 @@ public class Barricados implements Paintable, Collidable, Serializable {
                 timer.cancel();
             }
         }, 1000 * 60 * 2, 1111);
-
+        CostumeTimer.getInstance().newTimer(id, timer);
     }
 
     public void selfDestruct() {
@@ -120,7 +123,7 @@ public class Barricados implements Paintable, Collidable, Serializable {
     }
 
     @Override
-    public void selfPaint(Graphics g,JPanel panel) {
+    public void selfPaint(Graphics g, JPanel panel) {
         int locX = panel.getX();
         int locY = panel.getY();
         g.drawImage(image, (int) x - locX, (int) y - locY, panel);

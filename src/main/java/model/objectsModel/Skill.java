@@ -1,46 +1,38 @@
 package model.objectsModel;
 
 import java.io.Serializable;
+import java.util.HashMap;
 
 public class Skill implements Serializable {
 
+    HashMap<String , Boolean> attack = new HashMap<>();
+    HashMap<String , Boolean> defence = new HashMap<>();
+    HashMap<String , Boolean> shapeShift = new HashMap<>();
 
+    public Skill() {
+        attack.put("Ares" , false);
+        attack.put("Astrape" , false);
+        attack.put("Cerberus" , false);
 
-    //TODO ooooooooooooooooooooo
-    boolean ares;
-    boolean aceso;
-    boolean proteus;
-    boolean isActive;
+        defence.put("Aceso" , false);
+        defence.put("Melampus" , false);
+        defence.put("Chiron" , false);
 
-    public boolean isActive() {
-        return isActive;
+        shapeShift.put("Proteus" , false);
+        shapeShift.put("Empusa" , false);
+        shapeShift.put("Dolus" , false);
     }
 
-    public void setActive(boolean active) {
-        isActive = active;
+
+    public HashMap<String, Boolean> getAttack() {
+        return attack;
     }
 
-    public boolean isAres() {
-        return ares;
+    public HashMap<String, Boolean> getDefence() {
+        return defence;
     }
 
-    public void setAres(boolean ares) {
-        this.ares = ares;
-    }
-
-    public boolean isAceso() {
-        return aceso;
-    }
-
-    public void setAceso(boolean aceso) {
-        this.aceso = aceso;
-    }
-
-    public boolean isProteus() {
-        return proteus;
-    }
-
-    public void setProteus(boolean proteus) {
-        this.proteus = proteus;
+    public HashMap<String, Boolean> getShapeShift() {
+        return shapeShift;
     }
 }

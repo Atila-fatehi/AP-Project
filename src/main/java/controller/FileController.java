@@ -182,9 +182,9 @@ public abstract class FileController {
 //        timer.schedule(new TimerTask() {
 //            @Override
 //            public void run() {
-//                epsilon.getAbility().setAres(false);
-//                epsilon.getAbility().setAceso(false);
-//                epsilon.getAbility().setProteus(false);
+//                epsilon.getSkill().setAres(false);
+//                epsilon.getSkill().setAceso(false);
+//                epsilon.getSkill().setProteus(false);
 //                timer.cancel();
 //            }
 //        }, 5 * 60 * 1000, 1111);
@@ -202,9 +202,10 @@ public abstract class FileController {
     public static void deserializeGameState() {
         try (FileInputStream fileIn = new FileInputStream(Constants.GAME_STATE_PATH);
              ObjectInputStream in = new ObjectInputStream(fileIn)) {
-            GameState.setData((GameData) in.readObject());
+            GameData data = (GameData) in.readObject();
+            GameState.setData(data);
         } catch (IOException | ClassNotFoundException i) {
-            i.printStackTrace();
+            System.out.println("Exception in deserializing");
         }
     }
 

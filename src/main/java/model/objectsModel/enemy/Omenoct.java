@@ -4,6 +4,7 @@ import controller.audio.players.AudioPlayer;
 import controller.logic.GameState;
 import controller.util.Calculator;
 import controller.util.Constants;
+import controller.util.CostumeTimer;
 import model.Paintable.Paintable;
 import model.collision.Collidable;
 import model.collision.Collision;
@@ -19,9 +20,11 @@ import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class Omenoct implements Paintable, Collidable, Movable , Serializable {
+    String id;
     private int HP = 20;
     private double posXHP;
     private double posYHP;
@@ -36,18 +39,19 @@ public class Omenoct implements Paintable, Collidable, Movable , Serializable {
     private double accY;
     private boolean played;
     private boolean stick;
-    private final java.util.Timer shootTimer;
 
     public Omenoct(double[] xPoints, double[] yPoints) {
         this.xPoints = xPoints;
         this.yPoints = yPoints;
-        shootTimer = new java.util.Timer();
+        id = UUID.randomUUID().toString();
+        java.util.Timer shootTimer = new java.util.Timer();
         shootTimer.schedule(new TimerTask() {
             @Override
             public void run() {
                 shootBullet();
             }
         }, 2000, 1500);
+        CostumeTimer.getInstance().newTimer(id , shootTimer);
     }
 
     public void playAudio() {
@@ -262,7 +266,7 @@ public class Omenoct implements Paintable, Collidable, Movable , Serializable {
     }
 
     public Timer getShootTimer() {
-        return shootTimer;
+        return CostumeTimer.getInstance().getMap().get(id);
     }
 
     public int getHP() {

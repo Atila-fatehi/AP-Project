@@ -2,6 +2,7 @@ package view.frames;
 
 import controller.util.Constants;
 import controller.FileController;
+import view.Jcomponents.MyButton;
 import view.Jcomponents.MyLabel;
 
 import javax.swing.*;
@@ -16,8 +17,7 @@ public class SkillTree extends JFrame {
     //TODO CLEAN THIS WHEN SKILL TREE
     private static final Color back = new Color(0x9A1A03);
     private static final Color fore = new Color(0xFB8B24);
-    private static final Color anotherFore = new Color(0x074E9C);
-    private int XP = 0;
+    private int XP;
 
     public SkillTree() {
         getContentPane().setBackground(Constants.DARK_BLUE);
@@ -48,15 +48,30 @@ public class SkillTree extends JFrame {
         MyLabel xp = new MyLabel("XP : " + XP , 400 , 10, Constants.LABEL_WIDTH , Constants.LABEL_HEIGHT);
         add(xp);
 
-        JButton button1 = new JButton("500 XP");
-        button1.setBounds(450, 220, 200, 200);
-        button1.setFocusable(false);
-        button1.setHorizontalAlignment(JButton.CENTER);
-        button1.setHorizontalTextPosition(JButton.CENTER);
-        button1.setBackground(back);
-        button1.setForeground(fore);
-        button1.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25));
-        add(button1);
+        MyButton xp500 = new MyButton("500 XP", 450, 220, 200, 50, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(XP >= 500) {
+//                    writeToFile(21);
+//                    XP -= 500;
+//                    File file = new File(Paths.get("").toAbsolutePath() + "/src/main/java/dataBase/XP.txt");
+//                    try {
+//                        PrintWriter printWriter = new PrintWriter(file);
+//                        printWriter.println(String.valueOf(XP));
+//                        printWriter.flush();
+//                        printWriter.close();
+//                    } catch (Exception eee) {
+//
+//                    }
+//                    button1.setEnabled(false);
+//                    button2.setEnabled(true);
+//                    button3.setEnabled(true);
+//                    xp.setText("XP : " + XP);
+                }
+            }
+
+        });
+        add(xp500);
 
 
         JButton button2 = new JButton("750 XP");
@@ -79,28 +94,6 @@ public class SkillTree extends JFrame {
         button3.setForeground(fore);
         button3.setFont(new Font("HelveticaNeue-CondensedBlack", Font.BOLD, 25));
         add(button3);
-        button1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(XP >= 500) {
-                    writeToFile(21);
-                    XP -= 500;
-                    File file = new File(Paths.get("").toAbsolutePath() + "/src/main/java/dataBase/XP.txt");
-                    try {
-                        PrintWriter printWriter = new PrintWriter(file);
-                        printWriter.println(String.valueOf(XP));
-                        printWriter.flush();
-                        printWriter.close();
-                    } catch (Exception eee) {
-
-                    }
-                    button1.setEnabled(false);
-                    button2.setEnabled(true);
-                    button3.setEnabled(true);
-                    xp.setText("XP : " + XP);
-                }
-            }
-        });
         button2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -108,7 +101,7 @@ public class SkillTree extends JFrame {
                     writeToFile(11);
                     XP -= 750;
                     button2.setEnabled(false);
-                    button1.setEnabled(true);
+                    xp500.setEnabled(true);
                     button3.setEnabled(true);
                     xp.setText("XP : " + XP);
                     File file = new File(Paths.get("").toAbsolutePath() + "/src/main/java/dataBase/XP.txt");
@@ -131,7 +124,7 @@ public class SkillTree extends JFrame {
                     XP -= 1000;
                     button3.setEnabled(false);
                     button2.setEnabled(true);
-                    button1.setEnabled(true);
+                    xp500.setEnabled(true);
                     xp.setText("XP : " + XP);
                     File file = new File(Paths.get("").toAbsolutePath() + "/src/main/java/dataBase/XP.txt");
                     try {

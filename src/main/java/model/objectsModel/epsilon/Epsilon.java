@@ -2,9 +2,11 @@ package model.objectsModel.epsilon;
 
 
 import controller.FileController;
+import controller.logic.GameState;
 import controller.util.Constants;
 import model.Paintable.Paintable;
 import model.collision.Collidable;
+import model.collision.Collision;
 import model.collision.WallCollidable;
 import model.collision.WallCollisionHandler;
 import model.movable.Movable;
@@ -13,6 +15,7 @@ import view.gameGUI.GamePanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -20,7 +23,7 @@ public class Epsilon implements Movable, Collidable, Paintable, WallCollidable, 
 
     private static Epsilon instance;
 
-    public static void makeInstance(){
+    public static void makeInstance() {
         instance = new Epsilon(Constants.INITIAL_EPSILON_POSX, Constants.INITIAL_EPSILON_POSY);
     }
 
@@ -39,7 +42,7 @@ public class Epsilon implements Movable, Collidable, Paintable, WallCollidable, 
     private final double MAX_VELOCITY;
     private final double ACCELERATION;
     private int damageRate = 5;
-    private final Skill ability = new Skill();
+    private final Skill skill = new Skill();
     private boolean accU, accD, accR, accL;
     private boolean decU = true, decD = true, decR = true, decL = true;
     private boolean hasVertex;
@@ -52,16 +55,18 @@ public class Epsilon implements Movable, Collidable, Paintable, WallCollidable, 
         this.x = x;
         this.y = y;
         this.XP = Integer.parseInt(FileController.readXP());
-        currentPanel = GamePanel.getInstance();
-        if (FileController.readAbilities() == 11) {
-            ability.setAres(true);
-        }
-        if (FileController.readAbilities() == 21) {
-            ability.setAceso(true);
-        }
-        if (FileController.readAbilities() == 31) {
-            ability.setProteus(true);
-        }
+        if (FileController.readAbilities() == 11) skill.getAttack().replace("Ares", true);
+        if (FileController.readAbilities() == 12) skill.getAttack().replace("Astrape", true);
+        if (FileController.readAbilities() == 13) skill.getAttack().replace("Cerberus", true);
+
+        if (FileController.readAbilities() == 21) skill.getDefence().replace("Aceso", true);
+        if (FileController.readAbilities() == 22) skill.getDefence().replace("Melampus", true);
+        if (FileController.readAbilities() == 23) skill.getDefence().replace("Chiron", true);
+
+        if (FileController.readAbilities() == 31) skill.getShapeShift().replace("Proteus", true);
+        if (FileController.readAbilities() == 32) skill.getShapeShift().replace("Empusa", true);
+        if (FileController.readAbilities() == 33) skill.getShapeShift().replace("Dolus", true);
+
         if (Objects.requireNonNull(FileController.readSettings())[0] < 33) {
             MAX_VELOCITY = 7;
             ACCELERATION = 0.5;
@@ -74,7 +79,7 @@ public class Epsilon implements Movable, Collidable, Paintable, WallCollidable, 
         }
         vx = 0;
         vy = 0;
-        ability.setActive(false);
+        currentPanel = GamePanel.getInstance();
     }
 
     public void addVertex() {
@@ -131,7 +136,6 @@ public class Epsilon implements Movable, Collidable, Paintable, WallCollidable, 
             vertexX = x;
             vertexY = y - radius - 7;
         }
-        currentPanel = GamePanel.getInstance();
     }
 
     @Override
@@ -140,7 +144,7 @@ public class Epsilon implements Movable, Collidable, Paintable, WallCollidable, 
     }
 
     @Override
-    public void selfPaint(Graphics g , JPanel panel) {
+    public void selfPaint(Graphics g, JPanel panel) {
         int locX = panel.getX();
         int locY = panel.getY();
         g.setColor(Constants.EPSILON_COLOR);
@@ -149,9 +153,9 @@ public class Epsilon implements Movable, Collidable, Paintable, WallCollidable, 
         g.setColor(Constants.DARK_BLUE);
         g.fillOval((int) (x - radius - locX) + inner, (int) (y - radius - locY) + inner, (int) (radius - inner) * 2, (int) (radius - inner) * 2);
 
-        if(dismay){
+        if (dismay) {
             g.setColor(Constants.EPSILON_COLOR);
-            g.drawOval((int) (x - 150 - locX), (int) (y - 150 - locY) , 300,300);
+            g.drawOval((int) (x - 150 - locX), (int) (y - 150 - locY), 300, 300);
         }
 //        if (hasVertex) {
 //            g.drawLine((int) (x - radius), (int) y, (int) vertexX, (int) vertexY);
@@ -304,8 +308,8 @@ public class Epsilon implements Movable, Collidable, Paintable, WallCollidable, 
         this.decL = decL;
     }
 
-    public Skill getAbility() {
-        return ability;
+    public Skill getSkill() {
+        return skill;
     }
 
     public int getDamageRate() {
@@ -321,7 +325,42 @@ public class Epsilon implements Movable, Collidable, Paintable, WallCollidable, 
     }
 
     private boolean dismay;
+
     public void setDismay(boolean b) {
         dismay = b;
+    }
+
+    public void setCurrentPanel() {
+        boolean in = false;
+        int[] xPoints = new int[]{GamePanel.getInstance().getX(), GamePanel.getInstance().getX() + GamePanel.getInstance().getWidth(),
+                GamePanel.getInstance().getX() + GamePanel.getInstance().getWidth(), GamePanel.getInstance().getX()};
+        int[] yPoints = new int[]{GamePanel.getInstance().getY(), GamePanel.getInstance().getY(),
+                GamePanel.getInstance().getX() + GamePanel.getInstance().getHeight(),
+                GamePanel.getInstance().getY() + GamePanel.getInstance().getHeight()};
+        Polygon polygon = new Polygon(xPoints, yPoints, 4);
+        if (Collision.checkPointCollision(new Point2D.Double(x, y), polygon)) {
+            currentPanel = GamePanel.getInstance();
+            in = true;
+        }
+        for (int i = 0; i < GameState.panels.size(); i++) {
+            xPoints = new int[]{GameState.panels.get(i).getX(), GameState.panels.get(i).getX() + GameState.panels.get(i).getWidth(),
+                    GameState.panels.get(i).getX() + GameState.panels.get(i).getWidth(), GameState.panels.get(i).getX()};
+            yPoints = new int[]{GameState.panels.get(i).getY(), GameState.panels.get(i).getY(),
+                    GameState.panels.get(i).getX() + GameState.panels.get(i).getHeight(),
+                    GameState.panels.get(i).getY() + GameState.panels.get(i).getHeight()};
+            polygon = new Polygon(xPoints, yPoints, 4);
+            if (Collision.checkPointCollision(new Point2D.Double(x, y), polygon)) {
+                if (!in) {
+                    currentPanel = GameState.panels.get(i);
+                } else {
+
+                }
+            }
+        }
+
+    }
+
+    public JPanel getCurrentPanel() {
+        return currentPanel;
     }
 }

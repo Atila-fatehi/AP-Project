@@ -36,25 +36,27 @@ public class GameFrame extends JFrame {
         add(GamePanel.getInstance());
 
         add(InputController.getInstance());
-
-        Panel22 panel22 = new Panel22();
-        panel22.setBackground(Constants.DARK_BLUE);
-        panel22.setBounds(0, 0, 500,500);
-        add(panel22);
-        Panel22 panel23 = new Panel22();
-        panel23.setBackground(Constants.DARK_BLUE);
-        panel23.setBounds(1000, 0, 500,500);
-        add(panel23);
-        Panel22 panel24 = new Panel22();
-        panel24.setBackground(Constants.DARK_BLUE);
-        panel24.setBounds(0, 700, 500,500);
-        add(panel24);
-        Panel22 panel25 = new Panel22();
-        panel25.setBackground(Constants.DARK_BLUE);
-        panel25.setBounds(1000, 700, 500,500);
-        add(panel25);
     }
 
 
+    public void addOtherPanel() {
 
+//        Panel22 panel22 = new Panel22();
+//        panel22.setBackground(Constants.DARK_BLUE);
+//        panel22.setBounds(50, 50, 500,500);
+//        add(panel22);
+
+//        Panel22 panel23 = new Panel22();
+//        panel23.setBackground(Constants.DARK_BLUE);
+//        panel23.setBounds(1350, 50, 500,500);
+//        add(panel23);
+//        Panel22 panel24 = new Panel22();
+//        panel24.setBackground(Constants.DARK_BLUE);
+//        panel24.setBounds(0, 700, 500,500);
+//        add(panel24);
+//        Panel22 panel25 = new Panel22();
+//        panel25.setBackground(Constants.DARK_BLUE);
+//        panel25.setBounds(1000, 700, 500,500);
+//        add(panel25);
+    }
 }

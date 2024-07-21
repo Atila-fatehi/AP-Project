@@ -1,5 +1,6 @@
 package controller.logic;
 
+import view.gameGUI.GameFrame;
 import view.gameGUI.GamePanel;
 
 import javax.swing.*;
@@ -13,6 +14,7 @@ public abstract class UpdateView {
                 GamePanel.getInstance().shrink();
             }
         }
+        GameFrame.getInstance().repaint();
         GamePanel.getInstance().repaint();
         ArrayList<JPanel> panels = GameState.panels;
         for (JPanel panel : panels) {
