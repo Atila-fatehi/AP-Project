@@ -1,7 +1,9 @@
 package controller.util;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Paths;
 
 public abstract class Constants {
@@ -64,7 +66,40 @@ public abstract class Constants {
     public static final File NECRO_PICK = new File(Paths.get("").toAbsolutePath() + "/src/main/java/view/images/Necropick.PNG");
     public static final File WYRM_PIC = new File(Paths.get("").toAbsolutePath() + "/src/main/java/view/images/wyrm.PNG");
     public static final File BARRI_PIC = new File(Paths.get("").toAbsolutePath() + "/src/main/java/view/images/barricados.PNG");
-    public static final File ORB_PIC = new File(Paths.get("").toAbsolutePath() + "/src/main/java/view/images/orb.png");
+    public static final File ORB_PIC_FILE = new File(Paths.get("").toAbsolutePath() + "/src/main/java/view/images/orb.png");
+
+    public static final Image ORB_IMG;
+    static {
+        try {
+            ORB_IMG = ImageIO.read(Constants.ORB_PIC_FILE).getScaledInstance(100,100 , Image.SCALE_DEFAULT);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static final Image BARRI_IMG;
+    static {
+        try {
+            BARRI_IMG = ImageIO.read(Constants.BARRI_PIC).getScaledInstance(200,200 , Image.SCALE_DEFAULT);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static final Image WYRM_IMG;
+    static {
+        try {
+            WYRM_IMG = ImageIO.read(Constants.BARRI_PIC).getScaledInstance(90,70 , Image.SCALE_DEFAULT);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static final Image NECRO_IMG;
+    static {
+        try {
+            NECRO_IMG = ImageIO.read(Constants.BARRI_PIC).getScaledInstance(50,50 , Image.SCALE_DEFAULT);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public static final String SETTING_PATH = Paths.get("").toAbsolutePath() + "/src/main/java/model/dataBase/settings.txt";
     public static final String ABILITY_PATH = Paths.get("").toAbsolutePath() + "/src/main/java/model/dataBase/abilityCode.txt";

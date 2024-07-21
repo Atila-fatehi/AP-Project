@@ -27,7 +27,6 @@ public class BlackOrb implements Collidable, Paintable, Serializable {
     private final double size = 100;
     private boolean damageable;
     private OrbPanel panel;
-    private Image image;
     private int code;
 
     public BlackOrb(double x, double y, int code) {
@@ -37,12 +36,6 @@ public class BlackOrb implements Collidable, Paintable, Serializable {
 
         panel = new OrbPanel();
 
-        try {
-            Image yourImage = (Image) ImageIO.read(Constants.ORB_PIC);
-            image = yourImage.getScaledInstance((int) size, (int) size, Image.SCALE_DEFAULT);
-        } catch (Exception e) {
-            System.out.println("exception in wyrm paint");
-        }
     }
 
     @Override
@@ -69,7 +62,7 @@ public class BlackOrb implements Collidable, Paintable, Serializable {
     public void selfPaint(Graphics g, JPanel panel) {
         int locX = panel.getX();
         int locY = panel.getY();
-        g.drawImage(image, (int) ((int) x - locX), (int) ((int) y - locY), panel);
+        g.drawImage(Constants.ORB_IMG, (int) ((int) x - locX), (int) ((int) y - locY), panel);
 
 //        locX = panel.getX();
 //        locY = panel.getY();
@@ -145,7 +138,7 @@ public class BlackOrb implements Collidable, Paintable, Serializable {
                 g.fillPolygon(GameState.lasers.get(i).getRelativeXPoints(this),
                         GameState.lasers.get(i).getRelativeYPoints(this), GameState.lasers.get(i).getXPoints().length);
             }
-            g.drawImage(image, (int) x - locX, (int) y - locY, this);
+            g.drawImage(Constants.ORB_IMG, (int) x - locX, (int) y - locY, this);
             g.setFont(Constants.BOLD_15);
             ArrayList<Paintable> paintables = GameState.getPaintables();
             for (Paintable paintable : paintables) {

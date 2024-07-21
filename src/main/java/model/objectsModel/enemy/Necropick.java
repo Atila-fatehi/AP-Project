@@ -32,20 +32,12 @@ public class Necropick implements Paintable, Movable, Collidable , Serializable 
     private double size = 50;
     private final int radiusFromEpsilon = 180;
     private boolean played;
-    private Image image;
     private boolean disappear;
 
     public Necropick(double x, double y) {
         this.x = x;
         this.y = y;
         id = UUID.randomUUID().toString();
-        try {
-            Image yourImage = (Image) ImageIO.read(Constants.NECRO_PICK);
-            image = yourImage.getScaledInstance((int) size, (int) size, Image.SCALE_DEFAULT);
-
-        } catch (Exception e) {
-            System.out.println("exception in necropick paint");
-        }
         java.util.Timer timer = new java.util.Timer();
         timer.schedule(new TimerTask() {
             int count = 0;
@@ -78,7 +70,7 @@ public class Necropick implements Paintable, Movable, Collidable , Serializable 
     public void selfPaint(Graphics g, JPanel panel) {
         int locX = panel.getX();
         int locY = panel.getY();
-        if (!disappear) g.drawImage(image, (int) x - locX, (int) y - locY, panel);
+        if (!disappear) g.drawImage(Constants.NECRO_IMG, (int) x - locX, (int) y - locY, panel);
     }
 
     @Override

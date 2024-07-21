@@ -43,7 +43,6 @@ public class Wyrm implements Movable, Paintable, Collidable, Serializable {
     private double accX;
     private double accY;
     private WyrmPanel panel;
-    private Image image;
     private boolean linearMovement;
     private int clockwise = 1;
 
@@ -53,12 +52,6 @@ public class Wyrm implements Movable, Paintable, Collidable, Serializable {
         id = UUID.randomUUID().toString();
         panel = new WyrmPanel();
 
-        try {
-            Image yourImage = (Image) ImageIO.read(Constants.WYRM_PIC);
-            image = yourImage.getScaledInstance((int) width, (int) height, Image.SCALE_DEFAULT);
-        } catch (Exception e) {
-            System.out.println("exception in wyrm paint");
-        }
         java.util.Timer shootTimer = new java.util.Timer();
         shootTimer.schedule(new TimerTask() {
             @Override
@@ -139,7 +132,7 @@ public class Wyrm implements Movable, Paintable, Collidable, Serializable {
             super.paintComponent(g);
             int locX = panel.getX();
             int locY = panel.getY();
-            g.drawImage(image, (int) x - locX, (int) y - locY, this);
+            g.drawImage(Constants.WYRM_IMG, (int) x - locX, (int) y - locY, this);
             g.setFont(Constants.BOLD_15);
             ArrayList<Paintable> paintables = GameState.getPaintables();
             for (Paintable paintable : paintables) {
@@ -226,7 +219,7 @@ public class Wyrm implements Movable, Paintable, Collidable, Serializable {
     public void selfPaint(Graphics g, JPanel panel) {
         int locX = panel.getX();
         int locY = panel.getY();
-        g.drawImage(image, ((int) x - locX), ((int) y - locY), panel);
+        g.drawImage(Constants.WYRM_IMG, ((int) x - locX), ((int) y - locY), panel);
 
 //        locX = panel.getX();
 //        locY = panel.getY();

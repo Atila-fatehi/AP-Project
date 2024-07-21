@@ -190,12 +190,13 @@ public abstract class FileController {
 //        }, 5 * 60 * 1000, 1111);
         }
 
-    public static void serializeGameState() {
+    public static void serializeGameState(){
         try (FileOutputStream fileOut = new FileOutputStream(Constants.GAME_STATE_PATH);
              ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
             GameData.getInstance().setData();
             out.writeObject(GameData.getInstance());
         } catch (IOException i) {
+            i.printStackTrace();
             System.out.println("Exception in serializing");
         }
     }

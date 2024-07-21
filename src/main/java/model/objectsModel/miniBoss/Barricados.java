@@ -28,20 +28,13 @@ public class Barricados implements Paintable, Collidable, Serializable {
     private final double size = 200;
     private boolean played;
     private BarriPanel panel;
-    private Image image;
     String id;
 
     public Barricados(double x, double y) {
         this.x = x;
         this.y = y;
         id = UUID.randomUUID().toString();
-        try {
-            Image yourImage = (Image) ImageIO.read(Constants.BARRI_PIC);
-            image = yourImage.getScaledInstance((int) size, (int) size, Image.SCALE_DEFAULT);
 
-        } catch (Exception e) {
-            System.out.println("exception in barri paint");
-        }
         panel = new BarriPanel();
         java.util.Timer timer = new java.util.Timer();
         timer.schedule(new TimerTask() {
@@ -112,7 +105,7 @@ public class Barricados implements Paintable, Collidable, Serializable {
             super.paintComponent(g);
             int locX = panel.getX();
             int locY = panel.getY();
-            g.drawImage(image, (int) x - locX, (int) y - locY, this);
+            g.drawImage(Constants.BARRI_IMG, (int) x - locX, (int) y - locY, this);
             g.setFont(Constants.BOLD_15);
             ArrayList<Paintable> paintables = GameState.getPaintables();
             for (Paintable paintable : paintables) {
@@ -126,7 +119,7 @@ public class Barricados implements Paintable, Collidable, Serializable {
     public void selfPaint(Graphics g, JPanel panel) {
         int locX = panel.getX();
         int locY = panel.getY();
-        g.drawImage(image, (int) x - locX, (int) y - locY, panel);
+        g.drawImage(Constants.BARRI_IMG, (int) x - locX, (int) y - locY, panel);
 
 //        locX = panel.getX();
 //        locY = panel.getY();
