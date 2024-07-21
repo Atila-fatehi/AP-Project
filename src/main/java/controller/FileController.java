@@ -196,7 +196,6 @@ public abstract class FileController {
             GameData.getInstance().setData();
             out.writeObject(GameData.getInstance());
         } catch (IOException i) {
-            i.printStackTrace();
             System.out.println("Exception in serializing");
         }
     }

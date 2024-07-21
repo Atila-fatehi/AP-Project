@@ -21,7 +21,6 @@ import java.io.Serializable;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 public class Omenoct implements Paintable, Collidable, Movable , Serializable {
     String id;

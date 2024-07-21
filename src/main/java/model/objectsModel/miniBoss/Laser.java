@@ -2,6 +2,7 @@ package model.objectsModel.miniBoss;
 
 import controller.logic.GameState;
 import controller.util.Constants;
+import controller.util.CostumeMap;
 import model.Paintable.Paintable;
 import model.collision.Collidable;
 import model.collision.Drown;
@@ -16,22 +17,26 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.UUID;
 
-public class Laser implements Paintable , Drownable , Collidable, Serializable {
+public class Laser implements Paintable, Drownable, Collidable, Serializable {
     private double[] xPoints;
     private double[] yPoints;
     private int code;
-    private HashMap<String , Timer> insMaps = new HashMap<>();
+    private String id;
+    //    private HashMap<String , Timer> insMaps = new HashMap<>();
     private int damage = 12;
 
-    public Laser(double[] xPoints, double[] yPoints , int code) {
+    public Laser(double[] xPoints, double[] yPoints, int code) {
         this.xPoints = xPoints;
         this.yPoints = yPoints;
         this.code = code;
+        id = UUID.randomUUID().toString();
+        CostumeMap.getInstance().newTimer(id , new HashMap<>());
     }
 
     @Override
-    public void selfPaint(Graphics g , JPanel panel) {
+    public void selfPaint(Graphics g, JPanel panel) {
         g.setColor(Constants.ANOTHER_STRING_COLOR);
         g.fillPolygon(getRelativeXPoints(panel), getRelativeYPoints(panel), xPoints.length);
 
@@ -62,19 +67,20 @@ public class Laser implements Paintable , Drownable , Collidable, Serializable {
     }
 
     public void drown() {
-        if(Drown.checkEpsilonDrown(this)){
-            if(!insMaps.containsKey("Epsilon")){
+        HashMap<String , java.util.Timer> insMaps = CostumeMap.getInstance().getMap().get(id);
+        if (Drown.checkEpsilonDrown(this)) {
+            if (!insMaps.containsKey("Epsilon")) {
                 java.util.Timer ep = new java.util.Timer();
                 ep.schedule(new TimerTask() {
                     @Override
                     public void run() {
                         Epsilon.getInstance().setHP(Epsilon.getInstance().getHP() - damage);
                     }
-                } ,1000,1000 );
-                insMaps.put("Epsilon" , ep);
+                }, 1000, 1000);
+                insMaps.put("Epsilon", ep);
             }
-        }else{
-            if(insMaps.containsKey("Epsilon")){
+        } else {
+            if (insMaps.containsKey("Epsilon")) {
                 insMaps.get("Epsilon").cancel();
                 insMaps.remove("Epsilon");
             }

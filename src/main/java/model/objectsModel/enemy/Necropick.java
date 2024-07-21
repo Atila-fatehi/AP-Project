@@ -10,11 +10,7 @@ import model.collision.Collision;
 import model.collision.CollisionHandler;
 import model.movable.Movable;
 import model.objectsModel.epsilon.Bullet;
-import model.objectsModel.epsilon.Epsilon;
-import org.w3c.dom.Attr;
-import view.gameGUI.GamePanel;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;

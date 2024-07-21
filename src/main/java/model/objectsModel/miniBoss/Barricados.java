@@ -7,12 +7,8 @@ import model.Paintable.Paintable;
 import model.collision.Collidable;
 import model.collision.Collision;
 import model.collision.CollisionHandler;
-import model.movable.Movable;
-import model.objectsModel.epsilon.Epsilon;
 import view.gameGUI.GameFrame;
-import view.gameGUI.GamePanel;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
