@@ -18,7 +18,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
-public class Archmire implements Paintable, Movable, Drownable, Collidable , Serializable {
+public class Archmire implements Paintable, Movable, Drownable, Collidable, Serializable {
 
     private int HP = 30;
     private int damage = 10;
@@ -41,7 +41,7 @@ public class Archmire implements Paintable, Movable, Drownable, Collidable , Ser
     private ArrayList<Integer> traveledX = new ArrayList<>();
     private ArrayList<Integer> traveledY = new ArrayList<>();
     private ArrayList<java.util.Timer> traveledTimer = new ArrayList<>();
-    private HashMap<String ,java.util.Timer> insMaps = new HashMap<>();
+    private HashMap<String, java.util.Timer> insMaps = new HashMap<>();
 
 
     public Archmire(double x, double y) {
@@ -178,73 +178,28 @@ public class Archmire implements Paintable, Movable, Drownable, Collidable , Ser
     }
 
     public void drown() {
-        if(Drown.checkEpsilonDrown(this)){
-            if(!insMaps.containsKey("Epsilon")){
+        boolean is = false;
+        if (Drown.checkEpsilonDrown(this)) is = true;
+        for (int i = 0; i < traveledX.size(); i += 15) {
+            if (Drown.checkEpsilonDrown(new Archmire(traveledX.get(i), traveledY.get(i)))) is = true;
+        }
+        if (is) {
+            if (!insMaps.containsKey("Epsilon")) {
                 java.util.Timer ep = new java.util.Timer();
                 ep.schedule(new TimerTask() {
                     @Override
                     public void run() {
                         Epsilon.getInstance().setHP(Epsilon.getInstance().getHP() - damage);
                     }
-                } ,1000,1000 );
-                insMaps.put("Epsilon" , ep);
+                }, 1000, 1000);
+                insMaps.put("Epsilon", ep);
             }
-        }else{
-            if(insMaps.containsKey("Epsilon")){
+        } else {
+            if (insMaps.containsKey("Epsilon")) {
                 insMaps.get("Epsilon").cancel();
                 insMaps.remove("Epsilon");
             }
         }
 
-//        for (int j = 0; j < GameState.trigoraths.size(); j++) {
-//            if(Drown.checkTwoPolyEntityDrown(this , GameState.trigoraths.get(j))){
-//                if(!insMaps.containsKey(GameState.trigoraths.get(j).getId())){
-//                    java.util.Timer ep = new java.util.Timer();
-//                    insMaps.put(GameState.trigoraths.get(j).getId() , ep);
-//                    ep.schedule(new TimerTask() {
-//                        @Override
-//                        public void run() {
-//
-//                        }
-//                    } ,1000,1000 );
-//                }
-//            }else{
-//                if(insMaps.containsKey("Epsilon")){
-//                    insMaps.get("Epsilon").cancel();
-//                    insMaps.remove("Epsilon");
-//                }
-//            }
-//        }
-//        for (int j = 0; j < GameState.squarantines.size(); j++) {
-//            Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(this, GameState.squarantines.get(j));
-//            if (collisionPoint != null) {
-//                CollisionHandler.handleCollisionOnPoint(collisionPoint);
-//            }
-//        }
-//        for (int j = 0; j < GameState.omenocts.size(); j++) {
-//            Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(this, GameState.omenocts.get(j));
-//            if (collisionPoint != null) {
-//                CollisionHandler.handleCollisionOnPoint(collisionPoint);
-//            }
-//        }
-//        for (int j = 0; j < GameState.necropicks.size(); j++) {
-//            Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(this, GameState.necropicks.get(j));
-//            if (collisionPoint != null) {
-//                CollisionHandler.handleCollisionOnPoint(collisionPoint);
-//            }
-//        }
-//        for (int j = 0; j < GameState.wyrms.size(); j++) {
-//            Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(this, GameState.wyrms.get(j));
-//            if (collisionPoint != null) {
-//                CollisionHandler.handleCollisionOnPoint(collisionPoint);
-//                GameState.wyrms.get(j).changeRotation();
-//            }
-//        }
-//        for (int j = 0; j < GameState.barricados.size(); j++) {
-//            Point2D collisionPoint = Collision.checkTwoPolyEntityCollision(this, GameState.barricados.get(j));
-//            if (collisionPoint != null) {
-//                CollisionHandler.handleCollisionOnPoint(collisionPoint);
-//            }
-//        }
     }
 }
