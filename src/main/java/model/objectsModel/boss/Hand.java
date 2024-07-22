@@ -29,6 +29,7 @@ public class Hand implements Collidable, Movable, Paintable, Serializable {
     private double height = 250;
     private boolean damageable;
     private boolean squeeze;
+    private boolean proj;
     private double maxVelocityX;
     private double maxVelocityY;
     private double vx;
@@ -93,7 +94,9 @@ public class Hand implements Collidable, Movable, Paintable, Serializable {
     }
 
     public void selfDestruct() {
-
+        GameState.panels.remove(panel);
+        GameFrame.getInstance().remove(panel);
+        CostumeTimer.getInstance().getMap().get(id).cancel();
     }
 
     @Override
@@ -123,7 +126,7 @@ public class Hand implements Collidable, Movable, Paintable, Serializable {
                     }
                 }
             }
-        } else {
+        } else if (proj) {
             if (!CostumeTimer.getInstance().getMap().containsKey(id)) {
                 java.util.Timer shootTimer = new java.util.Timer();
                 shootTimer.schedule(new TimerTask() {
@@ -186,7 +189,7 @@ public class Hand implements Collidable, Movable, Paintable, Serializable {
             desx = x;
             desy = y;
             acquired = false;
-        } else {
+        } else if (proj) {
 //            x = 300;
 //            y = 130;
 
@@ -283,6 +286,7 @@ public class Hand implements Collidable, Movable, Paintable, Serializable {
     public void setSqueeze(boolean squeeze) {
         this.squeeze = squeeze;
     }
+
     public java.util.Timer getShootTimer() {
         if (CostumeTimer.getInstance().getMap().get(id) == null) {
             return new Timer();
@@ -294,4 +298,13 @@ public class Hand implements Collidable, Movable, Paintable, Serializable {
     public String getId() {
         return id;
     }
+
+    public boolean isProj() {
+        return proj;
+    }
+
+    public void setProj(boolean proj) {
+        this.proj = proj;
+    }
+
 }

@@ -33,6 +33,7 @@ public class Smiley implements Collidable, Movable, Paintable, Serializable {
     private double height = 250;
     private boolean damageable;
     private boolean squeeze;
+    private boolean proj;
     private double maxVelocityX;
     private double maxVelocityY;
     private double vx;
@@ -85,7 +86,8 @@ public class Smiley implements Collidable, Movable, Paintable, Serializable {
         int locX = panel.getX();
         int locY = panel.getY();
         g.drawImage(Constants.SMILEY_IMG, (int) ((int) x - locX), (int) ((int) y - locY), panel);
-
+//        g.setColor(Color.ORANGE);
+//        g.fillOval((int) x- locX, (int) y- locY, (int) width,(int) height);
 //        locX = panel.getX();
 //        locY = panel.getY();
 //        Graphics g2 = panel.getGraphics();
@@ -93,11 +95,16 @@ public class Smiley implements Collidable, Movable, Paintable, Serializable {
     }
 
     public void checkCollision() {
-
+        Point2D epsilonCollisionPoint = Collision.checkSmileyCollision(this);
+        if (epsilonCollisionPoint != null) {
+            CollisionHandler.handleCollisionOnPoint(epsilonCollisionPoint);
+        }
     }
 
     public void selfDestruct() {
-
+        GameState.panels.remove(panel);
+        GameFrame.getInstance().remove(panel);
+        CostumeTimer.getInstance().getMap().get(id).cancel();
     }
 
 
@@ -144,7 +151,7 @@ public class Smiley implements Collidable, Movable, Paintable, Serializable {
                 }, 3000, 500);
                 CostumeTimer.getInstance().newTimer(id, shootTimer);
             }
-        } else {
+        } else if(proj){
             if (linearMovement) {
                 x += vx;
                 y += vy;
@@ -191,7 +198,7 @@ public class Smiley implements Collidable, Movable, Paintable, Serializable {
             desx = x;
             desy = y;
             acquired = false;
-        } else {
+        } else if (proj) {
             if (!acquired) {
                 linearMovement = Calculator.distance(x, y, (this.x + width), (this.y + height / 2)) >= radiusFromEpsilon;
                 if (linearMovement) {
@@ -297,4 +304,11 @@ public class Smiley implements Collidable, Movable, Paintable, Serializable {
         return id;
     }
 
+    public boolean isProj() {
+        return proj;
+    }
+
+    public void setProj(boolean proj) {
+        this.proj = proj;
+    }
 }

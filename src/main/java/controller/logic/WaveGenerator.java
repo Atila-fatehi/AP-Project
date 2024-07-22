@@ -179,6 +179,10 @@ public abstract class WaveGenerator {
                         GameState.secondHands.get(0).setSqueeze(true);
                         GameState.smilies.get(0).setSqueeze(true);
 
+                        GameState.hands.get(0).setProj(false);
+                        GameState.secondHands.get(0).setProj(false);
+                        GameState.smilies.get(0).setProj(false);
+
                         GameState.smilies.get(0).setDamageable(true);
                         GameState.hands.get(0).setDamageable(false);
                         GameState.secondHands.get(0).setDamageable(false);
@@ -191,6 +195,10 @@ public abstract class WaveGenerator {
                         GameState.hands.get(0).setSqueeze(false);
                         GameState.secondHands.get(0).setSqueeze(false);
                         GameState.smilies.get(0).setSqueeze(false);
+
+                        GameState.hands.get(0).setProj(true);
+                        GameState.secondHands.get(0).setProj(true);
+                        GameState.smilies.get(0).setProj(true);
 
                         GameState.smilies.get(0).setDamageable(false);
                         GameState.hands.get(0).setDamageable(true);

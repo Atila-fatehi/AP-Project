@@ -153,16 +153,29 @@ public abstract class UpdateModel {
         }
 
         //boss
-        if(!GameState.smilies.isEmpty() &&
+        if (!GameState.smilies.isEmpty() &&
                 !GameState.hands.isEmpty() &&
-                !GameState.secondHands.isEmpty() ) {
+                !GameState.secondHands.isEmpty()) {
             GameState.smilies.get(0).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
-            GameState.hands.get(0).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
-            GameState.secondHands.get(0).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
-
             GameState.smilies.get(0).move();
+            GameState.smilies.get(0).checkCollision();
+
+            GameState.hands.get(0).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
             GameState.hands.get(0).move();
+            GameState.hands.get(0).checkCollision();
+
+            GameState.secondHands.get(0).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
             GameState.secondHands.get(0).move();
+            GameState.secondHands.get(0).checkCollision();
+
+            if(GameState.smilies.get(0).getHP() <= 0){
+                AudioPlayer.play(AudioPlayer.MELON_IMPACT);
+                Epsilon.getInstance().setXP(Epsilon.getInstance().getXP() + 250);
+                GameState.smilies.get(0).selfDestruct();
+                GameState.smilies.remove(0);
+                GameState.hands.remove(0);
+                GameState.secondHands.remove(0);
+            }
         }
     }
 
@@ -299,10 +312,41 @@ public abstract class UpdateModel {
             }
         }
 
+        //boss
+        for (int i = 0; i < GameState.bullets.size(); i++) {
+            if (!GameState.smilies.isEmpty()) {
+                Point2D collision = Collision.checkSmileyCollision(GameState.smilies.get(0), GameState.bullets.get(i));
+                if (collision != null && GameState.smilies.get(0).isDamageable()) {
+                    AudioPlayer.play(AudioPlayer.SPLAT);
+                    GameState.smilies.get(0).setHP(GameState.smilies.get(0).getHP() - GameState.bullets.get(i).getDamage());
+                    GameState.bullets.remove(i);
+                    i--;
+                }
+            }
 
-
-
-
+        }
+//        for (int i = 0; i < GameState.bullets.size(); i++) {
+//            if (!GameState.hands.isEmpty()) {
+//                Point2D collision = Collision.checkHandCollision(GameState.hands.get(0), GameState.bullets.get(i));
+//                if (collision != null && GameState.hands.get(0).isDamageable()) {
+//                    GameState.hands.get(0).setHP(GameState.hands.get(0).getHP() - GameState.bullets.get(i).getDamage());
+//                    GameState.bullets.remove(i);
+//                    i--;
+//                }
+//            }
+//
+//        }
+//        for (int i = 0; i < GameState.bullets.size(); i++) {
+//            if (!GameState.secondHands.isEmpty()) {
+//                Point2D collision = Collision.checkSecondHandCollision(GameState.secondHands.get(0), GameState.bullets.get(i));
+//                if (collision != null && GameState.secondHands.get(0).isDamageable()) {
+//                    GameState.secondHands.get(0).setHP(GameState.secondHands.get(0).getHP() - GameState.bullets.get(i).getDamage());
+//                    GameState.bullets.remove(i);
+//                    i--;
+//                }
+//            }
+//
+//        }
         //epsilon collision
         for (int i = 0; i < GameState.bullets.size(); i++) {
             Point2D epsilonCollisionPoint = Collision.checkCircleCollision(GameState.bullets.get(i));
