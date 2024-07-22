@@ -9,6 +9,7 @@ import controller.logic.GameState;
 import controller.util.Constants;
 import view.Jcomponents.MyButton;
 import view.gameGUI.GameFrame;
+import view.gameGUI.GamePanel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -41,6 +42,7 @@ public class MainMenu extends JFrame {
                 GameFrame.makeInstance();
                 GameFrame.getInstance().addPanel();
                 GameState.initiateNewGame();
+                GameState.panels.add(GamePanel.getInstance());
                 GameManager.initiateNewGame();
             }
         });
@@ -53,8 +55,7 @@ public class MainMenu extends JFrame {
                 FileController.deserializeGameState();
                 FrameController.minimizeAllWindows();
                 GameFrame.makeInstance();
-                GameFrame.getInstance().addPanel();
-                GameFrame.getInstance().repaint();
+                GameFrame.getInstance().addSavedPanels();
                 java.util.Timer timer = new java.util.Timer();
                 timer.schedule(new TimerTask() {
                     @Override

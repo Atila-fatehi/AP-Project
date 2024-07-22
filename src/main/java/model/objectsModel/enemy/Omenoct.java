@@ -73,10 +73,10 @@ public class Omenoct implements Paintable, Collidable, Movable , Serializable {
         //get epsilon current frame
         //if current frame changed revalidate
         //if(epsilon changed frame) return;
-        int width = GamePanel.getInstance().getPanelWidth();
-        int height = GamePanel.getInstance().getPanelHeight();
-        int locX = GamePanel.getInstance().getLocationX();
-        int locY = GamePanel.getInstance().getLocationY();
+        int width = Epsilon.getInstance().getCurrentPanel().getWidth();
+        int height = Epsilon.getInstance().getCurrentPanel().getHeight();
+        int locX = Epsilon.getInstance().getCurrentPanel().getX();
+        int locY = Epsilon.getInstance().getCurrentPanel().getY();
         if (calculated) {
             if (destination) {
                 destinationX = locX;

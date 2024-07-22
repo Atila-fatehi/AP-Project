@@ -31,6 +31,33 @@ public class Epsilon implements Movable, Collidable, Paintable, WallCollidable, 
         if (instance == null) instance = new Epsilon(Constants.INITIAL_EPSILON_POSX, Constants.INITIAL_EPSILON_POSY);
         return instance;
     }
+    public static void setInstance(Epsilon epsilon) {
+        instance = epsilon;
+        instance.XP = Integer.parseInt(FileController.readXP());
+        if (FileController.readAbilities() == 11) instance.skill.getAttack().replace("Ares", true);
+        if (FileController.readAbilities() == 12) instance.skill.getAttack().replace("Astrape", true);
+        if (FileController.readAbilities() == 13) instance.skill.getAttack().replace("Cerberus", true);
+
+        if (FileController.readAbilities() == 21) instance.skill.getDefence().replace("Aceso", true);
+        if (FileController.readAbilities() == 22) instance.skill.getDefence().replace("Melampus", true);
+        if (FileController.readAbilities() == 23) instance.skill.getDefence().replace("Chiron", true);
+
+        if (FileController.readAbilities() == 31) instance.skill.getShapeShift().replace("Proteus", true);
+        if (FileController.readAbilities() == 32) instance.skill.getShapeShift().replace("Empusa", true);
+        if (FileController.readAbilities() == 33) instance.skill.getShapeShift().replace("Dolus", true);
+
+        if (Objects.requireNonNull(FileController.readSettings())[0] < 33) {
+            instance.MAX_VELOCITY = 7;
+            instance.ACCELERATION = 0.5;
+        } else if (Objects.requireNonNull(FileController.readSettings())[0] > 66) {
+            instance.MAX_VELOCITY = 15;
+            instance.ACCELERATION = 2;
+        } else {
+            instance.MAX_VELOCITY = 11;
+            instance.ACCELERATION = 1;
+        }
+        instance.currentPanel = GamePanel.getInstance();
+    }
 
     private int HP = 100;
     private int XP;
@@ -39,8 +66,8 @@ public class Epsilon implements Movable, Collidable, Paintable, WallCollidable, 
     private double radius = 13;
     private double vx;
     private double vy;
-    private final double MAX_VELOCITY;
-    private final double ACCELERATION;
+    private double MAX_VELOCITY;
+    private double ACCELERATION;
     private int damageRate = 5;
     private final Skill skill = new Skill();
     private boolean accU, accD, accR, accL;

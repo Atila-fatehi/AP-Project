@@ -1,6 +1,8 @@
 package controller.logic;
 
 import controller.FileController;
+import controller.util.CostumeMap;
+import controller.util.CostumeTimer;
 import model.Paintable.Paintable;
 import model.collision.Collidable;
 import model.objectsModel.enemy.*;
@@ -80,6 +82,11 @@ public class GameState implements Serializable {
         banish = data.banish;
         empower = data.empower;
         heal = data.heal;
+        GamePanel.setInstance();
+        Epsilon.setInstance(epsilon);
+
+        CostumeTimer.getInstance().getMap().clear();
+        CostumeMap.getInstance().getMap().clear();
     }
 
     public static ArrayList<Paintable> getPaintables() {
@@ -129,7 +136,5 @@ public class GameState implements Serializable {
         elapsedTime = 0;
         difficulty = Objects.requireNonNull(FileController.readSettings())[1];
         wave = 0;
-
-        panels.add(GamePanel.getInstance());
     }
 }

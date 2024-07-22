@@ -37,6 +37,13 @@ public class GamePanel extends JPanel {
 
     }
 
+    public static void setInstance() {
+        instance = (GamePanel) GameState.panels.getFirst();
+        KeyController.initiateKeyCodes();
+        instance.addMouseListener(new MouseController(instance));
+        instance.addKeyListener(new KeyController());
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

@@ -41,8 +41,8 @@ public class GameManager {
 //        EnemyGenerator.makeNewSquarantine();
 
 //        EnemyGenerator.makeNewWyrm();
-        EnemyGenerator.makeNewOrb();
-        GameFrame.getInstance().addOtherPanel();
+//        EnemyGenerator.makeNewOrb();
+//        GameFrame.getInstance().addOtherPanel();
         viewTimer = new java.util.Timer();
         viewTimer.schedule(new TimerTask() {
             @Override
@@ -107,6 +107,9 @@ public class GameManager {
                 if (!paused) GameState.elapsedTime++;
                 if (GameState.elapsedTime == 10) {
                     UpdateView.pastTen = true;
+                }
+                if(GameState.elapsedTime % 5 == 0){
+                    FileController.serializeGameState();
                 }
             }
         }, 0, 1000);

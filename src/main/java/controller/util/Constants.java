@@ -87,7 +87,7 @@ public abstract class Constants {
     public static final Image WYRM_IMG;
     static {
         try {
-            WYRM_IMG = ImageIO.read(Constants.BARRI_PIC).getScaledInstance(90,70 , Image.SCALE_DEFAULT);
+            WYRM_IMG = ImageIO.read(Constants.WYRM_PIC).getScaledInstance(90,70 , Image.SCALE_DEFAULT);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -95,7 +95,7 @@ public abstract class Constants {
     public static final Image NECRO_IMG;
     static {
         try {
-            NECRO_IMG = ImageIO.read(Constants.BARRI_PIC).getScaledInstance(50,50 , Image.SCALE_DEFAULT);
+            NECRO_IMG = ImageIO.read(Constants.NECRO_PICK).getScaledInstance(50,50 , Image.SCALE_DEFAULT);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
