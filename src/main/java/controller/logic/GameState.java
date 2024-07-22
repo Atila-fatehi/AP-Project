@@ -5,6 +5,9 @@ import controller.util.CostumeMap;
 import controller.util.CostumeTimer;
 import model.Paintable.Paintable;
 import model.collision.Collidable;
+import model.objectsModel.boss.Hand;
+import model.objectsModel.boss.SecondHand;
+import model.objectsModel.boss.Smiley;
 import model.objectsModel.enemy.*;
 import model.objectsModel.epsilon.Bullet;
 import model.objectsModel.epsilon.Epsilon;
@@ -33,6 +36,9 @@ public class GameState implements Serializable {
     public static ArrayList<BlackOrb> orbs = new ArrayList<>();
     public static ArrayList<Laser> lasers = new ArrayList<>();
     public static ArrayList<JPanel> panels = new ArrayList<>();
+    public static ArrayList<Smiley> smilies = new ArrayList<>();
+    public static ArrayList<Hand> hands = new ArrayList<>();
+    public static ArrayList<SecondHand> secondHands = new ArrayList<>();
     public static int elapsedTime;
     public static int difficulty = Objects.requireNonNull(FileController.readSettings())[1];
     public static int wave;
@@ -76,6 +82,9 @@ public class GameState implements Serializable {
         orbs = data.orbs;
         lasers = data.lasers;
         panels = data.panels;
+        smilies = data.smilies;
+//        hands = data.hands;
+//        secondHands = data.secondHands;
         elapsedTime = data.elapsedTime;
         difficulty = data.difficulty;
         wave = data.wave;
@@ -100,6 +109,9 @@ public class GameState implements Serializable {
         paintables.addAll(barricados);
         paintables.addAll(bullets);
         paintables.add(epsilon);
+        paintables.addAll(hands);
+        paintables.addAll(secondHands);
+        paintables.addAll(smilies);
         paintables.addAll(archmires);
         paintables.addAll(lasers);
         paintables.addAll(orbs);
@@ -133,8 +145,11 @@ public class GameState implements Serializable {
         orbs.clear();
         lasers.clear();
         panels.clear();
+        smilies.clear();
+        hands.clear();
+        secondHands.clear();
         elapsedTime = 0;
         difficulty = Objects.requireNonNull(FileController.readSettings())[1];
-        wave = 0;
+        wave = 9;
     }
 }

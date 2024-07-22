@@ -1,10 +1,18 @@
 package controller;
 
+import controller.util.Constants;
+import model.objectsModel.epsilon.Epsilon;
+import view.frames.MainMenu;
+import view.gameGUI.GameFrame;
+import view.gameGUI.GamePanel;
+
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.TimerTask;
 
 public abstract class FrameController {
-    public static void minimizeAllWindows(){
+    public static void minimizeAllWindows() {
         try {
             Robot robot = new Robot();
 
@@ -20,5 +28,36 @@ public abstract class FrameController {
         } catch (AWTException e) {
             System.out.println("robot problem");
         }
+    }
+
+
+    public static void setPanelToFinalPosition() {
+        java.util.Timer timer2 = new java.util.Timer();
+        timer2.schedule(new TimerTask() {
+            @Override
+            public void run() {
+//                if (GamePanel.getInstance().getX() > Constants.INITIAL_PANEL_X) {
+//                    GamePanel.getInstance().setLocationX(GamePanel.getInstance().getX() - 1);
+//                } else if (GamePanel.getInstance().getX() < Constants.INITIAL_PANEL_X) {
+//                    GamePanel.getInstance().setLocationX(GamePanel.getInstance().getX() + 1);
+//                }
+//                if (GamePanel.getInstance().getY() > Constants.INITIAL_PANEL_Y) {
+//                    GamePanel.getInstance().setLocationY(GamePanel.getInstance().getY() - 1);
+//                } else if (GamePanel.getInstance().getY() < Constants.INITIAL_PANEL_Y) {
+//                    GamePanel.getInstance().setLocationY(GamePanel.getInstance().getY() + 1);
+//                }
+//                if (GamePanel.getInstance().getPanelHeight() > Constants.INITIAL_PANEL_HEIGHT) {
+//                    GamePanel.getInstance().setPanelHeight(GamePanel.getInstance().getPanelHeight() - 1);
+//                } else if (GamePanel.getInstance().getPanelHeight() < Constants.INITIAL_PANEL_HEIGHT) {
+//                    GamePanel.getInstance().setPanelHeight(GamePanel.getInstance().getPanelHeight() + 1);
+//                }
+//                if (GamePanel.getInstance().getPanelWidth() > Constants.INITIAL_PANEL_WIDTH) {
+//                    GamePanel.getInstance().setPanelWidth(GamePanel.getInstance().getPanelWidth() - 1);
+//                } else if (GamePanel.getInstance().getPanelHeight() < Constants.INITIAL_PANEL_WIDTH) {
+//                    GamePanel.getInstance().setPanelWidth(GamePanel.getInstance().getPanelWidth() + 1);
+//                }
+//                    timer2.cancel();
+            }
+        }, 3000, 20);
     }
 }

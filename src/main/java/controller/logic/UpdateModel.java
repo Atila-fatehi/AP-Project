@@ -16,7 +16,7 @@ import java.util.Random;
 public abstract class UpdateModel {
     public static void update() {
 
-        WaveGenerator.handleWaves();
+//        WaveGenerator.handleWaves();
 
         updateEnemies();
 
@@ -150,6 +150,19 @@ public abstract class UpdateModel {
                 GameState.orbs.remove(i);
                 i--;
             }
+        }
+
+        //boss
+        if(!GameState.smilies.isEmpty() &&
+                !GameState.hands.isEmpty() &&
+                !GameState.secondHands.isEmpty() ) {
+            GameState.smilies.get(0).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
+            GameState.hands.get(0).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
+            GameState.secondHands.get(0).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
+
+            GameState.smilies.get(0).move();
+            GameState.hands.get(0).move();
+            GameState.secondHands.get(0).move();
         }
     }
 
@@ -285,6 +298,11 @@ public abstract class UpdateModel {
                 }
             }
         }
+
+
+
+
+
         //epsilon collision
         for (int i = 0; i < GameState.bullets.size(); i++) {
             Point2D epsilonCollisionPoint = Collision.checkCircleCollision(GameState.bullets.get(i));

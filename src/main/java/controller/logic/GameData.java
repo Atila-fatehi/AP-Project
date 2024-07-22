@@ -1,6 +1,7 @@
 package controller.logic;
 
 import controller.FileController;
+import model.objectsModel.boss.Smiley;
 import model.objectsModel.enemy.*;
 import model.objectsModel.epsilon.Bullet;
 import model.objectsModel.epsilon.Epsilon;
@@ -35,6 +36,7 @@ public class GameData implements Serializable {
     public ArrayList<BlackOrb> orbs = new ArrayList<>();
     public ArrayList<Laser> lasers = new ArrayList<>();
     public ArrayList<JPanel> panels = new ArrayList<>();
+    public ArrayList<Smiley> smilies = new ArrayList<>();
     public int elapsedTime;
     public int difficulty ;
     public int wave;
@@ -56,6 +58,7 @@ public class GameData implements Serializable {
         barricados = GameState.barricados;
         orbs = GameState.orbs;
         lasers = GameState.lasers;
+        smilies = GameState.smilies;
         panels = GameState.panels;
         elapsedTime = GameState.elapsedTime;
         difficulty = GameState.difficulty;

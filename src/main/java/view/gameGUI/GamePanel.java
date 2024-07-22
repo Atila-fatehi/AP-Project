@@ -100,6 +100,7 @@ public class GamePanel extends JPanel {
         locationY += 3;
     }
 
+
     public int getPanelWidth() {
         return panelWidth;
     }

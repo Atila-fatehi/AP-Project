@@ -67,6 +67,9 @@ public abstract class Constants {
     public static final File WYRM_PIC = new File(Paths.get("").toAbsolutePath() + "/src/main/java/view/images/wyrm.PNG");
     public static final File BARRI_PIC = new File(Paths.get("").toAbsolutePath() + "/src/main/java/view/images/barricados.PNG");
     public static final File ORB_PIC_FILE = new File(Paths.get("").toAbsolutePath() + "/src/main/java/view/images/orb.png");
+    public static final File SMILEY_PIC = new File(Paths.get("").toAbsolutePath() + "/src/main/java/view/images/smiley.PNG");
+    public static final File HAND_PIC = new File(Paths.get("").toAbsolutePath() + "/src/main/java/view/images/h1.PNG");
+    public static final File HAND_SECOND_PIC = new File(Paths.get("").toAbsolutePath() + "/src/main/java/view/images/h2.PNG");
 
     public static final Image ORB_IMG;
     static {
@@ -96,6 +99,30 @@ public abstract class Constants {
     static {
         try {
             NECRO_IMG = ImageIO.read(Constants.NECRO_PICK).getScaledInstance(50,50 , Image.SCALE_DEFAULT);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static final Image SMILEY_IMG;
+    static {
+        try {
+            SMILEY_IMG = ImageIO.read(Constants.SMILEY_PIC).getScaledInstance(250,250 , Image.SCALE_DEFAULT);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static final Image HAND_IMG;
+    static {
+        try {
+            HAND_IMG = ImageIO.read(Constants.HAND_PIC).getScaledInstance(180,250 , Image.SCALE_DEFAULT);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static final Image HAND_SECOND_IMG;
+    static {
+        try {
+            HAND_SECOND_IMG = ImageIO.read(Constants.HAND_SECOND_PIC).getScaledInstance(200,250 , Image.SCALE_DEFAULT);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

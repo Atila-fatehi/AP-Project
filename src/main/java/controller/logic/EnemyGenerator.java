@@ -3,6 +3,9 @@ package controller.logic;
 import controller.audio.players.AudioPlayer;
 import controller.util.Constants;
 import model.collision.Collision;
+import model.objectsModel.boss.Hand;
+import model.objectsModel.boss.SecondHand;
+import model.objectsModel.boss.Smiley;
 import model.objectsModel.enemy.*;
 import model.objectsModel.epsilon.Bullet;
 import model.objectsModel.epsilon.Epsilon;
@@ -116,6 +119,15 @@ public abstract class EnemyGenerator {
         }, 1000, 2000);
     }
 
+    public static void makeSmiley(){
+        GameState.smilies.add(new Smiley(700 , 50));
+    }
+    public static void makeHand(){
+        GameState.hands.add(new Hand(300 , 130));
+    }
+    public static void makeSecondHand(){
+        GameState.secondHands.add(new SecondHand(1350 , 130));
+    }
     static int randomiseInitialPosX() {
         Random random = new Random();
         int initX = random.nextInt(GamePanel.getInstance().getPanelWidth());

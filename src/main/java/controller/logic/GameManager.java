@@ -34,6 +34,10 @@ public class GameManager {
     }
 
     public GameManager() {
+        WaveGenerator.generateFinalBoss();
+//        EnemyGenerator.makeSmiley();
+//        EnemyGenerator.makeHand();
+//        EnemyGenerator.makeSecondHand();
 //        EnemyGenerator.makeNewTrigorath();
 //        EnemyGenerator.makeNewTrigorath();
 
