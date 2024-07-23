@@ -265,7 +265,12 @@ public class Omenoct implements Paintable, Collidable, Movable , Serializable {
     }
 
     public Timer getShootTimer() {
-        return CostumeTimer.getInstance().getMap().get(id);
+        if (CostumeTimer.getInstance().getMap().get(id) != null) {
+            return CostumeTimer.getInstance().getMap().get(id);
+        } else {
+            return new Timer();
+        }
+
     }
 
     public int getHP() {

@@ -4,6 +4,8 @@ import controller.FrameController;
 import controller.audio.players.AudioPlayer;
 import controller.util.Constants;
 import controller.util.CostumeTimer;
+import model.objectsModel.Portal;
+import model.objectsModel.epsilon.Epsilon;
 import view.gameGUI.GamePanel;
 
 import java.util.Random;
@@ -14,13 +16,19 @@ public abstract class WaveGenerator {
     public static boolean inWait;
 
     public static void handleWaves() {
-        if (GameState.wave <= 3) {
-            generateSimpleWave();
-        } else if (GameState.wave <= 9) {
-            generateComplexWave();
-        } else if (GameState.wave == 10) {
-            generateFinalBoss();
-        }
+//        if(GameState.wave == 0) generateSimpleWave();
+//        if(GameState.wave == 1) {
+//            if (GameState.trigoraths.isEmpty() && GameState.squarantines.isEmpty()){
+//                if(Portal.portals.isEmpty()) new Portal(Epsilon.getInstance().getX() + 100, Epsilon.getInstance().getY());
+//            }
+//        }
+//        if (GameState.wave <= 3) {
+//            generateSimpleWave();
+//        } else if (GameState.wave <= 9) {
+//            generateComplexWave();
+//        } else if (GameState.wave == 10) {
+//            generateFinalBoss();
+//        }
     }
 
     public static void generateSimpleWave() {
@@ -51,6 +59,7 @@ public abstract class WaveGenerator {
             }, 3000, 1111);
             inWait = true;
         }
+
     }
 
     public static void generateComplexWave() {
@@ -174,7 +183,7 @@ public abstract class WaveGenerator {
             @Override
             public void run() {
                 if (new Random().nextBoolean()) {
-                    if(!GameState.hands.isEmpty() && !GameState.secondHands.isEmpty() && !GameState.smilies.isEmpty()) {
+                    if (!GameState.hands.isEmpty() && !GameState.secondHands.isEmpty() && !GameState.smilies.isEmpty()) {
                         GameState.hands.get(0).setSqueeze(true);
                         GameState.secondHands.get(0).setSqueeze(true);
                         GameState.smilies.get(0).setSqueeze(true);
@@ -187,11 +196,13 @@ public abstract class WaveGenerator {
                         GameState.hands.get(0).setDamageable(false);
                         GameState.secondHands.get(0).setDamageable(false);
 
-                        if(CostumeTimer.getInstance().getMap().containsKey(GameState.hands.get(0).getId())) CostumeTimer.getInstance().getMap().remove(GameState.hands.get(0).getId()).cancel();
-                        if(CostumeTimer.getInstance().getMap().containsKey(GameState.secondHands.get(0).getId())) CostumeTimer.getInstance().getMap().remove(GameState.secondHands.get(0).getId()).cancel();
+                        if (CostumeTimer.getInstance().getMap().containsKey(GameState.hands.get(0).getId()))
+                            CostumeTimer.getInstance().getMap().remove(GameState.hands.get(0).getId()).cancel();
+                        if (CostumeTimer.getInstance().getMap().containsKey(GameState.secondHands.get(0).getId()))
+                            CostumeTimer.getInstance().getMap().remove(GameState.secondHands.get(0).getId()).cancel();
                     }
                 } else {
-                    if(!GameState.hands.isEmpty() && !GameState.secondHands.isEmpty() && !GameState.smilies.isEmpty()) {
+                    if (!GameState.hands.isEmpty() && !GameState.secondHands.isEmpty() && !GameState.smilies.isEmpty()) {
                         GameState.hands.get(0).setSqueeze(false);
                         GameState.secondHands.get(0).setSqueeze(false);
                         GameState.smilies.get(0).setSqueeze(false);
@@ -204,7 +215,8 @@ public abstract class WaveGenerator {
                         GameState.hands.get(0).setDamageable(true);
                         GameState.secondHands.get(0).setDamageable(true);
 
-                        if(CostumeTimer.getInstance().getMap().containsKey(GameState.smilies.get(0).getId())) CostumeTimer.getInstance().getMap().remove(GameState.smilies.get(0).getId()).cancel();
+                        if (CostumeTimer.getInstance().getMap().containsKey(GameState.smilies.get(0).getId()))
+                            CostumeTimer.getInstance().getMap().remove(GameState.smilies.get(0).getId()).cancel();
                     }
                 }
             }

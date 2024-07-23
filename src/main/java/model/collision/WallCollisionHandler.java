@@ -28,13 +28,11 @@ public abstract class WallCollisionHandler {
 
                 @Override
                 public void run() {
-                    if (!GameState.hands.isEmpty()) {
-                        if (!GameState.hands.get(0).isSqueeze()) {
-                            GamePanel.getInstance().setLocation(GamePanel.getInstance().getLocationX() - wallExpansionRate, GamePanel.getInstance().getLocationY());
-                            GamePanel.getInstance().setSize(GamePanel.getInstance().getPanelWidth() + wallExpansionRate, GamePanel.getInstance().getPanelHeight());
-                            GamePanel.getInstance().setPanelWidth(GamePanel.getInstance().getPanelWidth() + wallExpansionRate);
-                            GamePanel.getInstance().setLocationX(GamePanel.getInstance().getLocationX() - wallExpansionRate);
-                        }
+                    if ((GameState.hands.isEmpty()) || !GameState.hands.get(0).isSqueeze()) {
+                        GamePanel.getInstance().setLocation(GamePanel.getInstance().getLocationX() - wallExpansionRate, GamePanel.getInstance().getLocationY());
+                        GamePanel.getInstance().setSize(GamePanel.getInstance().getPanelWidth() + wallExpansionRate, GamePanel.getInstance().getPanelHeight());
+                        GamePanel.getInstance().setPanelWidth(GamePanel.getInstance().getPanelWidth() + wallExpansionRate);
+                        GamePanel.getInstance().setLocationX(GamePanel.getInstance().getLocationX() - wallExpansionRate);
                     }
                     counter++;
                     if (counter == wallExpansionSize) {
@@ -73,11 +71,10 @@ public abstract class WallCollisionHandler {
 
                 @Override
                 public void run() {
-                    if (!GameState.secondHands.isEmpty()) {
-                        if (!GameState.secondHands.get(0).isSqueeze()) {
+                    if ((GameState.hands.isEmpty()) || !GameState.hands.get(0).isSqueeze()) {
                             GamePanel.getInstance().setSize(GamePanel.getInstance().getPanelWidth() + wallExpansionRate, GamePanel.getInstance().getPanelHeight());
                             GamePanel.getInstance().setPanelWidth(GamePanel.getInstance().getPanelWidth() + wallExpansionRate);
-                        }
+
                     }
                     counter++;
                     if (counter == wallExpansionSize) {

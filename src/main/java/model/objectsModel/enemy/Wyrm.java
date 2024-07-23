@@ -261,6 +261,11 @@ public class Wyrm implements Movable, Paintable, Collidable, Serializable {
     }
 
     public Timer getShootTimer() {
-        return CostumeTimer.getInstance().getMap().get(id);
+        if (CostumeTimer.getInstance().getMap().get(id) != null) {
+            return CostumeTimer.getInstance().getMap().get(id);
+        } else {
+            return new Timer();
+        }
+
     }
 }

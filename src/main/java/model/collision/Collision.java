@@ -1,6 +1,8 @@
 package model.collision;
 
 import controller.util.Calculator;
+import model.objectsModel.boss.Hand;
+import model.objectsModel.boss.SecondHand;
 import model.objectsModel.boss.Smiley;
 import model.objectsModel.epsilon.Bullet;
 import model.objectsModel.enemy.Collectable;
@@ -195,4 +197,21 @@ public abstract class Collision {
         }
         return null;
     }
+
+
+
+//    public static Point2D checkHandCollision(Hand hand) {
+//
+//    }
+//    public static Point2D checkHandCollision(SecondHand hand) {
+//
+//    }
+//
+//    public static Point2D checkHandCollision(Hand hand, Bullet bullet) {
+//
+//    }
+//    public static Point2D checkHandCollision(SecondHand hand, Bullet bullet) {
+//
+//    }
+
 }

@@ -215,18 +215,13 @@ public class Squarantine implements Movable, Collidable, Paintable, Serializable
     }
 
     public Timer getTimer() {
-        try {
+        if (CostumeTimer.getInstance().getMap().get(id) != null) {
             return CostumeTimer.getInstance().getMap().get(id);
-        } catch (Exception e) {
-            Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-
-                }
-            }, 0, 1111);
-            return timer;
+        } else {
+            return new Timer();
         }
+
+
     }
 
     @Override

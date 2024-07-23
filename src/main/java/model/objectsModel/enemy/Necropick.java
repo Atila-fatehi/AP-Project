@@ -240,7 +240,12 @@ public class Necropick implements Paintable, Movable, Collidable , Serializable 
     }
 
     public Timer getTimer() {
-        return CostumeTimer.getInstance().getMap().get(id);
+        if (CostumeTimer.getInstance().getMap().get(id) != null) {
+            return CostumeTimer.getInstance().getMap().get(id);
+        } else {
+            return new Timer();
+        }
+
     }
 
     public double getSize() {

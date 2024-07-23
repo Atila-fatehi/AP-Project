@@ -5,6 +5,7 @@ import controller.util.CostumeMap;
 import controller.util.CostumeTimer;
 import model.Paintable.Paintable;
 import model.collision.Collidable;
+import model.objectsModel.Portal;
 import model.objectsModel.boss.Hand;
 import model.objectsModel.boss.SecondHand;
 import model.objectsModel.boss.Smiley;
@@ -65,7 +66,7 @@ public class GameState implements Serializable {
             return "O’ Phonoi, Slaughter";
         }
 
-        return "";
+        return "None";
     }
 
     public static void setData(GameData data) {
@@ -109,6 +110,7 @@ public class GameState implements Serializable {
         paintables.addAll(barricados);
         paintables.addAll(bullets);
         paintables.add(epsilon);
+        paintables.addAll(Portal.portals);
         paintables.addAll(hands);
         paintables.addAll(secondHands);
         paintables.addAll(smilies);
@@ -150,6 +152,6 @@ public class GameState implements Serializable {
         secondHands.clear();
         elapsedTime = 0;
         difficulty = Objects.requireNonNull(FileController.readSettings())[1];
-        wave = 9;
+        wave = 0;
     }
 }

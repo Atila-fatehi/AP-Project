@@ -5,6 +5,7 @@ import controller.util.Constants;
 import model.collision.Collision;
 import model.collision.CollisionHandler;
 import model.collision.WallCollisionHandler;
+import model.objectsModel.Portal;
 import model.objectsModel.enemy.Collectable;
 import model.objectsModel.epsilon.Epsilon;
 import model.objectsModel.miniBoss.OrbManager;
@@ -16,7 +17,7 @@ import java.util.Random;
 public abstract class UpdateModel {
     public static void update() {
 
-//        WaveGenerator.handleWaves();
+        WaveGenerator.handleWaves();
 
         updateEnemies();
 
@@ -151,6 +152,16 @@ public abstract class UpdateModel {
                 i--;
             }
         }
+
+        //portal
+        for (int i = 0; i < Portal.portals.size(); i++) {
+            if(Portal.portals.get(i).epsilonCollision()){
+                Portal.portals.remove(i);
+                i--;
+            }
+        }
+
+
 
         //boss
         if (!GameState.smilies.isEmpty() &&
