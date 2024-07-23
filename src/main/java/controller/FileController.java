@@ -2,6 +2,7 @@ package controller;
 
 import controller.logic.GameData;
 import controller.logic.GameState;
+import controller.logic.WaveGenerator;
 import controller.util.Constants;
 
 import java.awt.event.KeyEvent;
@@ -209,4 +210,23 @@ public abstract class FileController {
         }
     }
 
+    public static void saveCheckPoint() {
+        try (FileOutputStream fileOut = new FileOutputStream(Constants.CHECKPOINT_PATH);
+             ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
+            WaveGenerator.generated[GameState.wave + 1] = false;
+            out.write(GameState.wave + 1);
+        } catch (IOException i) {
+            System.out.println("Exception in serializing");
+        }
+    }
+
+    public static int loadCheckPoint() {
+        try (FileInputStream fileIn = new FileInputStream(Constants.CHECKPOINT_PATH);
+             ObjectInputStream in = new ObjectInputStream(fileIn)) {
+            return  in.read();
+        } catch (IOException i) {
+            System.out.println("Exception in deserializing");
+            return 1;
+        }
+    }
 }

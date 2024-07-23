@@ -39,6 +39,7 @@ public class MainMenu extends JFrame {
                 MenuMusicPlayer.getInstance().stop();
                 GameMusicPlayer.getInstance().start();
                 FrameController.minimizeAllWindows();
+
                 GameFrame.makeInstance();
                 GameFrame.getInstance().addPanel();
                 GameState.initiateNewGame();
@@ -52,10 +53,16 @@ public class MainMenu extends JFrame {
                 dispose();
                 MenuMusicPlayer.getInstance().stop();
                 GameMusicPlayer.getInstance().start();
-                FileController.deserializeGameState();
                 FrameController.minimizeAllWindows();
+
+                GameState.initiateNewGame();
+                FileController.deserializeGameState();
+
                 GameFrame.makeInstance();
                 GameFrame.getInstance().addSavedPanels();
+
+                GameManager.initiateNewGame();
+                GameManager.getInstance().stopTimers();
                 java.util.Timer timer = new java.util.Timer();
                 timer.schedule(new TimerTask() {
                     @Override

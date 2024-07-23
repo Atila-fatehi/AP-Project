@@ -70,7 +70,6 @@ public class KeyController implements KeyListener {
             GameMusicPlayer.getInstance().getClip().stop();
             GameMusicPlayer.getInstance().setPlaying(false);
             GameFrame.getInstance().dispose();
-           // GameManager.getInstance().setPaused(true);
             GameManager.getInstance().stopTimers();
             new MainMenu();
         }

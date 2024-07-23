@@ -19,7 +19,9 @@ import view.gameGUI.GamePanel;
 
 import javax.swing.*;
 import java.io.Serializable;
+import java.io.WriteAbortedException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class GameState implements Serializable {
@@ -58,7 +60,7 @@ public class GameState implements Serializable {
             return "O’ Athena, Empower";
         } else if (heal) {
             return "O' Apollo, Heal";
-        }else if (dismay){
+        } else if (dismay) {
             return "O’ Deimos, Dismay";
         } else if (slumber) {
             return "O’Hypnos, Slumber";
@@ -92,6 +94,7 @@ public class GameState implements Serializable {
         banish = data.banish;
         empower = data.empower;
         heal = data.heal;
+        Portal.portals = data.portals;
         GamePanel.setInstance();
         Epsilon.setInstance(epsilon);
 
@@ -150,8 +153,32 @@ public class GameState implements Serializable {
         smilies.clear();
         hands.clear();
         secondHands.clear();
+        Portal.portals.clear();
+        Arrays.fill(WaveGenerator.generated, false);
+        Arrays.fill(WaveGenerator.waveStart, -1);
+        Epsilon.getInstance().savedToCheckPoint = false;
+        Epsilon.getInstance().alreadyDead = false;
         elapsedTime = 0;
         difficulty = Objects.requireNonNull(FileController.readSettings())[1];
-        wave = 0;
+        wave = 1;
+    }
+
+    public static void initiateNewGameOnCheckpoint() {
+        bullets.clear();
+        trigoraths.clear();
+        squarantines.clear();
+        omenocts.clear();
+        necropicks.clear();
+        wyrms.clear();
+        archmires.clear();
+        collectables.clear();
+        barricados.clear();
+        orbs.clear();
+        lasers.clear();
+        panels.clear();
+        smilies.clear();
+        hands.clear();
+        secondHands.clear();
+        Portal.portals.clear();
     }
 }

@@ -8,9 +8,10 @@ import model.objectsModel.epsilon.Epsilon;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Portal implements Paintable {
+public class Portal implements Paintable, Serializable {
 
     double x;
     double y;
@@ -34,8 +35,8 @@ public class Portal implements Paintable {
         g.fillOval((int) x - locationX, (int) y - locationY, (int) radius * 2, (int) radius * 2);
     }
 
-    public boolean epsilonCollision(){
-        return Calculator.distance(Epsilon.getInstance().getX(), Epsilon.getInstance().getY(), x, y)
-                <= radius + Epsilon.getInstance().getRadius() + 3;
+    public boolean epsilonCollision() {
+        return Calculator.distance(Epsilon.getInstance().getX(), Epsilon.getInstance().getY(), x + radius, y + radius)
+                <= radius - 5;
     }
 }

@@ -1,6 +1,8 @@
 package controller.logic;
 
+import controller.FileController;
 import controller.audio.players.AudioPlayer;
+import controller.util.Calculator;
 import controller.util.Constants;
 import model.collision.Collision;
 import model.collision.CollisionHandler;
@@ -9,7 +11,10 @@ import model.objectsModel.Portal;
 import model.objectsModel.enemy.Collectable;
 import model.objectsModel.epsilon.Epsilon;
 import model.objectsModel.miniBoss.OrbManager;
+import view.frames.MainMenu;
+import view.gameGUI.GameFrame;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.Random;
@@ -156,6 +161,25 @@ public abstract class UpdateModel {
         //portal
         for (int i = 0; i < Portal.portals.size(); i++) {
             if(Portal.portals.get(i).epsilonCollision()){
+                GameManager.getInstance().setPaused(true);
+                String[] responses = {"Pay " + Calculator.progressRate() + " to save here" , "Decline (gain " + Calculator.progressRate()/10 + " XP)"};
+                if (JOptionPane.showOptionDialog(null, "Your XP = " + Epsilon.getInstance().getXP(), "Check Point", JOptionPane.INFORMATION_MESSAGE, JOptionPane.INFORMATION_MESSAGE, null, responses, 0) == 0) {
+                    if(Epsilon.getInstance().getXP() >= Calculator.progressRate()) {
+                        FileController.saveCheckPoint();
+                        Epsilon.getInstance().savedToCheckPoint = true;
+                        Epsilon.getInstance().setHP(Epsilon.getInstance().getHP() + 10);
+                    }else{
+                        String [] responses2 = {"OK"};
+                        if (JOptionPane.showOptionDialog(null, "you don't have enough XP", "", JOptionPane.INFORMATION_MESSAGE, JOptionPane.INFORMATION_MESSAGE, null, responses2, 0) != -2) {
+                            Epsilon.getInstance().setXP(Epsilon.getInstance().getXP() + Calculator.progressRate()/10);
+                        }
+                    }
+                    GameManager.getInstance().setPaused(false);
+                }else{
+                    Epsilon.getInstance().setXP(Epsilon.getInstance().getXP() + Calculator.progressRate()/10);
+                    GameManager.getInstance().setPaused(false);
+                }
+
                 Portal.portals.remove(i);
                 i--;
             }
@@ -204,8 +228,8 @@ public abstract class UpdateModel {
             }
         }
         if (Epsilon.getInstance().getHP() <= 0) {
-            GameManager.getInstance().gameOver();
             GameManager.getInstance().setPaused(true);
+            GameManager.getInstance().gameOver();
         }
 
         //Bullet stuff

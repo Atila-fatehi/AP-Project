@@ -8,41 +8,53 @@ import model.objectsModel.Portal;
 import model.objectsModel.epsilon.Epsilon;
 import view.gameGUI.GamePanel;
 
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public abstract class WaveGenerator {
     public static boolean inWait;
+    public static boolean[] generated = new boolean[10];
+    public static int[] waveStart = new int[10];
 
     public static void handleWaves() {
-//        if(GameState.wave == 0) generateSimpleWave();
-//        if(GameState.wave == 1) {
-//            if (GameState.trigoraths.isEmpty() && GameState.squarantines.isEmpty()){
-//                if(Portal.portals.isEmpty()) new Portal(Epsilon.getInstance().getX() + 100, Epsilon.getInstance().getY());
-//            }
-//        }
-//        if (GameState.wave <= 3) {
-//            generateSimpleWave();
-//        } else if (GameState.wave <= 9) {
+        if (GameState.wave == 1 && !generated[0]) {
+            waveStart[0] = GameState.elapsedTime;
+            generateSimpleWave();
+            generated[0] = true;
+        }
+        if (GameState.wave == 2 && !generated[1]) {
+            if (GameState.getComplexEnemies().isEmpty() && Portal.portals.isEmpty()) {
+                waveStart[1] = GameState.elapsedTime;
+                generateSimpleWave();
+                generated[1] = true;
+            }
+        }
+
+//        if (GameState.wave == 9) {
 //            generateComplexWave();
 //        } else if (GameState.wave == 10) {
 //            generateFinalBoss();
 //        }
+        if (GameState.getComplexEnemies().isEmpty() && Portal.portals.isEmpty()) {
+            new Portal(Epsilon.getInstance().getX() + 100, Epsilon.getInstance().getY());
+            GameState.wave++;
+        }
+
     }
 
     public static void generateSimpleWave() {
-        if (GameState.trigoraths.isEmpty() && GameState.squarantines.isEmpty() && !inWait) {
-            GameState.wave++;
+        if (!inWait) {
             AudioPlayer.play(AudioPlayer.WAVE);
+            EnemyGenerator.makeNewSquarantine();
+            EnemyGenerator.makeNewTrigorath();
             java.util.Timer timer = new java.util.Timer();
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
                     AudioPlayer.play(AudioPlayer.AWOOGA);
                     Random random = new Random();
-                    EnemyGenerator.makeNewSquarantine();
-                    EnemyGenerator.makeNewTrigorath();
                     for (int i = 0; i < GameState.wave * GameState.difficulty; i++) {
                         if (random.nextBoolean()) {
                             EnemyGenerator.makeNewSquarantine();

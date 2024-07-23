@@ -1,5 +1,10 @@
 package controller.util;
 
+import controller.logic.GameManager;
+import controller.logic.GameState;
+import controller.logic.WaveGenerator;
+import model.objectsModel.epsilon.Epsilon;
+
 import java.awt.geom.Point2D;
 
 public abstract class Calculator {
@@ -31,5 +36,21 @@ public abstract class Calculator {
         x1 -= x2;
         y1 -= y2;
         return Math.sqrt(x1 * x1 + y1 * y1);
+    }
+
+    public static int progressRate() {
+        int sum = 0;
+        for (int i = 0; i < WaveGenerator.waveStart.length; i++) {
+            if (i != WaveGenerator.waveStart.length - 1) {
+                if (WaveGenerator.waveStart[i + 1] == -1) {
+                    sum += (i + 1) * (GameState.elapsedTime - WaveGenerator.waveStart[i]);
+                    System.out.println(i + 1);
+                    break;
+                } else {
+                    sum += (i + 1) * (WaveGenerator.waveStart[i + 1] - WaveGenerator.waveStart[i]);
+                }
+            }
+        }
+        return 10 * Epsilon.getInstance().getXP() * sum / Epsilon.getInstance().getHP();
     }
 }

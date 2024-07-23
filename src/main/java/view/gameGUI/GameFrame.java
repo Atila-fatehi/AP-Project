@@ -40,6 +40,8 @@ public class GameFrame extends JFrame {
 
     public void addSavedPanels(){
         add(GamePanel.getInstance());
+        add(InputController.getInstance());
+
         for (int i = 1; i < GameState.panels.size(); i++) {
             add(GameState.panels.get(i));
         }

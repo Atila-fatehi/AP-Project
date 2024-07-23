@@ -77,7 +77,8 @@ public class Epsilon implements Movable, Collidable, Paintable, WallCollidable, 
     private double vertexX;
     private double vertexY;
     private JPanel currentPanel;
-
+    public boolean savedToCheckPoint;
+    public boolean alreadyDead;
     public Epsilon(double x, double y) {
         this.x = x;
         this.y = y;

@@ -38,10 +38,10 @@ public class GameManager {
 //        EnemyGenerator.makeSmiley();
 //        EnemyGenerator.makeHand();
 //        EnemyGenerator.makeSecondHand();
-        EnemyGenerator.makeNewTrigorath();
+//        EnemyGenerator.makeNewTrigorath();
 //        EnemyGenerator.makeNewTrigorath();
 
-        EnemyGenerator.makeNewSquarantine();
+//        EnemyGenerator.makeNewSquarantine();
 //        EnemyGenerator.makeNewSquarantine();
 
 //        EnemyGenerator.makeNewWyrm();
@@ -88,7 +88,7 @@ public class GameManager {
                 if (GameState.elapsedTime == 10) {
                     UpdateView.pastTen = true;
                 }
-                if(GameState.elapsedTime % 5 == 0){
+                if (GameState.elapsedTime % 5 == 0) {
                     FileController.serializeGameState();
                 }
             }
@@ -100,7 +100,8 @@ public class GameManager {
         GameManager.getInstance().getViewTimer().cancel();
         GameManager.getInstance().getElapsedTimer().cancel();
     }
-    public void continueTimers(){
+
+    public void continueTimers() {
         elapsedTimer = new java.util.Timer();
         elapsedTimer.schedule(new TimerTask() {
             @Override
@@ -112,7 +113,7 @@ public class GameManager {
                 if (GameState.elapsedTime == 10) {
                     UpdateView.pastTen = true;
                 }
-                if(GameState.elapsedTime % 5 == 0){
+                if (GameState.elapsedTime % 5 == 0) {
                     FileController.serializeGameState();
                 }
             }
@@ -180,19 +181,30 @@ public class GameManager {
     }
 
     public void gameOver() {
-        GameMusicPlayer.getInstance().getClip().stop();
-        GameMusicPlayer.getInstance().setPlaying(false);
-        gameOver = true;
-        FileController.writeXP(Epsilon.getInstance().getXP());
-        Epsilon.getInstance().setHP(0);
-        AudioPlayer.play(AudioPlayer.LOSE_MUSIC);
-        AudioPlayer.play(AudioPlayer.SCREAM);
-        String[] responses = {"Main Menu"};
-        if (JOptionPane.showOptionDialog(null, "Your XP = " + Epsilon.getInstance().getXP(), "Game Over", JOptionPane.INFORMATION_MESSAGE, JOptionPane.INFORMATION_MESSAGE, null, responses, 0) != -2) {
-            GameFrame.getInstance().dispose();
-            Epsilon.getInstance().setXP(0);
-            Epsilon.getInstance().setHP(100);
-            new MainMenu();
+        if (Epsilon.getInstance().savedToCheckPoint && !Epsilon.getInstance().alreadyDead) {
+            String[] responses = {"OK"};
+            if (JOptionPane.showOptionDialog(null, "You died but you have a checkpoint", "Game Over", JOptionPane.INFORMATION_MESSAGE, JOptionPane.INFORMATION_MESSAGE, null, responses, 0) != -2) {
+                Epsilon.getInstance().setHP(10);
+                GameState.initiateNewGameOnCheckpoint();
+                GameState.wave = FileController.loadCheckPoint();
+                GameManager.getInstance().setPaused(false);
+                Epsilon.getInstance().alreadyDead = true;
+            }
+        } else {
+            GameMusicPlayer.getInstance().getClip().stop();
+            GameMusicPlayer.getInstance().setPlaying(false);
+            gameOver = true;
+            FileController.writeXP(Epsilon.getInstance().getXP());
+            Epsilon.getInstance().setHP(0);
+            AudioPlayer.play(AudioPlayer.LOSE_MUSIC);
+            AudioPlayer.play(AudioPlayer.SCREAM);
+            String[] responses = {"Main Menu"};
+            if (JOptionPane.showOptionDialog(null, "Your XP = " + Epsilon.getInstance().getXP(), "Game Over", JOptionPane.INFORMATION_MESSAGE, JOptionPane.INFORMATION_MESSAGE, null, responses, 0) != -2) {
+                GameFrame.getInstance().dispose();
+                Epsilon.getInstance().setXP(0);
+                Epsilon.getInstance().setHP(100);
+                new MainMenu();
+            }
         }
     }
 
