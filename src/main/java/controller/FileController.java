@@ -7,6 +7,7 @@ import controller.util.Constants;
 
 import java.awt.event.KeyEvent;
 import java.io.*;
+import java.util.ConcurrentModificationException;
 import java.util.Scanner;
 
 public abstract class FileController {
@@ -35,150 +36,150 @@ public abstract class FileController {
 
             }
         }
-            file = new File(Constants.XP_PATH);
-            if (!file.exists()) {
-                try {
-                    PrintWriter printWriter = new PrintWriter(file);
-                    printWriter.println(0);
-                    printWriter.flush();
-                    printWriter.close();
-                } catch (Exception e) {
-                    System.out.println("xp file problem");
-                }
-            }
-            file = new File(Constants.KEYS_PATH);
-            if (!file.exists()) {
-                try {
-                    PrintWriter printWriter = new PrintWriter(file);
-                    printWriter.println(KeyEvent.VK_W);
-                    printWriter.println(KeyEvent.VK_A);
-                    printWriter.println(KeyEvent.VK_S);
-                    printWriter.println(KeyEvent.VK_D);
-                    printWriter.println(KeyEvent.VK_SPACE);
-                    printWriter.println(KeyEvent.VK_R);
-                    printWriter.flush();
-                    printWriter.close();
-                } catch (Exception e) {
-                    System.out.println("key file problem");
-                }
-            }
-        }
-
-        public static void writeSettings (String val1, String val2){
-            File file = new File(Constants.SETTING_PATH);
+        file = new File(Constants.XP_PATH);
+        if (!file.exists()) {
             try {
                 PrintWriter printWriter = new PrintWriter(file);
-                printWriter.println(val1);
-                printWriter.println(val2);
-                printWriter.flush();
-                printWriter.close();
-            } catch (Exception e) {
-                System.out.println("setting file problem");
-            }
-        }
-
-        public static void writeKeys ( int w, int s, int d, int a, int sh, int ab){
-            File file = new File(Constants.KEYS_PATH);
-            try {
-                PrintWriter printWriter = new PrintWriter(file);
-                if (w != -1) {
-                    printWriter.println(w);
-                } else {
-                    printWriter.println(KeyEvent.VK_W);
-                }
-                if (a != -1) {
-                    printWriter.println(a);
-                } else {
-                    printWriter.println(KeyEvent.VK_A);
-                }
-                if (s != -1) {
-                    printWriter.println(s);
-                } else {
-                    printWriter.println(KeyEvent.VK_S);
-                }
-                if (d != -1) {
-                    printWriter.println(d);
-                } else {
-                    printWriter.println(KeyEvent.VK_D);
-                }
-                if (sh != -1) {
-                    printWriter.println(sh);
-                } else {
-                    printWriter.println(KeyEvent.VK_SPACE);
-                }
-                if (ab != -1) {
-                    printWriter.println(ab);
-                } else {
-                    printWriter.println(KeyEvent.VK_R);
-                }
-                printWriter.flush();
-                printWriter.close();
-            } catch (Exception e) {
-                System.out.println("key file problem");
-            }
-        }
-
-        public static void writeXP ( int xp){
-            File file = new File(Constants.XP_PATH);
-            try {
-                PrintWriter printWriter = new PrintWriter(file);
-                printWriter.println(xp);
+                printWriter.println(0);
                 printWriter.flush();
                 printWriter.close();
             } catch (Exception e) {
                 System.out.println("xp file problem");
             }
         }
-
-        public static String readXP () {
-            File file = new File(Constants.XP_PATH);
+        file = new File(Constants.KEYS_PATH);
+        if (!file.exists()) {
             try {
-                Scanner scanner = new Scanner(file);
-                return scanner.nextLine();
+                PrintWriter printWriter = new PrintWriter(file);
+                printWriter.println(KeyEvent.VK_W);
+                printWriter.println(KeyEvent.VK_A);
+                printWriter.println(KeyEvent.VK_S);
+                printWriter.println(KeyEvent.VK_D);
+                printWriter.println(KeyEvent.VK_SPACE);
+                printWriter.println(KeyEvent.VK_R);
+                printWriter.flush();
+                printWriter.close();
             } catch (Exception e) {
-                return "";
+                System.out.println("key file problem");
             }
         }
+    }
 
-        public static int[] readKeyCodes () {
-            int[] codes = new int[6];
-            File file = new File(Constants.KEYS_PATH);
-            try {
-                Scanner scanner = new Scanner(file);
-                codes[0] = Integer.parseInt(scanner.nextLine());
-                codes[1] = Integer.parseInt(scanner.nextLine());
-                codes[2] = Integer.parseInt(scanner.nextLine());
-                codes[3] = Integer.parseInt(scanner.nextLine());
-                codes[4] = Integer.parseInt(scanner.nextLine());
-                codes[5] = Integer.parseInt(scanner.nextLine());
-            } catch (Exception e) {
-                return null;
-            }
-            return codes;
+    public static void writeSettings(String val1, String val2) {
+        File file = new File(Constants.SETTING_PATH);
+        try {
+            PrintWriter printWriter = new PrintWriter(file);
+            printWriter.println(val1);
+            printWriter.println(val2);
+            printWriter.flush();
+            printWriter.close();
+        } catch (Exception e) {
+            System.out.println("setting file problem");
         }
+    }
 
-        public static int[] readSettings () {
-            int[] codes = new int[2];
-            File file = new File(Constants.SETTING_PATH);
-            try {
-                Scanner scanner = new Scanner(file);
-                codes[0] = Integer.parseInt(scanner.nextLine());
-                codes[1] = Integer.parseInt(scanner.nextLine());
-            } catch (Exception e) {
-                return null;
+    public static void writeKeys(int w, int s, int d, int a, int sh, int ab) {
+        File file = new File(Constants.KEYS_PATH);
+        try {
+            PrintWriter printWriter = new PrintWriter(file);
+            if (w != -1) {
+                printWriter.println(w);
+            } else {
+                printWriter.println(KeyEvent.VK_W);
             }
-            return codes;
+            if (a != -1) {
+                printWriter.println(a);
+            } else {
+                printWriter.println(KeyEvent.VK_A);
+            }
+            if (s != -1) {
+                printWriter.println(s);
+            } else {
+                printWriter.println(KeyEvent.VK_S);
+            }
+            if (d != -1) {
+                printWriter.println(d);
+            } else {
+                printWriter.println(KeyEvent.VK_D);
+            }
+            if (sh != -1) {
+                printWriter.println(sh);
+            } else {
+                printWriter.println(KeyEvent.VK_SPACE);
+            }
+            if (ab != -1) {
+                printWriter.println(ab);
+            } else {
+                printWriter.println(KeyEvent.VK_R);
+            }
+            printWriter.flush();
+            printWriter.close();
+        } catch (Exception e) {
+            System.out.println("key file problem");
         }
+    }
 
-        public static int readAbilities () {
-            File file = new File(Constants.ABILITY_PATH);
-            try {
-                Scanner scanner = new Scanner(file);
-                return Integer.parseInt(scanner.nextLine());
+    public static void writeXP(int xp) {
+        File file = new File(Constants.XP_PATH);
+        try {
+            PrintWriter printWriter = new PrintWriter(file);
+            printWriter.println(xp);
+            printWriter.flush();
+            printWriter.close();
+        } catch (Exception e) {
+            System.out.println("xp file problem");
+        }
+    }
 
-            } catch (Exception e) {
-                return 0;
-            }
+    public static String readXP() {
+        File file = new File(Constants.XP_PATH);
+        try {
+            Scanner scanner = new Scanner(file);
+            return scanner.nextLine();
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
+    public static int[] readKeyCodes() {
+        int[] codes = new int[6];
+        File file = new File(Constants.KEYS_PATH);
+        try {
+            Scanner scanner = new Scanner(file);
+            codes[0] = Integer.parseInt(scanner.nextLine());
+            codes[1] = Integer.parseInt(scanner.nextLine());
+            codes[2] = Integer.parseInt(scanner.nextLine());
+            codes[3] = Integer.parseInt(scanner.nextLine());
+            codes[4] = Integer.parseInt(scanner.nextLine());
+            codes[5] = Integer.parseInt(scanner.nextLine());
+        } catch (Exception e) {
+            return null;
+        }
+        return codes;
+    }
+
+    public static int[] readSettings() {
+        int[] codes = new int[2];
+        File file = new File(Constants.SETTING_PATH);
+        try {
+            Scanner scanner = new Scanner(file);
+            codes[0] = Integer.parseInt(scanner.nextLine());
+            codes[1] = Integer.parseInt(scanner.nextLine());
+        } catch (Exception e) {
+            return null;
+        }
+        return codes;
+    }
+
+    public static int readAbilities() {
+        File file = new File(Constants.ABILITY_PATH);
+        try {
+            Scanner scanner = new Scanner(file);
+            return Integer.parseInt(scanner.nextLine());
+
+        } catch (Exception e) {
+            return 0;
+        }
 //        java.util.Timer timer = new java.util.Timer();
 //        timer.schedule(new TimerTask() {
 //            @Override
@@ -189,17 +190,20 @@ public abstract class FileController {
 //                timer.cancel();
 //            }
 //        }, 5 * 60 * 1000, 1111);
-        }
+    }
 
-    public static void serializeGameState(){
+    public static void serializeGameState() {
         try (FileOutputStream fileOut = new FileOutputStream(Constants.GAME_STATE_PATH);
              ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
             GameData.getInstance().setData();
             out.writeObject(GameData.getInstance());
         } catch (IOException i) {
             System.out.println("Exception in serializing");
+        } catch (Exception e) {
+
         }
     }
+
     public static void deserializeGameState() {
         try (FileInputStream fileIn = new FileInputStream(Constants.GAME_STATE_PATH);
              ObjectInputStream in = new ObjectInputStream(fileIn)) {
@@ -207,6 +211,8 @@ public abstract class FileController {
             GameState.setData(data);
         } catch (IOException | ClassNotFoundException i) {
             System.out.println("Exception in deserializing");
+        } catch (Exception e) {
+
         }
     }
 
@@ -223,7 +229,7 @@ public abstract class FileController {
     public static int loadCheckPoint() {
         try (FileInputStream fileIn = new FileInputStream(Constants.CHECKPOINT_PATH);
              ObjectInputStream in = new ObjectInputStream(fileIn)) {
-            return  in.read();
+            return in.read();
         } catch (IOException i) {
             System.out.println("Exception in deserializing");
             return 1;

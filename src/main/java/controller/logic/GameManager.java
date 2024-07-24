@@ -36,7 +36,7 @@ public class GameManager {
     }
 
     public GameManager() {
-//        WaveGenerator.generateFinalBoss();
+        WaveGenerator.generateFinalBoss();
 //        EnemyGenerator.makeSmiley();
 //        EnemyGenerator.makeHand();
 //        EnemyGenerator.makeSecondHand();

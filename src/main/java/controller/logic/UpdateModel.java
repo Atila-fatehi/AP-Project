@@ -22,7 +22,7 @@ import java.util.Random;
 public abstract class UpdateModel {
     public static void update() {
 
-        WaveGenerator.handleWaves();
+//        WaveGenerator.handleWaves();
 
         updateEnemies();
 
