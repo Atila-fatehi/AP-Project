@@ -1,6 +1,5 @@
 package model.objectsModel.miniBoss;
 
-import controller.logic.GameState;
 import controller.util.Constants;
 import controller.util.CostumeMap;
 import model.Paintable.Paintable;
@@ -8,14 +7,11 @@ import model.collision.Collidable;
 import model.collision.Drown;
 import model.collision.Drownable;
 import model.objectsModel.epsilon.Epsilon;
-import view.gameGUI.GamePanel;
 
 import javax.swing.*;
-import javax.xml.xpath.XPath;
 import java.awt.*;
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 
@@ -68,7 +64,7 @@ public class Laser implements Paintable, Drownable, Collidable, Serializable {
 
     public void drown() {
         HashMap<String , java.util.Timer> insMaps = CostumeMap.getInstance().getMap().get(id);
-        if (Drown.checkEpsilonDrown(this)) {
+        if (Drown.checkEpsilonDrownOnPoly(this)) {
             if (!insMaps.containsKey("Epsilon")) {
                 java.util.Timer ep = new java.util.Timer();
                 ep.schedule(new TimerTask() {
@@ -76,7 +72,7 @@ public class Laser implements Paintable, Drownable, Collidable, Serializable {
                     public void run() {
                         Epsilon.getInstance().setHP(Epsilon.getInstance().getHP() - damage);
                     }
-                }, 1000, 1000);
+                }, 0, 1000);
                 insMaps.put("Epsilon", ep);
             }
         } else {

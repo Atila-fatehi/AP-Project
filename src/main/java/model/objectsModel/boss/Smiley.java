@@ -1,6 +1,7 @@
 package model.objectsModel.boss;
 
 import controller.MouseController;
+import controller.logic.EnemyGenerator;
 import controller.logic.GameState;
 import controller.util.Calculator;
 import controller.util.Constants;
@@ -10,6 +11,7 @@ import model.collision.Collidable;
 import model.collision.Collision;
 import model.collision.CollisionHandler;
 import model.movable.Movable;
+import model.objectsModel.Portal;
 import model.objectsModel.epsilon.Bullet;
 import model.objectsModel.epsilon.Epsilon;
 import model.objectsModel.miniBoss.BlackOrb;
@@ -32,8 +34,9 @@ public class Smiley implements Collidable, Movable, Paintable, Serializable {
     private double width = 250;
     private double height = 250;
     private boolean damageable;
-    private boolean squeeze;
-    private boolean proj;
+    private AttackType attackType = AttackType.NAN;
+    int vomitCounter;
+
     private double maxVelocityX;
     private double maxVelocityY;
     private double vx;
@@ -116,7 +119,10 @@ public class Smiley implements Collidable, Movable, Paintable, Serializable {
 
     @Override
     public void move() {
-        if (squeeze) {
+        if (attackType == AttackType.SQUEEZE ||
+                attackType == AttackType.VOMIT ||
+                attackType == AttackType.SLAP ||
+                attackType == AttackType.NAN ||attackType == AttackType.RAPID_FIRE) {
             if (Calculator.distance(desx, desy, x, y) >= 10) {
                 x += vx;
                 y += vy;
@@ -141,17 +147,24 @@ public class Smiley implements Collidable, Movable, Paintable, Serializable {
                     }
                 }
             }
-            if (!CostumeTimer.getInstance().getMap().containsKey(id)) {
-                java.util.Timer shootTimer = new java.util.Timer();
-                shootTimer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        shootBullet();
-                    }
-                }, 3000, 500);
-                CostumeTimer.getInstance().newTimer(id, shootTimer);
+            if (attackType == AttackType.VOMIT) {
+                vomitCounter++;
+                if(vomitCounter <= 5) new Vomit(EnemyGenerator.randomXonScreen() , EnemyGenerator.randomYonScreen());
+            } else if(attackType == AttackType.RAPID_FIRE ||attackType == AttackType.SQUEEZE){
+                Vomit.vomits.clear();
+                vomitCounter = 0 ;
+                if (!CostumeTimer.getInstance().getMap().containsKey(id)) {
+                    java.util.Timer shootTimer = new java.util.Timer();
+                    shootTimer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            shootBullet();
+                        }
+                    }, 3000, 500);
+                    CostumeTimer.getInstance().newTimer(id, shootTimer);
+                }
             }
-        } else if(proj){
+        } else if (attackType == AttackType.PROJECTILE) {
             if (linearMovement) {
                 x += vx;
                 y += vy;
@@ -187,7 +200,7 @@ public class Smiley implements Collidable, Movable, Paintable, Serializable {
 
     @Override
     public void calculateMovingDirection(double x, double y) {
-        if (squeeze) {
+        if (attackType == AttackType.SQUEEZE || attackType == AttackType.VOMIT || attackType == AttackType.SLAP || attackType == AttackType.NAN) {
             x = 700;
             y = 50;
             double angle = Math.atan2(y - this.y, x - this.x);
@@ -198,7 +211,7 @@ public class Smiley implements Collidable, Movable, Paintable, Serializable {
             desx = x;
             desy = y;
             acquired = false;
-        } else if (proj) {
+        } else if (attackType == AttackType.PROJECTILE) {
             if (!acquired) {
                 linearMovement = Calculator.distance(x, y, (this.x + width), (this.y + height / 2)) >= radiusFromEpsilon;
                 if (linearMovement) {
@@ -284,14 +297,6 @@ public class Smiley implements Collidable, Movable, Paintable, Serializable {
         this.damageable = damageable;
     }
 
-    public boolean isSqueeze() {
-        return squeeze;
-    }
-
-    public void setSqueeze(boolean squeeze) {
-        this.squeeze = squeeze;
-    }
-
     public Timer getShootTimer() {
         if (CostumeTimer.getInstance().getMap().get(id) == null) {
             return new Timer();
@@ -304,11 +309,12 @@ public class Smiley implements Collidable, Movable, Paintable, Serializable {
         return id;
     }
 
-    public boolean isProj() {
-        return proj;
+    public AttackType getAttackType() {
+        return attackType;
     }
 
-    public void setProj(boolean proj) {
-        this.proj = proj;
+    public void setAttackType(AttackType attackType) {
+        this.attackType = attackType;
     }
+
 }

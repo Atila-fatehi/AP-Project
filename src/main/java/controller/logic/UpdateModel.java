@@ -8,6 +8,7 @@ import model.collision.Collision;
 import model.collision.CollisionHandler;
 import model.collision.WallCollisionHandler;
 import model.objectsModel.Portal;
+import model.objectsModel.boss.Vomit;
 import model.objectsModel.enemy.Collectable;
 import model.objectsModel.epsilon.Epsilon;
 import model.objectsModel.miniBoss.OrbManager;
@@ -210,6 +211,13 @@ public abstract class UpdateModel {
                 GameState.smilies.remove(0);
                 GameState.hands.remove(0);
                 GameState.secondHands.remove(0);
+            }
+
+
+            //vomit
+
+            for (int i = 0; i < Vomit.vomits.size(); i++) {
+                Vomit.vomits.get(i).drown();
             }
         }
     }

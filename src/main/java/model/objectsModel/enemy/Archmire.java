@@ -1,22 +1,18 @@
 package model.objectsModel.enemy;
 
-import controller.logic.GameState;
 import controller.util.Constants;
 import model.Paintable.Paintable;
 import model.collision.*;
 import model.movable.Movable;
 import model.objectsModel.epsilon.Epsilon;
-import view.gameGUI.GamePanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
 public class Archmire implements Paintable, Movable, Drownable, Collidable, Serializable {
 
@@ -179,9 +175,9 @@ public class Archmire implements Paintable, Movable, Drownable, Collidable, Seri
 
     public void drown() {
         boolean is = false;
-        if (Drown.checkEpsilonDrown(this)) is = true;
+        if (Drown.checkEpsilonDrownOnPoly(this)) is = true;
         for (int i = 0; i < traveledX.size(); i += 15) {
-            if (Drown.checkEpsilonDrown(new Archmire(traveledX.get(i), traveledY.get(i)))) is = true;
+            if (Drown.checkEpsilonDrownOnPoly(new Archmire(traveledX.get(i), traveledY.get(i)))) is = true;
         }
         if (is) {
             if (!insMaps.containsKey("Epsilon")) {

@@ -9,6 +9,7 @@ import model.objectsModel.Portal;
 import model.objectsModel.boss.Hand;
 import model.objectsModel.boss.SecondHand;
 import model.objectsModel.boss.Smiley;
+import model.objectsModel.boss.Vomit;
 import model.objectsModel.enemy.*;
 import model.objectsModel.epsilon.Bullet;
 import model.objectsModel.epsilon.Epsilon;
@@ -95,6 +96,7 @@ public class GameState implements Serializable {
         empower = data.empower;
         heal = data.heal;
         Portal.portals = data.portals;
+        Vomit.vomits = data.vomits;
         GamePanel.setInstance();
         Epsilon.setInstance(epsilon);
 
@@ -114,9 +116,11 @@ public class GameState implements Serializable {
         paintables.addAll(bullets);
         paintables.add(epsilon);
         paintables.addAll(Portal.portals);
+        paintables.addAll(Vomit.vomits);
         paintables.addAll(hands);
         paintables.addAll(secondHands);
         paintables.addAll(smilies);
+
         paintables.addAll(archmires);
         paintables.addAll(lasers);
         paintables.addAll(orbs);
@@ -154,6 +158,7 @@ public class GameState implements Serializable {
         hands.clear();
         secondHands.clear();
         Portal.portals.clear();
+        Vomit.vomits.clear();
         Arrays.fill(WaveGenerator.generated, false);
         Arrays.fill(WaveGenerator.waveStart, -1);
         Epsilon.getInstance().savedToCheckPoint = false;
@@ -180,5 +185,6 @@ public class GameState implements Serializable {
         hands.clear();
         secondHands.clear();
         Portal.portals.clear();
+        Vomit.vomits.clear();
     }
 }

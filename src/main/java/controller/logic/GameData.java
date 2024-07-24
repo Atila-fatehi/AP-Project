@@ -3,6 +3,7 @@ package controller.logic;
 import controller.FileController;
 import model.objectsModel.Portal;
 import model.objectsModel.boss.Smiley;
+import model.objectsModel.boss.Vomit;
 import model.objectsModel.enemy.*;
 import model.objectsModel.epsilon.Bullet;
 import model.objectsModel.epsilon.Epsilon;
@@ -39,6 +40,7 @@ public class GameData implements Serializable {
     public ArrayList<JPanel> panels = new ArrayList<>();
     public ArrayList<Smiley> smilies = new ArrayList<>();
     public ArrayList<Portal> portals = new ArrayList<>();
+    public ArrayList<Vomit> vomits = new ArrayList<>();
     public int elapsedTime;
     public int difficulty ;
     public int wave;
@@ -69,5 +71,6 @@ public class GameData implements Serializable {
         empower = GameState.empower;
         heal = GameState.heal;
         portals = Portal.portals;
+        vomits = Vomit.vomits;
     }
 }

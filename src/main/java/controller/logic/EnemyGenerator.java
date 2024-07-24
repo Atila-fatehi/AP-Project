@@ -150,11 +150,11 @@ public abstract class EnemyGenerator {
         return initY + GamePanel.getInstance().getLocationY();
     }
 
-    static int randomXonScreen() {
-        return new Random().nextInt(700) + GamePanel.getInstance().getLocationX();
+    public static int randomXonScreen() {
+        return new Random().nextInt(500) + GamePanel.getInstance().getLocationX();
     }
 
-    static int randomYonScreen() {
-        return new Random().nextInt(700) + GamePanel.getInstance().getLocationY();
+    public static int randomYonScreen() {
+        return new Random().nextInt(500) + GamePanel.getInstance().getLocationY();
     }
 }

@@ -4,7 +4,6 @@ import controller.util.Calculator;
 import model.objectsModel.epsilon.Epsilon;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
 
 public abstract class Drown {
 
@@ -24,8 +23,13 @@ public abstract class Drown {
         return true;
 
     }
+    public static boolean checkEpsilonDrownOnCircle(Drownable drownable , int radius) {
+        int x = drownable.getXPoints()[0];
+        int y = drownable.getYPoints()[0];
+        return Calculator.distance(x,y,Epsilon.getInstance().getX(),Epsilon.getInstance().getY()) <= radius - Epsilon.getInstance().getRadius();
+    }
 
-    public static boolean checkEpsilonDrown(Drownable drownable) {
+    public static boolean checkEpsilonDrownOnPoly(Drownable drownable) {
         int[] xPoints = drownable.getXPoints();
         int[] yPoints = drownable.getYPoints();
         int x = (int) Epsilon.getInstance().getX();

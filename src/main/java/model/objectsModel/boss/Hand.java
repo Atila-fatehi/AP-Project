@@ -7,6 +7,8 @@ import controller.util.Constants;
 import controller.util.CostumeTimer;
 import model.Paintable.Paintable;
 import model.collision.Collidable;
+import model.collision.Collision;
+import model.collision.CollisionHandler;
 import model.movable.Movable;
 import model.objectsModel.epsilon.Bullet;
 import model.objectsModel.epsilon.Epsilon;
@@ -15,6 +17,7 @@ import view.gameGUI.GamePanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Timer;
@@ -28,8 +31,7 @@ public class Hand implements Collidable, Movable, Paintable, Serializable {
     private double width = 180;
     private double height = 250;
     private boolean damageable;
-    private boolean squeeze;
-    private boolean proj;
+    private AttackType attackType = AttackType.NAN;
     private double maxVelocityX;
     private double maxVelocityY;
     private double vx;
@@ -59,12 +61,12 @@ public class Hand implements Collidable, Movable, Paintable, Serializable {
 
     @Override
     public int[] getXPoints() {
-        return new int[0];
+        return new int[]{(int) x, (int) x + (int) width, (int) x + (int) width, (int) x};
     }
 
     @Override
     public int[] getYPoints() {
-        return new int[0];
+        return new int[]{(int) y, (int) y, (int) y + (int) height, (int) y + (int) height};
     }
 
     @Override
@@ -82,7 +84,8 @@ public class Hand implements Collidable, Movable, Paintable, Serializable {
         int locX = panel.getX();
         int locY = panel.getY();
         g.drawImage(Constants.HAND_IMG, (int) ((int) x - locX), (int) ((int) y - locY), panel);
-
+//        g.setColor(Color.ORANGE);
+//        g.fillRect((int) x - locX,(int) y - locY , (int) width, (int) height);
 //        locX = panel.getX();
 //        locY = panel.getY();
 //        Graphics g2 = panel.getGraphics();
@@ -90,7 +93,10 @@ public class Hand implements Collidable, Movable, Paintable, Serializable {
     }
 
     public void checkCollision() {
-
+        Point2D epsilonCollisionPoint = Collision.checkEpsilonCollision(this);
+        if (epsilonCollisionPoint != null) {
+            CollisionHandler.handleCollisionOnPoint(epsilonCollisionPoint);
+        }
     }
 
     public void selfDestruct() {
@@ -101,7 +107,7 @@ public class Hand implements Collidable, Movable, Paintable, Serializable {
 
     @Override
     public void move() {
-        if (squeeze) {
+        if (attackType == AttackType.SQUEEZE || attackType == AttackType.SLAP || attackType == AttackType.NAN) {
             if (Calculator.distance(desx, desy, x, y) >= 10) {
                 x += vx;
                 y += vy;
@@ -126,7 +132,7 @@ public class Hand implements Collidable, Movable, Paintable, Serializable {
                     }
                 }
             }
-        } else if (proj) {
+        } else if (attackType == AttackType.PROJECTILE) {
             if (!CostumeTimer.getInstance().getMap().containsKey(id)) {
                 java.util.Timer shootTimer = new java.util.Timer();
                 shootTimer.schedule(new TimerTask() {
@@ -178,9 +184,17 @@ public class Hand implements Collidable, Movable, Paintable, Serializable {
 
     @Override
     public void calculateMovingDirection(double x, double y) {
-        if (squeeze) {
-            x = GamePanel.getInstance().getX() - 180;
-            y = GamePanel.getInstance().getY() + GamePanel.getInstance().getPanelHeight() / 2;
+        if (attackType == AttackType.SQUEEZE || attackType == AttackType.SLAP || attackType == AttackType.NAN) {
+            if (attackType == AttackType.SQUEEZE) {
+                x = GamePanel.getInstance().getX() - width;
+                y = GamePanel.getInstance().getY() + GamePanel.getInstance().getPanelHeight() / 2;
+            } else if (attackType == AttackType.SLAP) {
+                x = x - width / 2;
+                y = y - height / 2;
+            } else if (attackType == AttackType.NAN) {
+                x = 300;
+                y = 130;
+            }
             double angle = Math.atan2(y - this.y, x - this.x);
             maxVelocityX = constantV * Math.cos(angle);
             maxVelocityY = constantV * Math.sin(angle);
@@ -189,10 +203,7 @@ public class Hand implements Collidable, Movable, Paintable, Serializable {
             desx = x;
             desy = y;
             acquired = false;
-        } else if (proj) {
-//            x = 300;
-//            y = 130;
-
+        } else if (attackType == AttackType.PROJECTILE) {
             if (!acquired) {
                 linearMovement = Calculator.distance(x, y, (this.x + width), (this.y + height / 2)) >= radiusFromEpsilon;
                 if (linearMovement) {
@@ -279,12 +290,12 @@ public class Hand implements Collidable, Movable, Paintable, Serializable {
         this.damageable = damageable;
     }
 
-    public boolean isSqueeze() {
-        return squeeze;
+    public AttackType getAttackType() {
+        return attackType;
     }
 
-    public void setSqueeze(boolean squeeze) {
-        this.squeeze = squeeze;
+    public void setAttackType(AttackType attackType) {
+        this.attackType = attackType;
     }
 
     public java.util.Timer getShootTimer() {
@@ -297,14 +308,6 @@ public class Hand implements Collidable, Movable, Paintable, Serializable {
 
     public String getId() {
         return id;
-    }
-
-    public boolean isProj() {
-        return proj;
-    }
-
-    public void setProj(boolean proj) {
-        this.proj = proj;
     }
 
 }

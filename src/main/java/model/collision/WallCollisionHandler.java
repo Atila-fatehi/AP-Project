@@ -2,6 +2,7 @@ package model.collision;
 
 import controller.audio.players.AudioPlayer;
 import controller.logic.GameState;
+import model.objectsModel.boss.AttackType;
 import model.objectsModel.epsilon.Epsilon;
 import view.gameGUI.GamePanel;
 
@@ -28,7 +29,7 @@ public abstract class WallCollisionHandler {
 
                 @Override
                 public void run() {
-                    if ((GameState.hands.isEmpty()) || !GameState.hands.get(0).isSqueeze()) {
+                    if ((GameState.hands.isEmpty()) || GameState.hands.get(0).getAttackType() != AttackType.SQUEEZE) {
                         GamePanel.getInstance().setLocation(GamePanel.getInstance().getLocationX() - wallExpansionRate, GamePanel.getInstance().getLocationY());
                         GamePanel.getInstance().setSize(GamePanel.getInstance().getPanelWidth() + wallExpansionRate, GamePanel.getInstance().getPanelHeight());
                         GamePanel.getInstance().setPanelWidth(GamePanel.getInstance().getPanelWidth() + wallExpansionRate);
@@ -71,7 +72,7 @@ public abstract class WallCollisionHandler {
 
                 @Override
                 public void run() {
-                    if ((GameState.hands.isEmpty()) || !GameState.hands.get(0).isSqueeze()) {
+                    if ((GameState.hands.isEmpty()) || GameState.hands.get(0).getAttackType() != AttackType.SQUEEZE) {
                             GamePanel.getInstance().setSize(GamePanel.getInstance().getPanelWidth() + wallExpansionRate, GamePanel.getInstance().getPanelHeight());
                             GamePanel.getInstance().setPanelWidth(GamePanel.getInstance().getPanelWidth() + wallExpansionRate);
 

@@ -5,6 +5,7 @@ import controller.audio.players.AudioPlayer;
 import controller.util.Constants;
 import controller.util.CostumeTimer;
 import model.objectsModel.Portal;
+import model.objectsModel.boss.AttackType;
 import model.objectsModel.epsilon.Epsilon;
 import view.gameGUI.GamePanel;
 
@@ -194,43 +195,73 @@ public abstract class WaveGenerator {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                if (new Random().nextBoolean()) {
-                    if (!GameState.hands.isEmpty() && !GameState.secondHands.isEmpty() && !GameState.smilies.isEmpty()) {
-                        GameState.hands.get(0).setSqueeze(true);
-                        GameState.secondHands.get(0).setSqueeze(true);
-                        GameState.smilies.get(0).setSqueeze(true);
 
-                        GameState.hands.get(0).setProj(false);
-                        GameState.secondHands.get(0).setProj(false);
-                        GameState.smilies.get(0).setProj(false);
+                if (!GameState.hands.isEmpty() && !GameState.secondHands.isEmpty() && !GameState.smilies.isEmpty()) {
+                    GameState.hands.get(0).setAttackType(AttackType.VOMIT);
+                    GameState.secondHands.get(0).setAttackType(AttackType.VOMIT);
+                    GameState.smilies.get(0).setAttackType(AttackType.VOMIT);
 
-                        GameState.smilies.get(0).setDamageable(true);
-                        GameState.hands.get(0).setDamageable(false);
-                        GameState.secondHands.get(0).setDamageable(false);
+                    GameState.smilies.get(0).setDamageable(true);
+                    GameState.hands.get(0).setDamageable(false);
+                    GameState.secondHands.get(0).setDamageable(false);
 
-                        if (CostumeTimer.getInstance().getMap().containsKey(GameState.hands.get(0).getId()))
-                            CostumeTimer.getInstance().getMap().remove(GameState.hands.get(0).getId()).cancel();
-                        if (CostumeTimer.getInstance().getMap().containsKey(GameState.secondHands.get(0).getId()))
-                            CostumeTimer.getInstance().getMap().remove(GameState.secondHands.get(0).getId()).cancel();
-                    }
-                } else {
-                    if (!GameState.hands.isEmpty() && !GameState.secondHands.isEmpty() && !GameState.smilies.isEmpty()) {
-                        GameState.hands.get(0).setSqueeze(false);
-                        GameState.secondHands.get(0).setSqueeze(false);
-                        GameState.smilies.get(0).setSqueeze(false);
-
-                        GameState.hands.get(0).setProj(true);
-                        GameState.secondHands.get(0).setProj(true);
-                        GameState.smilies.get(0).setProj(true);
-
-                        GameState.smilies.get(0).setDamageable(false);
-                        GameState.hands.get(0).setDamageable(true);
-                        GameState.secondHands.get(0).setDamageable(true);
-
-                        if (CostumeTimer.getInstance().getMap().containsKey(GameState.smilies.get(0).getId()))
-                            CostumeTimer.getInstance().getMap().remove(GameState.smilies.get(0).getId()).cancel();
-                    }
+                    if (CostumeTimer.getInstance().getMap().containsKey(GameState.hands.get(0).getId()))
+                        CostumeTimer.getInstance().getMap().remove(GameState.hands.get(0).getId()).cancel();
+                    if (CostumeTimer.getInstance().getMap().containsKey(GameState.secondHands.get(0).getId()))
+                        CostumeTimer.getInstance().getMap().remove(GameState.secondHands.get(0).getId()).cancel();
                 }
+
+//                if (!GameState.hands.isEmpty() && !GameState.secondHands.isEmpty() && !GameState.smilies.isEmpty()) {
+//                    GameState.smilies.get(0).setAttackType(AttackType.SLAP);
+//
+//                    if (new Random().nextBoolean()) {
+//                        GameState.hands.get(0).setAttackType(AttackType.NAN);
+//                        GameState.secondHands.get(0).setAttackType(AttackType.SLAP);
+//                    } else {
+//                        GameState.hands.get(0).setAttackType(AttackType.SLAP);
+//                        GameState.secondHands.get(0).setAttackType(AttackType.NAN);
+//                    }
+//
+//                    GameState.smilies.get(0).setDamageable(true);
+//                    GameState.hands.get(0).setDamageable(false);
+//                    GameState.secondHands.get(0).setDamageable(false);
+//
+//                    if (CostumeTimer.getInstance().getMap().containsKey(GameState.hands.get(0).getId()))
+//                        CostumeTimer.getInstance().getMap().remove(GameState.hands.get(0).getId()).cancel();
+//                    if (CostumeTimer.getInstance().getMap().containsKey(GameState.secondHands.get(0).getId()))
+//                        CostumeTimer.getInstance().getMap().remove(GameState.secondHands.get(0).getId()).cancel();
+//                }
+
+
+//                if (new Random().nextBoolean()) {
+//                    if (!GameState.hands.isEmpty() && !GameState.secondHands.isEmpty() && !GameState.smilies.isEmpty()) {
+//                        GameState.hands.get(0).setAttackType(AttackType.SQUEEZE);
+//                        GameState.secondHands.get(0).setAttackType(AttackType.SQUEEZE);
+//                        GameState.smilies.get(0).setAttackType(AttackType.SQUEEZE);
+//
+//                        GameState.smilies.get(0).setDamageable(true);
+//                        GameState.hands.get(0).setDamageable(false);
+//                        GameState.secondHands.get(0).setDamageable(false);
+//
+//                        if (CostumeTimer.getInstance().getMap().containsKey(GameState.hands.get(0).getId()))
+//                            CostumeTimer.getInstance().getMap().remove(GameState.hands.get(0).getId()).cancel();
+//                        if (CostumeTimer.getInstance().getMap().containsKey(GameState.secondHands.get(0).getId()))
+//                            CostumeTimer.getInstance().getMap().remove(GameState.secondHands.get(0).getId()).cancel();
+//                    }
+//                } else {
+//                    if (!GameState.hands.isEmpty() && !GameState.secondHands.isEmpty() && !GameState.smilies.isEmpty()) {
+//                        GameState.hands.get(0).setAttackType(AttackType.PROJECTILE);
+//                        GameState.secondHands.get(0).setAttackType(AttackType.PROJECTILE);
+//                        GameState.smilies.get(0).setAttackType(AttackType.PROJECTILE);
+//
+//                        GameState.smilies.get(0).setDamageable(false);
+//                        GameState.hands.get(0).setDamageable(true);
+//                        GameState.secondHands.get(0).setDamageable(true);
+//
+//                        if (CostumeTimer.getInstance().getMap().containsKey(GameState.smilies.get(0).getId()))
+//                            CostumeTimer.getInstance().getMap().remove(GameState.smilies.get(0).getId()).cancel();
+//                    }
+//                }
             }
         }, 3000, 15000);
 
