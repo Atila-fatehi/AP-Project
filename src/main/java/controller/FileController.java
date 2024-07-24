@@ -213,8 +213,8 @@ public abstract class FileController {
     public static void saveCheckPoint() {
         try (FileOutputStream fileOut = new FileOutputStream(Constants.CHECKPOINT_PATH);
              ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
-            WaveGenerator.generated[GameState.wave + 1] = false;
-            out.write(GameState.wave + 1);
+            WaveGenerator.inWait = false;
+            out.write(GameState.wave);
         } catch (IOException i) {
             System.out.println("Exception in serializing");
         }

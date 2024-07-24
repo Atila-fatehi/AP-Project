@@ -44,7 +44,6 @@ public abstract class Calculator {
             if (i != WaveGenerator.waveStart.length - 1) {
                 if (WaveGenerator.waveStart[i + 1] == -1) {
                     sum += (i + 1) * (GameState.elapsedTime - WaveGenerator.waveStart[i]);
-                    System.out.println(i + 1);
                     break;
                 } else {
                     sum += (i + 1) * (WaveGenerator.waveStart[i + 1] - WaveGenerator.waveStart[i]);

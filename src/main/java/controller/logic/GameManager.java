@@ -1,6 +1,8 @@
 package controller.logic;
 
 import controller.FileController;
+import controller.util.Constants;
+import model.objectsModel.Portal;
 import model.objectsModel.epsilon.Epsilon;
 import view.frames.MainMenu;
 import view.gameGUI.GameFrame;
@@ -185,8 +187,12 @@ public class GameManager {
             String[] responses = {"OK"};
             if (JOptionPane.showOptionDialog(null, "You died but you have a checkpoint", "Game Over", JOptionPane.INFORMATION_MESSAGE, JOptionPane.INFORMATION_MESSAGE, null, responses, 0) != -2) {
                 Epsilon.getInstance().setHP(10);
+                Epsilon.getInstance().setX(Constants.INITIAL_EPSILON_POSX);
+                Epsilon.getInstance().setY(Constants.INITIAL_EPSILON_POSY);
                 GameState.initiateNewGameOnCheckpoint();
                 GameState.wave = FileController.loadCheckPoint();
+                WaveGenerator.generated[GameState.wave - 1] = false;
+                WaveGenerator.handleWaves();
                 GameManager.getInstance().setPaused(false);
                 Epsilon.getInstance().alreadyDead = true;
             }
