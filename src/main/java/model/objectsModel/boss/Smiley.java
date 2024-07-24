@@ -22,10 +22,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.Timer;
-import java.util.TimerTask;
-import java.util.UUID;
 
 public class Smiley implements Collidable, Movable, Paintable, Serializable {
     private int HP = 300;
@@ -207,7 +205,7 @@ public class Smiley implements Collidable, Movable, Paintable, Serializable {
     @Override
     public void calculateMovingDirection(double x, double y) {
         if (attackType == AttackType.SQUEEZE || attackType == AttackType.VOMIT || attackType == AttackType.SLAP || attackType == AttackType.NAN) {
-            x = 700;
+            x = 800;
             y = 50;
             double angle = Math.atan2(y - this.y, x - this.x);
             maxVelocityX = constantV * Math.cos(angle);
@@ -243,6 +241,14 @@ public class Smiley implements Collidable, Movable, Paintable, Serializable {
                     acquired = true;
                 }
             }
+        }
+    }
+
+    public void parry() {
+        if(new Random().nextBoolean()) {
+            vx = 20;
+        }else{
+            vx = -20;
         }
     }
 

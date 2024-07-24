@@ -1,6 +1,7 @@
 package model.objectsModel.boss;
 
 import controller.MouseController;
+import controller.logic.GameManager;
 import controller.logic.GameState;
 import controller.util.Calculator;
 import controller.util.Constants;
@@ -105,7 +106,12 @@ public class Fist implements Collidable, Movable, Paintable, Serializable {
 
     @Override
     public void move() {
-        if (attackType == AttackType.SQUEEZE || attackType == AttackType.SLAP || attackType == AttackType.NAN) {
+        if (attackType == AttackType.SQUEEZE || attackType == AttackType.SLAP || attackType == AttackType.NAN || attackType == AttackType.QUAKE) {
+            if (attackType == AttackType.QUAKE && Calculator.distance(desx, desy, x, y) <= 10) {
+                attackType = AttackType.NAN;
+                CollisionHandler.handleHugeCollisionOnPoint(new Point2D.Double(desx, desy));
+                GameManager.getInstance().confuseControls();
+            }
             if (Calculator.distance(desx, desy, x, y) >= 10) {
                 x += vx;
                 y += vy;
@@ -182,25 +188,31 @@ public class Fist implements Collidable, Movable, Paintable, Serializable {
 
     @Override
     public void calculateMovingDirection(double x, double y) {
-        if (attackType == AttackType.SQUEEZE || attackType == AttackType.SLAP) {
-            if (attackType == AttackType.SQUEEZE) {
-                x = GamePanel.getInstance().getX() + GamePanel.getInstance().getPanelWidth();
-                y = GamePanel.getInstance().getY() + GamePanel.getInstance().getPanelHeight() / 2;
-            } else if (attackType == AttackType.SLAP) {
-                x = x - width / 2;
-                y = y - height / 2;
-            } else if (attackType == AttackType.NAN) {
-                x = 1350;
-                y = 130;
+        if (attackType == AttackType.SQUEEZE || attackType == AttackType.SLAP || attackType == AttackType.QUAKE || attackType == AttackType.NAN) {
+            if (attackType == AttackType.QUAKE) {
+                x = GamePanel.getInstance().getX() + GamePanel.getInstance().getPanelWidth() / 3;
+                y = GamePanel.getInstance().getY() + GamePanel.getInstance().getPanelHeight();
+                double angle = Math.atan2(y - this.y, x - this.x);
+                maxVelocityX = 10 * Math.cos(angle);
+                maxVelocityY = 10 * Math.sin(angle);
+                accX = Math.cos(angle);
+                accY = Math.sin(angle);
+                desx = x;
+                desy = y;
+                acquired = false;
+            } else if (attackType == AttackType.NAN || attackType == AttackType.SLAP || attackType == AttackType.SQUEEZE) {
+                x = 300;
+                y = 130 + 250 + 350;
+                double angle = Math.atan2(y - this.y, x - this.x);
+                maxVelocityX = constantV * Math.cos(angle);
+                maxVelocityY = constantV * Math.sin(angle);
+                accX = Math.cos(angle);
+                accY = Math.sin(angle);
+                desx = x;
+                desy = y;
+                acquired = false;
             }
-            double angle = Math.atan2(y - this.y, x - this.x);
-            maxVelocityX = 1 * Math.cos(angle);
-            maxVelocityY = 1 * Math.sin(angle);
-            accX = Math.cos(angle);
-            accY = Math.sin(angle);
-            desx = x;
-            desy = y;
-            acquired = false;
+
         } else if (attackType == AttackType.PROJECTILE) {
             if (!acquired) {
                 linearMovement = Calculator.distance(x, y, (this.x + width), (this.y + height)) >= radiusFromEpsilon;

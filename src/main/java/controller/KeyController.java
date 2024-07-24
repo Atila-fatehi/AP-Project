@@ -21,7 +21,7 @@ public class KeyController implements KeyListener {
     public static int shop;
     public static int ability;
 
-    public static void initiateKeyCodes(){
+    public static void initiateKeyCodes() {
         int[] codes = FileController.readKeyCodes();
         assert codes != null;
         w = codes[0];
@@ -32,6 +32,17 @@ public class KeyController implements KeyListener {
         ability = codes[5];
     }
 
+    public static void changeCodes() {
+        int[] codes = FileController.readKeyCodes();
+        assert codes != null;
+        w = codes[3];
+        a = codes[5];
+        s = codes[4];
+        d = codes[2];
+        shop = codes[0];
+        ability = codes[1];
+    }
+
     @Override
     public void keyTyped(KeyEvent e) {
 
@@ -40,7 +51,7 @@ public class KeyController implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
-        if (keyCode ==  w) {
+        if (keyCode == w) {
             Epsilon.getInstance().setAccU(true);
             Epsilon.getInstance().setDecU(false);
         }
@@ -57,7 +68,7 @@ public class KeyController implements KeyListener {
             Epsilon.getInstance().setDecR(false);
         }
         if (keyCode == shop) {
-            if(!GameManager.getInstance().isPaused() && !GameState.slumber) {
+            if (!GameManager.getInstance().isPaused() && !GameState.slumber) {
                 GameManager.getInstance().setPaused(true);
                 AudioPlayer.play(AudioPlayer.PAUSE);
                 new ShopFrame();

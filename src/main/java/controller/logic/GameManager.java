@@ -1,6 +1,7 @@
 package controller.logic;
 
 import controller.FileController;
+import controller.KeyController;
 import controller.util.Constants;
 import model.objectsModel.Portal;
 import model.objectsModel.epsilon.Epsilon;
@@ -292,5 +293,16 @@ public class GameManager {
 
     public boolean isGameWon() {
         return gameWon;
+    }
+
+    public void confuseControls() {
+        KeyController.changeCodes();
+        new java.util.Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                KeyController.initiateKeyCodes();
+                this.cancel();
+            }
+        } ,8000 , 1111 );
     }
 }

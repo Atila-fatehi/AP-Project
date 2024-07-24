@@ -121,7 +121,7 @@ public abstract class EnemyGenerator {
     }
 
     public static void makeSmiley(){
-        GameState.smilies.add(new Smiley(700 , 50));
+        GameState.smilies.add(new Smiley(900 , 50));
     }
     public static void makeHand(){
         GameState.hands.add(new Hand(300 , 130));
@@ -130,7 +130,7 @@ public abstract class EnemyGenerator {
         GameState.secondHands.add(new SecondHand(1350 , 130));
     }
     public static void makeFist(){
-        GameState.fists.add(new Fist(300 , 130 + 250 + 150));
+        GameState.fists.add(new Fist(300 , 130 + 250 + 350));
     }
     static int randomiseInitialPosX() {
         Random random = new Random();

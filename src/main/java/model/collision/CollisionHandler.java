@@ -9,7 +9,7 @@ import java.awt.geom.Point2D;
 public abstract class CollisionHandler {
 
 
-    public static void handleCollisionOnPoint(Point2D collisionPoint){
+    public static void handleCollisionOnPoint(Point2D collisionPoint) {
         final double RATE = 12;
         for (int i = 0; i < GameState.trigoraths.size(); i++) {
             if (Calculator.distance(GameState.trigoraths.get(i).getCenterOfGravity().getX(), GameState.trigoraths.get(i).getCenterOfGravity().getY(), collisionPoint.getX(), collisionPoint.getY()) <= 70) {
@@ -60,7 +60,8 @@ public abstract class CollisionHandler {
             }
         }
     }
-    public static void handleCollisionOnPointNoEpsilon(Point2D collisionPoint){
+
+    public static void handleCollisionOnPointNoEpsilon(Point2D collisionPoint) {
         final double RATE = 20;
         for (int i = 0; i < GameState.trigoraths.size(); i++) {
             if (Calculator.distance(GameState.trigoraths.get(i).getCenterOfGravity().getX(), GameState.trigoraths.get(i).getCenterOfGravity().getY(), collisionPoint.getX(), collisionPoint.getY()) <= 70) {
@@ -80,19 +81,19 @@ public abstract class CollisionHandler {
 
     public static void stopEpsilon(Point2D collisionPoint) {
         double RATE = 1;
-        if(collisionPoint.getX() > Epsilon.getInstance().getX()){
+        if (collisionPoint.getX() > Epsilon.getInstance().getX()) {
             Epsilon.getInstance().setVx(0);
             Epsilon.getInstance().setX(collisionPoint.getX() - Epsilon.getInstance().getRadius() - 7);
         }
-        if(collisionPoint.getX() < Epsilon.getInstance().getX()){
+        if (collisionPoint.getX() < Epsilon.getInstance().getX()) {
             Epsilon.getInstance().setVx(0);
             Epsilon.getInstance().setX(collisionPoint.getX() + Epsilon.getInstance().getRadius() + 7);
         }
-        if(collisionPoint.getY() < Epsilon.getInstance().getY()){
+        if (collisionPoint.getY() < Epsilon.getInstance().getY()) {
             Epsilon.getInstance().setVy(0);
             Epsilon.getInstance().setY(collisionPoint.getY() + Epsilon.getInstance().getRadius() + 7);
         }
-        if(collisionPoint.getY() > Epsilon.getInstance().getY()){
+        if (collisionPoint.getY() > Epsilon.getInstance().getY()) {
             Epsilon.getInstance().setVy(0);
             Epsilon.getInstance().setY(collisionPoint.getY() - Epsilon.getInstance().getRadius() - 7);
         }
@@ -117,5 +118,43 @@ public abstract class CollisionHandler {
         Epsilon.getInstance().setDecL(true);
         Epsilon.getInstance().setDecD(true);
         Epsilon.getInstance().setDecR(true);
+    }
+
+    public static void handleHugeCollisionOnPoint(Point2D.Double collisionPoint) {
+        int RATE = 30;
+        if (Calculator.distance(Epsilon.getInstance().getX(), Epsilon.getInstance().getY(), collisionPoint.getX(), collisionPoint.getY()) <= 1000) {
+            if (collisionPoint.getX() >= Epsilon.getInstance().getX() && collisionPoint.getY() >= Epsilon.getInstance().getY()) {
+                Epsilon.getInstance().setVx(-RATE);
+                Epsilon.getInstance().setVy(-RATE);
+                Epsilon.getInstance().setDecU(true);
+                Epsilon.getInstance().setDecL(true);
+                Epsilon.getInstance().setDecD(true);
+                Epsilon.getInstance().setDecR(true);
+            }
+            if (collisionPoint.getX() <= Epsilon.getInstance().getX() && collisionPoint.getY() <= Epsilon.getInstance().getY()) {
+                Epsilon.getInstance().setVx(RATE);
+                Epsilon.getInstance().setVy(RATE);
+                Epsilon.getInstance().setDecU(true);
+                Epsilon.getInstance().setDecL(true);
+                Epsilon.getInstance().setDecD(true);
+                Epsilon.getInstance().setDecR(true);
+            }
+            if (collisionPoint.getX() <= Epsilon.getInstance().getX() && collisionPoint.getY() >= Epsilon.getInstance().getY()) {
+                Epsilon.getInstance().setVx(RATE);
+                Epsilon.getInstance().setVy(-RATE);
+                Epsilon.getInstance().setDecU(true);
+                Epsilon.getInstance().setDecL(true);
+                Epsilon.getInstance().setDecD(true);
+                Epsilon.getInstance().setDecR(true);
+            }
+            if (collisionPoint.getX() >= Epsilon.getInstance().getX() && collisionPoint.getY() <= Epsilon.getInstance().getY()) {
+                Epsilon.getInstance().setVx(-RATE);
+                Epsilon.getInstance().setVy(RATE);
+                Epsilon.getInstance().setDecU(true);
+                Epsilon.getInstance().setDecL(true);
+                Epsilon.getInstance().setDecD(true);
+                Epsilon.getInstance().setDecR(true);
+            }
+        }
     }
 }

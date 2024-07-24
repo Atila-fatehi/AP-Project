@@ -161,23 +161,23 @@ public abstract class UpdateModel {
 
         //portal
         for (int i = 0; i < Portal.portals.size(); i++) {
-            if(Portal.portals.get(i).epsilonCollision()){
+            if (Portal.portals.get(i).epsilonCollision()) {
                 GameManager.getInstance().setPaused(true);
-                String[] responses = {"Pay " + Calculator.progressRate() + " to save here" , "Decline (gain " + Calculator.progressRate()/10 + " XP)"};
+                String[] responses = {"Pay " + Calculator.progressRate() + " to save here", "Decline (gain " + Calculator.progressRate() / 10 + " XP)"};
                 if (JOptionPane.showOptionDialog(null, "Your XP = " + Epsilon.getInstance().getXP(), "Check Point", JOptionPane.INFORMATION_MESSAGE, JOptionPane.INFORMATION_MESSAGE, null, responses, 0) == 0) {
-                    if(Epsilon.getInstance().getXP() >= Calculator.progressRate()) {
+                    if (Epsilon.getInstance().getXP() >= Calculator.progressRate()) {
                         FileController.saveCheckPoint();
                         Epsilon.getInstance().savedToCheckPoint = true;
                         Epsilon.getInstance().setHP(Epsilon.getInstance().getHP() + 10);
-                    }else{
-                        String [] responses2 = {"OK"};
+                    } else {
+                        String[] responses2 = {"OK"};
                         if (JOptionPane.showOptionDialog(null, "you don't have enough XP", "", JOptionPane.INFORMATION_MESSAGE, JOptionPane.INFORMATION_MESSAGE, null, responses2, 0) != -2) {
-                            Epsilon.getInstance().setXP(Epsilon.getInstance().getXP() + Calculator.progressRate()/10);
+                            Epsilon.getInstance().setXP(Epsilon.getInstance().getXP() + Calculator.progressRate() / 10);
                         }
                     }
                     GameManager.getInstance().setPaused(false);
-                }else{
-                    Epsilon.getInstance().setXP(Epsilon.getInstance().getXP() + Calculator.progressRate()/10);
+                } else {
+                    Epsilon.getInstance().setXP(Epsilon.getInstance().getXP() + Calculator.progressRate() / 10);
                     GameManager.getInstance().setPaused(false);
                 }
 
@@ -187,7 +187,6 @@ public abstract class UpdateModel {
         }
 
 
-
         //boss
         if (!GameState.smilies.isEmpty()) {
             GameState.smilies.get(0).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
@@ -195,10 +194,10 @@ public abstract class UpdateModel {
             GameState.smilies.get(0).checkCollision();
 
 
-            if(GameState.smilies.get(0).getHP() <= 200){
-                if(GameState.fists.isEmpty()) EnemyGenerator.makeFist();
+            if (GameState.smilies.get(0).getHP() <= 300 && GameState.fists.isEmpty()) {
+                EnemyGenerator.makeFist();
             }
-            if(GameState.smilies.get(0).getHP() <= 0){
+            if (GameState.smilies.get(0).getHP() <= 0) {
                 AudioPlayer.play(AudioPlayer.MELON_IMPACT);
                 Epsilon.getInstance().setXP(Epsilon.getInstance().getXP() + 250);
                 GameState.smilies.get(0).selfDestruct();
@@ -225,10 +224,15 @@ public abstract class UpdateModel {
             GameState.secondHands.get(0).move();
             GameState.secondHands.get(0).checkCollision();
         }
+        if (!GameState.fists.isEmpty()) {
+            GameState.fists.get(0).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
+            GameState.fists.get(0).move();
+            GameState.fists.get(0).checkCollision();
+        }
     }
 
     public static void updateEpsilon() {
-//epsilon stuff
+        //epsilon stuff
         Epsilon.getInstance().move();
         Epsilon.getInstance().wallCollision();
         Epsilon.getInstance().setCurrentPanel();
@@ -363,6 +367,11 @@ public abstract class UpdateModel {
         //boss
         for (int i = 0; i < GameState.bullets.size(); i++) {
             if (!GameState.smilies.isEmpty()) {
+
+                if (GameState.bullets.get(i).getY() <= GameState.smilies.get(0).getY() + 100) {
+//                    GameState.smilies.get(0).parry();
+                }
+
                 Point2D collision = Collision.checkSmileyCollision(GameState.smilies.get(0), GameState.bullets.get(i));
                 if (collision != null && GameState.smilies.get(0).isDamageable()) {
                     AudioPlayer.play(AudioPlayer.SPLAT);
