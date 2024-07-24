@@ -189,36 +189,41 @@ public abstract class UpdateModel {
 
 
         //boss
-        if (!GameState.smilies.isEmpty() &&
-                !GameState.hands.isEmpty() &&
-                !GameState.secondHands.isEmpty()) {
+        if (!GameState.smilies.isEmpty()) {
             GameState.smilies.get(0).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
             GameState.smilies.get(0).move();
             GameState.smilies.get(0).checkCollision();
 
-            GameState.hands.get(0).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
-            GameState.hands.get(0).move();
-            GameState.hands.get(0).checkCollision();
 
-            GameState.secondHands.get(0).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
-            GameState.secondHands.get(0).move();
-            GameState.secondHands.get(0).checkCollision();
-
+            if(GameState.smilies.get(0).getHP() <= 200){
+                if(GameState.fists.isEmpty()) EnemyGenerator.makeFist();
+            }
             if(GameState.smilies.get(0).getHP() <= 0){
                 AudioPlayer.play(AudioPlayer.MELON_IMPACT);
                 Epsilon.getInstance().setXP(Epsilon.getInstance().getXP() + 250);
                 GameState.smilies.get(0).selfDestruct();
-                GameState.smilies.remove(0);
-                GameState.hands.remove(0);
-                GameState.secondHands.remove(0);
+                GameState.smilies.clear();
+                GameState.hands.clear();
+                GameState.secondHands.clear();
             }
 
-
             //vomit
-
             for (int i = 0; i < Vomit.vomits.size(); i++) {
                 Vomit.vomits.get(i).drown();
             }
+
+
+        }
+
+        if (!GameState.hands.isEmpty()) {
+            GameState.hands.get(0).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
+            GameState.hands.get(0).move();
+            GameState.hands.get(0).checkCollision();
+        }
+        if (!GameState.secondHands.isEmpty()) {
+            GameState.secondHands.get(0).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
+            GameState.secondHands.get(0).move();
+            GameState.secondHands.get(0).checkCollision();
         }
     }
 

@@ -1,7 +1,6 @@
 package model.objectsModel.boss;
 
 import controller.MouseController;
-import controller.logic.EnemyGenerator;
 import controller.logic.GameState;
 import controller.util.Calculator;
 import controller.util.Constants;
@@ -11,10 +10,8 @@ import model.collision.Collidable;
 import model.collision.Collision;
 import model.collision.CollisionHandler;
 import model.movable.Movable;
-import model.objectsModel.Portal;
 import model.objectsModel.epsilon.Bullet;
 import model.objectsModel.epsilon.Epsilon;
-import model.objectsModel.miniBoss.BlackOrb;
 import view.gameGUI.GameFrame;
 import view.gameGUI.GamePanel;
 
@@ -27,25 +24,20 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 
-public class Smiley implements Collidable, Movable, Paintable, Serializable {
-    private int HP = 300;
+public class Fist implements Collidable, Movable, Paintable, Serializable {
     private double x;
     private double y;
-    private double posxHP;
-    private double posyHP;
     private double width = 250;
-    private double height = 250;
-    private boolean damageable;
+    private double height = 200;
     private AttackType attackType = AttackType.NAN;
-    int vomitCounter;
-
     private double maxVelocityX;
     private double maxVelocityY;
     private double vx;
     private double vy;
+    private double desx;
+    private double desy;
     private double accX;
     private double accY;
-    String id;
 
     double angle;
     boolean acquired;
@@ -53,28 +45,27 @@ public class Smiley implements Collidable, Movable, Paintable, Serializable {
     double acquiredX;
     double acquiredY;
     int radiusFromEpsilon = 600;
-    double constantV = 2d;
-    double desx;
-    double desy;
+    int constantV = 2;
+    String id;
+    private FistPanel panel;
 
-    private SmileyPanel panel;
-
-    public Smiley(double x, double y) {
+    public Fist(double x, double y) {
         this.x = x;
         this.y = y;
-        panel = new SmileyPanel();
         id = UUID.randomUUID().toString();
+        panel = new FistPanel();
     }
 
     @Override
     public int[] getXPoints() {
-        return new int[0];
+        return new int[]{(int) x, (int) x + (int) width, (int) x + (int) width, (int) x};
     }
 
     @Override
     public int[] getYPoints() {
-        return new int[0];
+        return new int[]{(int) y, (int) y, (int) y + (int) height, (int) y + (int) height};
     }
+
 
     @Override
     public int[] getRelativeXPoints(JPanel panel) {
@@ -90,11 +81,9 @@ public class Smiley implements Collidable, Movable, Paintable, Serializable {
     public void selfPaint(Graphics g, JPanel panel) {
         int locX = panel.getX();
         int locY = panel.getY();
-        g.drawImage(Constants.SMILEY_IMG, (int) ((int) x - locX), (int) ((int) y - locY), panel);
-        g.setColor(Color.ORANGE);
-        g.drawString(String.valueOf(HP), (int) posxHP - locX, (int) posyHP - locY);
+        g.drawImage(Constants.FIST_IMG, (int) ((int) x - locX), (int) ((int) y - locY), panel);
 //        g.setColor(Color.ORANGE);
-//        g.fillOval((int) x- locX, (int) y- locY, (int) width,(int) height);
+//        g.fillRect((int) x - locX,(int) y - locY , (int) width, (int) height);
 //        locX = panel.getX();
 //        locY = panel.getY();
 //        Graphics g2 = panel.getGraphics();
@@ -102,7 +91,7 @@ public class Smiley implements Collidable, Movable, Paintable, Serializable {
     }
 
     public void checkCollision() {
-        Point2D epsilonCollisionPoint = Collision.checkSmileyCollision(this);
+        Point2D epsilonCollisionPoint = Collision.checkEpsilonCollision(this);
         if (epsilonCollisionPoint != null) {
             CollisionHandler.handleCollisionOnPoint(epsilonCollisionPoint);
         }
@@ -114,19 +103,9 @@ public class Smiley implements Collidable, Movable, Paintable, Serializable {
         CostumeTimer.getInstance().getMap().get(id).cancel();
     }
 
-
-    void shootBullet() {
-        Bullet bullet = new Bullet(x + width / 2, y + height / 2, false, Color.ORANGE, 10);
-        bullet.calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
-        GameState.bullets.add(bullet);
-    }
-
     @Override
     public void move() {
-        if (attackType == AttackType.SQUEEZE ||
-                attackType == AttackType.VOMIT ||
-                attackType == AttackType.SLAP ||
-                attackType == AttackType.NAN || attackType == AttackType.RAPID_FIRE) {
+        if (attackType == AttackType.SQUEEZE || attackType == AttackType.SLAP || attackType == AttackType.NAN) {
             if (Calculator.distance(desx, desy, x, y) >= 10) {
                 x += vx;
                 y += vy;
@@ -151,24 +130,17 @@ public class Smiley implements Collidable, Movable, Paintable, Serializable {
                     }
                 }
             }
-            if (attackType == AttackType.VOMIT) {
-                vomitCounter++;
-                if (vomitCounter <= 5) new Vomit(EnemyGenerator.randomXonScreen(), EnemyGenerator.randomYonScreen());
-            } else if (attackType == AttackType.RAPID_FIRE || attackType == AttackType.SQUEEZE) {
-                Vomit.vomits.clear();
-                vomitCounter = 0;
-                if (!CostumeTimer.getInstance().getMap().containsKey(id)) {
-                    java.util.Timer shootTimer = new java.util.Timer();
-                    shootTimer.schedule(new TimerTask() {
-                        @Override
-                        public void run() {
-                            shootBullet();
-                        }
-                    }, 3000, 500);
-                    CostumeTimer.getInstance().newTimer(id, shootTimer);
-                }
-            }
         } else if (attackType == AttackType.PROJECTILE) {
+            if (!CostumeTimer.getInstance().getMap().containsKey(id)) {
+                java.util.Timer shootTimer = new java.util.Timer();
+                shootTimer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        shootBullet();
+                    }
+                }, 3000, 1000);
+                CostumeTimer.getInstance().newTimer(id, shootTimer);
+            }
             if (linearMovement) {
                 x += vx;
                 y += vy;
@@ -199,19 +171,31 @@ public class Smiley implements Collidable, Movable, Paintable, Serializable {
                 y = acquiredY + (int) (radiusFromEpsilon * Math.sin(Math.toRadians(angle)));
             }
         }
-        posxHP = x + width / 2 - 10;
-        posyHP = y + height + 20;
         panel.setLocation((int) x, (int) y);
+    }
+
+    private void shootBullet() {
+        Bullet bullet = new Bullet(x + width / 2, y + height / 2, false, Color.ORANGE, 10);
+        bullet.calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
+        GameState.bullets.add(bullet);
     }
 
     @Override
     public void calculateMovingDirection(double x, double y) {
-        if (attackType == AttackType.SQUEEZE || attackType == AttackType.VOMIT || attackType == AttackType.SLAP || attackType == AttackType.NAN) {
-            x = 700;
-            y = 50;
+        if (attackType == AttackType.SQUEEZE || attackType == AttackType.SLAP) {
+            if (attackType == AttackType.SQUEEZE) {
+                x = GamePanel.getInstance().getX() + GamePanel.getInstance().getPanelWidth();
+                y = GamePanel.getInstance().getY() + GamePanel.getInstance().getPanelHeight() / 2;
+            } else if (attackType == AttackType.SLAP) {
+                x = x - width / 2;
+                y = y - height / 2;
+            } else if (attackType == AttackType.NAN) {
+                x = 1350;
+                y = 130;
+            }
             double angle = Math.atan2(y - this.y, x - this.x);
-            maxVelocityX = constantV * Math.cos(angle);
-            maxVelocityY = constantV * Math.sin(angle);
+            maxVelocityX = 1 * Math.cos(angle);
+            maxVelocityY = 1 * Math.sin(angle);
             accX = Math.cos(angle);
             accY = Math.sin(angle);
             desx = x;
@@ -219,7 +203,7 @@ public class Smiley implements Collidable, Movable, Paintable, Serializable {
             acquired = false;
         } else if (attackType == AttackType.PROJECTILE) {
             if (!acquired) {
-                linearMovement = Calculator.distance(x, y, (this.x + width), (this.y + height / 2)) >= radiusFromEpsilon;
+                linearMovement = Calculator.distance(x, y, (this.x + width), (this.y + height)) >= radiusFromEpsilon;
                 if (linearMovement) {
                     double angle = Math.atan2(y - (this.y + height), x - (this.x + width));
                     maxVelocityX = constantV * Math.cos(angle);
@@ -243,12 +227,13 @@ public class Smiley implements Collidable, Movable, Paintable, Serializable {
                     acquired = true;
                 }
             }
+
+
         }
     }
 
-
-    class SmileyPanel extends JPanel {
-        public SmileyPanel() {
+    class FistPanel extends JPanel {
+        public FistPanel() {
             setBounds((int) x, (int) y, (int) width, (int) height);
             setBackground(Constants.DARK_BLUE);
             GameState.panels.add(this);
@@ -261,7 +246,7 @@ public class Smiley implements Collidable, Movable, Paintable, Serializable {
             super.paintComponent(g);
             int locX = this.getX();
             int locY = this.getY();
-            g.drawImage(Constants.SMILEY_IMG, (int) x - locX, (int) y - locY, this);
+            g.drawImage(Constants.FIST_IMG, (int) x - locX, (int) y - locY, this);
             g.setFont(Constants.BOLD_15);
             ArrayList<Paintable> paintables = GameState.getPaintables();
             for (Paintable paintable : paintables) {
@@ -287,23 +272,7 @@ public class Smiley implements Collidable, Movable, Paintable, Serializable {
         this.y = y;
     }
 
-    public int getHP() {
-        return HP;
-    }
-
-    public void setHP(int HP) {
-        this.HP = HP;
-    }
-
-    public boolean isDamageable() {
-        return damageable;
-    }
-
-    public void setDamageable(boolean damageable) {
-        this.damageable = damageable;
-    }
-
-    public Timer getShootTimer() {
+    public java.util.Timer getShootTimer() {
         if (CostumeTimer.getInstance().getMap().get(id) == null) {
             return new Timer();
         } else {
@@ -322,5 +291,4 @@ public class Smiley implements Collidable, Movable, Paintable, Serializable {
     public void setAttackType(AttackType attackType) {
         this.attackType = attackType;
     }
-
 }

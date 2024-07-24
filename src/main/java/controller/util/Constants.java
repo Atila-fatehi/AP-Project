@@ -70,6 +70,7 @@ public abstract class Constants {
     public static final File SMILEY_PIC = new File(Paths.get("").toAbsolutePath() + "/src/main/java/view/images/smiley.PNG");
     public static final File HAND_PIC = new File(Paths.get("").toAbsolutePath() + "/src/main/java/view/images/h1.PNG");
     public static final File HAND_SECOND_PIC = new File(Paths.get("").toAbsolutePath() + "/src/main/java/view/images/h2.PNG");
+    public static final File FIST_PIC = new File(Paths.get("").toAbsolutePath() + "/src/main/java/view/images/fist.PNG");
 
     public static final Image ORB_IMG;
     static {
@@ -127,7 +128,14 @@ public abstract class Constants {
             throw new RuntimeException(e);
         }
     }
-
+    public static final Image FIST_IMG;
+    static {
+        try {
+            FIST_IMG = ImageIO.read(Constants.FIST_PIC).getScaledInstance(250,200 , Image.SCALE_DEFAULT);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public static final String SETTING_PATH = Paths.get("").toAbsolutePath() + "/src/main/java/model/dataBase/settings.txt";
     public static final String ABILITY_PATH = Paths.get("").toAbsolutePath() + "/src/main/java/model/dataBase/abilityCode.txt";
     public static final String XP_PATH = Paths.get("").toAbsolutePath() + "/src/main/java/model/dataBase/XP.txt";

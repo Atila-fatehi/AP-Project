@@ -6,10 +6,7 @@ import controller.util.CostumeTimer;
 import model.Paintable.Paintable;
 import model.collision.Collidable;
 import model.objectsModel.Portal;
-import model.objectsModel.boss.Hand;
-import model.objectsModel.boss.SecondHand;
-import model.objectsModel.boss.Smiley;
-import model.objectsModel.boss.Vomit;
+import model.objectsModel.boss.*;
 import model.objectsModel.enemy.*;
 import model.objectsModel.epsilon.Bullet;
 import model.objectsModel.epsilon.Epsilon;
@@ -43,6 +40,7 @@ public class GameState implements Serializable {
     public static ArrayList<Smiley> smilies = new ArrayList<>();
     public static ArrayList<Hand> hands = new ArrayList<>();
     public static ArrayList<SecondHand> secondHands = new ArrayList<>();
+    public static ArrayList<Fist> fists = new ArrayList<>();
     public static int elapsedTime;
     public static int difficulty = Objects.requireNonNull(FileController.readSettings())[1];
     public static int wave;
@@ -87,14 +85,19 @@ public class GameState implements Serializable {
         lasers = data.lasers;
         panels = data.panels;
         smilies = data.smilies;
-//        hands = data.hands;
-//        secondHands = data.secondHands;
+        hands = data.hands;
+        secondHands = data.secondHands;
+        fists = data.fists;
+
         elapsedTime = data.elapsedTime;
         difficulty = data.difficulty;
         wave = data.wave;
         banish = data.banish;
         empower = data.empower;
         heal = data.heal;
+
+
+
         Portal.portals = data.portals;
         Vomit.vomits = data.vomits;
         GamePanel.setInstance();
@@ -119,6 +122,7 @@ public class GameState implements Serializable {
         paintables.addAll(Vomit.vomits);
         paintables.addAll(hands);
         paintables.addAll(secondHands);
+        paintables.addAll(fists);
         paintables.addAll(smilies);
 
         paintables.addAll(archmires);
@@ -157,6 +161,7 @@ public class GameState implements Serializable {
         smilies.clear();
         hands.clear();
         secondHands.clear();
+        fists.clear();
         Portal.portals.clear();
         Vomit.vomits.clear();
         Arrays.fill(WaveGenerator.generated, false);
@@ -184,6 +189,7 @@ public class GameState implements Serializable {
         smilies.clear();
         hands.clear();
         secondHands.clear();
+        fists.clear();
         Portal.portals.clear();
         Vomit.vomits.clear();
     }

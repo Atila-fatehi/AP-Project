@@ -2,8 +2,7 @@ package controller.logic;
 
 import controller.FileController;
 import model.objectsModel.Portal;
-import model.objectsModel.boss.Smiley;
-import model.objectsModel.boss.Vomit;
+import model.objectsModel.boss.*;
 import model.objectsModel.enemy.*;
 import model.objectsModel.epsilon.Bullet;
 import model.objectsModel.epsilon.Epsilon;
@@ -31,7 +30,7 @@ public class GameData implements Serializable {
     public ArrayList<Squarantine> squarantines = new ArrayList<>();
     public ArrayList<Collectable> collectables = new ArrayList<>();
     public ArrayList<Omenoct> omenocts = new ArrayList<>();
-//    public ArrayList<Archmire> archmires = new ArrayList<>();
+    //    public ArrayList<Archmire> archmires = new ArrayList<>();
     public ArrayList<Necropick> necropicks = new ArrayList<>();
     public ArrayList<Wyrm> wyrms = new ArrayList<>();
     public ArrayList<Barricados> barricados = new ArrayList<>();
@@ -39,10 +38,13 @@ public class GameData implements Serializable {
     public ArrayList<Laser> lasers = new ArrayList<>();
     public ArrayList<JPanel> panels = new ArrayList<>();
     public ArrayList<Smiley> smilies = new ArrayList<>();
+    public ArrayList<Hand> hands = new ArrayList<>();
+    public ArrayList<SecondHand> secondHands = new ArrayList<>();
+    public ArrayList<Fist> fists = new ArrayList<>();
     public ArrayList<Portal> portals = new ArrayList<>();
     public ArrayList<Vomit> vomits = new ArrayList<>();
     public int elapsedTime;
-    public int difficulty ;
+    public int difficulty;
     public int wave;
 
     public boolean banish;
@@ -63,6 +65,9 @@ public class GameData implements Serializable {
         orbs = GameState.orbs;
         lasers = GameState.lasers;
         smilies = GameState.smilies;
+        hands = GameState.hands;
+        secondHands = GameState.secondHands;
+        fists = GameState.fists;
         panels = GameState.panels;
         elapsedTime = GameState.elapsedTime;
         difficulty = GameState.difficulty;

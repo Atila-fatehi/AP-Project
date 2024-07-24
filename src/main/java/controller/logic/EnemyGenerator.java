@@ -3,6 +3,7 @@ package controller.logic;
 import controller.audio.players.AudioPlayer;
 import controller.util.Constants;
 import model.collision.Collision;
+import model.objectsModel.boss.Fist;
 import model.objectsModel.boss.Hand;
 import model.objectsModel.boss.SecondHand;
 import model.objectsModel.boss.Smiley;
@@ -127,6 +128,9 @@ public abstract class EnemyGenerator {
     }
     public static void makeSecondHand(){
         GameState.secondHands.add(new SecondHand(1350 , 130));
+    }
+    public static void makeFist(){
+        GameState.fists.add(new Fist(300 , 130 + 250 + 150));
     }
     static int randomiseInitialPosX() {
         Random random = new Random();
