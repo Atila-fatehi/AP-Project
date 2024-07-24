@@ -195,7 +195,7 @@ public abstract class WaveGenerator {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-       //         if (!GameState.fists.isEmpty()) GameState.fists.get(0).setAttackType(AttackType.QUAKE);
+                if (!GameState.fists.isEmpty()) GameState.fists.get(0).setAttackType(AttackType.POWER_PUNCH);
 
                 if (!GameState.hands.isEmpty() && !GameState.secondHands.isEmpty() && !GameState.smilies.isEmpty()) {
                     GameState.hands.get(0).setAttackType(AttackType.VOMIT);

@@ -20,10 +20,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.Timer;
-import java.util.TimerTask;
-import java.util.UUID;
 
 public class Fist implements Collidable, Movable, Paintable, Serializable {
     private double x;
@@ -106,11 +104,18 @@ public class Fist implements Collidable, Movable, Paintable, Serializable {
 
     @Override
     public void move() {
-        if (attackType == AttackType.SQUEEZE || attackType == AttackType.SLAP || attackType == AttackType.NAN || attackType == AttackType.QUAKE) {
+        if (attackType == AttackType.SQUEEZE || attackType == AttackType.SLAP || attackType == AttackType.NAN || attackType == AttackType.QUAKE || attackType == AttackType.POWER_PUNCH) {
             if (attackType == AttackType.QUAKE && Calculator.distance(desx, desy, x, y) <= 10) {
                 attackType = AttackType.NAN;
                 CollisionHandler.handleHugeCollisionOnPoint(new Point2D.Double(desx, desy));
                 GameManager.getInstance().confuseControls();
+            }
+            if (attackType == AttackType.POWER_PUNCH) {
+                if (Calculator.distance(desx, desy, x, y) <= 50) {
+                    attackType = AttackType.NAN;
+                    chosen = 0;
+                    CollisionHandler.handleHugeCollisionOnPoint(new Point2D.Double(desx, desy));
+                }
             }
             if (Calculator.distance(desx, desy, x, y) >= 10) {
                 x += vx;
@@ -186,8 +191,35 @@ public class Fist implements Collidable, Movable, Paintable, Serializable {
         GameState.bullets.add(bullet);
     }
 
+    int chosen = 0;
+
     @Override
     public void calculateMovingDirection(double x, double y) {
+        if (attackType == AttackType.POWER_PUNCH) {
+            if (chosen == 0) {
+                chosen = new Random().nextInt(3) + 1;
+            }
+            if (chosen == 1) {
+                x = GamePanel.getInstance().getX() - width;
+                y = GamePanel.getInstance().getY() + GamePanel.getInstance().getPanelHeight() / 3;
+            }
+            if (chosen == 2) {
+                x = GamePanel.getInstance().getX() + GamePanel.getInstance().getPanelWidth();
+                y = GamePanel.getInstance().getY() + GamePanel.getInstance().getPanelHeight() / 3;
+            }
+            if (chosen == 3) {
+                x = GamePanel.getInstance().getX() + GamePanel.getInstance().getPanelWidth() / 3;
+                y = GamePanel.getInstance().getY() + GamePanel.getInstance().getPanelHeight();
+            }
+            double angle = Math.atan2(y - this.y, x - this.x);
+            maxVelocityX = 10 * Math.cos(angle);
+            maxVelocityY = 10 * Math.sin(angle);
+            accX = Math.cos(angle);
+            accY = Math.sin(angle);
+            desx = x;
+            desy = y;
+            acquired = false;
+        }
         if (attackType == AttackType.SQUEEZE || attackType == AttackType.SLAP || attackType == AttackType.QUAKE || attackType == AttackType.NAN) {
             if (attackType == AttackType.QUAKE) {
                 x = GamePanel.getInstance().getX() + GamePanel.getInstance().getPanelWidth() / 3;
