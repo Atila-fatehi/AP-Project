@@ -48,6 +48,7 @@ public abstract class EnemyGenerator {
         }
         bullet.calculateMovingDirection(x, y);
         GameState.bullets.add(bullet);
+        GameState.allBulletCount++;
     }
 
     public static void makeNewOmenoct() {

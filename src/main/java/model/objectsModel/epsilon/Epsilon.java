@@ -10,6 +10,7 @@ import model.collision.Collision;
 import model.collision.WallCollidable;
 import model.collision.WallCollisionHandler;
 import model.movable.Movable;
+import model.objectsModel.ActiveSkill;
 import model.objectsModel.Skill;
 import view.gameGUI.GamePanel;
 
@@ -34,18 +35,6 @@ public class Epsilon implements Movable, Collidable, Paintable, WallCollidable, 
     public static void setInstance(Epsilon epsilon) {
         instance = epsilon;
         instance.XP = Integer.parseInt(FileController.readXP());
-        if (FileController.readAbilities() == 11) instance.skill.getAttack().replace("Ares", true);
-        if (FileController.readAbilities() == 12) instance.skill.getAttack().replace("Astrape", true);
-        if (FileController.readAbilities() == 13) instance.skill.getAttack().replace("Cerberus", true);
-
-        if (FileController.readAbilities() == 21) instance.skill.getDefence().replace("Aceso", true);
-        if (FileController.readAbilities() == 22) instance.skill.getDefence().replace("Melampus", true);
-        if (FileController.readAbilities() == 23) instance.skill.getDefence().replace("Chiron", true);
-
-        if (FileController.readAbilities() == 31) instance.skill.getShapeShift().replace("Proteus", true);
-        if (FileController.readAbilities() == 32) instance.skill.getShapeShift().replace("Empusa", true);
-        if (FileController.readAbilities() == 33) instance.skill.getShapeShift().replace("Dolus", true);
-
         if (Objects.requireNonNull(FileController.readSettings())[0] < 33) {
             instance.MAX_VELOCITY = 7;
             instance.ACCELERATION = 0.5;
@@ -69,7 +58,8 @@ public class Epsilon implements Movable, Collidable, Paintable, WallCollidable, 
     private double MAX_VELOCITY;
     private double ACCELERATION;
     private int damageRate = 5;
-    private final Skill skill = new Skill();
+    private ActiveSkill skill;
+
     private boolean accU, accD, accR, accL;
     private boolean decU = true, decD = true, decR = true, decL = true;
     private boolean hasVertex;
@@ -83,17 +73,17 @@ public class Epsilon implements Movable, Collidable, Paintable, WallCollidable, 
         this.x = x;
         this.y = y;
         this.XP = Integer.parseInt(FileController.readXP());
-        if (FileController.readAbilities() == 11) skill.getAttack().replace("Ares", true);
-        if (FileController.readAbilities() == 12) skill.getAttack().replace("Astrape", true);
-        if (FileController.readAbilities() == 13) skill.getAttack().replace("Cerberus", true);
+        if (FileController.readActiveAbility() == 11) skill = ActiveSkill.a1;
+        if (FileController.readActiveAbility() == 12) skill = ActiveSkill.a2;
+        if (FileController.readActiveAbility() == 13) skill = ActiveSkill.a3;
 
-        if (FileController.readAbilities() == 21) skill.getDefence().replace("Aceso", true);
-        if (FileController.readAbilities() == 22) skill.getDefence().replace("Melampus", true);
-        if (FileController.readAbilities() == 23) skill.getDefence().replace("Chiron", true);
+        if (FileController.readActiveAbility() == 21) skill = ActiveSkill.d1;
+        if (FileController.readActiveAbility() == 22) skill = ActiveSkill.d2;
+        if (FileController.readActiveAbility() == 23) skill = ActiveSkill.d3;
 
-        if (FileController.readAbilities() == 31) skill.getShapeShift().replace("Proteus", true);
-        if (FileController.readAbilities() == 32) skill.getShapeShift().replace("Empusa", true);
-        if (FileController.readAbilities() == 33) skill.getShapeShift().replace("Dolus", true);
+        if (FileController.readActiveAbility() == 31) skill = ActiveSkill.s1;
+        if (FileController.readActiveAbility() == 32) skill = ActiveSkill.s2;
+        if (FileController.readActiveAbility() == 33) skill = ActiveSkill.s3;
 
         if (Objects.requireNonNull(FileController.readSettings())[0] < 33) {
             MAX_VELOCITY = 7;
@@ -336,9 +326,6 @@ public class Epsilon implements Movable, Collidable, Paintable, WallCollidable, 
         this.decL = decL;
     }
 
-    public Skill getSkill() {
-        return skill;
-    }
 
     public int getDamageRate() {
         return damageRate;

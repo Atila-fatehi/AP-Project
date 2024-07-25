@@ -37,7 +37,6 @@ public class GameManager {
     }
 
     public GameManager() {
-//        WaveGenerator.generateFinalBoss();
         viewTimer = new java.util.Timer();
         viewTimer.schedule(new TimerTask() {
             @Override
@@ -139,6 +138,8 @@ public class GameManager {
     public void gameWon() {
         GameMusicPlayer.getInstance().getClip().stop();
         GameMusicPlayer.getInstance().setPlaying(false);
+        paused = true;
+        stopTimers();
         AudioPlayer.play(AudioPlayer.WIN_MUSIC);
         FileController.writeXP(Epsilon.getInstance().getXP());
         java.util.Timer timer = new java.util.Timer();
@@ -146,6 +147,7 @@ public class GameManager {
             @Override
             public void run() {
                 Epsilon.getInstance().setRadius(Epsilon.getInstance().getRadius() + 5);
+                UpdateView.update();
                 if (Epsilon.getInstance().getRadius() == 800) {
                     timer.cancel();
                 }
@@ -160,8 +162,12 @@ public class GameManager {
                 if (GamePanel.getInstance().getPanelHeight() <= -10 || GamePanel.getInstance().getPanelWidth() <= -10) {
                     timer2.cancel();
                     String[] responses = {"Main Menu"};
-                    if (JOptionPane.showOptionDialog(null, "Your XP = " + Epsilon.getInstance().getXP(), "Game Over", JOptionPane.INFORMATION_MESSAGE, JOptionPane.INFORMATION_MESSAGE, null, responses, 0) != -2) {
+                    if (JOptionPane.showOptionDialog(null, "Your XP : " + Epsilon.getInstance().getXP() + "\n" +
+                            "Bullets fired : " + GameState.allBulletCount + "\n" +
+                            "Successful Bullets :  " + GameState.successfulBulletCount + "\n" +
+                            "Enemies Killed " + GameState.killedEnemies, "Game Over", JOptionPane.INFORMATION_MESSAGE, JOptionPane.INFORMATION_MESSAGE, null, responses, 0) != -2) {
                         GameFrame.getInstance().dispose();
+                        if (!GameState.smilies.isEmpty()) GameState.smilies.get(0).selfDestruct();
                         Epsilon.getInstance().setXP(0);
                         Epsilon.getInstance().setHP(100);
                         new MainMenu();
@@ -291,6 +297,6 @@ public class GameManager {
                 KeyController.initiateKeyCodes();
                 this.cancel();
             }
-        } ,8000 , 1111 );
+        }, 8000, 1111);
     }
 }

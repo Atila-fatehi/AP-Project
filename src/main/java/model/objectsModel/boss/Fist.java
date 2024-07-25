@@ -100,7 +100,11 @@ public class Fist implements Collidable, Movable, Paintable, Serializable {
     public void selfDestruct() {
         GameState.panels.remove(panel);
         GameFrame.getInstance().remove(panel);
-        CostumeTimer.getInstance().getMap().get(id).cancel();
+        try {
+            CostumeTimer.getInstance().getMap().get(id).cancel();
+        }catch (Exception e){
+
+        }
     }
 
     @Override

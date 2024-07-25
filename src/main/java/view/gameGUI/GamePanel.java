@@ -66,6 +66,15 @@ public class GamePanel extends JPanel {
         g.setColor(Constants.ANOTHER_STRING_COLOR);
         //TODO
         g.drawString("Active Skill : " + GameState.getAbility(), 10, 45);
+//        try {
+//            g.drawString(GameState.smilies.get(0).getAttackType().toString() + "    " +
+//                    GameState.hands.get(0).getAttackType().toString() + "    " +
+//                    GameState.secondHands.get(0).getAttackType().toString() + "    "  +
+//                            GameState.fists.get(0).getAttackType().toString() + "    "
+//                    , 10, 65);
+//        }catch (Exception e){
+//
+//        }
         g.dispose();
     }
 

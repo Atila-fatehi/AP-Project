@@ -17,8 +17,12 @@ public abstract class UpdateView {
         GameFrame.getInstance().repaint();
         GamePanel.getInstance().repaint();
         ArrayList<JPanel> panels = GameState.panels;
-        for (JPanel panel : panels) {
-            panel.repaint();
+        for (int i = 0; i < panels.size(); i++) {
+            try {
+                panels.get(i).repaint();
+            }catch (Exception e){
+
+            }
         }
     }
 }

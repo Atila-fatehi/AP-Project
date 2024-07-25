@@ -25,7 +25,7 @@ import java.util.TimerTask;
 import java.util.UUID;
 
 public class SecondHand implements Collidable, Movable, Paintable, Serializable {
-    private double HP = 100;
+    private int HP = 100;
     private double x;
     private double y;
     private double width = 200;
@@ -40,6 +40,8 @@ public class SecondHand implements Collidable, Movable, Paintable, Serializable 
     private double desy;
     private double accX;
     private double accY;
+    private double posxHP;
+    private double posyHP;
 
     double angle;
     boolean acquired;
@@ -84,17 +86,17 @@ public class SecondHand implements Collidable, Movable, Paintable, Serializable 
         int locX = panel.getX();
         int locY = panel.getY();
         g.drawImage(Constants.HAND_SECOND_IMG, (int) ((int) x - locX), (int) ((int) y - locY), panel);
-//        g.setColor(Color.ORANGE);
-//        g.fillRect((int) x - locX,(int) y - locY , (int) width, (int) height);
-//        locX = panel.getX();
-//        locY = panel.getY();
-//        Graphics g2 = panel.getGraphics();
-//        g2.drawImage(image, (int) ((int) x - locX), (int) ((int) y - locY), panel);
+        g.setColor(Color.BLACK);
+        g.drawString(String.valueOf(HP), (int) posxHP - locX, (int) posyHP - locY);
     }
 
     public void checkCollision() {
         Point2D epsilonCollisionPoint = Collision.checkEpsilonCollision(this);
         if (epsilonCollisionPoint != null) {
+            if(attackType == AttackType.SLAP) {
+                attackType = AttackType.NAN;
+                Epsilon.getInstance().setHP(Epsilon.getInstance().getHP() - 10);
+            }
             CollisionHandler.handleCollisionOnPoint(epsilonCollisionPoint);
         }
     }
@@ -102,8 +104,11 @@ public class SecondHand implements Collidable, Movable, Paintable, Serializable 
     public void selfDestruct() {
         GameState.panels.remove(panel);
         GameFrame.getInstance().remove(panel);
-        CostumeTimer.getInstance().getMap().get(id).cancel();
-    }
+        try {
+            CostumeTimer.getInstance().getMap().get(id).cancel();
+        }catch (Exception e){
+
+        }    }
 
     @Override
     public void move() {
@@ -174,6 +179,8 @@ public class SecondHand implements Collidable, Movable, Paintable, Serializable 
             }
         }
         panel.setLocation((int) x, (int) y);
+        posxHP = x + width/2 - 30;
+        posyHP = y + height/2;
     }
 
     private void shootBullet() {
@@ -184,7 +191,7 @@ public class SecondHand implements Collidable, Movable, Paintable, Serializable 
 
     @Override
     public void calculateMovingDirection(double x, double y) {
-        if (attackType == AttackType.SQUEEZE || attackType == AttackType.SLAP) {
+        if (attackType == AttackType.SQUEEZE || attackType == AttackType.SLAP || attackType == AttackType.NAN) {
             if (attackType == AttackType.SQUEEZE) {
                 x = GamePanel.getInstance().getX() + GamePanel.getInstance().getPanelWidth();
                 y = GamePanel.getInstance().getY() + GamePanel.getInstance().getPanelHeight() / 2;
@@ -274,11 +281,11 @@ public class SecondHand implements Collidable, Movable, Paintable, Serializable 
         this.y = y;
     }
 
-    public double getHP() {
+    public int getHP() {
         return HP;
     }
 
-    public void setHP(double HP) {
+    public void setHP(int HP) {
         this.HP = HP;
     }
 

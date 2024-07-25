@@ -21,7 +21,7 @@ public class Vomit implements Serializable, Paintable, Drownable {
     double y;
     double radius;
     public static ArrayList<Vomit> vomits = new ArrayList<>();
-    private String id;
+    public String id;
     private int damage = 10;
 
     public Vomit(double x, double y) {

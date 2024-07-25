@@ -7,7 +7,6 @@ import controller.util.Constants;
 
 import java.awt.event.KeyEvent;
 import java.io.*;
-import java.util.ConcurrentModificationException;
 import java.util.Scanner;
 
 public abstract class FileController {
@@ -171,7 +170,7 @@ public abstract class FileController {
         return codes;
     }
 
-    public static int readAbilities() {
+    public static int readActiveAbility() {
         File file = new File(Constants.ABILITY_PATH);
         try {
             Scanner scanner = new Scanner(file);

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 public abstract class WaveGenerator {
     public static boolean inWait;
@@ -207,6 +208,7 @@ public abstract class WaveGenerator {
                 java.util.Timer timer = new java.util.Timer();
                 timer.schedule(new TimerTask() {
                     int count = 0;
+
                     @Override
                     public void run() {
                         if (count == 0) AudioPlayer.play(AudioPlayer.AWOOGA);
@@ -235,7 +237,12 @@ public abstract class WaveGenerator {
     }
 
     public static void generateFinalBoss() {
-        FrameController.setPanelToFinalPosition();
+        AudioPlayer.play(AudioPlayer.WAVE);
+        try {
+            TimeUnit.SECONDS.sleep(3);
+        } catch (InterruptedException e) {
+            System.out.println("sleep");
+        }
         EnemyGenerator.makeSmiley();
         EnemyGenerator.makeHand();
         EnemyGenerator.makeSecondHand();
@@ -244,76 +251,73 @@ public abstract class WaveGenerator {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                if (!GameState.fists.isEmpty()) GameState.fists.get(0).setAttackType(AttackType.POWER_PUNCH);
+                int probability = new Random().nextInt(6);
+                if (probability == 0) {
+                    if (!GameState.smilies.isEmpty() &&
+                            (!GameState.hands.isEmpty() || !GameState.secondHands.isEmpty() || !GameState.fists.isEmpty())) {
+                        GameState.smilies.get(0).setAttackType(AttackType.PROJECTILE);
+                        if (!GameState.hands.isEmpty()) GameState.hands.get(0).setAttackType(AttackType.PROJECTILE);
+                        if (!GameState.secondHands.isEmpty()) GameState.secondHands.get(0).setAttackType(AttackType.PROJECTILE);
+                        if (!GameState.fists.isEmpty()) GameState.fists.get(0).setAttackType(AttackType.PROJECTILE);
 
-                if (!GameState.hands.isEmpty() && !GameState.secondHands.isEmpty() && !GameState.smilies.isEmpty()) {
-                    GameState.hands.get(0).setAttackType(AttackType.VOMIT);
-                    GameState.secondHands.get(0).setAttackType(AttackType.VOMIT);
-                    GameState.smilies.get(0).setAttackType(AttackType.VOMIT);
-
-                    GameState.smilies.get(0).setDamageable(true);
-                    GameState.hands.get(0).setDamageable(false);
-                    GameState.secondHands.get(0).setDamageable(false);
-
-                    if (CostumeTimer.getInstance().getMap().containsKey(GameState.hands.get(0).getId()))
+                        GameState.smilies.get(0).setDamageable(false);
+                        if (!GameState.hands.isEmpty()) GameState.hands.get(0).setDamageable(true);
+                        if (!GameState.secondHands.isEmpty()) GameState.secondHands.get(0).setDamageable(true);
+                        if (CostumeTimer.getInstance().getMap().containsKey(GameState.smilies.get(0).getId()))
+                            CostumeTimer.getInstance().getMap().remove(GameState.smilies.get(0).getId()).cancel();
+                    }
+                } else {
+                    if (!GameState.hands.isEmpty() && CostumeTimer.getInstance().getMap().containsKey(GameState.hands.get(0).getId()))
                         CostumeTimer.getInstance().getMap().remove(GameState.hands.get(0).getId()).cancel();
-                    if (CostumeTimer.getInstance().getMap().containsKey(GameState.secondHands.get(0).getId()))
+                    if (!GameState.secondHands.isEmpty() && CostumeTimer.getInstance().getMap().containsKey(GameState.secondHands.get(0).getId()))
                         CostumeTimer.getInstance().getMap().remove(GameState.secondHands.get(0).getId()).cancel();
+                    if (!GameState.fists.isEmpty() && CostumeTimer.getInstance().getMap().containsKey(GameState.fists.get(0).getId()))
+                        CostumeTimer.getInstance().getMap().remove(GameState.fists.get(0).getId()).cancel();
+
+                    if (!GameState.smilies.isEmpty()) {
+                        GameState.smilies.get(0).setAttackType(AttackType.RAPID_FIRE);
+                        GameState.smilies.get(0).setDamageable(true);
+                        if (!GameState.hands.isEmpty()) GameState.hands.get(0).setDamageable(false);
+                        if (!GameState.secondHands.isEmpty()) GameState.secondHands.get(0).setDamageable(false);
+                    }
+                    if (new Random().nextBoolean()) {
+                        int prob = new Random().nextInt(3);
+                        if (prob == 0) {
+                            if(new Random().nextBoolean() && !GameState.smilies.isEmpty())GameState.smilies.get(0).setAttackType(AttackType.VOMIT);
+                            if (!GameState.hands.isEmpty()) GameState.hands.get(0).setAttackType(AttackType.SQUEEZE);
+                            if (!GameState.secondHands.isEmpty()) GameState.secondHands.get(0).setAttackType(AttackType.SQUEEZE);
+                            if (!GameState.smilies.isEmpty())GameState.smilies.get(0).setDamageable(true);
+                            if (!GameState.hands.isEmpty()) GameState.hands.get(0).setDamageable(false);
+                            if (!GameState.secondHands.isEmpty()) GameState.secondHands.get(0).setDamageable(false);
+                        }
+                        if (prob == 1) {
+                            if(!GameState.smilies.isEmpty())GameState.smilies.get(0).setAttackType(AttackType.VOMIT);
+                            if (!GameState.smilies.isEmpty())GameState.smilies.get(0).setDamageable(true);
+                            if (!GameState.hands.isEmpty()) GameState.hands.get(0).setDamageable(false);
+                            if (!GameState.secondHands.isEmpty()) GameState.secondHands.get(0).setDamageable(false);
+                        }
+                        if (prob == 2) {
+                            if (!GameState.fists.isEmpty()) GameState.fists.get(0).setAttackType(AttackType.POWER_PUNCH);
+                        }
+                    } else {
+                        int prob = new Random().nextInt(2);
+                        if (prob == 0) {
+                            if (!GameState.hands.isEmpty()) GameState.hands.get(0).setAttackType(AttackType.SLAP);
+                            if (!GameState.secondHands.isEmpty()) GameState.secondHands.get(0).setAttackType(AttackType.SLAP);
+                            if (!GameState.smilies.isEmpty())GameState.smilies.get(0).setDamageable(true);
+                            if (!GameState.hands.isEmpty()) GameState.hands.get(0).setDamageable(false);
+                            if (!GameState.secondHands.isEmpty()) GameState.secondHands.get(0).setDamageable(false);
+                        }
+                        if (prob == 1) {
+                            if (!GameState.fists.isEmpty()) GameState.fists.get(0).setAttackType(AttackType.POWER_PUNCH);
+                            if (!GameState.smilies.isEmpty())GameState.smilies.get(0).setDamageable(true);
+                            if (!GameState.hands.isEmpty()) GameState.hands.get(0).setDamageable(false);
+                            if (!GameState.secondHands.isEmpty()) GameState.secondHands.get(0).setDamageable(false);
+                        }
+                    }
                 }
-
-//                if (!GameState.hands.isEmpty() && !GameState.secondHands.isEmpty() && !GameState.smilies.isEmpty()) {
-//                    GameState.smilies.get(0).setAttackType(AttackType.SLAP);
-//
-//                    if (new Random().nextBoolean()) {
-//                        GameState.hands.get(0).setAttackType(AttackType.NAN);
-//                        GameState.secondHands.get(0).setAttackType(AttackType.SLAP);
-//                    } else {
-//                        GameState.hands.get(0).setAttackType(AttackType.SLAP);
-//                        GameState.secondHands.get(0).setAttackType(AttackType.NAN);
-//                    }
-//
-//                    GameState.smilies.get(0).setDamageable(true);
-//                    GameState.hands.get(0).setDamageable(false);
-//                    GameState.secondHands.get(0).setDamageable(false);
-//
-//                    if (CostumeTimer.getInstance().getMap().containsKey(GameState.hands.get(0).getId()))
-//                        CostumeTimer.getInstance().getMap().remove(GameState.hands.get(0).getId()).cancel();
-//                    if (CostumeTimer.getInstance().getMap().containsKey(GameState.secondHands.get(0).getId()))
-//                        CostumeTimer.getInstance().getMap().remove(GameState.secondHands.get(0).getId()).cancel();
-//                }
-
-
-//                if (new Random().nextBoolean()) {
-//                    if (!GameState.hands.isEmpty() && !GameState.secondHands.isEmpty() && !GameState.smilies.isEmpty()) {
-//                        GameState.hands.get(0).setAttackType(AttackType.SQUEEZE);
-//                        GameState.secondHands.get(0).setAttackType(AttackType.SQUEEZE);
-//                        GameState.smilies.get(0).setAttackType(AttackType.SQUEEZE);
-//
-//                        GameState.smilies.get(0).setDamageable(true);
-//                        GameState.hands.get(0).setDamageable(false);
-//                        GameState.secondHands.get(0).setDamageable(false);
-//
-//                        if (CostumeTimer.getInstance().getMap().containsKey(GameState.hands.get(0).getId()))
-//                            CostumeTimer.getInstance().getMap().remove(GameState.hands.get(0).getId()).cancel();
-//                        if (CostumeTimer.getInstance().getMap().containsKey(GameState.secondHands.get(0).getId()))
-//                            CostumeTimer.getInstance().getMap().remove(GameState.secondHands.get(0).getId()).cancel();
-//                    }
-//                } else {
-//                    if (!GameState.hands.isEmpty() && !GameState.secondHands.isEmpty() && !GameState.smilies.isEmpty()) {
-//                        GameState.hands.get(0).setAttackType(AttackType.PROJECTILE);
-//                        GameState.secondHands.get(0).setAttackType(AttackType.PROJECTILE);
-//                        GameState.smilies.get(0).setAttackType(AttackType.PROJECTILE);
-//
-//                        GameState.smilies.get(0).setDamageable(false);
-//                        GameState.hands.get(0).setDamageable(true);
-//                        GameState.secondHands.get(0).setDamageable(true);
-//
-//                        if (CostumeTimer.getInstance().getMap().containsKey(GameState.smilies.get(0).getId()))
-//                            CostumeTimer.getInstance().getMap().remove(GameState.smilies.get(0).getId()).cancel();
-//                    }
-//                }
             }
-        }, 3000, 15000);
+        }, 3000, 10000);
 
     }
 }

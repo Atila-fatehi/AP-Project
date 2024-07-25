@@ -45,6 +45,11 @@ public class GameState implements Serializable {
     public static int difficulty = Objects.requireNonNull(FileController.readSettings())[1];
     public static int wave;
 
+    public static int allBulletCount;
+    public static int successfulBulletCount;
+    public static int killedEnemies;
+
+
     public static boolean banish;
     public static boolean empower;
     public static boolean heal;
@@ -95,7 +100,6 @@ public class GameState implements Serializable {
         banish = data.banish;
         empower = data.empower;
         heal = data.heal;
-
 
 
         Portal.portals = data.portals;
@@ -171,7 +175,11 @@ public class GameState implements Serializable {
         Epsilon.getInstance().alreadyDead = false;
         elapsedTime = 0;
         difficulty = Objects.requireNonNull(FileController.readSettings())[1];
-        wave = 10;
+        wave = 1;
+        allBulletCount = 0;
+        successfulBulletCount = 0;
+        killedEnemies = 0;
+
     }
 
     public static void initiateNewGameOnCheckpoint() {

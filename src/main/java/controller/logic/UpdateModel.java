@@ -42,6 +42,7 @@ public abstract class UpdateModel {
                 AudioPlayer.play(AudioPlayer.MELON_IMPACT);
                 GameState.collectables.add(new Collectable(GameState.trigoraths.get(i).getCenterOfGravity().getX(), GameState.trigoraths.get(i).getCenterOfGravity().getY(), 5, Constants.TRI_YELLOW));
                 GameState.collectables.add(new Collectable(GameState.trigoraths.get(i).getCenterOfGravity().getX() + 10, GameState.trigoraths.get(i).getCenterOfGravity().getY() + 10, 5, Constants.TRI_YELLOW));
+                GameState.killedEnemies++;
                 GameState.trigoraths.remove(i);
                 i--;
             }
@@ -56,6 +57,7 @@ public abstract class UpdateModel {
                 AudioPlayer.play(AudioPlayer.MELON_IMPACT);
                 GameState.collectables.add(new Collectable(GameState.squarantines.get(i).getCenterOfGravity().getX(), GameState.squarantines.get(i).getCenterOfGravity().getY(), 5, Constants.SQUA_GREEN));
                 GameState.squarantines.get(i).getTimer().cancel();
+                GameState.killedEnemies++;
                 GameState.squarantines.remove(i);
                 i--;
             }
@@ -73,6 +75,7 @@ public abstract class UpdateModel {
                     GameState.collectables.add(new Collectable(GameState.omenocts.get(i).getCenterX() + randX, GameState.omenocts.get(i).getCenterY() + randY, 4, Constants.OMEN_PINK));
                 }
                 GameState.omenocts.get(i).getShootTimer().cancel();
+                GameState.killedEnemies++;
                 GameState.omenocts.remove(i);
                 i--;
             }
@@ -92,6 +95,7 @@ public abstract class UpdateModel {
                     GameState.collectables.add(new Collectable(GameState.necropicks.get(i).getXPoints()[0] + randX, GameState.necropicks.get(i).getYPoints()[0] + randY, 2, Color.GRAY));
                 }
                 GameState.necropicks.get(i).getTimer().cancel();
+                GameState.killedEnemies++;
                 GameState.necropicks.remove(i);
                 i--;
             }
@@ -108,6 +112,7 @@ public abstract class UpdateModel {
 
                 GameState.wyrms.get(i).getShootTimer().cancel();
                 GameState.wyrms.get(i).selfDestruct();
+                GameState.killedEnemies++;
                 GameState.wyrms.remove(i);
                 i--;
             }
@@ -129,6 +134,7 @@ public abstract class UpdateModel {
                 }
                 GameState.archmires.get(i).getTimer().cancel();
                 GameState.archmires.get(i).getTimer1().cancel();
+                GameState.killedEnemies++;
                 GameState.archmires.remove(i);
                 i--;
             }
@@ -154,6 +160,7 @@ public abstract class UpdateModel {
                     GameState.collectables.add(new Collectable(GameState.orbs.get(i).getX() + randX, GameState.orbs.get(i).getY() + randY, 30, Constants.ANOTHER_STRING_COLOR));
                 }
                 GameState.orbs.get(i).selfDestruct();
+                GameState.killedEnemies++;
                 GameState.orbs.remove(i);
                 i--;
             }
@@ -180,7 +187,6 @@ public abstract class UpdateModel {
                     Epsilon.getInstance().setXP(Epsilon.getInstance().getXP() + Calculator.progressRate() / 10);
                     GameManager.getInstance().setPaused(false);
                 }
-
                 Portal.portals.remove(i);
                 i--;
             }
@@ -190,20 +196,25 @@ public abstract class UpdateModel {
         //boss
         if (!GameState.smilies.isEmpty()) {
             GameState.smilies.get(0).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
-            GameState.smilies.get(0).move();
+            if (!GameState.slumber) GameState.smilies.get(0).move();
             GameState.smilies.get(0).checkCollision();
 
 
-            if (GameState.smilies.get(0).getHP() <= 300 && GameState.fists.isEmpty()) {
+            if (GameState.smilies.get(0).getHP() <= 200 && GameState.fists.isEmpty()) {
                 EnemyGenerator.makeFist();
             }
             if (GameState.smilies.get(0).getHP() <= 0) {
                 AudioPlayer.play(AudioPlayer.MELON_IMPACT);
                 Epsilon.getInstance().setXP(Epsilon.getInstance().getXP() + 250);
                 GameState.smilies.get(0).selfDestruct();
-                GameState.smilies.clear();
+                if (!GameState.hands.isEmpty()) GameState.hands.get(0).selfDestruct();
+                if (!GameState.secondHands.isEmpty()) GameState.secondHands.get(0).selfDestruct();
+                if (!GameState.fists.isEmpty()) GameState.fists.get(0).selfDestruct();
+//                GameState.smilies.clear();
                 GameState.hands.clear();
                 GameState.secondHands.clear();
+                GameState.fists.clear();
+                GameManager.getInstance().gameWon();
             }
 
             //vomit
@@ -216,17 +227,25 @@ public abstract class UpdateModel {
 
         if (!GameState.hands.isEmpty()) {
             GameState.hands.get(0).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
-            GameState.hands.get(0).move();
+            if (!GameState.slumber) GameState.hands.get(0).move();
             GameState.hands.get(0).checkCollision();
+            if (GameState.hands.get(0).getHP() <= 0) {
+                GameState.hands.get(0).selfDestruct();
+                GameState.hands.clear();
+            }
         }
         if (!GameState.secondHands.isEmpty()) {
             GameState.secondHands.get(0).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
-            GameState.secondHands.get(0).move();
+            if (!GameState.slumber) GameState.secondHands.get(0).move();
             GameState.secondHands.get(0).checkCollision();
+            if (GameState.secondHands.get(0).getHP() <= 0) {
+                GameState.secondHands.get(0).selfDestruct();
+                GameState.secondHands.clear();
+            }
         }
         if (!GameState.fists.isEmpty()) {
             GameState.fists.get(0).calculateMovingDirection(Epsilon.getInstance().getX(), Epsilon.getInstance().getY());
-            GameState.fists.get(0).move();
+            if (!GameState.slumber) GameState.fists.get(0).move();
             GameState.fists.get(0).checkCollision();
         }
     }
@@ -264,6 +283,7 @@ public abstract class UpdateModel {
                 if (collisionPoint != null) {
                     AudioPlayer.play(AudioPlayer.SPLAT);
                     GameState.trigoraths.get(j).setHP(GameState.trigoraths.get(j).getHP() - GameState.bullets.get(i).getDamage());
+                    GameState.successfulBulletCount++;
                     CollisionHandler.handleCollisionOnPoint(collisionPoint);
                     GameState.bullets.remove(i);
                     i--;
@@ -279,6 +299,7 @@ public abstract class UpdateModel {
                 if (collisionPoint != null) {
                     AudioPlayer.play(AudioPlayer.SPLAT);
                     GameState.squarantines.get(j).setHP(GameState.squarantines.get(j).getHP() - GameState.bullets.get(i).getDamage());
+                    GameState.successfulBulletCount++;
                     CollisionHandler.handleCollisionOnPoint(collisionPoint);
                     GameState.bullets.remove(i);
                     i--;
@@ -294,6 +315,7 @@ public abstract class UpdateModel {
                 if (collisionPoint != null) {
                     AudioPlayer.play(AudioPlayer.SPLAT);
                     GameState.omenocts.get(j).setHP(GameState.omenocts.get(j).getHP() - GameState.bullets.get(i).getDamage());
+                    GameState.successfulBulletCount++;
                     CollisionHandler.handleCollisionOnPoint(collisionPoint);
                     GameState.bullets.remove(i);
                     i--;
@@ -309,6 +331,7 @@ public abstract class UpdateModel {
                 if (collisionPoint != null) {
                     AudioPlayer.play(AudioPlayer.SPLAT);
                     GameState.necropicks.get(j).setHP(GameState.necropicks.get(j).getHP() - GameState.bullets.get(i).getDamage());
+                    GameState.successfulBulletCount++;
                     CollisionHandler.handleCollisionOnPoint(collisionPoint);
                     GameState.bullets.remove(i);
                     i--;
@@ -324,6 +347,7 @@ public abstract class UpdateModel {
                 if (collisionPoint != null) {
                     AudioPlayer.play(AudioPlayer.SPLAT);
                     GameState.wyrms.get(j).setHP(GameState.wyrms.get(j).getHP() - GameState.bullets.get(i).getDamage());
+                    GameState.successfulBulletCount++;
                     CollisionHandler.handleCollisionOnPoint(collisionPoint);
                     GameState.bullets.remove(i);
                     i--;
@@ -339,6 +363,7 @@ public abstract class UpdateModel {
                 if (collisionPoint != null) {
                     AudioPlayer.play(AudioPlayer.SPLAT);
                     GameState.archmires.get(j).setHP(GameState.archmires.get(j).getHP() - GameState.bullets.get(i).getDamage());
+                    GameState.successfulBulletCount++;
                     CollisionHandler.handleCollisionOnPoint(collisionPoint);
                     GameState.bullets.remove(i);
                     i--;
@@ -364,6 +389,7 @@ public abstract class UpdateModel {
                 Point2D collisionPoint = Collision.checkOrbCollision(GameState.orbs.get(j), GameState.bullets.get(i));
                 if (collisionPoint != null && GameState.orbs.get(j).isDamageable()) {
                     GameState.orbs.get(j).setHP(GameState.orbs.get(j).getHP() - GameState.bullets.get(i).getDamage());
+                    GameState.successfulBulletCount++;
                     GameState.bullets.remove(i);
                     i--;
                     break;
@@ -375,42 +401,46 @@ public abstract class UpdateModel {
         for (int i = 0; i < GameState.bullets.size(); i++) {
             if (!GameState.smilies.isEmpty()) {
                 if (!GameState.bullets.get(i).isFromEpsilon()) continue;
-                if (Calculator.distance(GameState.bullets.get(i).getX() , GameState.bullets.get(i).getY() , GameState.smilies.get(0).getX() , GameState.smilies.get(0).getY()) <= 400) {
+                if (Calculator.distance(GameState.bullets.get(i).getX(), GameState.bullets.get(i).getY(), GameState.smilies.get(0).getX(), GameState.smilies.get(0).getY()) <= 400) {
                     GameState.smilies.get(0).parry();
                 }
-
                 Point2D collision = Collision.checkSmileyCollision(GameState.smilies.get(0), GameState.bullets.get(i));
                 if (collision != null && GameState.smilies.get(0).isDamageable()) {
                     AudioPlayer.play(AudioPlayer.SPLAT);
                     GameState.smilies.get(0).setHP(GameState.smilies.get(0).getHP() - GameState.bullets.get(i).getDamage());
+                    GameState.successfulBulletCount++;
                     GameState.bullets.remove(i);
                     i--;
                 }
             }
-
         }
-//        for (int i = 0; i < GameState.bullets.size(); i++) {
-//            if (!GameState.hands.isEmpty()) {
-//                Point2D collision = Collision.checkHandCollision(GameState.hands.get(0), GameState.bullets.get(i));
-//                if (collision != null && GameState.hands.get(0).isDamageable()) {
-//                    GameState.hands.get(0).setHP(GameState.hands.get(0).getHP() - GameState.bullets.get(i).getDamage());
-//                    GameState.bullets.remove(i);
-//                    i--;
-//                }
-//            }
-//
-//        }
-//        for (int i = 0; i < GameState.bullets.size(); i++) {
-//            if (!GameState.secondHands.isEmpty()) {
-//                Point2D collision = Collision.checkSecondHandCollision(GameState.secondHands.get(0), GameState.bullets.get(i));
-//                if (collision != null && GameState.secondHands.get(0).isDamageable()) {
-//                    GameState.secondHands.get(0).setHP(GameState.secondHands.get(0).getHP() - GameState.bullets.get(i).getDamage());
-//                    GameState.bullets.remove(i);
-//                    i--;
-//                }
-//            }
-//
-//        }
+        if (!GameState.hands.isEmpty()) {
+            for (int i = 0; i < GameState.bullets.size(); i++) {
+                Point2D collision = Collision.checkBulletCollision(GameState.bullets.get(i), GameState.hands.get(0));
+                if (collision != null) {
+                    AudioPlayer.play(AudioPlayer.SPLAT);
+                    if (GameState.hands.get(0).isDamageable())
+                        GameState.hands.get(0).setHP(GameState.hands.get(0).getHP() - GameState.bullets.get(i).getDamage());
+                    GameState.successfulBulletCount++;
+                    GameState.bullets.remove(i);
+                    i--;
+                }
+            }
+        }
+        if (!GameState.secondHands.isEmpty()) {
+            for (int i = 0; i < GameState.bullets.size(); i++) {
+                Point2D collision = Collision.checkBulletCollision(GameState.bullets.get(i), GameState.secondHands.get(0));
+                if (collision != null) {
+                    AudioPlayer.play(AudioPlayer.SPLAT);
+                    if (GameState.secondHands.get(0).isDamageable())
+                        GameState.secondHands.get(0).setHP(GameState.secondHands.get(0).getHP() - GameState.bullets.get(i).getDamage());
+                    GameState.successfulBulletCount++;
+                    GameState.bullets.remove(i);
+                    i--;
+                }
+            }
+        }
+
         //epsilon collision
         for (int i = 0; i < GameState.bullets.size(); i++) {
             Point2D epsilonCollisionPoint = Collision.checkCircleCollision(GameState.bullets.get(i));

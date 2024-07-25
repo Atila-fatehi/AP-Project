@@ -71,6 +71,7 @@ public abstract class Constants {
     public static final File HAND_PIC = new File(Paths.get("").toAbsolutePath() + "/src/main/java/view/images/h1.PNG");
     public static final File HAND_SECOND_PIC = new File(Paths.get("").toAbsolutePath() + "/src/main/java/view/images/h2.PNG");
     public static final File FIST_PIC = new File(Paths.get("").toAbsolutePath() + "/src/main/java/view/images/fist.PNG");
+    public static final File DEAD_PIC = new File(Paths.get("").toAbsolutePath() + "/src/main/java/view/images/skull.PNG");
 
     public static final Image ORB_IMG;
     static {
@@ -108,6 +109,13 @@ public abstract class Constants {
     static {
         try {
             SMILEY_IMG = ImageIO.read(Constants.SMILEY_PIC).getScaledInstance(250,250 , Image.SCALE_DEFAULT);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }public static final Image DEAD_IMG;
+    static {
+        try {
+            DEAD_IMG = ImageIO.read(Constants.DEAD_PIC).getScaledInstance(250,250 , Image.SCALE_DEFAULT);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

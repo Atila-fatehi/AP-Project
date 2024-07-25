@@ -26,7 +26,7 @@ import java.util.*;
 import java.util.Timer;
 
 public class Smiley implements Collidable, Movable, Paintable, Serializable {
-    private int HP = 300;
+    private int HP = 10;
     private double x;
     private double y;
     private double posxHP;
@@ -88,7 +88,11 @@ public class Smiley implements Collidable, Movable, Paintable, Serializable {
     public void selfPaint(Graphics g, JPanel panel) {
         int locX = panel.getX();
         int locY = panel.getY();
-        g.drawImage(Constants.SMILEY_IMG, (int) ((int) x - locX), (int) ((int) y - locY), panel);
+        if(dead){
+            g.drawImage(Constants.DEAD_IMG, (int) ((int) x - locX), (int) ((int) y - locY), panel);
+        }else {
+            g.drawImage(Constants.SMILEY_IMG, (int) ((int) x - locX), (int) ((int) y - locY), panel);
+        }
         g.setColor(Color.ORANGE);
         g.drawString(String.valueOf(HP), (int) posxHP - locX, (int) posyHP - locY);
 //        g.setColor(Color.ORANGE);
@@ -106,9 +110,12 @@ public class Smiley implements Collidable, Movable, Paintable, Serializable {
         }
     }
 
+    boolean dead;
+
     public void selfDestruct() {
-        GameState.panels.remove(panel);
-        GameFrame.getInstance().remove(panel);
+//        GameState.panels.remove(panel);
+//        GameFrame.getInstance().remove(panel);
+        dead = true;
         CostumeTimer.getInstance().getMap().get(id).cancel();
     }
 
@@ -124,7 +131,9 @@ public class Smiley implements Collidable, Movable, Paintable, Serializable {
         if (attackType == AttackType.SQUEEZE ||
                 attackType == AttackType.VOMIT ||
                 attackType == AttackType.SLAP ||
-                attackType == AttackType.NAN || attackType == AttackType.RAPID_FIRE) {
+                attackType == AttackType.NAN || attackType == AttackType.RAPID_FIRE
+                || attackType == AttackType.QUAKE
+                || attackType == AttackType.POWER_PUNCH) {
             if (Calculator.distance(desx, desy, x, y) >= 10) {
                 x += vx;
                 y += vy;
@@ -152,7 +161,15 @@ public class Smiley implements Collidable, Movable, Paintable, Serializable {
             if (attackType == AttackType.VOMIT) {
                 vomitCounter++;
                 if (vomitCounter <= 5) new Vomit(EnemyGenerator.randomXonScreen(), EnemyGenerator.randomYonScreen());
-            } else if (attackType == AttackType.RAPID_FIRE || attackType == AttackType.SQUEEZE) {
+            } else {
+                for (int i = 0; i < Vomit.vomits.size(); i++) {
+                    try {
+                        CostumeTimer.getInstance().getMap().remove(Vomit.vomits.get(i).id).cancel();
+                    } catch (Exception e) {
+
+                    }
+
+                }
                 Vomit.vomits.clear();
                 vomitCounter = 0;
                 if (!CostumeTimer.getInstance().getMap().containsKey(id)) {
@@ -162,7 +179,7 @@ public class Smiley implements Collidable, Movable, Paintable, Serializable {
                         public void run() {
                             shootBullet();
                         }
-                    }, 3000, 500);
+                    }, 3000, 300);
                     CostumeTimer.getInstance().newTimer(id, shootTimer);
                 }
             }
@@ -204,7 +221,8 @@ public class Smiley implements Collidable, Movable, Paintable, Serializable {
 
     @Override
     public void calculateMovingDirection(double x, double y) {
-        if (attackType == AttackType.SQUEEZE || attackType == AttackType.VOMIT || attackType == AttackType.SLAP || attackType == AttackType.NAN) {
+        if (attackType == AttackType.SQUEEZE || attackType == AttackType.VOMIT || attackType == AttackType.SLAP || attackType == AttackType.NAN || attackType == AttackType.RAPID_FIRE
+                || attackType == AttackType.POWER_PUNCH || attackType == AttackType.QUAKE) {
             x = 800;
             y = 50;
             double angle = Math.atan2(y - this.y, x - this.x);
@@ -243,19 +261,20 @@ public class Smiley implements Collidable, Movable, Paintable, Serializable {
             }
         }
     }
+
     boolean wait = false;
+
     public void parry() {
-        new java.util.Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                wait = false;
-                this.cancel();
-            }
-        }, 5000, 1111);
         if (!wait) {
+            new java.util.Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    wait = false;
+                    this.cancel();
+                }
+            }, 5000, 1111);
             wait = true;
             if (new Random().nextBoolean()) {
-                System.out.println("bro");
                 new java.util.Timer().schedule(new TimerTask() {
                     int count = 0;
 
@@ -269,9 +288,9 @@ public class Smiley implements Collidable, Movable, Paintable, Serializable {
                     }
                 }, 0, 10);
             } else {
-                System.out.println("bro2");
                 new java.util.Timer().schedule(new TimerTask() {
                     int count = 0;
+
                     @Override
                     public void run() {
                         x -= 5;
