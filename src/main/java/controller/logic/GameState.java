@@ -139,6 +139,7 @@ public class GameState implements Serializable {
         collidable.addAll(necropicks);
         collidable.addAll(wyrms);
         collidable.addAll(archmires);
+        collidable.addAll(orbs);
         return collidable;
     }
 
@@ -170,7 +171,7 @@ public class GameState implements Serializable {
         Epsilon.getInstance().alreadyDead = false;
         elapsedTime = 0;
         difficulty = Objects.requireNonNull(FileController.readSettings())[1];
-        wave = 1;
+        wave = 10;
     }
 
     public static void initiateNewGameOnCheckpoint() {

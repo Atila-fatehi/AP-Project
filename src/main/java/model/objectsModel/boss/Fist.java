@@ -1,5 +1,6 @@
 package model.objectsModel.boss;
 
+import controller.FrameController;
 import controller.MouseController;
 import controller.logic.GameManager;
 import controller.logic.GameState;
@@ -112,15 +113,20 @@ public class Fist implements Collidable, Movable, Paintable, Serializable {
             }
             if (attackType == AttackType.POWER_PUNCH) {
                 if (Calculator.distance(desx, desy, x, y) <= 50) {
-                    attackType = AttackType.NAN;
-                    chosen = 0;
-                    CollisionHandler.handleHugeCollisionOnPoint(new Point2D.Double(desx, desy));
+                    if (!once) {
+                        once = true;
+                    } else {
+                        once = false;
+                        FrameController.reduceFrom(chosen);
+                        attackType = AttackType.NAN;
+                        chosen = 0;
+                        CollisionHandler.handleHugeCollisionOnPoint(new Point2D.Double(desx, desy));
+                    }
                 }
             }
             if (Calculator.distance(desx, desy, x, y) >= 10) {
                 x += vx;
                 y += vy;
-
                 if (maxVelocityX > 0) {
                     if (vx < maxVelocityX) {
                         vx += accX;
@@ -192,6 +198,7 @@ public class Fist implements Collidable, Movable, Paintable, Serializable {
     }
 
     int chosen = 0;
+    boolean once = false;
 
     @Override
     public void calculateMovingDirection(double x, double y) {
@@ -200,16 +207,31 @@ public class Fist implements Collidable, Movable, Paintable, Serializable {
                 chosen = new Random().nextInt(3) + 1;
             }
             if (chosen == 1) {
-                x = GamePanel.getInstance().getX() - width;
-                y = GamePanel.getInstance().getY() + GamePanel.getInstance().getPanelHeight() / 3;
+                if (!once) {
+                    x = GamePanel.getInstance().getX() - width - 500;
+                    y = GamePanel.getInstance().getY() + GamePanel.getInstance().getPanelHeight() / 3;
+                } else {
+                    x = GamePanel.getInstance().getX() - width;
+                    y = GamePanel.getInstance().getY() + GamePanel.getInstance().getPanelHeight() / 3;
+                }
             }
             if (chosen == 2) {
-                x = GamePanel.getInstance().getX() + GamePanel.getInstance().getPanelWidth();
-                y = GamePanel.getInstance().getY() + GamePanel.getInstance().getPanelHeight() / 3;
+                if (!once) {
+                    x = GamePanel.getInstance().getX() + GamePanel.getInstance().getPanelWidth() + 500;
+                    y = GamePanel.getInstance().getY() + GamePanel.getInstance().getPanelHeight() / 3 + 500;
+                } else {
+                    x = GamePanel.getInstance().getX() + GamePanel.getInstance().getPanelWidth();
+                    y = GamePanel.getInstance().getY() + GamePanel.getInstance().getPanelHeight() / 3;
+                }
             }
             if (chosen == 3) {
-                x = GamePanel.getInstance().getX() + GamePanel.getInstance().getPanelWidth() / 3;
-                y = GamePanel.getInstance().getY() + GamePanel.getInstance().getPanelHeight();
+                if (!once) {
+                    x = GamePanel.getInstance().getX() + GamePanel.getInstance().getPanelWidth() / 3;
+                    y = GamePanel.getInstance().getY() + GamePanel.getInstance().getPanelHeight() + 500;
+                } else {
+                    x = GamePanel.getInstance().getX() + GamePanel.getInstance().getPanelWidth() / 3;
+                    y = GamePanel.getInstance().getY() + GamePanel.getInstance().getPanelHeight();
+                }
             }
             double angle = Math.atan2(y - this.y, x - this.x);
             maxVelocityX = 10 * Math.cos(angle);

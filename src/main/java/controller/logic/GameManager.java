@@ -37,19 +37,7 @@ public class GameManager {
     }
 
     public GameManager() {
-        WaveGenerator.generateFinalBoss();
-//        EnemyGenerator.makeSmiley();
-//        EnemyGenerator.makeHand();
-//        EnemyGenerator.makeSecondHand();
-//        EnemyGenerator.makeNewTrigorath();
-//        EnemyGenerator.makeNewTrigorath();
-
-//        EnemyGenerator.makeNewSquarantine();
-//        EnemyGenerator.makeNewSquarantine();
-
-//        EnemyGenerator.makeNewWyrm();
-//        EnemyGenerator.makeNewOrb();
-//        GameFrame.getInstance().addOtherPanel();
+//        WaveGenerator.generateFinalBoss();
         viewTimer = new java.util.Timer();
         viewTimer.schedule(new TimerTask() {
             @Override

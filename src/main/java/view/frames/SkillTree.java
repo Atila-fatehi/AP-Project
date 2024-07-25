@@ -13,7 +13,7 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.nio.file.Paths;
 
-public class SkillTree extends JFrame {
+public class  SkillTree extends JFrame {
     //TODO CLEAN THIS WHEN SKILL TREE
     private static final Color back = new Color(0x9A1A03);
     private static final Color fore = new Color(0xFB8B24);

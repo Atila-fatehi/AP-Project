@@ -50,6 +50,6 @@ public abstract class Calculator {
                 }
             }
         }
-        return 10 * Epsilon.getInstance().getXP() * sum / Epsilon.getInstance().getHP();
+        return Math.abs(10 * Epsilon.getInstance().getXP() * sum / Epsilon.getInstance().getHP());
     }
 }

@@ -59,7 +59,7 @@ public class Epsilon implements Movable, Collidable, Paintable, WallCollidable, 
         instance.currentPanel = GamePanel.getInstance();
     }
 
-    private int HP = 100;
+    private int HP = 1000000;
     private int XP;
     private double x;
     private double y;

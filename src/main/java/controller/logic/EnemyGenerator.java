@@ -43,7 +43,7 @@ public abstract class EnemyGenerator {
         if (GameState.slaughter) {
             bullet = new Bullet(Epsilon.getInstance().getX(), Epsilon.getInstance().getY(), true, Constants.GOLD, 50);
             GameState.slaughter = false;
-        }else {
+        } else {
             bullet = new Bullet(Epsilon.getInstance().getX(), Epsilon.getInstance().getY(), true, Constants.EPSILON_COLOR, Epsilon.getInstance().getDamageRate());
         }
         bullet.calculateMovingDirection(x, y);
@@ -78,17 +78,27 @@ public abstract class EnemyGenerator {
     }
 
     public static void makeNewBarricados() {
-        int initX = randomXonScreen();
-        int initY = randomYonScreen();
-        Barricados barricados = new Barricados(initX, initY);
-        while (Collision.checkEpsilonCollision(barricados) != null ||
-                Collision.checkPointCollision(new Point2D.Double(Epsilon.getInstance().getX(), Epsilon.getInstance().getY()), barricados)) {
-            barricados.selfDestruct();
-            initX = randomXonScreen();
-            initY = randomYonScreen();
+        if (new Random().nextBoolean()) {
+            int initX = randomXonScreen();
+            int initY = randomYonScreen();
+            Barricados barricados = new Barricados(initX, initY);
+            while (Collision.checkEpsilonCollision(barricados) != null ||
+                    Collision.checkPointCollision(new Point2D.Double(Epsilon.getInstance().getX(), Epsilon.getInstance().getY()), barricados)) {
+                barricados.selfDestruct();
+                initX = randomXonScreen();
+                initY = randomYonScreen();
+                barricados = new Barricados(initX, initY);
+            }
             barricados = new Barricados(initX, initY);
+            barricados.isRigid = false;
+            GameState.barricados.add(barricados);
+        } else {
+            int x = randomXoffScreen();
+            int y = randomYoffScreen();
+            Barricados barricados = new Barricados(x, y);
+            barricados.isRigid = true;
+            GameState.barricados.add(barricados);
         }
-        GameState.barricados.add(new Barricados(initX, initY));
     }
 
     public static void makeNewOrb() {
@@ -120,18 +130,22 @@ public abstract class EnemyGenerator {
         }, 1000, 2000);
     }
 
-    public static void makeSmiley(){
-        GameState.smilies.add(new Smiley(900 , 50));
+    public static void makeSmiley() {
+        GameState.smilies.add(new Smiley(900, 50));
     }
-    public static void makeHand(){
-        GameState.hands.add(new Hand(300 , 130));
+
+    public static void makeHand() {
+        GameState.hands.add(new Hand(300, 130));
     }
-    public static void makeSecondHand(){
-        GameState.secondHands.add(new SecondHand(1350 , 130));
+
+    public static void makeSecondHand() {
+        GameState.secondHands.add(new SecondHand(1350, 130));
     }
-    public static void makeFist(){
-        GameState.fists.add(new Fist(300 , 130 + 250 + 350));
+
+    public static void makeFist() {
+        GameState.fists.add(new Fist(300, 130 + 250 + 350));
     }
+
     static int randomiseInitialPosX() {
         Random random = new Random();
         int initX = random.nextInt(GamePanel.getInstance().getPanelWidth());
@@ -157,6 +171,15 @@ public abstract class EnemyGenerator {
     public static int randomXonScreen() {
         return new Random().nextInt(500) + GamePanel.getInstance().getLocationX();
     }
+
+    public static int randomXoffScreen() {
+        return new Random().nextInt(GamePanel.getInstance().getLocationX() - 200);
+    }
+
+    public static int randomYoffScreen() {
+        return new Random().nextInt(Constants.SCREEN_HEIGHT - 200);
+    }
+
 
     public static int randomYonScreen() {
         return new Random().nextInt(500) + GamePanel.getInstance().getLocationY();

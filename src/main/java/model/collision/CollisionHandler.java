@@ -97,23 +97,6 @@ public abstract class CollisionHandler {
             Epsilon.getInstance().setVy(0);
             Epsilon.getInstance().setY(collisionPoint.getY() - Epsilon.getInstance().getRadius() - 7);
         }
-//        if (collisionPoint.getX() >= Epsilon.getInstance().getX() && collisionPoint.getY() >= Epsilon.getInstance().getY()) {
-//            Epsilon.getInstance().setVx(-RATE);
-//            Epsilon.getInstance().setVy(-RATE);
-//        }
-//        if (collisionPoint.getX() <= Epsilon.getInstance().getX() && collisionPoint.getY() <= Epsilon.getInstance().getY()) {
-//            Epsilon.getInstance().setVx(RATE);
-//            Epsilon.getInstance().setVy(RATE);
-//        }
-//        if (collisionPoint.getX() <= Epsilon.getInstance().getX() && collisionPoint.getY() >= Epsilon.getInstance().getY()) {
-//            Epsilon.getInstance().setVx(RATE);
-//            Epsilon.getInstance().setVy(-RATE);
-//        }
-//        if (collisionPoint.getX() >= Epsilon.getInstance().getX() && collisionPoint.getY() <= Epsilon.getInstance().getY()) {
-//            Epsilon.getInstance().setVx(-RATE);
-//            Epsilon.getInstance().setVy(RATE);
-//        }
-
         Epsilon.getInstance().setDecU(true);
         Epsilon.getInstance().setDecL(true);
         Epsilon.getInstance().setDecD(true);
@@ -121,40 +104,23 @@ public abstract class CollisionHandler {
     }
 
     public static void handleHugeCollisionOnPoint(Point2D.Double collisionPoint) {
-        int RATE = 30;
-        if (Calculator.distance(Epsilon.getInstance().getX(), Epsilon.getInstance().getY(), collisionPoint.getX(), collisionPoint.getY()) <= 1000) {
-            if (collisionPoint.getX() >= Epsilon.getInstance().getX() && collisionPoint.getY() >= Epsilon.getInstance().getY()) {
-                Epsilon.getInstance().setVx(-RATE);
-                Epsilon.getInstance().setVy(-RATE);
-                Epsilon.getInstance().setDecU(true);
-                Epsilon.getInstance().setDecL(true);
-                Epsilon.getInstance().setDecD(true);
-                Epsilon.getInstance().setDecR(true);
-            }
-            if (collisionPoint.getX() <= Epsilon.getInstance().getX() && collisionPoint.getY() <= Epsilon.getInstance().getY()) {
-                Epsilon.getInstance().setVx(RATE);
-                Epsilon.getInstance().setVy(RATE);
-                Epsilon.getInstance().setDecU(true);
-                Epsilon.getInstance().setDecL(true);
-                Epsilon.getInstance().setDecD(true);
-                Epsilon.getInstance().setDecR(true);
-            }
-            if (collisionPoint.getX() <= Epsilon.getInstance().getX() && collisionPoint.getY() >= Epsilon.getInstance().getY()) {
-                Epsilon.getInstance().setVx(RATE);
-                Epsilon.getInstance().setVy(-RATE);
-                Epsilon.getInstance().setDecU(true);
-                Epsilon.getInstance().setDecL(true);
-                Epsilon.getInstance().setDecD(true);
-                Epsilon.getInstance().setDecR(true);
-            }
-            if (collisionPoint.getX() >= Epsilon.getInstance().getX() && collisionPoint.getY() <= Epsilon.getInstance().getY()) {
-                Epsilon.getInstance().setVx(-RATE);
-                Epsilon.getInstance().setVy(RATE);
-                Epsilon.getInstance().setDecU(true);
-                Epsilon.getInstance().setDecL(true);
-                Epsilon.getInstance().setDecD(true);
-                Epsilon.getInstance().setDecR(true);
-            }
+        double RATE = 20;
+        if (collisionPoint.getX() > Epsilon.getInstance().getX()) {
+            Epsilon.getInstance().setVx(-RATE);
         }
+        if (collisionPoint.getX() < Epsilon.getInstance().getX()) {
+            Epsilon.getInstance().setVx(RATE);
+        }
+        if (collisionPoint.getY() < Epsilon.getInstance().getY()) {
+            Epsilon.getInstance().setVy(-RATE);
+        }
+        if (collisionPoint.getY() > Epsilon.getInstance().getY()) {
+            Epsilon.getInstance().setVy(RATE);
+        }
+        Epsilon.getInstance().setDecU(true);
+        Epsilon.getInstance().setDecL(true);
+        Epsilon.getInstance().setDecD(true);
+        Epsilon.getInstance().setDecR(true);
     }
+
 }

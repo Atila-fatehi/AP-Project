@@ -14,6 +14,7 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.TimerTask;
 import java.util.UUID;
 
@@ -21,16 +22,17 @@ public class Barricados implements Paintable, Collidable, Serializable {
 
     private double x;
     private double y;
-    private final double size = 200;
+    public static final double size = 200;
     private boolean played;
     private BarriPanel panel;
     String id;
+    public boolean isRigid;
 
     public Barricados(double x, double y) {
         this.x = x;
         this.y = y;
         id = UUID.randomUUID().toString();
-
+        isRigid = new Random().nextBoolean();
         panel = new BarriPanel();
         java.util.Timer timer = new java.util.Timer();
         timer.schedule(new TimerTask() {
@@ -44,9 +46,10 @@ public class Barricados implements Paintable, Collidable, Serializable {
     }
 
     public void selfDestruct() {
-        GameState.barricados.remove(this);
         GameState.panels.remove(panel);
         GameFrame.getInstance().remove(panel);
+        GameFrame.getInstance().repaint();
+        GameState.barricados.remove(this);
     }
 
 

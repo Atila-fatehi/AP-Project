@@ -243,12 +243,45 @@ public class Smiley implements Collidable, Movable, Paintable, Serializable {
             }
         }
     }
-
+    boolean wait = false;
     public void parry() {
-        if(new Random().nextBoolean()) {
-            vx = 20;
-        }else{
-            vx = -20;
+        new java.util.Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                wait = false;
+                this.cancel();
+            }
+        }, 5000, 1111);
+        if (!wait) {
+            wait = true;
+            if (new Random().nextBoolean()) {
+                System.out.println("bro");
+                new java.util.Timer().schedule(new TimerTask() {
+                    int count = 0;
+
+                    @Override
+                    public void run() {
+                        x += 5;
+                        y -= 5;
+                        panel.setLocation((int) x, (int) y);
+                        count++;
+                        if (count == 100) this.cancel();
+                    }
+                }, 0, 10);
+            } else {
+                System.out.println("bro2");
+                new java.util.Timer().schedule(new TimerTask() {
+                    int count = 0;
+                    @Override
+                    public void run() {
+                        x -= 5;
+                        y -= 5;
+                        panel.setLocation((int) x, (int) y);
+                        count++;
+                        if (count == 100) this.cancel();
+                    }
+                }, 0, 10);
+            }
         }
     }
 

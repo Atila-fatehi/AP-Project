@@ -23,7 +23,7 @@ import java.util.Random;
 public abstract class UpdateModel {
     public static void update() {
 
-//        WaveGenerator.handleWaves();
+        WaveGenerator.handleWaves();
 
         updateEnemies();
 
@@ -259,6 +259,7 @@ public abstract class UpdateModel {
                 GameState.bullets.get(i).move();
             }
             for (int j = 0; j < GameState.trigoraths.size(); j++) {
+                if (!GameState.bullets.get(i).isFromEpsilon()) break;
                 Point2D collisionPoint = Collision.checkBulletCollision(GameState.bullets.get(i), GameState.trigoraths.get(j));
                 if (collisionPoint != null) {
                     AudioPlayer.play(AudioPlayer.SPLAT);
@@ -273,6 +274,7 @@ public abstract class UpdateModel {
         //Squ collision
         for (int i = 0; i < GameState.bullets.size(); i++) {
             for (int j = 0; j < GameState.squarantines.size(); j++) {
+                if (!GameState.bullets.get(i).isFromEpsilon()) break;
                 Point2D collisionPoint = Collision.checkBulletCollision(GameState.bullets.get(i), GameState.squarantines.get(j));
                 if (collisionPoint != null) {
                     AudioPlayer.play(AudioPlayer.SPLAT);
@@ -287,6 +289,7 @@ public abstract class UpdateModel {
         //omenoct collision
         for (int i = 0; i < GameState.bullets.size(); i++) {
             for (int j = 0; j < GameState.omenocts.size(); j++) {
+                if (!GameState.bullets.get(i).isFromEpsilon()) break;
                 Point2D collisionPoint = Collision.checkBulletCollision(GameState.bullets.get(i), GameState.omenocts.get(j));
                 if (collisionPoint != null) {
                     AudioPlayer.play(AudioPlayer.SPLAT);
@@ -301,6 +304,7 @@ public abstract class UpdateModel {
         //necro collision
         for (int i = 0; i < GameState.bullets.size(); i++) {
             for (int j = 0; j < GameState.necropicks.size(); j++) {
+                if (!GameState.bullets.get(i).isFromEpsilon()) break;
                 Point2D collisionPoint = Collision.checkBulletCollision(GameState.bullets.get(i), GameState.necropicks.get(j));
                 if (collisionPoint != null) {
                     AudioPlayer.play(AudioPlayer.SPLAT);
@@ -315,6 +319,7 @@ public abstract class UpdateModel {
         //wyrm collision
         for (int i = 0; i < GameState.bullets.size(); i++) {
             for (int j = 0; j < GameState.wyrms.size(); j++) {
+                if (!GameState.bullets.get(i).isFromEpsilon()) break;
                 Point2D collisionPoint = Collision.checkBulletCollision(GameState.bullets.get(i), GameState.wyrms.get(j));
                 if (collisionPoint != null) {
                     AudioPlayer.play(AudioPlayer.SPLAT);
@@ -329,6 +334,7 @@ public abstract class UpdateModel {
         //arch collision
         for (int i = 0; i < GameState.bullets.size(); i++) {
             for (int j = 0; j < GameState.archmires.size(); j++) {
+                if (!GameState.bullets.get(i).isFromEpsilon()) break;
                 Point2D collisionPoint = Collision.checkBulletCollision(GameState.bullets.get(i), GameState.archmires.get(j));
                 if (collisionPoint != null) {
                     AudioPlayer.play(AudioPlayer.SPLAT);
@@ -354,6 +360,7 @@ public abstract class UpdateModel {
         //orb collision
         for (int i = 0; i < GameState.bullets.size(); i++) {
             for (int j = 0; j < GameState.orbs.size(); j++) {
+                if (!GameState.bullets.get(i).isFromEpsilon()) break;
                 Point2D collisionPoint = Collision.checkOrbCollision(GameState.orbs.get(j), GameState.bullets.get(i));
                 if (collisionPoint != null && GameState.orbs.get(j).isDamageable()) {
                     GameState.orbs.get(j).setHP(GameState.orbs.get(j).getHP() - GameState.bullets.get(i).getDamage());
@@ -367,9 +374,9 @@ public abstract class UpdateModel {
         //boss
         for (int i = 0; i < GameState.bullets.size(); i++) {
             if (!GameState.smilies.isEmpty()) {
-
-                if (GameState.bullets.get(i).getY() <= GameState.smilies.get(0).getY() + 100) {
-//                    GameState.smilies.get(0).parry();
+                if (!GameState.bullets.get(i).isFromEpsilon()) continue;
+                if (Calculator.distance(GameState.bullets.get(i).getX() , GameState.bullets.get(i).getY() , GameState.smilies.get(0).getX() , GameState.smilies.get(0).getY()) <= 400) {
+                    GameState.smilies.get(0).parry();
                 }
 
                 Point2D collision = Collision.checkSmileyCollision(GameState.smilies.get(0), GameState.bullets.get(i));
