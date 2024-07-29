@@ -6,8 +6,10 @@ import controller.logic.GameManager;
 import controller.audio.players.GameMusicPlayer;
 import controller.audio.players.MenuMusicPlayer;
 import controller.logic.GameState;
+import controller.server.RequestManager;
 import controller.util.Constants;
 import view.Jcomponents.MyButton;
+import view.Jcomponents.MyLabel;
 import view.gameGUI.GameFrame;
 import view.gameGUI.GamePanel;
 
@@ -24,6 +26,9 @@ public class MainMenu extends JFrame {
         if (instance == null) instance = new MainMenu();
         return instance;
     }
+
+    public String serverStatus = "";
+    MyLabel status;
 
     public MainMenu() {
         setTitle("WindowKill");
@@ -73,39 +78,63 @@ public class MainMenu extends JFrame {
                 }, 3000, 1111);
             }
         });
-        MyButton setting = new MyButton("Setting", Constants.BUTTON_INITIAL_X, Constants.BUTTON_INITIAL_Y + Constants.BUTTON_MARGIN, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT, new ActionListener() {
+        MyButton setting = new MyButton("Setting", Constants.BUTTON_INITIAL_X + Constants.BUTTON_WIDTH / 2, Constants.BUTTON_INITIAL_Y + Constants.BUTTON_MARGIN, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
                 new Setting();
             }
         });
-        MyButton tutorial = new MyButton("Tutorial", Constants.BUTTON_INITIAL_X, Constants.BUTTON_INITIAL_Y + Constants.BUTTON_MARGIN * 2, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT, new ActionListener() {
+        MyButton tutorial = new MyButton("Tutorial", Constants.BUTTON_INITIAL_X + Constants.BUTTON_WIDTH / 2, Constants.BUTTON_INITIAL_Y + Constants.BUTTON_MARGIN * 2, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
                 new Tutorial();
             }
         });
-        MyButton skillTree = new MyButton("Skill Tree", Constants.BUTTON_INITIAL_X, Constants.BUTTON_INITIAL_Y + Constants.BUTTON_MARGIN * 3, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT, new ActionListener() {
+        MyButton skillTree = new MyButton("Skill Tree", Constants.BUTTON_INITIAL_X + Constants.BUTTON_WIDTH / 2, Constants.BUTTON_INITIAL_Y + Constants.BUTTON_MARGIN * 3, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
                 new SkillTree();
             }
         });
-        MyButton credit = new MyButton("Credit", Constants.BUTTON_INITIAL_X, Constants.BUTTON_INITIAL_Y + Constants.BUTTON_MARGIN * 4, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT, new ActionListener() {
+        MyButton credit = new MyButton("Credit", Constants.BUTTON_INITIAL_X + Constants.BUTTON_WIDTH / 2, Constants.BUTTON_INITIAL_Y + Constants.BUTTON_MARGIN * 4, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
             }
         });
-        MyButton exit = new MyButton("Exit", Constants.BUTTON_INITIAL_X, Constants.BUTTON_INITIAL_Y + Constants.BUTTON_MARGIN * 5, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT, new ActionListener() {
+        MyButton exit = new MyButton("Exit", Constants.BUTTON_INITIAL_X + Constants.BUTTON_WIDTH / 2, Constants.BUTTON_INITIAL_Y + Constants.BUTTON_MARGIN * 5, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);
             }
         });
+
+        MyButton connect = new MyButton("Connect to Server", Constants.BUTTON_INITIAL_X + 1200, Constants.BUTTON_INITIAL_Y, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                if(RequestManager.connect()) serverStatus = "Connected.";
+                else serverStatus = "Connection failed.";
+
+                refresh();
+            }
+        });
+        MyButton disconnect = new MyButton("disconnect from Server", Constants.BUTTON_INITIAL_X + 1200, Constants.BUTTON_INITIAL_Y + Constants.BUTTON_MARGIN, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        MyButton refresh = new MyButton("Refresh", Constants.BUTTON_INITIAL_X + 1200, Constants.BUTTON_INITIAL_Y + Constants.BUTTON_MARGIN * 2, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                refresh();
+            }
+        });
+        status = new MyLabel("Status : " + serverStatus, Constants.BUTTON_INITIAL_X + 1200, Constants.BUTTON_INITIAL_Y - Constants.BUTTON_MARGIN, Constants.LABEL_WIDTH, Constants.LABEL_HEIGHT);
 
         getContentPane().add(newGame);
         getContentPane().add(setting);
@@ -114,8 +143,16 @@ public class MainMenu extends JFrame {
         getContentPane().add(credit);
         getContentPane().add(exit);
         getContentPane().add(load);
+        getContentPane().add(connect);
+        getContentPane().add(disconnect);
+        getContentPane().add(refresh);
+        getContentPane().add(status);
         getContentPane().add(new WallpaperPainter());
 
         setVisible(true);
+    }
+
+    public void refresh() {
+        status.setText("Status : " + serverStatus);
     }
 }
