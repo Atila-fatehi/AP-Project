@@ -1,6 +1,8 @@
 package view.frames;
 
+import controller.FileController;
 import controller.server.request.LoginRequest;
+import controller.server.request.SignUpRequest;
 import controller.server.sender.RequestSender;
 
 import javax.swing.*;
@@ -160,8 +162,8 @@ public class LoginFrame extends JFrame {
 //                }
                 JOptionPane.showMessageDialog(this, response);
             } else {
-//                String response = RequestSender.getInstance().sendRequest(new SignUpRequest(username, password));
-//                JOptionPane.showMessageDialog(this, response);
+                String response = RequestSender.getInstance().sendRequest(new SignUpRequest(username, password , Integer.parseInt(FileController.readXP())));
+                JOptionPane.showMessageDialog(this, response);
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -4,4 +4,5 @@ import controller.server.response.Response;
 
 public interface RequestHandler {
     Response handleLoginRequest(LoginRequest loginRequest);
+    Response handleSignUpRequest(SignUpRequest signUpRequest);
 }
