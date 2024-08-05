@@ -2,6 +2,7 @@ package controller.server.sender;
 
 import controller.server.RequestManager;
 import controller.server.request.Request;
+import controller.server.response.Response;
 
 import java.io.*;
 import java.net.Socket;
@@ -19,12 +20,13 @@ public class RequestSender {
             try {
                 instance = new RequestSender(RequestManager.socket);
                 return instance;
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
         return instance;
     }
+
     public RequestSender(Socket socket) throws IOException {
         this.socket = socket;
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -33,7 +35,7 @@ public class RequestSender {
         objectInputStream = new ObjectInputStream(socket.getInputStream());
     }
 
-    public String sendRequest(Request request) {
+    public Response sendRequest(Request request) {
         try {
             objectOutputStream.writeObject(request);
         } catch (Exception e) {
@@ -41,20 +43,12 @@ public class RequestSender {
             e.printStackTrace();
         }
         try {
-            return in.readLine();
-        }catch (Exception ee){
+            return (Response) objectInputStream.readObject();
+        } catch (Exception ee) {
             System.out.println("ee");
             return null;
         }
     }
 
 
-
-    public void close() {
-        try {
-            socket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }

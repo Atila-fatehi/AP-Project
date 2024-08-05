@@ -23,6 +23,13 @@ public abstract class RequestManager {
         }
     }
 
+    public static void close() {
+        try {
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 

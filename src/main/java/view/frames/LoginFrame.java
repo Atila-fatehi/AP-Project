@@ -154,7 +154,7 @@ public class LoginFrame extends JFrame {
         String password = new String(passwordField.getPassword());
         try {
             if (isLoginReq) {
-                String response = RequestSender.getInstance().sendRequest(new LoginRequest(username, password));
+                String response = RequestSender.getInstance().sendRequest(new LoginRequest(username, password)).getMessage();
                 if (!response.equals("User Not Found!")) {
                     MainMenu.getInstance().serverStatus = "Logged in as " + username + ".";
                     MainMenu.getInstance().refresh();
@@ -163,7 +163,7 @@ public class LoginFrame extends JFrame {
                 }
                 JOptionPane.showMessageDialog(this, response);
             } else {
-                String response = RequestSender.getInstance().sendRequest(new SignUpRequest(username, password, Integer.parseInt(FileController.readXP())));
+                String response = RequestSender.getInstance().sendRequest(new SignUpRequest(username, password, Integer.parseInt(FileController.readXP()))).getMessage();
                 JOptionPane.showMessageDialog(this, response);
             }
         } catch (Exception e) {

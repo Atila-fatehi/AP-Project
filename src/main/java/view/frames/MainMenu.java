@@ -7,6 +7,8 @@ import controller.audio.players.GameMusicPlayer;
 import controller.audio.players.MenuMusicPlayer;
 import controller.logic.GameState;
 import controller.server.RequestManager;
+import controller.server.request.ShowLeaderBoardRequest;
+import controller.server.sender.RequestSender;
 import controller.util.Constants;
 import view.Jcomponents.MyButton;
 import view.Jcomponents.MyLabel;
@@ -14,8 +16,10 @@ import view.gameGUI.GameFrame;
 import view.gameGUI.GamePanel;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -125,13 +129,27 @@ public class MainMenu extends JFrame {
         MyButton disconnect = new MyButton("disconnect from Server", Constants.BUTTON_INITIAL_X + 1200, Constants.BUTTON_INITIAL_Y + Constants.BUTTON_MARGIN, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                RequestManager.close();
+                serverStatus = "Disconnected.";
+                refresh();
             }
         });
-        MyButton refresh = new MyButton("Refresh", Constants.BUTTON_INITIAL_X + 1200, Constants.BUTTON_INITIAL_Y + Constants.BUTTON_MARGIN * 2, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT, new ActionListener() {
+        MyButton refresh = new MyButton("Show LeaderBoard", Constants.BUTTON_INITIAL_X + 1200, Constants.BUTTON_INITIAL_Y + Constants.BUTTON_MARGIN * 2, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                refresh();
+                JPanel panel = new JPanel(new BorderLayout());
+                ArrayList<String> myList = RequestSender.getInstance().sendRequest(new ShowLeaderBoardRequest()).getList();
+                final JList<String> list = new JList<String>(myList.toArray(new String[myList.size()]));
+                JScrollPane scrollPane = new JScrollPane();
+                scrollPane.setViewportView(list);
+                list.setLayoutOrientation(JList.VERTICAL);
+                panel.add(scrollPane);
+                JFrame frame = new JFrame("Clients list");
+                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                frame.add(panel);
+                frame.setSize(500, 250);
+                frame.setLocationRelativeTo(null);
+                frame.setVisible(true);
             }
         });
         status = new MyLabel("Status : " + serverStatus, Constants.BUTTON_INITIAL_X + 1200, Constants.BUTTON_INITIAL_Y - Constants.BUTTON_MARGIN, Constants.LABEL_WIDTH, Constants.LABEL_HEIGHT);
