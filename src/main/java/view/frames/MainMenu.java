@@ -120,7 +120,7 @@ public class MainMenu extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if(RequestManager.connect()) serverStatus = "Connected.";
+                if (RequestManager.connect()) serverStatus = "Connected.";
                 else serverStatus = "Connection failed.";
 
                 refresh();
@@ -137,19 +137,23 @@ public class MainMenu extends JFrame {
         MyButton refresh = new MyButton("Show LeaderBoard", Constants.BUTTON_INITIAL_X + 1200, Constants.BUTTON_INITIAL_Y + Constants.BUTTON_MARGIN * 2, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JPanel panel = new JPanel(new BorderLayout());
-                ArrayList<String> myList = RequestSender.getInstance().sendRequest(new ShowLeaderBoardRequest()).getList();
-                final JList<String> list = new JList<String>(myList.toArray(new String[myList.size()]));
-                JScrollPane scrollPane = new JScrollPane();
-                scrollPane.setViewportView(list);
-                list.setLayoutOrientation(JList.VERTICAL);
-                panel.add(scrollPane);
-                JFrame frame = new JFrame("Clients list");
-                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                frame.add(panel);
-                frame.setSize(500, 250);
-                frame.setLocationRelativeTo(null);
-                frame.setVisible(true);
+                if (!RequestManager.socket.isClosed()) {
+                    JPanel panel = new JPanel(new BorderLayout());
+                    ArrayList<String> myList = RequestSender.getInstance().sendRequest(new ShowLeaderBoardRequest()).getList();
+                    final JList<String> list = new JList<String>(myList.toArray(new String[myList.size()]));
+                    JScrollPane scrollPane = new JScrollPane();
+                    scrollPane.setViewportView(list);
+                    list.setLayoutOrientation(JList.VERTICAL);
+                    panel.add(scrollPane);
+                    JFrame frame = new JFrame("Clients list");
+                    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    frame.add(panel);
+                    frame.setSize(500, 250);
+                    frame.setLocationRelativeTo(null);
+                    frame.setVisible(true);
+                } else {
+                    JOptionPane.showMessageDialog(getInstance(), "You are not connected.", "Message", JOptionPane.INFORMATION_MESSAGE);
+                }
             }
         });
         status = new MyLabel("Status : " + serverStatus, Constants.BUTTON_INITIAL_X + 1200, Constants.BUTTON_INITIAL_Y - Constants.BUTTON_MARGIN, Constants.LABEL_WIDTH, Constants.LABEL_HEIGHT);

@@ -18,7 +18,7 @@ import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.util.UUID;
 
-public class Trigorath implements Movable, Collidable , Paintable, Serializable {
+public class Trigorath extends PolyEnemy implements Movable, Collidable , Paintable, Serializable {
     private int HP = 15;
     String id;
     private double posXHP;
@@ -34,6 +34,7 @@ public class Trigorath implements Movable, Collidable , Paintable, Serializable 
     private boolean played;
 
     public Trigorath(double[] x, double[] y) {
+        super(x,y);
         this.xPoints = x;
         this.yPoints = y;
         id = String.valueOf(UUID.randomUUID());

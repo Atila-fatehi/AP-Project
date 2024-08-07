@@ -10,8 +10,6 @@ import java.net.Socket;
 public class RequestSender {
     private static RequestSender instance;
     private final Socket socket;
-    private final BufferedReader in;
-    private final PrintWriter out;
     private final ObjectInputStream objectInputStream;
     private final ObjectOutputStream objectOutputStream;
 
@@ -29,8 +27,6 @@ public class RequestSender {
 
     public RequestSender(Socket socket) throws IOException {
         this.socket = socket;
-        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        out = new PrintWriter(socket.getOutputStream(), true);
         objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
         objectInputStream = new ObjectInputStream(socket.getInputStream());
     }

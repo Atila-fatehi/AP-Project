@@ -22,7 +22,7 @@ import java.util.TimerTask;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-public class Squarantine implements Movable, Collidable, Paintable, Serializable {
+public class Squarantine extends PolyEnemy implements Movable, Collidable, Paintable, Serializable {
 
     private int HP = 10;
     private double posXHP;
@@ -40,6 +40,7 @@ public class Squarantine implements Movable, Collidable, Paintable, Serializable
     String id;
 
     public Squarantine(double[] x, double[] y) {
+        super(x,y);
         this.xPoints = x;
         this.yPoints = y;
         id = String.valueOf(UUID.randomUUID());

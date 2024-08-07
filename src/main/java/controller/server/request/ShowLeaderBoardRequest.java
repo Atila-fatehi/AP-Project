@@ -7,10 +7,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class ShowLeaderBoardRequest implements Request , Serializable {
-
-
-
-
     @Override
     public Response handle(RequestHandler requestHandler) {
         return requestHandler.handleShowLeaderBoardRequest(this);

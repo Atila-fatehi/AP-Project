@@ -22,7 +22,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 
-public class Omenoct implements Paintable, Collidable, Movable , Serializable {
+public class Omenoct extends PolyEnemy implements Paintable, Collidable, Movable , Serializable {
     String id;
     private int HP = 20;
     private double posXHP;
@@ -40,6 +40,7 @@ public class Omenoct implements Paintable, Collidable, Movable , Serializable {
     private boolean stick;
 
     public Omenoct(double[] xPoints, double[] yPoints) {
+        super(xPoints,yPoints);
         this.xPoints = xPoints;
         this.yPoints = yPoints;
         id = UUID.randomUUID().toString();
