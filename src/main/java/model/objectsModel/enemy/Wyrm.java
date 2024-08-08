@@ -1,5 +1,6 @@
 package model.objectsModel.enemy;
 
+import controller.logic.EnemyGenerator;
 import controller.logic.GameState;
 import controller.util.Calculator;
 import controller.util.Constants;
@@ -22,7 +23,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 
-public class Wyrm implements Movable, Paintable, Collidable, Serializable {
+public class Wyrm extends Enemy implements Movable, Paintable, Collidable, Serializable {
     String id;
     private double HP = 12;
     private double x;
@@ -45,6 +46,7 @@ public class Wyrm implements Movable, Paintable, Collidable, Serializable {
     private int clockwise = 1;
 
     public Wyrm(double x, double y) {
+        super(x,y);
         this.x = x;
         this.y = y;
         id = UUID.randomUUID().toString();
@@ -58,6 +60,12 @@ public class Wyrm implements Movable, Paintable, Collidable, Serializable {
             }
         }, 3000, 1500);
         CostumeTimer.getInstance().newTimer(id, shootTimer);
+    }
+    public Wyrm(){
+
+    }
+    public static void selfGenerate() {
+        EnemyGenerator.generateEnemy(new Wyrm());
     }
 
     public void selfDestruct() {

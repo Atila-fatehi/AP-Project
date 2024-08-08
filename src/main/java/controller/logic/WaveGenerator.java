@@ -4,15 +4,16 @@ import controller.FrameController;
 import controller.audio.players.AudioPlayer;
 import controller.util.Constants;
 import controller.util.CostumeTimer;
+import javassist.tools.reflect.Reflection;
 import model.objectsModel.Portal;
 import model.objectsModel.boss.AttackType;
+import model.objectsModel.enemy.Enemy;
 import model.objectsModel.epsilon.Epsilon;
+import org.reflections.Reflections;
+import sun.reflect.ReflectionFactory;
 import view.gameGUI.GamePanel;
 
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public abstract class WaveGenerator {
@@ -257,7 +258,8 @@ public abstract class WaveGenerator {
                             (!GameState.hands.isEmpty() || !GameState.secondHands.isEmpty() || !GameState.fists.isEmpty())) {
                         GameState.smilies.get(0).setAttackType(AttackType.PROJECTILE);
                         if (!GameState.hands.isEmpty()) GameState.hands.get(0).setAttackType(AttackType.PROJECTILE);
-                        if (!GameState.secondHands.isEmpty()) GameState.secondHands.get(0).setAttackType(AttackType.PROJECTILE);
+                        if (!GameState.secondHands.isEmpty())
+                            GameState.secondHands.get(0).setAttackType(AttackType.PROJECTILE);
                         if (!GameState.fists.isEmpty()) GameState.fists.get(0).setAttackType(AttackType.PROJECTILE);
 
                         GameState.smilies.get(0).setDamageable(false);
@@ -283,34 +285,39 @@ public abstract class WaveGenerator {
                     if (new Random().nextBoolean()) {
                         int prob = new Random().nextInt(3);
                         if (prob == 0) {
-                            if(new Random().nextBoolean() && !GameState.smilies.isEmpty())GameState.smilies.get(0).setAttackType(AttackType.VOMIT);
+                            if (new Random().nextBoolean() && !GameState.smilies.isEmpty())
+                                GameState.smilies.get(0).setAttackType(AttackType.VOMIT);
                             if (!GameState.hands.isEmpty()) GameState.hands.get(0).setAttackType(AttackType.SQUEEZE);
-                            if (!GameState.secondHands.isEmpty()) GameState.secondHands.get(0).setAttackType(AttackType.SQUEEZE);
-                            if (!GameState.smilies.isEmpty())GameState.smilies.get(0).setDamageable(true);
+                            if (!GameState.secondHands.isEmpty())
+                                GameState.secondHands.get(0).setAttackType(AttackType.SQUEEZE);
+                            if (!GameState.smilies.isEmpty()) GameState.smilies.get(0).setDamageable(true);
                             if (!GameState.hands.isEmpty()) GameState.hands.get(0).setDamageable(false);
                             if (!GameState.secondHands.isEmpty()) GameState.secondHands.get(0).setDamageable(false);
                         }
                         if (prob == 1) {
-                            if(!GameState.smilies.isEmpty())GameState.smilies.get(0).setAttackType(AttackType.VOMIT);
-                            if (!GameState.smilies.isEmpty())GameState.smilies.get(0).setDamageable(true);
+                            if (!GameState.smilies.isEmpty()) GameState.smilies.get(0).setAttackType(AttackType.VOMIT);
+                            if (!GameState.smilies.isEmpty()) GameState.smilies.get(0).setDamageable(true);
                             if (!GameState.hands.isEmpty()) GameState.hands.get(0).setDamageable(false);
                             if (!GameState.secondHands.isEmpty()) GameState.secondHands.get(0).setDamageable(false);
                         }
                         if (prob == 2) {
-                            if (!GameState.fists.isEmpty()) GameState.fists.get(0).setAttackType(AttackType.POWER_PUNCH);
+                            if (!GameState.fists.isEmpty())
+                                GameState.fists.get(0).setAttackType(AttackType.POWER_PUNCH);
                         }
                     } else {
                         int prob = new Random().nextInt(2);
                         if (prob == 0) {
                             if (!GameState.hands.isEmpty()) GameState.hands.get(0).setAttackType(AttackType.SLAP);
-                            if (!GameState.secondHands.isEmpty()) GameState.secondHands.get(0).setAttackType(AttackType.SLAP);
-                            if (!GameState.smilies.isEmpty())GameState.smilies.get(0).setDamageable(true);
+                            if (!GameState.secondHands.isEmpty())
+                                GameState.secondHands.get(0).setAttackType(AttackType.SLAP);
+                            if (!GameState.smilies.isEmpty()) GameState.smilies.get(0).setDamageable(true);
                             if (!GameState.hands.isEmpty()) GameState.hands.get(0).setDamageable(false);
                             if (!GameState.secondHands.isEmpty()) GameState.secondHands.get(0).setDamageable(false);
                         }
                         if (prob == 1) {
-                            if (!GameState.fists.isEmpty()) GameState.fists.get(0).setAttackType(AttackType.POWER_PUNCH);
-                            if (!GameState.smilies.isEmpty())GameState.smilies.get(0).setDamageable(true);
+                            if (!GameState.fists.isEmpty())
+                                GameState.fists.get(0).setAttackType(AttackType.POWER_PUNCH);
+                            if (!GameState.smilies.isEmpty()) GameState.smilies.get(0).setDamageable(true);
                             if (!GameState.hands.isEmpty()) GameState.hands.get(0).setDamageable(false);
                             if (!GameState.secondHands.isEmpty()) GameState.secondHands.get(0).setDamageable(false);
                         }
@@ -320,5 +327,37 @@ public abstract class WaveGenerator {
         }, 3000, 10000);
 
     }
+
+
+    public static void automateWaves() {
+        if(GameState.getComplexEnemies().isEmpty()) {
+            generateWaves();
+            GameState.wave++;
+        }
+    }
+
+    private static void generateWaves() {
+        Set<Class<? extends Enemy>> enemyClasses = getAllEnemySubclasses();
+
+        for (Class<? extends Enemy> enemyClass : enemyClasses) {
+            try {
+                if (new Random().nextBoolean()) {
+                    int number = new Random().nextInt(2);
+                    for (int i = 0; i <= number; i++) {
+                        enemyClass.getDeclaredMethod("selfGenerate").invoke(null);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    public static Set<Class<? extends Enemy>> getAllEnemySubclasses() {
+        Reflections reflections = new Reflections(Constants.ENEMY_PATH);
+        return reflections.getSubTypesOf(Enemy.class);
+    }
+
 }
 

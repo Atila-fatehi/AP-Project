@@ -1,6 +1,7 @@
 package model.objectsModel.enemy;
 
 import controller.audio.players.AudioPlayer;
+import controller.logic.EnemyGenerator;
 import controller.logic.GameState;
 import controller.util.Constants;
 import controller.util.CostumeTimer;
@@ -22,13 +23,13 @@ import java.util.TimerTask;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-public class Squarantine extends PolyEnemy implements Movable, Collidable, Paintable, Serializable {
+public class Squarantine extends Enemy implements Movable, Collidable, Paintable, Serializable {
 
     private int HP = 10;
     private double posXHP;
     private double posYHP;
-    private final double[] xPoints;
-    private final double[] yPoints;
+    private double[] xPoints;
+    private double[] yPoints;
     private double constantVelocity = 1d;
     private double maxVelocityX;
     private double maxVelocityY;
@@ -40,11 +41,19 @@ public class Squarantine extends PolyEnemy implements Movable, Collidable, Paint
     String id;
 
     public Squarantine(double[] x, double[] y) {
-        super(x,y);
+        super(x, y);
         this.xPoints = x;
         this.yPoints = y;
         id = String.valueOf(UUID.randomUUID());
         randomAggression();
+    }
+
+    public Squarantine() {
+
+    }
+
+    public static void selfGenerate() {
+        EnemyGenerator.generateEnemy(new Squarantine());
     }
 
     public void randomAggression() {

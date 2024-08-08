@@ -185,4 +185,21 @@ public abstract class EnemyGenerator {
     public static int randomYonScreen() {
         return new Random().nextInt(500) + GamePanel.getInstance().getLocationY();
     }
+
+
+    public static void generateEnemy(Enemy enemy) {
+        if (enemy instanceof Trigorath) {
+            makeNewTrigorath();
+        } else if (enemy instanceof Squarantine) {
+            makeNewSquarantine();
+        } else if (enemy instanceof Wyrm) {
+            makeNewWyrm();
+        } else if (enemy instanceof Archmire) {
+            makeNewArchmire();
+        } else if (enemy instanceof Necropick) {
+            makeNewNecropick();
+        } else if (enemy instanceof Omenoct) {
+            makeNewOmenoct();
+        }
+    }
 }

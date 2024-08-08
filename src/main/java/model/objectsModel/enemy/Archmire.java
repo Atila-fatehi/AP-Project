@@ -1,5 +1,6 @@
 package model.objectsModel.enemy;
 
+import controller.logic.EnemyGenerator;
 import controller.util.Constants;
 import model.Paintable.Paintable;
 import model.collision.*;
@@ -14,7 +15,7 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Archmire implements Paintable, Movable, Drownable, Collidable, Serializable {
+public class Archmire extends Enemy implements Paintable, Movable, Drownable, Collidable, Serializable {
 
     private int HP = 30;
     private int damage = 10;
@@ -41,9 +42,16 @@ public class Archmire implements Paintable, Movable, Drownable, Collidable, Seri
 
 
     public Archmire(double x, double y) {
+        super(x,y);
         this.x = x;
         this.y = y;
         startTimer();
+    }
+    public Archmire(){
+
+    }
+    public static void selfGenerate() {
+        EnemyGenerator.generateEnemy(new Archmire());
     }
 
     void startTimer() {

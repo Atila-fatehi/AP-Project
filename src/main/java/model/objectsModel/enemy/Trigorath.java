@@ -1,6 +1,7 @@
 package model.objectsModel.enemy;
 
 import controller.audio.players.AudioPlayer;
+import controller.logic.EnemyGenerator;
 import controller.logic.GameState;
 import controller.util.Calculator;
 import controller.util.Constants;
@@ -18,13 +19,13 @@ import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.util.UUID;
 
-public class Trigorath extends PolyEnemy implements Movable, Collidable , Paintable, Serializable {
+public class Trigorath extends Enemy implements Movable, Collidable, Paintable, Serializable {
     private int HP = 15;
     String id;
     private double posXHP;
     private double posYHP;
-    private final double[] xPoints;
-    private final double[] yPoints;
+    private double[] xPoints;
+    private double[] yPoints;
     private double maxVelocityX;
     private double maxVelocityY;
     private double vx;
@@ -34,10 +35,16 @@ public class Trigorath extends PolyEnemy implements Movable, Collidable , Painta
     private boolean played;
 
     public Trigorath(double[] x, double[] y) {
-        super(x,y);
+        super(x, y);
         this.xPoints = x;
         this.yPoints = y;
         id = String.valueOf(UUID.randomUUID());
+    }
+    public Trigorath(){
+
+    }
+    public static void selfGenerate() {
+        EnemyGenerator.generateEnemy(new Trigorath());
     }
 
     @Override
@@ -95,7 +102,7 @@ public class Trigorath extends PolyEnemy implements Movable, Collidable , Painta
         if (getXPoints()[0] >= GamePanel.getInstance().getX() &&
                 getXPoints()[0] <= GamePanel.getInstance().getPanelWidth() + GamePanel.getInstance().getX()
                 && getYPoints()[0] >= GamePanel.getInstance().getY() &&
-                getXPoints()[0] <= GamePanel.getInstance().getPanelHeight() +  GamePanel.getInstance().getY()) {
+                getXPoints()[0] <= GamePanel.getInstance().getPanelHeight() + GamePanel.getInstance().getY()) {
             if (!played) {
                 AudioPlayer.play(AudioPlayer.GROAN);
                 played = true;

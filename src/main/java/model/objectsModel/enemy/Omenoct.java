@@ -1,6 +1,7 @@
 package model.objectsModel.enemy;
 
 import controller.audio.players.AudioPlayer;
+import controller.logic.EnemyGenerator;
 import controller.logic.GameState;
 import controller.util.Calculator;
 import controller.util.Constants;
@@ -22,13 +23,13 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 
-public class Omenoct extends PolyEnemy implements Paintable, Collidable, Movable , Serializable {
+public class Omenoct extends Enemy implements Paintable, Collidable, Movable, Serializable {
     String id;
     private int HP = 20;
     private double posXHP;
     private double posYHP;
-    private final double[] xPoints;
-    private final double[] yPoints;
+    private double[] xPoints;
+    private double[] yPoints;
     private final double constantVelocity = 0.5d;
     private double maxVelocityX;
     private double maxVelocityY;
@@ -40,7 +41,7 @@ public class Omenoct extends PolyEnemy implements Paintable, Collidable, Movable
     private boolean stick;
 
     public Omenoct(double[] xPoints, double[] yPoints) {
-        super(xPoints,yPoints);
+        super(xPoints, yPoints);
         this.xPoints = xPoints;
         this.yPoints = yPoints;
         id = UUID.randomUUID().toString();
@@ -51,7 +52,15 @@ public class Omenoct extends PolyEnemy implements Paintable, Collidable, Movable
                 shootBullet();
             }
         }, 2000, 1500);
-        CostumeTimer.getInstance().newTimer(id , shootTimer);
+        CostumeTimer.getInstance().newTimer(id, shootTimer);
+    }
+
+    public Omenoct() {
+
+    }
+
+    public static void selfGenerate() {
+        EnemyGenerator.generateEnemy(new Omenoct());
     }
 
     public void playAudio() {

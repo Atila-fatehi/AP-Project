@@ -1,6 +1,7 @@
 package model.objectsModel.enemy;
 
 import controller.audio.players.AudioPlayer;
+import controller.logic.EnemyGenerator;
 import controller.logic.GameState;
 import controller.util.Constants;
 import controller.util.CostumeTimer;
@@ -20,7 +21,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 
-public class Necropick implements Paintable, Movable, Collidable , Serializable {
+public class Necropick extends Enemy implements Paintable, Movable, Collidable , Serializable {
     String id;
     private int HP = 10;
     private double x;
@@ -31,6 +32,7 @@ public class Necropick implements Paintable, Movable, Collidable , Serializable 
     private boolean disappear;
 
     public Necropick(double x, double y) {
+        super(x,y);
         this.x = x;
         this.y = y;
         id = UUID.randomUUID().toString();
@@ -54,7 +56,12 @@ public class Necropick implements Paintable, Movable, Collidable , Serializable 
         }, 0, 4000);
         CostumeTimer.getInstance().newTimer(id , timer);
     }
+    public Necropick(){
 
+    }
+    public static void selfGenerate() {
+        EnemyGenerator.generateEnemy(new Necropick());
+    }
     public void playAudio() {
         if (!played) {
             AudioPlayer.play(AudioPlayer.GROAN);
